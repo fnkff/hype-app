@@ -37,6 +37,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: opacity 0.2s;
+        }
+        .task.completed {
+            opacity: 0.6;
+            pointer-events: none;
         }
         .task-info {
             flex: 1;
@@ -64,8 +69,6 @@
             font-weight: bold;
             cursor: pointer;
         }
-
-        /* Модальное окно (общее) */
         .modal {
             position: fixed;
             top: 0;
@@ -141,6 +144,12 @@
             font-size: 14px;
             text-align: center;
         }
+        .limit-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -148,10 +157,9 @@
         <div class="logo">ХАЙП</div>
         <div class="balance" id="balance">0 ₽</div>
     </div>
-
     <div id="tasks"></div>
 
-    <!-- Модальное окно для рефералки (id=1) -->
+    <!-- Модалка для рефералки -->
     <div class="modal" id="referralModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -167,7 +175,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно для подписки (id=2) -->
+    <!-- Модалка для подписки -->
     <div class="modal" id="subscribeModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -179,6 +187,7 @@
                 <div>30 ₽</div>
                 <button class="check-subscribe-btn" id="checkSubscribeBtn">Проверить подписку</button>
                 <div class="check-result" id="checkResult"></div>
+                <div class="limit-message" id="subscribeLimitMsg"></div>
             </div>
         </div>
     </div>
@@ -189,7 +198,32 @@
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
 
-        let balance = 0; // начальный баланс
+        // ===== ЗАЩИТА ОТ НАКРУТОК =====
+        // Структура: { "1_2025-02-22": 2, "2_2025-02-22": 1 } (id_дата: количество выполнений)
+        let taskCounts = JSON.parse(sessionStorage.getItem('taskCounts')) || {};
+
+        function canTakeTask(taskId) {
+            const today = new Date().toDateString();
+            const key = taskId + '_' + today;
+            const count = taskCounts[key] || 0;
+            return count < 3; // максимум 3 раза в день
+        }
+
+        function incrementTaskCount(taskId) {
+            const today = new Date().toDateString();
+            const key = taskId + '_' + today;
+            taskCounts[key] = (taskCounts[key] || 0) + 1;
+            sessionStorage.setItem('taskCounts', JSON.stringify(taskCounts));
+        }
+
+        function getTaskCount(taskId) {
+            const today = new Date().toDateString();
+            const key = taskId + '_' + today;
+            return taskCounts[key] || 0;
+        }
+
+        // ===== БАЛАНС =====
+        let balance = 0;
         const balanceEl = document.getElementById('balance');
 
         function updateBalance(amount) {
@@ -197,6 +231,7 @@
             balanceEl.innerText = balance + ' ₽';
         }
 
+        // ===== ЗАДАНИЯ =====
         const tasks = [
             { id: 1, title: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
             { id: 2, title: 'Подпишись на канал', desc: '@hype_job', price: 30 }
@@ -206,6 +241,11 @@
         tasks.forEach((t, index) => {
             const div = document.createElement('div');
             div.className = 'task';
+            div.id = 'task-' + t.id;
+            // Если сегодня уже исчерпан лимит, делаем задание неактивным
+            if (!canTakeTask(t.id)) {
+                div.classList.add('completed');
+            }
             div.innerHTML = `
                 <div class="task-info">
                     <h3>${t.title}</h3>
@@ -213,27 +253,31 @@
                 </div>
                 <div style="display: flex; align-items: center;">
                     <span class="task-price">${t.price} ₽</span>
-                    <button class="take-btn" id="btn-${index}">Взять</button>
+                    <button class="take-btn" id="btn-${index}" ${!canTakeTask(t.id) ? 'disabled' : ''}>Взять</button>
                 </div>
             `;
             container.appendChild(div);
         });
 
-        // Обработчики кнопок
-        tasks.forEach((t, index) => {
+        // ===== Обработчики кнопок =====
+        tasks.forEach;(t, index) => {}
             const btn = document.getElementById(`btn-${index}`);
-            if (btn) {
-                btn.addEventListener('click', () => {
+            if (btn) { }
+            btn.addEventListener('click', () => {
+                    if (!canTakeTask(t.id)) {
+                        alert('Вы уже выполнили это задание 3 раза сегодня. Попробуйте завтра!');
+                        return;
+                    }
                     if (t.id === 1) {
                         showReferralModal();
                     } else if (t.id === 2) {
                         showSubscribeModal();
                     }
                 });
-            }
-        });
+            
+        ;
 
-        // ---- Модалка для рефералки ----
+        // ===== МОДАЛКА ДЛЯ РЕФЕРАЛКИ =====
         const refModal = document.getElementById('referralModal');
         const closeRef = document.getElementById('closeRefModal');
         const copyRefBtn = document.getElementById('copyRefBtn');
@@ -257,14 +301,16 @@
             });
         });
 
-        // ---- Модалка для подписки ----
+        // ===== МОДАЛКА ДЛЯ ПОДПИСКИ =====
         const subModal = document.getElementById('subscribeModal');
         const closeSub = document.getElementById('closeSubModal');
         const checkBtn = document.getElementById('checkSubscribeBtn');
         const checkResult = document.getElementById('checkResult');
+        const subscribeLimitMsg = document.getElementById('subscribeLimitMsg');
 
         function showSubscribeModal() {
             checkResult.innerText = '';
+            subscribeLimitMsg.innerText = '';
             checkBtn.disabled = false;
             checkBtn.textContent = 'Проверить подписку';
             subModal.classList.add('show');
@@ -275,22 +321,36 @@
             if (e.target === subModal) subModal.classList.remove('show');
         });
 
-        // Имитация проверки подписки
         checkBtn.addEventListener('click', async () => {
+            const taskId = 2;
+            if (!canTakeTask(taskId)) {
+                subscribeLimitMsg.innerText = '❌ Лимит на сегодня исчерпан (3/3)';
+                return;
+            }
+
             checkBtn.disabled = true;
             checkBtn.textContent = 'Проверка...';
             checkResult.innerText = '';
 
-            // Имитация задержки (1.5 сек)
+            // Имитация запроса к серверу
             await new Promise(r => setTimeout(r, 1500));
 
-            // Случайный успех (70% вероятность для демонстрации)
-            const success = Math.random() < 0.7;
+            // Для теста всегда успех (можно заменить на случайный, но для отладки оставим успех)
+            const success = true; // или Math.random() < 0.7
 
             if (success) {
+                // Начисляем деньги и увеличиваем счётчик
+                updateBalance(30);
+                incrementTaskCount(taskId);
                 checkResult.style.color = '#75fe09';
                 checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
-                updateBalance(30); // начисляем бонус
+
+                // Блокируем задание на главной
+                const taskDiv = document.getElementById('task-' + taskId);
+                if (taskDiv) taskDiv.classList.add('completed');
+                const btn = document.querySelector(`#btn-${tasks.findIndex(t => t.id === taskId)}`);
+                if (btn) btn.disabled = true;
+
                 setTimeout(() => subModal.classList.remove('show'), 2000);
             } else {
                 checkResult.style.color = 'red';
@@ -302,6 +362,7 @@
     </script>
 </body>
 </html>
+
 
 
 
