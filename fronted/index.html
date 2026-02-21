@@ -25,11 +25,8 @@
         }
         .beta-badge {
             font-size: 14px;
-            background: black;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 20px;
-            margin-left: 8px;
+            color: black;
+            margin-left: 4px;
             vertical-align: middle;
         }
         .balance {
@@ -255,10 +252,10 @@
 
         // Обработчики модалок
         document.getElementById('closeRef').onclick = () => {
-            document.getElementById('refModal').classList.
-            remove('show');
+            document.getElementById('refModal').classList.remove('show');
         };
-        document.getElementById('copyBtn').onclick = () => {
+        document.
+        getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
@@ -283,7 +280,7 @@
 
             await new Promise(r => setTimeout(r, 1500));
 
-            // Имитация успеха
+            // Имитация успеха (потом заменим на реальную проверку)
             const success = true;
 
             if (success) {
@@ -310,6 +307,7 @@
     </script>
 </body>
 </html>
+
 
 
 
