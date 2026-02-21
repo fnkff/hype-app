@@ -74,11 +74,11 @@
             localStorage.setItem('balance', balance);
         }
 
-        function addCount(id) {}
-        let key = id + '_' + new Date().toDateString();
+        function addCount(id) {
+            let key = id + '_' + new Date().toDateString();
             counts[key] = (counts[key] || 0) + 1;
             localStorage.setItem('counts', JSON.stringify(counts));
-        
+        }
 
         function canDo(id) {
             let key = id + '_' + new Date().toDateString();
@@ -91,18 +91,39 @@
         ];
 
         const container = document.getElementById('tasks');
-        tasks.forEach(t => {
-            let div = document.createElement('div');
-            div.className = 'task';
-            div.innerHTML = `
-                <div class="task-info"><h3>${t.name}</h3><p>${t.desc}</p></div>
-                <div class="task-actions">
-                    <span class="task-price">${t.price} ₽</span>
-                    <button class="take-btn" data-id="${t.id}">Взять</button>
-                </div>
-            `;
-            container.appendChild(div);
-        });
+        if (container) {
+            tasks.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'task';
+
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'task-info';
+                const h3 = document.createElement('h3');
+                h3.innerText = t.name;
+                const p = document.createElement('p');
+                p.innerText = t.desc;
+                infoDiv.appendChild(h3);
+                infoDiv.appendChild(p);
+
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'task-actions';
+                const priceSpan = document.createElement('span');
+                priceSpan.className = 'task-price';
+                priceSpan.innerText = t.price + ' ₽';
+                const btn = document.createElement('button');
+                btn.className = 'take-btn';
+                btn.setAttribute('data-id', t.id);
+                btn.innerText = 'Взять';
+
+                actionsDiv.appendChild(priceSpan);
+                actionsDiv.appendChild(btn);
+
+                div.appendChild(infoDiv);
+                div.appendChild(actionsDiv);
+
+                container.appendChild(div);
+            });
+        }
 
         document.querySelectorAll('.take-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -121,7 +142,6 @@
             });
         });
 
-        // Модалка рефералки
         document.getElementById('closeRef').addEventListener('click', () => {
             document.getElementById('refModal').classList.remove('show');
         });
@@ -131,7 +151,6 @@
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         });
 
-        // Модалка подписки
         const subModal = document.getElementById('subModal');
         const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
@@ -151,7 +170,8 @@
 
             await new Promise(r => setTimeout(r, 1500));
 
-            const success = true; // Имитация успеха
+            // Имитация успеха (всегда true для теста)
+            const success = true;
 
             if (success) {
                 balance += 30;
@@ -177,6 +197,7 @@
     </script>
 </body>
 </html>
+
 
 
 
