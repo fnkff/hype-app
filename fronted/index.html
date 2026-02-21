@@ -1,122 +1,86 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Хайп</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body { background: #75fe09; font-family: Arial; margin: 0; padding: 16px; padding-bottom: 80px; }
-        .header { display: flex; justify-content: space-between; margin-bottom: 20px; }
-        .logo { font-size: 24px; font-weight: bold; }
-        .balance { background: white; padding: 8px 16px; border-radius: 20px; }
-        .task { background: black; color: white; border-radius: 16px; padding: 16px; margin: 8px 0; display: flex; justify-content: space-between; align-items: center; }
-        .task-info h3 { margin: 0 0 5px; font-size: 18px; }
-        .task-info p { margin: 0; color: #ccc; }
-        .task-actions { display: flex; align-items: center; gap: 8px; }
-        .task-price { font-size: 20px; font-weight: bold; color: white; line-height: 1; }
-        .take-btn { background: white; color: black; border: none; border-radius: 30px; padding: 8px 16px; font-weight: bold; cursor: pointer; }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000; }
-        .modal.show { opacity: 1; visibility: visible; }
-        .modal-content { background: white; width: 90%; max-width: 400px; border-radius: 24px; overflow: hidden; transform: scale(0.9); transition: 0.3s; }
-        .modal.show .modal-content { transform: scale(1); }
-        .modal-header { background: #f0f0f0; padding: 20px; text-align: right; }
-        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; }
-        .modal-body { padding: 20px; color: black; }
-        .ref-link { width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; background: #f5f5f5; }
-        .copy-btn, .check-btn { background: #75fe09; border: none; border-radius: 40px; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .result { margin-top: 10px; text-align: center; }
-    </style>
-</head>
-<body>
-    <div class="header"><div class="logo">ХАЙП</div><div class="balance" id="balance">0 ₽</div></div>
-    <div id="tasks"></div>
+<script>
+    let tg = window.Telegram?.WebApp;
+    if (tg) tg.expand();
+    const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
 
-    <!-- Модалки -->
-    <div class="modal" id="refModal"><div class="modal-content"><div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div><div class="modal-body"><h3>Пригласи друга</h3><p>Пригласи друга и получи 50 ₽</p><input class="ref-link" id="refLink" readonly><button class="copy-btn" id="copyBtn">Копировать ссылку</button></div></div></div>
-    <div class="modal" id="subModal"><div class="modal-content"><div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div><div class="modal-body"><h3>Подпишись на канал</h3><p>Подпишись на @hype_job</p><button class="check-btn" id="checkBtn">Проверить</button><div class="result" id="checkResult"></div></div></div></div>
+    // Хранилище
+    let counts = JSON.parse(localStorage.getItem('counts')) || {};
+    let balance = parseInt(localStorage.getItem('balance')) || 0;
+    document.getElementById('balance').innerText = balance + ' ₽';
+    function saveBalance() { localStorage.setItem('balance', balance); }
+    function addCount(id) {
+        let key = id + '_' + new Date().toDateString();
+        counts[key] = (counts[key] || 0) + 1;
+        localStorage.setItem('counts', JSON.stringify(counts));
+    }
+    function canDo(id) {
+        let key = id + '_' + new Date().toDateString();
+        return !counts[key] || counts[key] < 3;
+    }
 
-    <script>
-        // ---------- Telegram ----------
-        let tg = window.Telegram?.WebApp;
-        if (tg) tg.expand();
-        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+    // Задания
+    const tasks = [
+        { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
+        { id: 2, name: 'Подпишись на канал', desc: '@hype_job', price: 30 }
+    ];
 
-        // ---------- Хранилище (localStorage) ----------
-        let counts = JSON.parse(localStorage.getItem('counts')) || {};
-        let balance = parseInt(localStorage.getItem('balance')) || 0;
-        document.getElementById('balance').innerText = balance + ' ₽';
-        function saveBalance() { localStorage.setItem('balance', balance); }
-        function addCount(id) {
-            let key = id + '_' + new Date().toDateString();
-            counts[key] = (counts[key] || 0) + 1;
-            localStorage.setItem('counts', JSON.stringify(counts));
-        }
-        function canDo(id) {
-            let key = id + '_' + new Date().toDateString();
-            return !counts[key] || counts[key] < 3;
-        }
+    const container = document.getElementById('tasks');
+    tasks.forEach(t => {
+        let div = document.createElement('div');
+        div.className = 'task';
+        div.innerHTML = `
+            <div class="task-info"><h3>${t.name}</h3><p>${t.desc}</p></div>
+            <div class="task-actions"><span class="task-price">${t.price} ₽</span>
+            <button class="take-btn" data-id="${t.id}">Взять</button></div>`;
+        container.appendChild(div);
+    });
 
-        // ---------- Задания ----------
-        const tasks = [
-            { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
-            { id: 2, name: 'Подпишись на канал', desc: '@hype_job', price: 30 }
-        ];
-        const container = document.getElementById('tasks');
-        tasks.forEach(t => {
-            let div = document.createElement('div');
-            div.className = 'task';
-            div.innerHTML = `
-                <div class="task-info"><h3>${t.name}</h3><p>${t.desc}</p></div>
-                <div class="task-actions"><span class="task-price">${t.price} ₽</span>
-                <button class="take-btn" onclick="takeTask(${t.id})">Взять</button></div>`;
-            container.appendChild(div);
-        });
-
-        // ---------- Обработчик нажатий ----------
-        window.takeTask = function(id) {
-            if (!canDo(id)) { alert('Лимит на сегодня'); return; }
+    // Назначаем обработчики на кнопки
+    document.querySelectorAll('.take-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            let id = parseInt(this.dataset.id);
+            if (!canDo(id)) {
+                alert('Лимит на сегодня');
+                return;
+            }
             if (id === 1) {
-                // Генерируем ссылку и отправляем боту
                 let link = https;//t.me/your_bot?start=ref_${userId};
                 document.getElementById('refLink').value = link;
-                // Отправка боту (опционально)
-                fetch(`https://api.telegram.org/bot${tg?.initDataUnsafe?.user?.id}/sendMessage?chat_id=YOUR_ADMIN_ID&text=User+${userId}+opened+referral`, {mode: 'no-cors'});
                 document.getElementById('refModal').classList.add('show');
             } else {
                 document.getElementById('subModal').classList.add('show');
             }
-        };
+        });
+    });
 
-        // ---------- Модалка рефералки ----------
-        document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
-        document.getElementById('copyBtn').onclick = () => {
-            let inp = document.getElementById('refLink');
-            inp.select();
-            navigator.clipboard.writeText(inp.value);
-            alert('Скопировано');
-        };
+    // Модалка рефералки
+    document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
+    document.getElementById('copyBtn').onclick = () => {
+        let inp = document.getElementById('refLink');
+        inp.select();
+        navigator.clipboard.writeText(inp.value);
+        alert('Скопировано');
+    };
 
-        // ---------- Модалка подписки (имитация успеха) ----------
-        const subModal = document.getElementById('subModal');
-        document.getElementById('closeSub').onclick = () => subModal.classList.remove('show');
-        document.getElementById('checkBtn').onclick = async () => {
-            let btn = document.getElementById('checkBtn');
-            let res = document.getElementById('checkResult');
-            btn.disabled = true; btn.innerText = 'Проверка...'; res.innerText = '';
-            await new Promise(r => setTimeout(r, 1500));
-            balance += 30; saveBalance(); document.getElementById('balance').innerText = balance + ' ₽';
-            addCount(2);
-            res.style.color = '#75fe09'; res.innerText = '✅ +30 ₽';
-            setTimeout(() => subModal.classList.remove('show'), 1500);
-            btn.disabled = false; btn.innerText = 'Проверить';
-        };
+    // Модалка подписки
+    const subModal = document.getElementById('subModal');
+    document.getElementById('closeSub').onclick = () => subModal.classList.remove('show');
+    document.getElementById('checkBtn').onclick = async () => {
+        let btn = document.getElementById('checkBtn');
+        let res = document.getElementById('checkResult');
+        btn.disabled = true; btn.innerText = 'Проверка...'; res.innerText = '';
+        await new Promise(r => setTimeout(r, 1500));
+        balance += 30; saveBalance(); document.getElementById('balance').innerText = balance + ' ₽';
+        addCount(2);
+        res.style.color = '#75fe09'; res.innerText = '✅ +30 ₽';
+        setTimeout(() => subModal.classList.remove('show'), 1500);
+        btn.disabled = false; btn.innerText = 'Проверить';
+    };
 
-        // ---------- Закрытие модалок по клику на фон ----------
-        window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.classList.remove('show'); };
-    </script>
-</body>
-</html>
+    window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.classList.remove('show'); };
+</script>
+
 
 
 
