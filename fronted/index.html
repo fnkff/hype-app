@@ -1,7 +1,82 @@
-let key = id + '_' + new Date().toDateString();
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хайп</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background: #75fe09; font-family: Arial; margin: 0; padding: 16px; padding-bottom: 80px; }
+        .header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .logo { font-size: 24px; font-weight: bold; }
+        .balance { background: white; padding: 8px 16px; border-radius: 20px; }
+        .task { background: black; color: white; border-radius: 16px; padding: 16px; margin: 8px 0; display: flex; justify-content: space-between; align-items: center; }
+        .task-info h3 { margin: 0 0 5px; }
+        .task-info p { margin: 0; color: #ccc; }
+        .task-actions { display: flex; align-items: center; gap: 8px; }
+        .task-price { font-size: 20px; font-weight: bold; color: white; }
+        .take-btn { background: white; color: black; border: none; border-radius: 30px; padding: 8px 16px; font-weight: bold; cursor: pointer; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 1000; }
+        .modal.show { opacity: 1; visibility: visible; }
+        .modal-content { background: white; width: 90%; max-width: 400px; border-radius: 24px; overflow: hidden; transform: scale(0.9); transition: transform 0.3s ease; }
+        .modal.show .modal-content { transform: scale(1); }
+        .modal-header { background: #f0f0f0; padding: 20px; text-align: right; }
+        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; }
+        .modal-body { padding: 20px; color: black; }
+        .ref-link { width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; background: #f5f5f5; }
+        .copy-btn, .check-btn { background: #75fe09; border: none; border-radius: 40px; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .result { margin-top: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">ХАЙП</div>
+        <div class="balance" id="balance">0 ₽</div>
+    </div>
+    <div id="tasks"></div>
+
+    <!-- Модалка рефералки -->
+    <div class="modal" id="refModal">
+        <div class="modal-content">
+            <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
+            <div class="modal-body">
+                <h3>Пригласи друга</h3>
+                <p>Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
+                <input class="ref-link" id="refLink" readonly>
+                <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модалка подписки -->
+    <div class="modal" id="subModal">
+        <div class="modal-content">
+            <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
+            <div class="modal-body">
+                <h3>Подпишись на канал</h3>
+                <p>Подпишись на @hype_job и нажми проверку</p>
+                <button class="check-btn" id="checkBtn">Проверить подписку</button>
+                <div class="result" id="checkResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram?.WebApp;
+        if (tg) tg.expand();
+        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+
+        // Хранилище (localStorage)
+        let counts = JSON.parse(localStorage.getItem('counts')) || {};
+        let balance = parseInt(localStorage.getItem('balance')) || 0;
+        document.getElementById('balance').innerText = balance + ' ₽';
+        function saveBalance() { localStorage.setItem('balance', balance); }
+        function addCount(id) {
+        }
+        let key = id + '_' + new Date().toDateString();
             counts[key] = (counts[key] || 0) + 1;
             localStorage.setItem('counts', JSON.stringify(counts));
-        }
+        
         function canDo(id) {
             let key = id + '_' + new Date().toDateString();
             return !counts[key] || counts[key] < 3;
@@ -33,7 +108,7 @@ let key = id + '_' + new Date().toDateString();
                 let id = parseInt(e.target.dataset.id);
                 if (!canDo(id)) { alert('Лимит на сегодня'); return; }
                 if (id === 1) {
-                    let link = https://t.me/your_bot?start=ref_${userId};
+                    let link = https;//t.me/your_bot?start=ref_${userId};
                     document.getElementById('refLink').value = link;
                     document.getElementById('refModal').classList.add('show');
                 } else {
@@ -98,10 +173,9 @@ let key = id + '_' + new Date().toDateString();
                 e.target.classList.remove('show');
             }
         });
-        </script>
+</script>
 </body>
 </html>
-
 
 
 
