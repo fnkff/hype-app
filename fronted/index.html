@@ -169,7 +169,7 @@
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
-                <p>Подпишись на @hype_job и нажми проверку</p>
+                <p>Подпишись на @HYPE_JOB1 и нажми проверку</p>
                 <button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
@@ -202,7 +202,7 @@
 
         const tasks = [
             { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
-            { id: 2, name: 'Подпишись на канал', desc: '@hype_job', price: 30 }
+            { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
         ];
 
         const container = document.getElementById('tasks');
@@ -254,8 +254,7 @@
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
-        document.
-        getElementById('copyBtn').onclick = () => {
+        document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
@@ -307,6 +306,7 @@
     </script>
 </body>
 </html>
+
 
 
 
