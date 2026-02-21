@@ -1,17 +1,107 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Хайп тест</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-</head>
-<body style="background: #75fe09; padding: 20px; font-family: Arial;">
-    <h1>Привет, мир!</h1>
-    <p>Если ты это видишь, значит Mini App работает.</p>
-    <button onclick="alert('Кнопка нажата')">Нажми меня</button>
+let key = id + '_' + new Date().toDateString();
+            counts[key] = (counts[key] || 0) + 1;
+            localStorage.setItem('counts', JSON.stringify(counts));
+        }
+        function canDo(id) {
+            let key = id + '_' + new Date().toDateString();
+            return !counts[key] || counts[key] < 3;
+        }
+
+        // Задания
+        const tasks = [
+            { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
+            { id: 2, name: 'Подпишись на канал', desc: '@hype_job', price: 30 }
+        ];
+
+        const container = document.getElementById('tasks');
+        tasks.forEach(t => {
+            let div = document.createElement('div');
+            div.className = 'task';
+            div.innerHTML = `
+                <div class="task-info"><h3>${t.name}</h3><p>${t.desc}</p></div>
+                <div class="task-actions">
+                    <span class="task-price">${t.price} ₽</span>
+                    <button class="take-btn" data-id="${t.id}">Взять</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+
+        // Обработчики кнопок
+        document.querySelectorAll('.take-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                let id = parseInt(e.target.dataset.id);
+                if (!canDo(id)) { alert('Лимит на сегодня'); return; }
+                if (id === 1) {
+                    let link = https://t.me/your_bot?start=ref_${userId};
+                    document.getElementById('refLink').value = link;
+                    document.getElementById('refModal').classList.add('show');
+                } else {
+                    document.getElementById('subModal').classList.add('show');
+                }
+            });
+        });
+
+        // Модалка рефералки
+        document.getElementById('closeRef').addEventListener('click', () => {
+            document.getElementById('refModal').classList.remove('show');
+        });
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            let inp = document.getElementById('refLink');
+            inp.select();
+            navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
+        });
+
+        // Модалка подписки
+        const subModal = document.getElementById('subModal');
+        const closeSub = document.getElementById('closeSub');
+        const checkBtn = document.getElementById('checkBtn');
+        const checkResult = document.getElementById('checkResult');
+
+        closeSub.addEventListener('click', () => subModal.classList.remove('show'));
+
+        checkBtn.addEventListener('click', async () => {
+            if (!canDo(2)) {
+                checkResult.style.color = 'red';
+                checkResult.innerText = 'Лимит на сегодня';
+                return;
+            }
+            checkBtn.disabled = true;
+            checkBtn.innerText = 'Проверка...';
+            checkResult.innerText = '';
+
+            // Имитация проверки (1.5 сек)
+            await new Promise(r => setTimeout(r, 1500));
+
+            // Для демонстрации всегда успех (можно заменить на случайный)
+            const success = true;
+
+            if (success) {
+                balance += 30;
+                saveBalance();
+                document.getElementById('balance').innerText = balance + ' ₽';
+                addCount(2);
+                checkResult.style.color = '#75fe09';
+                checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
+                setTimeout(() => subModal.classList.remove('show'), 1500);
+            } else {
+                checkResult.style.color = 'red';
+                checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
+            }
+            checkBtn.disabled = false;
+            checkBtn.innerText = 'Проверить подписку';
+        });
+
+        // Закрытие модалок по клику на фон
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('show');
+            }
+        });
+        </script>
 </body>
 </html>
+
 
 
 
