@@ -1,34 +1,201 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Хайп</title>
+    <!-- Подключаем Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body{background:#75fe09;color:#000;margin:0;padding:16px;font-family:Arial;padding-bottom:80px}
-        .header{display:flex;justify-content:space-between;margin-bottom:20px}
-        .logo{font-size:24px;font-weight:bold}
-        .balance{background:#fff;padding:8px 16px;border-radius:20px}
-        .task-card{background:#000;color:#fff;border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between}
-        .task-info h3{margin:0 0 8px;font-size:18px}
-        .task-info p{margin:0;color:#ccc}
-        .task-price{font-size:20px;font-weight:bold;color:#fff}
-        .take-btn{background:#fff;color:#000;border:none;border-radius:30px;padding:8px 16px;font-weight:bold;cursor:pointer}
-        .nav{position:fixed;bottom:0;left:0;right:0;background:#000;display:flex;justify-content:space-around;padding:12px}
-        .nav-item{color:#aaa;text-decoration:none}
-        .nav-item.active{color:#fff}
-        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:0.3s}
-        .modal-overlay.active{opacity:1;visibility:visible}
-        .modal-content{background:#fff;width:90%;max-width:400px;border-radius:24px;overflow:hidden;transform:scale(0.8);transition:0.3s}
-        .modal-overlay.active .modal-content{transform:scale(1)}
-        .modal-image{width:100%;height:200px;background:#ccc;background-size:cover}
-        .modal-body{padding:20px}
-        .modal-title{font-size:22px;font-weight:bold}
-        .modal-price{font-size:28px;font-weight:bold;margin:10px 0}
-        .modal-check-btn,.modal-start-btn{background:#75fe09;border:none;border-radius:40px;padding:12px;width:100%;font-weight:bold;cursor:pointer;margin:5px 0}
-        .modal-close{position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.8);border:none;border-radius:50%;width:36px;height:36px;font-size:24px;cursor:pointer}
-        .referral-link{width:100%;padding:8px;margin:10px 0;background:#f5f5f5;border:1px solid #ccc}
-        .copy-btn{background:#75fe09;border:none;border-radius:20px;padding:8px;width:100%;font-weight:bold;cursor:pointer}
+        body {
+            background: #75fe09;
+            color: #000;
+            margin: 0;
+            padding: 16px;
+            padding-bottom: 80px;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+        .balance {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .task-card {
+            background: black;
+            color: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-info h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+        .task-info p {
+            margin: 0;
+            color: #ccc;
+            font-size: 14px;
+        }
+        .task-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .task-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        .take-btn {
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: black;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px;
+        }
+        .nav-item {
+            color: #aaa;
+            text-decoration: none;
+            text-align: center;
+        }
+        .nav-item.active {
+            color: white;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 24px;
+            overflow: hidden;
+            transform: scale(0.8);
+            transition: transform 0.3s;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        .modal-image {
+            width: 100%;
+            height: 200px;
+            background-color: #ccc;
+            background-size: cover;
+            background-position: center;
+        }
+        .modal-body {
+            padding: 20px;
+            color: #000;
+        }
+        .modal-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0 0 10px;
+        }
+        .modal-description {
+            font-size: 16px;
+            color: #333;
+            margin: 0 0 20px;
+        }
+        .modal-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 20px;
+        }
+        .modal-check-btn {
+            background: #75fe09;
+            border: none;
+            border-radius: 40px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .modal-start-btn {
+            background: #75fe09;
+            border: none;
+            border-radius: 40px;
+            padding: 16px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.8);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .referral-link {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+        }
+        .copy-btn {
+            background: #75fe09;
+            border: none;
+            border-radius: 20px;
+            padding: 8px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -36,127 +203,212 @@
         <div class="logo">ХАЙП</div>
         <div class="balance" id="balance">1250 ₽</div>
     </div>
+
     <div id="tasks-list"></div>
+
     <div class="nav">
         <a href="#" class="nav-item active">📋 Задания</a>
         <a href="#" class="nav-item">👤 Профиль</a>
         <a href="#" class="nav-item">👥 Рефералы</a>
         <a href="#" class="nav-item">💰 Вывод</a>
     </div>
+
     <div class="modal-overlay" id="taskModal">
         <div class="modal-content">
             <button class="modal-close" id="closeModalBtn">&times;</button>
             <div class="modal-image" id="modalImage"></div>
             <div class="modal-body">
-                <div class="modal-title" id="modalTitle"></div>
-                <div id="modalDesc" style="margin:10px 0"></div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-description" id="modalDesc"></p>
                 <div class="modal-price" id="modalPrice"></div>
                 <div id="dynamicContent"></div>
                 <button class="modal-start-btn" id="modalStartBtn">Начать задание</button>
             </div>
         </div>
     </div>
+
     <script>
         // ===== Telegram WebApp =====
         let tg = window.Telegram?.WebApp;
         if (!tg) {
-            document.body.innerHTML = '<div style="color:red;padding:20px">Запустите через Telegram</div>';
+            document.body.innerHTML = '<div style="color: red; padding: 20px; text-align: center;">Ошибка: Telegram API не загружен. Попробуйте перезапустить приложение.</div>';
         } else {
             tg.expand();
             tg.ready();
             let userId = tg.initDataUnsafe?.user?.id || 'user';
 
-            // ===== Лимиты заданий =====
+            // ===== Лимиты заданий (3 раза в день) =====
             const takenTasks = JSON.parse(sessionStorage.getItem('takenTasks')) || {};
 
             function canTakeTask(taskId) {
-                let key = taskId + '_' + new Date().toDateString();
-return !(takenTasks[key] && takenTasks[key] >= 3);
+                const today = new Date().toDateString();
+                const key = taskId + '_' + today;
+                if (takenTasks[key] && takenTasks[key] >= 3) {
+                    alert('Вы уже выполнили это задание 3 раза сегодня');
+                    return false;
+                }
+                return true;
             }
 
-            function recordTask(taskId) {
-                let key = taskId + '_' + new Date().toDateString();
+            function recordTaskCompleted(taskId) {
+                const today = new Date().toDateString();
+                const key = taskId + '_' + today;
                 takenTasks[key] = (takenTasks[key] || 0) + 1;
                 sessionStorage.setItem('takenTasks', JSON.stringify(takenTasks));
             }
 
             function updateBalance(amount) {
-                let b = document.getElementById('balance');
-                let cur = parseInt(b.innerText) || 1250;
-                b.innerText = (cur + amount) + ' ₽';
+                let balanceEl = document.getElementById('balance');
+                let cur = parseInt(balanceEl.innerText.replace(' ₽', '')) || 0;
+                balanceEl.innerText = (cur + amount) + ' ₽';
             }
 
-            // ===== Задания =====
+            // ===== Данные заданий =====
             const tasks = [
-                {id:1, title:'Пригласи друга', desc:'Отправь ссылку', fulldesc:'Пригласи друга и получи 50 ₽', price:50, img:'https://via.placeholder.com/400x200/75fe09/000000?text=Referral'},
-                {id:2, title:'Подпишись на канал', desc:'@hype_job', fulldesc:'Подпишись и получи 30 ₽', price:30, img:'https://via.placeholder.com/400x200/000000/75fe09?text=Telegram'}
+                {
+                    id: 1,
+                    title: 'Пригласи друга',
+                    shortDesc: 'Отправь свою реферальную ссылку',
+                    fullDesc: 'Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.',
+price: 50,
+                    image: 'https://via.placeholder.com/400x200/75fe09/000000?text=Referral'
+                },
+                {
+                    id: 2,
+                    title: 'Подпишись на канал',
+                    shortDesc: '@hype_job',
+                    fullDesc: 'Подпишись на наш канал @hype_job и нажми кнопку проверки',
+                    price: 30,
+                    image: 'https://via.placeholder.com/400x200/000000/75fe09?text=Telegram'
+                }
             ];
 
-            // ===== Отрисовка =====
-            let list = document.getElementById('tasks-list');
-            tasks.forEach(t => {
-                let card = document.createElement('div');
+            // ===== Отрисовка карточек заданий =====
+            const tasksList = document.getElementById('tasks-list');
+            tasks.forEach(task => {
+                const card = document.createElement('div');
                 card.className = 'task-card';
-                card.innerHTML = '<div><h3>' + t.title + '</h3><p>' + t.desc + '</p></div><div><span class="task-price">' + t.price + ' ₽</span><button class="take-btn" onclick="window.takeTask(' + t.id + ')">Взять</button></div>';
-                list.appendChild(card);
+                card.innerHTML = `
+                    <div class="task-info">
+                        <h3>${task.title}</h3>
+                        <p>${task.shortDesc}</p>
+                    </div>
+                    <div class="task-actions">
+                        <span class="task-price">${task.price} ₽</span>
+                        <button class="take-btn" onclick="takeTask(${task.id})">Взять</button>
+                    </div>
+                `;
+                tasksList.appendChild(card);
             });
 
-            // ===== Модалка =====
-            let modal = document.getElementById('taskModal');
-            let modalImg = document.getElementById('modalImage');
-            let modalTitle = document.getElementById('modalTitle');
-            let modalDesc = document.getElementById('modalDesc');
-            let modalPrice = document.getElementById('modalPrice');
-            let modalStart = document.getElementById('modalStartBtn');
-            let dynamic = document.getElementById('dynamicContent');
+            // ===== Модальное окно =====
+            const modalOverlay = document.getElementById('taskModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDesc');
+            const modalPrice = document.getElementById('modalPrice');
+            const modalStartBtn = document.getElementById('modalStartBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const dynamicContent = document.getElementById('dynamicContent');
+
             let currentTask = null;
 
-            window.takeTask = function(id) {
-                let task = tasks.find(t => t.id === id);
-                if (!task || !canTakeTask(id)) return;
+            window.takeTask = function(taskId) {
+                if (!canTakeTask(taskId)) return;
+                const task = tasks.find(t => t.id === taskId);
+                if (!task) return;
                 currentTask = task;
-                modalImg.style.backgroundImage = 'url(' + task.img + ')';
-                modalTitle.innerText = task.title;
-                modalDesc.innerText = task.fulldesc;
-                modalPrice.innerText = task.price + ' ₽';
-                dynamic.innerHTML = '';
 
-                if (id === 2) {
-                    dynamic.innerHTML = '<button class="modal-check-btn" id="checkBtn">Проверить подписку</button><p id="checkResult"></p>';
+                modalImage.style.backgroundImage = url('${task.image}');
+                modalTitle.innerText = task.title;
+                modalDesc.innerText = task.fullDesc;
+                modalPrice.innerText = task.price + ' ₽';
+
+                dynamicContent.innerHTML = '';
+
+                if (taskId === 2) {
+                    dynamicContent.innerHTML = `
+                        <button class="modal-check-btn" id="checkSubscribeBtn">Проверить подписку</button>
+                        <p id="checkResult"></p>
+                    `;
                     setTimeout(() => {
-                        document.getElementById('checkBtn')?.addEventListener('click', checkSubscribe);
+                        document.getElementById('checkSubscribeBtn')?.addEventListener('click', checkSubscription);
                     }, 0);
-                } else {
-                    let link = 'https://t.me/your_bot?start=' + userId;
-                    dynamic.innerHTML = '<input class="referral-link" id="refLink" value="' + link + '" readonly><button class="copy-btn" onclick="copyRef()">Копировать</button>';
+                } else if (taskId === 1) {
+                    const refLink = 'https://t.me/your_bot?start=ref_' + userId;
+                    dynamicContent.innerHTML = `
+                        <div>
+                            <p><strong>Твоя ссылка:</strong></p>
+                            <input class="referral-link" id="refLink" value="${refLink}" readonly />
+                            <button class="copy-btn" onclick="copyRefLink()">Скопировать</button>
+                        </div>
+                    `;
                 }
-                modal.classList.add('active');
+
+                modalOverlay.classList.add('active');
             };
 
-            async function checkSubscribe() {
-                let btn = document.getElementById('checkBtn');
-                let res = document.getElementById('checkResult');
-                if (!btn) return;
-                btn.disabled = true;
-                btn.textContent = 'Проверка...';
-                await new Promise(r => setTimeout(r, 1500));
-                res.style.color = '#75fe09';
-                res.textContent = '✅ Подписка подтверждена! +' + currentTask.price + ' ₽';
-                updateBalance(currentTask.price);
-                recordTask(currentTask.id);
-                btn.disabled = false;
-                setTimeout(() => { modal.classList.remove('active'); }, 2000);
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                currentTask = null;
             }
 
-            window.copyRef = function() {
-                let inp = document.
-getElementById('refLink');
-                if (inp) { inp.select(); navigator.clipboard.writeText(inp.value); alert('Скопировано'); }
+            closeModalBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            // ===== Проверка подписки (имитация) =====
+            async function checkSubscription() {
+                const btn = document.getElementById('checkSubscribeBtn');
+const result = document.getElementById('checkResult');
+                if (!btn || !result) return;
+
+                btn.disabled = true;
+                btn.textContent = 'Проверка...';
+
+                await new Promise(r => setTimeout(r, 1500));
+
+                const success = Math.random() > 0.3;
+
+                if (success) {
+                    result.style.color = '#75fe09';
+                    result.textContent = '✅ Подписка подтверждена! +' + currentTask.price + ' ₽';
+                    updateBalance(currentTask.price);
+                    recordTaskCompleted(currentTask.id);
+                    setTimeout(closeModal, 2000);
+                } else {
+                    result.style.color = 'red';
+                    result.textContent = '❌ Подписка не найдена. Попробуйте снова.';
+                }
+
+                btn.disabled = false;
+                btn.textContent = 'Проверить подписку';
+            }
+
+            // ===== Копирование реферальной ссылки =====
+            window.copyRefLink = function() {
+                const input = document.getElementById('refLink');
+                if (input) {
+                    input.select();
+                    navigator.clipboard.writeText(input.value).then(() => {
+                        alert('Ссылка скопирована!');
+                    });
+                }
             };
 
-            document.getElementById('closeModalBtn').addEventListener('click', () => modal.classList.remove('active'));
-            modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
-            modalStart.addEventListener('click', () => { if (currentTask) modal.classList.remove('active'); });
+            // ===== Кнопка "Начать задание" =====
+            modalStartBtn.addEventListener('click', function() {
+                if (!currentTask) return;
+                if (currentTask.id === 2) {
+                    tg.showAlert('Подпишитесь на канал и нажмите кнопку проверки');
+                } else if (currentTask.id === 1) {
+                    tg.showAlert('Отправьте ссылку друзьям. Бонус придёт после регистрации');
+                    closeModal();
+                } else {
+                    closeModal();
+                }
+            });
         }
     </script>
 </body>
