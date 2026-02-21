@@ -1,85 +1,18 @@
-<script>
-    let tg = window.Telegram?.WebApp;
-    if (tg) tg.expand();
-    const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хайп тест</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body style="background: #75fe09; padding: 20px; font-family: Arial;">
+    <h1>Привет, мир!</h1>
+    <p>Если ты это видишь, значит Mini App работает.</p>
+    <button onclick="alert('Кнопка нажата')">Нажми меня</button>
+</body>
+</html>
 
-    // Хранилище
-    let counts = JSON.parse(localStorage.getItem('counts')) || {};
-    let balance = parseInt(localStorage.getItem('balance')) || 0;
-    document.getElementById('balance').innerText = balance + ' ₽';
-    function saveBalance() { localStorage.setItem('balance', balance); }
-    function addCount(id) {
-        let key = id + '_' + new Date().toDateString();
-        counts[key] = (counts[key] || 0) + 1;
-        localStorage.setItem('counts', JSON.stringify(counts));
-    }
-    function canDo(id) {
-        let key = id + '_' + new Date().toDateString();
-        return !counts[key] || counts[key] < 3;
-    }
-
-    // Задания
-    const tasks = [
-        { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
-        { id: 2, name: 'Подпишись на канал', desc: '@hype_job', price: 30 }
-    ];
-
-    const container = document.getElementById('tasks');
-    tasks.forEach(t => {
-        let div = document.createElement('div');
-        div.className = 'task';
-        div.innerHTML = `
-            <div class="task-info"><h3>${t.name}</h3><p>${t.desc}</p></div>
-            <div class="task-actions"><span class="task-price">${t.price} ₽</span>
-            <button class="take-btn" data-id="${t.id}">Взять</button></div>`;
-        container.appendChild(div);
-    });
-
-    // Назначаем обработчики на кнопки
-    document.querySelectorAll('.take-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            let id = parseInt(this.dataset.id);
-            if (!canDo(id)) {
-                alert('Лимит на сегодня');
-                return;
-            }
-            if (id === 1) {
-                let link = https;//t.me/your_bot?start=ref_${userId};
-                document.getElementById('refLink').value = link;
-                document.getElementById('refModal').classList.add('show');
-            } else {
-                document.getElementById('subModal').classList.add('show');
-            }
-        });
-    });
-
-    // Модалка рефералки
-    document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
-    document.getElementById('copyBtn').onclick = () => {
-        let inp = document.getElementById('refLink');
-        inp.select();
-        navigator.clipboard.writeText(inp.value);
-        alert('Скопировано');
-    };
-
-    // Модалка подписки
-    const subModal = document.getElementById('subModal');
-    document.getElementById('closeSub').onclick = () => subModal.classList.remove('show');
-    document.getElementById('checkBtn').onclick = async () => {
-        let btn = document.getElementById('checkBtn');
-        let res = document.getElementById('checkResult');
-        btn.disabled = true; btn.innerText = 'Проверка...'; res.innerText = '';
-        await new Promise(r => setTimeout(r, 1500));
-        balance += 30; saveBalance(); document.getElementById('balance').innerText = balance + ' ₽';
-        addCount(2);
-        res.style.color = '#75fe09'; res.innerText = '✅ +30 ₽';
-        setTimeout(() => subModal.classList.remove('show'), 1500);
-        btn.disabled = false; btn.innerText = 'Проверить';
-    };
-
-    window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.classList.remove('show'); };
-</script>
 
 
 
