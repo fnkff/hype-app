@@ -66,23 +66,25 @@
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
 
-        // Хранилище (localStorage)
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         document.getElementById('balance').innerText = balance + ' ₽';
-        function saveBalance() { localStorage.setItem('balance', balance); }
-        function addCount(id) {
+
+        function saveBalance() {
+            localStorage.setItem('balance', balance);
         }
+
+        function addCount(id) {}
         let key = id + '_' + new Date().toDateString();
             counts[key] = (counts[key] || 0) + 1;
             localStorage.setItem('counts', JSON.stringify(counts));
         
+
         function canDo(id) {
             let key = id + '_' + new Date().toDateString();
             return !counts[key] || counts[key] < 3;
         }
 
-        // Задания
         const tasks = [
             { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
             { id: 2, name: 'Подпишись на канал', desc: '@hype_job', price: 30 }
@@ -102,11 +104,13 @@
             container.appendChild(div);
         });
 
-        // Обработчики кнопок
         document.querySelectorAll('.take-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 let id = parseInt(e.target.dataset.id);
-                if (!canDo(id)) { alert('Лимит на сегодня'); return; }
+                if (!canDo(id)) {
+                    alert('Лимит на сегодня');
+                    return;
+                }
                 if (id === 1) {
                     let link = https;//t.me/your_bot?start=ref_${userId};
                     document.getElementById('refLink').value = link;
@@ -145,11 +149,9 @@
             checkBtn.innerText = 'Проверка...';
             checkResult.innerText = '';
 
-            // Имитация проверки (1.5 сек)
             await new Promise(r => setTimeout(r, 1500));
 
-            // Для демонстрации всегда успех (можно заменить на случайный)
-            const success = true;
+            const success = true; // Имитация успеха
 
             if (success) {
                 balance += 30;
@@ -167,15 +169,15 @@
             checkBtn.innerText = 'Проверить подписку';
         });
 
-        // Закрытие модалок по клику на фон
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('show');
             }
         });
-</script>
+    </script>
 </body>
 </html>
+
 
 
 
