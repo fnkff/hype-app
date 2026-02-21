@@ -196,75 +196,69 @@
         ];
 
         const container = document.getElementById('tasks');
-        if (container) {
-            tasks.forEach(t => {
-                const div = document.createElement('div');
-                div.className = 'task';
+        tasks.forEach(t => {
+            const div = document.createElement('div');
+            div.className = 'task';
 
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'task-info';
-                const h3 = document.createElement('h3');
-                h3.innerText = t.name;
-                const p = document.createElement('p');
-                p.innerText = t.desc;
-                infoDiv.appendChild(h3);
-                infoDiv.appendChild(p);
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'task-info';
+            const h3 = document.createElement('h3');
+            h3.innerText = t.name;
+            const p = document.createElement('p');
+            p.innerText = t.desc;
+            infoDiv.appendChild(h3);
+            infoDiv.appendChild(p);
 
-                const actionsDiv = document.createElement('div');
-                actionsDiv.className = 'task-actions';
-                const priceSpan = document.createElement('span');
-                priceSpan.className = 'task-price';
-                priceSpan.innerText = t.price + ' ₽';
-                const btn = document.createElement('button');
-                btn.className = 'take-btn';
-                btn.setAttribute('data-id', t.id);
-                btn.innerText = 'Взять';
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'task-actions';
+            const priceSpan = document.createElement('span');
+            priceSpan.className = 'task-price';
+            priceSpan.innerText = t.price + ' ₽';
+            const btn = document.createElement('button');
+            btn.className = 'take-btn';
+            btn.setAttribute('data-id', t.id);
+            btn.innerText = 'Взять';
 
-                actionsDiv.appendChild(priceSpan);
-                actionsDiv.appendChild(btn);
+            // Назначаем обработчик прямо сейчас
+            btn.onclick = function(e) {
+                let id = parseInt(this.dataset.id);
+                if (!canDo(id)) {
+                    alert('Лимит на сегодня');
+                    return;
+                }
+                if (id === 1) {
+                    let link = 'https://t.me/your_bot?start=ref_' + userId;
+                    document.getElementById('refLink').value = link;
+                    document.getElementById('refModal').classList.add('show');
+                } else {
+                    document.getElementById('subModal').classList.add('show');
+                }
+            };
 
-                div.appendChild(infoDiv);
-                div.appendChild(actionsDiv);
-
-                container.appendChild(div);
-            });
-        }
-
-        // Делегирование событий: обработчик на контейнере
-        container.addEventListener('click', (e) => {
-            const btn = e.target.closest('.take-btn');
-            if (!btn) return;
-            let id = parseInt(btn.dataset.id);
-            if (!canDo(id)) {
-                alert('Лимит на сегодня');
-                return;
-            }
-            if (id === 1) {
-                let link = https;//t.me/your_bot?start=ref_${userId};
-                document.getElementById('refLink').value = link;
-                document.getElementById('refModal').classList.add('show');
-            } else {
-                document.getElementById('subModal').classList.add('show');
-            }
+            actionsDiv.appendChild(priceSpan);
+            actionsDiv.appendChild(btn);
+            div.appendChild(infoDiv);
+            div.appendChild(actionsDiv);
+            container.appendChild(div);
         });
 
-        document.getElementById('closeRef').addEventListener('click', () => {
+        // Обработчики модалок
+        document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
-        });
-        document.getElementById('copyBtn').addEventListener('click', () => {
+        };
+        document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
-        });
-
+        };
         const subModal = document.getElementById('subModal');
         const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
-        closeSub.addEventListener('click', () => subModal.classList.remove('show'));
+        closeSub.onclick = () => subModal.classList.remove('show');
 
-        checkBtn.addEventListener('click', async () => {
+        checkBtn.onclick = async () => {
             if (!canDo(2)) {
                 checkResult.style.color = 'red';
                 checkResult.innerText = 'Лимит на сегодня';
@@ -276,7 +270,7 @@
 
             await new Promise(r => setTimeout(r, 1500));
 
-            // Имитация успеха
+            // Имитация успеха (можно заменить на реальную проверку)
             const success = true;
 
             if (success) {
@@ -293,16 +287,17 @@
                 checkBtn.disabled = false;
                 checkBtn.innerText = 'Проверить подписку';
             }
-        });
+        };
 
-        window.addEventListener('click', (e) => {
+        window.onclick = (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('show');
             }
-        });
+        };
     </script>
 </body>
 </html>
+
 
 
 
