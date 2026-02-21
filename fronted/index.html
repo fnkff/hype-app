@@ -6,191 +6,55 @@
     <title>Хайп</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            background: #75fe09;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 16px;
-            padding-bottom: 80px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .balance {
-            background: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-        }
-        .task {
-            background: black;
-            color: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin: 8px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center; /* вертикальное выравнивание */
-        }
-        .task-info h3 {
-            margin: 0 0 5px;
-            font-size: 18px;
-        }
-        .task-info p {
-            margin: 0;
-            color: #ccc;
-        }
-        .task-actions {
-            display: flex;
-            align-items: center; /* выравнивание цены и кнопки */
-            gap: 8px;
-        }
-        .task-price {
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-            line-height: 1;
-        }
-        .take-btn {
-            background: white;
-            color: black;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 1000;
-        }
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 24px;
-            overflow: hidden;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-        .modal.show .modal-content {
-            transform: scale(1);
-        }
-        .modal-header {
-            background: #f0f0f0;
-            padding: 20px;
-            text-align: right;
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .modal-body {
-            padding: 20px;
-            color: black;
-        }
-        .ref-link {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
-        }
-        .copy-btn, .check-btn {
-            background: #75fe09;
-            border: none;
-            border-radius: 40px;
-            padding: 12px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .result {
-            margin-top: 10px;
-            text-align: center;
-        }
+        body { background: #75fe09; font-family: Arial; margin: 0; padding: 16px; padding-bottom: 80px; }
+        .header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .logo { font-size: 24px; font-weight: bold; }
+        .balance { background: white; padding: 8px 16px; border-radius: 20px; }
+        .task { background: black; color: white; border-radius: 16px; padding: 16px; margin: 8px 0; display: flex; justify-content: space-between; align-items: center; }
+        .task-info h3 { margin: 0 0 5px; font-size: 18px; }
+        .task-info p { margin: 0; color: #ccc; }
+        .task-actions { display: flex; align-items: center; gap: 8px; }
+        .task-price { font-size: 20px; font-weight: bold; color: white; line-height: 1; }
+        .take-btn { background: white; color: black; border: none; border-radius: 30px; padding: 8px 16px; font-weight: bold; cursor: pointer; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000; }
+        .modal.show { opacity: 1; visibility: visible; }
+        .modal-content { background: white; width: 90%; max-width: 400px; border-radius: 24px; overflow: hidden; transform: scale(0.9); transition: 0.3s; }
+        .modal.show .modal-content { transform: scale(1); }
+        .modal-header { background: #f0f0f0; padding: 20px; text-align: right; }
+        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; }
+        .modal-body { padding: 20px; color: black; }
+        .ref-link { width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; background: #f5f5f5; }
+        .copy-btn, .check-btn { background: #75fe09; border: none; border-radius: 40px; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .result { margin-top: 10px; text-align: center; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">ХАЙП</div>
-        <div class="balance" id="balance">0 ₽</div>
-    </div>
+    <div class="header"><div class="logo">ХАЙП</div><div class="balance" id="balance">0 ₽</div></div>
     <div id="tasks"></div>
 
-    <!-- Модалка рефералки -->
-    <div class="modal" id="refModal">
-        <div class="modal-content">
-            <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
-            <div class="modal-body">
-                <h3>Пригласи друга</h3>
-                <p>Пригласи друга в Хайп.
-                    Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
-                <input class="ref-link" id="refLink" readonly>
-                <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модалка подписки -->
-    <div class="modal" id="subModal">
-        <div class="modal-content">
-            <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
-            <div class="modal-body">
-                <h3>Подпишись на канал</h3>
-                <p>Подпишись на @hype_job и нажми проверку</p>
-                <button class="check-btn" id="checkBtn">Проверить подписку</button>
-                <div class="result" id="checkResult"></div>
-            </div>
-        </div>
-    </div>
+    <!-- Модалки -->
+    <div class="modal" id="refModal"><div class="modal-content"><div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div><div class="modal-body"><h3>Пригласи друга</h3><p>Пригласи друга и получи 50 ₽</p><input class="ref-link" id="refLink" readonly><button class="copy-btn" id="copyBtn">Копировать ссылку</button></div></div></div>
+    <div class="modal" id="subModal"><div class="modal-content"><div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div><div class="modal-body"><h3>Подпишись на канал</h3><p>Подпишись на @hype_job</p><button class="check-btn" id="checkBtn">Проверить</button><div class="result" id="checkResult"></div></div></div></div>
 
     <script>
+        // ---------- Telegram ----------
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
+        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
 
-        // ---------- Защита от накруток (localStorage) ----------
+        // ---------- Хранилище (localStorage) ----------
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
-        function canDo(id) {
-            let key = id + '_' + new Date().toDateString();
-            return !counts[key] || counts[key] < 3;
-        }
+        let balance = parseInt(localStorage.getItem('balance')) || 0;
+        document.getElementById('balance').innerText = balance + ' ₽';
+        function saveBalance() { localStorage.setItem('balance', balance); }
         function addCount(id) {
             let key = id + '_' + new Date().toDateString();
             counts[key] = (counts[key] || 0) + 1;
             localStorage.setItem('counts', JSON.stringify(counts));
         }
-
-        // ---------- Баланс ----------
-        let balance = parseInt(localStorage.getItem('balance')) || 0;
-        document.getElementById('balance').innerText = balance + ' ₽';
-        function updateBalance(amount) {
-            balance += amount;
-            document.getElementById('balance').innerText = balance + ' ₽';
-            localStorage.setItem('balance', balance);
+        function canDo(id) {
+            let key = id + '_' + new Date().toDateString();
+            return !counts[key] || counts[key] < 3;
         }
 
         // ---------- Задания ----------
@@ -198,135 +62,62 @@
             { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
             { id: 2, name: 'Подпишись на канал', desc: '@hype_job', price: 30 }
         ];
-
         const container = document.getElementById('tasks');
         tasks.forEach(t => {
-            const div = document.createElement('div');
+            let div = document.createElement('div');
             div.className = 'task';
-            div.id = 'task-' + t.id;
             div.innerHTML = `
-                <div class="task-info">
-                    <h3>${t.name}</h3>
-                    <p>${t.desc}</p>
-                </div>
-                <div class="task-actions">
-                    <span class="task-price">${t.price} ₽</span>
-                    <button class="take-btn" onclick="takeTask(${t.id})">Взять</button>
-                </div>
-            `;
+                <div class="task-info"><h3>${t.name}</h3><p>${t.desc}</p></div>
+                <div class="task-actions"><span class="task-price">${t.price} ₽</span>
+                <button class="take-btn" onclick="takeTask(${t.id})">Взять</button></div>`;
             container.appendChild(div);
         });
 
-        // ---------- Обработка нажатий ----------
+        // ---------- Обработчик нажатий ----------
         window.takeTask = function(id) {
-            if (!canDo(id)) {
-                alert('Лимит на сегодня исчерпан (максимум 3 раза)');
-                return;
-            }
+            if (!canDo(id)) { alert('Лимит на сегодня'); return; }
             if (id === 1) {
-                // Показываем реферальную ссылку
-                let userId = tg?.initDataUnsafe?.user?.id || 'test';
-                document.getElementById('refLink').value = 'https://t.me/your_bot?start=ref_' + userId;
+                // Генерируем ссылку и отправляем боту
+                let link = https;//t.me/your_bot?start=ref_${userId};
+                document.getElementById('refLink').value = link;
+                // Отправка боту (опционально)
+                fetch(`https://api.telegram.org/bot${tg?.initDataUnsafe?.user?.id}/sendMessage?chat_id=YOUR_ADMIN_ID&text=User+${userId}+opened+referral`, {mode: 'no-cors'});
                 document.getElementById('refModal').classList.add('show');
-            } else if (id === 2) {
+            } else {
                 document.getElementById('subModal').classList.add('show');
             }
         };
 
         // ---------- Модалка рефералки ----------
-        document.getElementById('closeRef').onclick = () => {
-            document.getElementById('refModal').classList.remove('show');
-        };
+        document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
         document.getElementById('copyBtn').onclick = () => {
-            let input = document.getElementById('refLink');
-            input.select();
-            navigator.clipboard.writeText(input.value).then(() => {
-                alert('Ссылка скопирована!');
-            });
+            let inp = document.getElementById('refLink');
+            inp.select();
+            navigator.clipboard.writeText(inp.value);
+            alert('Скопировано');
         };
 
-        // ---------- Модалка подписки (реальная проверка через сервер) ----------
+        // ---------- Модалка подписки (имитация успеха) ----------
         const subModal = document.getElementById('subModal');
-        const closeSub = document
-        getElementById('closeSub');
-        const checkBtn = document.getElementById('checkBtn');
-        const checkResult = document.getElementById('checkResult');
-
-        closeSub.onclick = () => subModal.classList.remove('show');
-
-        // Закрытие по клику на фон
-        window.onclick = (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('show');
-            }
+        document.getElementById('closeSub').onclick = () => subModal.classList.remove('show');
+        document.getElementById('checkBtn').onclick = async () => {
+            let btn = document.getElementById('checkBtn');
+            let res = document.getElementById('checkResult');
+            btn.disabled = true; btn.innerText = 'Проверка...'; res.innerText = '';
+            await new Promise(r => setTimeout(r, 1500));
+            balance += 30; saveBalance(); document.getElementById('balance').innerText = balance + ' ₽';
+            addCount(2);
+            res.style.color = '#75fe09'; res.innerText = '✅ +30 ₽';
+            setTimeout(() => subModal.classList.remove('show'), 1500);
+            btn.disabled = false; btn.innerText = 'Проверить';
         };
 
-        // Функция реальной проверки подписки (требуется твой бэкенд)
-        async function realCheckSubscription(userId) {
-            // Пример запроса к твоему серверу (замени URL на свой)
-            // const response = await fetch('https://твой-сервер.com/check-sub', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ user_id: userId, channel: '@hype_job' })
-            // });
-            // const data = await response.json();
-            // return data.subscribed; // true/false
-
-            // ПОКА ИСПОЛЬЗУЕТСЯ ИМИТАЦИЯ (всегда успех)
-            return new Promise(resolve => {
-                setTimeout(() => resolve(true), 1500);
-            });
-        }
-
-        checkBtn.onclick = async () => {
-            const taskId = 2;
-            if (!canDo(taskId)) {
-                checkResult.style.color = 'red';
-                checkResult.innerText = 'Лимит на сегодня исчерпан';
-                return;
-            }
-
-            checkBtn.disabled = true;
-            checkBtn.innerText = 'Проверка...';
-            checkResult.innerText = '';
-
-            // Получаем userId из Telegram (если есть)
-            const userId = tg?.initDataUnsafe?.user?.id || null;
-            if (!userId) {
-                checkResult.style.color = 'red';
-                checkResult.innerText = 'Ошибка: не удалось определить пользователя';
-                checkBtn.disabled = false;
-                checkBtn.innerText = 'Проверить подписку';
-                return;
-            }
-
-            try {
-                // Реальная проверка (замени на realCheckSubscription)
-                const subscribed = await realCheckSubscription(userId);
-                if (subscribed) {
-                    // Начисляем бонус
-                    updateBalance(30);
-                    addCount(taskId);
-                    checkResult.style.color = '#75fe09';
-                    checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
-                    // Блокируем кнопку на главной (можно добавить)
-                    setTimeout(() => subModal.classList.remove('show'), 2000);
-                } else {
-                    checkResult.style.color = 'red';
-                    checkResult.innerText = '❌ Вы не подписаны. Подпишитесь и попробуйте снова.';
-                    checkBtn.disabled = false;
-                    checkBtn.innerText = 'Проверить подписку';
-                }
-            } catch (e) {
-                checkResult.style.color = 'red';
-                checkResult.innerText = 'Ошибка сети. Попробуйте позже.';
-                checkBtn.disabled = false;
-                checkBtn.innerText = 'Проверить подписку';
-            }
-        };
+        // ---------- Закрытие модалок по клику на фон ----------
+        window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.classList.remove('show'); };
     </script>
 </body>
 </html>
+
 
 
 
