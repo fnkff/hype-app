@@ -16,11 +16,21 @@
         .header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
         .logo {
             font-size: 24px;
             font-weight: bold;
+        }
+        .beta-badge {
+            font-size: 14px;
+            background: black;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 20px;
+            margin-left: 8px;
+            vertical-align: middle;
         }
         .balance {
             background: white;
@@ -135,7 +145,10 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo">ХАЙП</div>
+        <div class="logo">
+            ХАЙП
+            <span class="beta-badge">[бета тест]</span>
+        </div>
         <div class="balance" id="balance">0 ₽</div>
     </div>
     <div id="tasks"></div>
@@ -218,8 +231,6 @@
             btn.className = 'take-btn';
             btn.setAttribute('data-id', t.id);
             btn.innerText = 'Взять';
-
-            // Назначаем обработчик прямо сейчас
             btn.onclick = function(e) {
                 let id = parseInt(this.dataset.id);
                 if (!canDo(id)) {
@@ -244,13 +255,15 @@
 
         // Обработчики модалок
         document.getElementById('closeRef').onclick = () => {
-            document.getElementById('refModal').classList.remove('show');
+            document.getElementById('refModal').classList.
+            remove('show');
         };
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
+
         const subModal = document.getElementById('subModal');
         const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
@@ -270,7 +283,7 @@
 
             await new Promise(r => setTimeout(r, 1500));
 
-            // Имитация успеха (можно заменить на реальную проверку)
+            // Имитация успеха
             const success = true;
 
             if (success) {
@@ -297,6 +310,7 @@
     </script>
 </body>
 </html>
+
 
 
 
