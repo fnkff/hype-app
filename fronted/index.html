@@ -65,7 +65,7 @@
             cursor: pointer;
         }
 
-        /* Модальное окно с анимацией */
+        /* Модальное окно (общее) */
         .modal {
             position: fixed;
             top: 0;
@@ -126,7 +126,7 @@
             border: 1px solid #ccc;
             background: #f5f5f5;
         }
-        .copy-btn {
+        .copy-btn, .check-subscribe-btn {
             background: #75fe09;
             border: none;
             border-radius: 40px;
@@ -134,6 +134,12 @@
             width: 100%;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 10px;
+        }
+        .check-result {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
         }
     </style>
 </head>
@@ -145,18 +151,34 @@
 
     <div id="tasks"></div>
 
-    <!-- Модальное окно для рефералки -->
+    <!-- Модальное окно для рефералки (id=1) -->
     <div class="modal" id="referralModal">
         <div class="modal-content">
             <div class="modal-header">
-                <button class="modal-close" id="closeModalBtn">&times;</button>
+                <button class="modal-close" id="closeRefModal">&times;</button>
             </div>
             <div class="modal-body">
-                <h2 id="modalTitle">Пригласи друга</h2>
-                <p id="modalDesc">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
-                <div id="modalPrice">50 ₽</div>
-                <input type="text" class="ref-link" id="refLink" value="https://t.me/your_bot?start=ref_123" readonly>
-                <button class="copy-btn" id="copyBtn">Скопировать ссылку</button>
+                <h2>Пригласи друга</h2>
+                <p>Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
+                <div>50 ₽</div>
+                <input type="text" class="ref-link" id="refLink" readonly>
+                <button class="copy-btn" id="copyRefBtn">Скопировать ссылку</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для подписки (id=2) -->
+    <div class="modal" id="subscribeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" id="closeSubModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h2>Подпишись на канал</h2>
+                <p>Подпишись на @hype_job и нажми кнопку проверки</p>
+                <div>30 ₽</div>
+                <button class="check-subscribe-btn" id="checkSubscribeBtn">Проверить подписку</button>
+                <div class="check-result" id="checkResult"></div>
             </div>
         </div>
     </div>
@@ -166,6 +188,14 @@
 
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
+
+        let balance = 0; // начальный баланс
+        const balanceEl = document.getElementById('balance');
+
+        function updateBalance(amount) {
+            balance += amount;
+            balanceEl.innerText = balance + ' ₽';
+        }
 
         const tasks = [
             { id: 1, title: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
@@ -196,44 +226,83 @@
                 btn.addEventListener('click', () => {
                     if (t.id === 1) {
                         showReferralModal();
-                    } else {
-                        alert('Задание "' + t.title + '" взято!');
+                    } else if (t.id === 2) {
+                        showSubscribeModal();
                     }
                 });
             }
         });
 
-        // Модальное окно
-        const modal = document.getElementById('referralModal');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const copyBtn = document.getElementById('copyBtn');
+        // ---- Модалка для рефералки ----
+        const refModal = document.getElementById('referralModal');
+        const closeRef = document.getElementById('closeRefModal');
+        const copyRefBtn = document.getElementById('copyRefBtn');
         const refLinkInput = document.getElementById('refLink');
 
         function showReferralModal() {
             const userId = tg?.initDataUnsafe?.user?.id || 'user123';
             refLinkInput.value = 'https://t.me/your_bot?start=ref_' + userId;
-            modal.classList.add('show');
+            refModal.classList.add('show');
         }
 
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('show');
-        });
-
+        closeRef.addEventListener('click', () => refModal.classList.remove('show'));
         window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('show');
-            }
+            if (e.target === refModal) refModal.classList.remove('show');
         });
 
-        copyBtn.addEventListener('click', () => {
+        copyRefBtn.addEventListener('click', () => {
             refLinkInput.select();
             navigator.clipboard.writeText(refLinkInput.value).then(() => {
                 alert('Ссылка скопирована!');
             });
         });
+
+        // ---- Модалка для подписки ----
+        const subModal = document.getElementById('subscribeModal');
+        const closeSub = document.getElementById('closeSubModal');
+        const checkBtn = document.getElementById('checkSubscribeBtn');
+        const checkResult = document.getElementById('checkResult');
+
+        function showSubscribeModal() {
+            checkResult.innerText = '';
+            checkBtn.disabled = false;
+            checkBtn.textContent = 'Проверить подписку';
+            subModal.classList.add('show');
+        }
+
+        closeSub.addEventListener('click', () => subModal.classList.remove('show'));
+        window.addEventListener('click', (e) => {
+            if (e.target === subModal) subModal.classList.remove('show');
+        });
+
+        // Имитация проверки подписки
+        checkBtn.addEventListener('click', async () => {
+            checkBtn.disabled = true;
+            checkBtn.textContent = 'Проверка...';
+            checkResult.innerText = '';
+
+            // Имитация задержки (1.5 сек)
+            await new Promise(r => setTimeout(r, 1500));
+
+            // Случайный успех (70% вероятность для демонстрации)
+            const success = Math.random() < 0.7;
+
+            if (success) {
+                checkResult.style.color = '#75fe09';
+                checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
+                updateBalance(30); // начисляем бонус
+                setTimeout(() => subModal.classList.remove('show'), 2000);
+            } else {
+                checkResult.style.color = 'red';
+                checkResult.innerText = '❌ Подписка не найдена. Попробуйте снова.';
+                checkBtn.disabled = false;
+                checkBtn.textContent = 'Проверить подписку';
+            }
+        });
     </script>
 </body>
 </html>
+
 
 
 
