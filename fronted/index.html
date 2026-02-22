@@ -6,57 +6,80 @@
     <title>Хайп</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* Светлая тема (по умолчанию) */
         body {
-            background: #75fe09;
+            background: #75fe09; /* зелёный фон */
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 16px;
             padding-bottom: 80px;
             transition: background-color 0.3s, color 0.3s;
+            color: black;
         }
+        /* Тёмная тема (инвертированные цвета) */
         body.dark-theme {
-            background: #000000;
-            color: white;
+            background: #000000; /* чёрный фон */
+            color: #75fe09; /* зелёный текст */
         }
         body.dark-theme .logo,
         body.dark-theme .beta-badge {
-            color: white;
+            color: #75fe09;
         }
         body.dark-theme .balance {
-            background: #333;
-            color: white;
+            background: #75fe09;
+            color: black;
         }
         body.dark-theme .task {
-            background: #222;
-            border: 1px solid #444;
+            background: #75fe09; /* зелёные карточки */
+            color: black;
+            border: 1px solid #000;
         }
         body.dark-theme .task-info p {
-            color: #aaa;
+            color: #333; /* тёмно-серый текст описания */
+        }
+        body.dark-theme .task-price {
+            color: black;
         }
         body.dark-theme .take-btn {
-            background: #333;
-            color: white;
+            background: black;
+            color: #75fe09;
+        }
+        body.dark-theme .nav {
+            background: #75fe09; /* зелёное меню */
+        }
+        body.dark-theme .nav-item {
+            color: black;
+        }
+        body.dark-theme .nav-item.active {
+            color: white; /* или можно оставить чёрным, но выделить */
+            font-weight: bold;
         }
         body.dark-theme .modal-content {
-            background: #222;
-            color: white;
+            background: #75fe09; /* зелёный фон модалки */
+            color: black;
         }
         body.dark-theme .modal-header {
-            background: #333;
+            background: #000; /* чёрный заголовок */
+            color: #75fe09;
+        }
+        body.dark-theme .modal-close {
+            color: #75fe09;
         }
         body.dark-theme .ref-link {
-            background: #333;
-            color: white;
-            border-color: #555;
+            background: #000;
+            color: #75fe09;
+            border-color: #75fe09;
         }
         body.dark-theme .copy-btn,
         body.dark-theme .check-btn {
-            background: #444;
-            color: white;
+            background: black;
+            color: #75fe09;
         }
-        body.dark-theme .nav {
-            background: #111;
+        body.dark-theme .result {
+            color: black;
         }
+
+        /* Общие стили */
         .header {
             display: flex;
             justify-content: space-between;
@@ -90,6 +113,7 @@
             width: 28px;
             height: 28px;
             object-fit: contain;
+            filter: none; /* убираем возможные инверсии */
         }
         .balance {
             background: white;
@@ -121,7 +145,7 @@
         }
         .task-price {
             font-size: 20px;
-            font-weight: bold;
+font-weight: bold;
             color: white;
         }
         .take-btn {
@@ -157,7 +181,7 @@
         }
         .modal {
             position: fixed;
-top: 0;
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
@@ -258,7 +282,7 @@ top: 0;
                 <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
         </div>
-    </div>
+</div>
 
     <!-- Модалка подписки -->
     <div class="modal" id="subModal">
@@ -281,7 +305,7 @@ top: 0;
         // ===== Тема =====
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
-const moonUrl = 'https://i.ibb.co/bR5yvYWX/1120151-1.png'; // Луна
+        const moonUrl = 'https://i.ibb.co/bR5yvYWX/1120151-1.png'; // Луна
         const sunUrl = 'https://i.ibb.co/Gb6Kh0h/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png'; // Солнце
 
         const currentTheme = localStorage.getItem('theme') || 'light';
@@ -357,7 +381,7 @@ const moonUrl = 'https://i.ibb.co/bR5yvYWX/1120151-1.png'; // Луна
                 if (id === 1) {
                     let link = 'https://t.me/your_bot?start=ref_' + userId;
                     document.getElementById('refLink').value = link;
-                    document.getElementById('refModal').classList.add('show');
+document.getElementById('refModal').classList.add('show');
                 } else {
                     document.getElementById('subModal').classList.add('show');
                 }
@@ -379,7 +403,8 @@ const moonUrl = 'https://i.ibb.co/bR5yvYWX/1120151-1.png'; // Луна
             inp.select();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
-const subModal = document.getElementById('subModal');
+
+        const subModal = document.getElementById('subModal');
         const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
@@ -423,6 +448,7 @@ const subModal = document.getElementById('subModal');
     </script>
 </body>
 </html>
+
 
 
 
