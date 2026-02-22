@@ -113,7 +113,6 @@
             width: 28px;
             height: 28px;
             object-fit: contain;
-            filter: none; /* убираем возможные инверсии */
         }
         .balance {
             background: white;
@@ -147,7 +146,7 @@
             font-size: 20px;
             font-weight: bold;
             color: white;
-        }
+            }
         .take-btn {
             background: white;
             color: black;
@@ -282,10 +281,10 @@
                 <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
         </div>
-        </div>
+    </div>
 
     <!-- Модалка подписки -->
-    <div class="modal" id="subModal">
+     <div class="modal" id="subModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
@@ -305,8 +304,9 @@
         // ===== Тема =====
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
-        const moonUrl = 'https://i.ibb.co/bR5yvYWX/1120151-1.png'; // Луна
-        const sunUrl = 'https://i.ibb.co/Gb6Kh0h/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png'; // Солнце
+        // Новые прямые ссылки с postimages.org
+        const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png'; // Луна
+        const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png'; // Солнце
 
         const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
@@ -448,6 +448,7 @@
     </script>
 </body>
 </html>
+
 
 
 
