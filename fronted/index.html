@@ -8,7 +8,7 @@
     <style>
         /* Светлая тема (по умолчанию) */
         body {
-            background: #75fe09; /* зелёный фон */
+            background: #75fe09;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 16px;
@@ -16,10 +16,10 @@
             transition: background-color 0.3s, color 0.3s;
             color: black;
         }
-        /* Тёмная тема (инвертированные цвета) */
+        /* Тёмная тема */
         body.dark-theme {
-            background: #000000; /* чёрный фон */
-            color: #75fe09; /* зелёный текст */
+            background: #000000;
+            color: #75fe09;
         }
         body.dark-theme .logo,
         body.dark-theme .beta-badge {
@@ -30,12 +30,12 @@
             color: black;
         }
         body.dark-theme .task {
-            background: #75fe09; /* зелёные карточки */
+            background: #75fe09;
             color: black;
             border: 1px solid #000;
         }
         body.dark-theme .task-info p {
-            color: #333; /* тёмно-серый текст описания */
+            color: #333;
         }
         body.dark-theme .task-price {
             color: black;
@@ -45,21 +45,20 @@
             color: #75fe09;
         }
         body.dark-theme .nav {
-            background: #75fe09; /* зелёное меню */
+            background: #75fe09;
         }
         body.dark-theme .nav-item {
             color: black;
         }
         body.dark-theme .nav-item.active {
-            color: white; /* или можно оставить чёрным, но выделить */
-            font-weight: bold;
+            color: white;
         }
         body.dark-theme .modal-content {
-            background: #75fe09; /* зелёный фон модалки */
+            background: #75fe09;
             color: black;
         }
         body.dark-theme .modal-header {
-            background: #000; /* чёрный заголовок */
+            background: #000;
             color: #75fe09;
         }
         body.dark-theme .modal-close {
@@ -146,7 +145,7 @@
             font-size: 20px;
             font-weight: bold;
             color: white;
-            }
+        }
         .take-btn {
             background: white;
             color: black;
@@ -174,6 +173,7 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
+            cursor: pointer;
         }
         .nav-item.active {
             color: white;
@@ -245,6 +245,14 @@
             margin-top: 10px;
             text-align: center;
         }
+        .profile-info {
+            text-align: left;
+            margin: 10px 0;
+        }
+        .profile-info p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -264,10 +272,10 @@
 
     <!-- Нижнее меню -->
     <div class="nav">
-        <a href="#" class="nav-item active"><span>📋</span> Задания</a>
-        <a href="#" class="nav-item"><span>👤</span> Профиль</a>
-        <a href="#" class="nav-item"><span>👥</span> Рефералы</a>
-        <a href="#" class="nav-item"><span>💰</span> Вывод</a>
+        <a class="nav-item active" data-page="tasks"><span>📋</span> Задания</a>
+        <a class="nav-item" data-page="profile"><span>👤</span> Профиль</a>
+        <a class="nav-item" data-page="referrals"><span>👥</span> Рефералы</a>
+        <a class="nav-item" data-page="withdraw"><span>💰</span> Вывод</a>
     </div>
 
     <!-- Модалка рефералки -->
@@ -296,24 +304,35 @@
         </div>
     </div>
 
+    <!-- Модалка профиля -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header"><button class="modal-close" id="closeProfile">&times;</button></div>
+            <div class="modal-body">
+                <h3>Профиль</h3>
+                <div class="profile-info" id="profileContent"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+        const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         // ===== Тема =====
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
-        // Новые прямые ссылки с postimages.org
         const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png'; // Луна
         const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png'; // Солнце
 
         const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
             document.body.classList.add('dark-theme');
-            themeIcon.src = sunUrl; // В тёмной теме — солнце
+            themeIcon.src = sunUrl;
         } else {
-            themeIcon.src = moonUrl; // В светлой теме — луна
+            themeIcon.src = moonUrl;
         }
 
         themeToggle.addEventListener('click', () => {
@@ -343,6 +362,15 @@
             return !counts[key] || counts[key] < 3;
         }
 
+        function getTodayCount() {
+            const today = new Date().toDateString();
+            let total = 0;
+            for (let key in counts) {
+                if (key.includes(today)) total += counts[key];
+            }
+            return total;
+        }
+
         // ===== Задания =====
         const tasks = [
             { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
@@ -366,7 +394,8 @@
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'task-actions';
             const priceSpan = document.createElement('span');
-            priceSpan.className = 'task-price';
+            priceSpan.
+            className = 'task-price';
             priceSpan.innerText = t.price + ' ₽';
             const btn = document.createElement('button');
             btn.className = 'take-btn';
@@ -440,6 +469,48 @@
             }
         };
 
+        // ===== Нижнее меню =====
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = item.dataset.page;
+
+                // Снимаем активный класс со всех
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+
+                if (page === 'tasks') {
+                    // Просто показываем задания (они всегда видны)
+                    // Можно прокрутить вверх
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if (page === 'profile') {
+                    showProfileModal();
+                } else if (page === 'referrals') {
+                    alert('Раздел в разработке');
+                } else if (page === 'withdraw') {
+                    alert('Раздел в разработке');
+                }
+            });
+        });
+
+        // ===== Модалка профиля =====
+        const profileModal = document.getElementById('profileModal');
+        const closeProfile = document.getElementById('closeProfile');
+        const profileContent = document.getElementById('profileContent');
+
+        function showProfileModal() {
+            const todayCount = getTodayCount();
+            profileContent.innerHTML = `
+                <p><strong>Имя:</strong> ${userName}</p>
+                <p><strong>Баланс:</strong> ${balance} ₽</p>
+                <p><strong>Выполнено заданий сегодня:</strong> ${todayCount}</p>
+                <p><strong>ID:</strong> ${userId}</p>
+            `;
+            profileModal.classList.add('show');
+        }
+
+        closeProfile.onclick = () => profileModal.classList.remove('show');
         window.onclick = (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('show');
@@ -448,6 +519,7 @@
     </script>
 </body>
 </html>
+
 
 
 
