@@ -16,7 +16,7 @@
             transition: background-color 0.3s, color 0.3s;
             color: black;
         }
-        /* Тёмная тема (инвертированные цвета) */
+        /* Тёмная тема */
         body.dark-theme {
             background: #000000;
             color: #75fe09;
@@ -77,10 +77,21 @@
         body.dark-theme .result {
             color: black;
         }
+        /* Цвета для страниц в тёмной теме */
         body.dark-theme .profile-info,
         body.dark-theme .referral-info,
         body.dark-theme .withdraw-info {
-            color: black;
+            color: #75fe09;
+        }
+        body.dark-theme .profile-info p,
+        body.dark-theme .referral-info p,
+        body.dark-theme .withdraw-info p {
+            color: #75fe09;
+        }
+        body.dark-theme .ref-link-large {
+            background: #000;
+            color: #75fe09;
+            border-color: #75fe09;
         }
 
         /* Общие стили */
@@ -125,9 +136,14 @@
         }
         .page {
             display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
         .page.active-page {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
         .task {
             background: black;
@@ -316,7 +332,7 @@
         <a class="nav-item" data-page="withdraw"><span>💰</span> Вывод</a>
     </div>
 
-    <!-- Модалка рефералки (открывается из задания) -->
+    <!-- Модалка рефералки -->
     <div class="modal" id="refModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -388,7 +404,6 @@
             let key = id + '_' + new Date().toDateString();
             return !counts[key] || counts[key] < 3;
         }
-
         function getTodayCount() {
             const today = new Date().toDateString();
             let total = 0;
@@ -404,8 +419,7 @@
             { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
         ];
 
-        const container = document.
-        getElementById('tasks');
+        const container = document.getElementById('tasks');
         tasks.forEach(t => {
             const div = document.createElement('div');
             div.className = 'task';
@@ -491,7 +505,8 @@
             } else {
                 checkResult.style.color = 'red';
                 checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
-                checkBtn.disabled = false;
+                checkBtn.
+                disabled = false;
                 checkBtn.innerText = 'Проверить подписку';
             }
         };
@@ -546,8 +561,7 @@
 
         // ===== Страница рефералов =====
         function updateReferralsPage() {
-            const refLink = https;//t.me/your_bot?start=ref_${userId};
-            // Здесь позже можно добавить статистику приглашённых
+            const refLink = https//t.me/your_bot?start=ref_${userId};
             document.getElementById('referralsContent').innerHTML = `
                 <p><strong>Твоя реферальная ссылка:</strong></p>
                 <input class="ref-link-large" value="${refLink}" readonly>
@@ -555,7 +569,6 @@
                 <p style="margin-top:20px;"><strong>Приглашено друзей:</strong> 0</p>
                 <p><em>Скоро здесь появится статистика</em></p>
             `;
-            // Добавляем обработчик для копирования
             setTimeout(() => {
                 document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
                     const input = document.querySelector('#referralsContent .ref-link-large');
@@ -588,13 +601,12 @@
                 e.target.classList.remove('show');
             }
         };
-
-        // Инициализация страниц (профиль и другие пока не активны)
-        // При первом запуске обновим содержимое профиля (на всякий случай)
+        // Инициализация
         updateProfilePage();
     </script>
 </body>
 </html>
+
 
 
 
