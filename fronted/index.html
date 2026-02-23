@@ -6,7 +6,7 @@
     <title>Хайп</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Светлая тема (по умолчанию) */
+        /* ===== СВЕТЛАЯ ТЕМА (ПО УМОЛЧАНИЮ) ===== */
         body {
             background: #75fe09;
             font-family: Arial, sans-serif;
@@ -16,7 +16,7 @@
             transition: background-color 0.3s, color 0.3s;
             color: black;
         }
-        /* Тёмная тема */
+        /* ===== ТЁМНАЯ ТЕМА ===== */
         body.dark-theme {
             background: #000000;
             color: #75fe09;
@@ -78,7 +78,100 @@
             color: black;
         }
 
-        /* Стили для профиля */
+        /* ===== ОБЩИЕ СТИЛИ ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .beta-badge {
+            font-size: 14px;
+            color: black;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 8px;
+            display: flex;
+            align-items: center;
+        }
+        .theme-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+        .balance {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        /* ===== СТРАНИЦЫ ===== */
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .page.active-page {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== ЗАДАНИЯ ===== */
+        .task {
+            background: black;
+            color: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-info h3 {
+            margin: 0 0 5px;
+            font-size: 18px;
+        }
+        .task-info p {
+            margin: 0;
+            color: #ccc;
+        }
+        .task-actions {
+            display: flex;
+            align-items: center;
+gap: 8px;
+        }
+        .task-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        .take-btn {
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ===== ПРОФИЛЬ ===== */
         .profile-header {
             display: flex;
             align-items: center;
@@ -128,7 +221,7 @@
             font-weight: bold;
         }
 
-        /* Стили для страницы рефералов */
+        /* ===== РЕФЕРАЛЫ ===== */
         .referral-header {
             margin-bottom: 24px;
         }
@@ -216,8 +309,7 @@
             font-size: 20px;
             font-weight: bold;
         }
-
-        /* Стили для страницы вывода */
+/* ===== ВЫВОД СРЕДСТВ ===== */
         .withdraw-balance-info {
             font-size: 18px;
             margin-bottom: 20px;
@@ -274,94 +366,7 @@
             color: #75fe09;
         }
 
-        /* Общие стили */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .beta-badge {
-            font-size: 14px;
-            color: black;
-            margin-left: 4px;
-            vertical-align: middle;
-        }
-        .theme-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0 8px;
-            display: flex;
-            align-items: center;
-        }
-        .theme-icon {
-width: 28px;
-            height: 28px;
-            object-fit: contain;
-        }
-        .balance {
-            background: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-        }
-        .page {
-            display: none;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .page.active-page {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .task {
-            background: black;
-            color: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin: 8px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .task-info h3 {
-            margin: 0 0 5px;
-            font-size: 18px;
-        }
-        .task-info p {
-            margin: 0;
-            color: #ccc;
-        }
-        .task-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .task-price {
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-        }
-        .take-btn {
-            background: white;
-            color: black;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        /* ===== НИЖНЕЕ МЕНЮ ===== */
         .nav {
             position: fixed;
             bottom: 0;
@@ -385,6 +390,8 @@ width: 28px;
         .nav-item.active {
             color: white;
         }
+
+        /* ===== МОДАЛЬНЫЕ ОКНА ===== */
         .modal {
             position: fixed;
             top: 0;
@@ -457,18 +464,18 @@ width: 28px;
 <body>
     <div class="header">
         <div class="header-left">
-            <span class="logo">ХАЙП</span>
+<span class="logo">ХАЙП</span>
             <span class="beta-badge">[бета тест]</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-<button class="theme-toggle" id="themeToggle">
+            <button class="theme-toggle" id="themeToggle">
                 <img class="theme-icon" id="themeIcon" src="" alt="theme">
             </button>
             <div class="balance" id="balance">0 ₽</div>
         </div>
     </div>
 
-    <!-- Страницы -->
+    <!-- СТРАНИЦЫ -->
     <div id="tasks-page" class="page active-page">
         <div id="tasks"></div>
     </div>
@@ -493,7 +500,7 @@ width: 28px;
         <div class="withdraw-info" id="withdrawContent"></div>
     </div>
 
-    <!-- Нижнее меню (без смайликов) -->
+    <!-- НИЖНЕЕ МЕНЮ (БЕЗ СМАЙЛИКОВ) -->
     <div class="nav">
         <a class="nav-item active" data-page="tasks">Задания</a>
         <a class="nav-item" data-page="profile">Профиль</a>
@@ -501,7 +508,7 @@ width: 28px;
         <a class="nav-item" data-page="withdraw">Вывод</a>
     </div>
 
-    <!-- Модалка рефералки -->
+    <!-- МОДАЛЬНЫЕ ОКНА -->
     <div class="modal" id="refModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -514,7 +521,6 @@ width: 28px;
         </div>
     </div>
 
-    <!-- Модалка подписки -->
     <div class="modal" id="subModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
@@ -533,7 +539,7 @@ width: 28px;
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
-        // ===== Тема =====
+        // ===== ТЕМА =====
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png'; // Луна
@@ -554,17 +560,16 @@ width: 28px;
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
 
-        // ===== Хранилище =====
+        // ===== ХРАНИЛИЩЕ =====
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         document.getElementById('balance').innerText = balance + ' ₽';
-
-        function saveBalance() {
+function saveBalance() {
             localStorage.setItem('balance', balance);
         }
 
         function addCount(id) {
-let key = id + '_' + new Date().toDateString();
+            let key = id + '_' + new Date().toDateString();
             counts[key] = (counts[key] || 0) + 1;
             localStorage.setItem('counts', JSON.stringify(counts));
         }
@@ -583,7 +588,7 @@ let key = id + '_' + new Date().toDateString();
             return total;
         }
 
-        // ===== Задания =====
+        // ===== ЗАДАНИЯ =====
         const tasks = [
             { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
             { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
@@ -634,7 +639,7 @@ let key = id + '_' + new Date().toDateString();
             container.appendChild(div);
         });
 
-        // ===== Обработчики модалок =====
+        // ===== МОДАЛКИ =====
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
@@ -662,15 +667,14 @@ let key = id + '_' + new Date().toDateString();
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-            const success = true;
+            const success = true; // Имитация успеха
 
             if (success) {
                 balance += 30;
                 saveBalance();
-                document.getElementById('balance').innerText = balance + ' ₽';
+document.getElementById('balance').innerText = balance + ' ₽';
                 addCount(2);
-                checkResult.style.
-color = '#75fe09';
+                checkResult.style.color = '#75fe09';
                 checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
@@ -681,7 +685,7 @@ color = '#75fe09';
             }
         };
 
-        // ===== Навигация по страницам =====
+        // ===== НАВИГАЦИЯ ПО СТРАНИЦАМ =====
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -714,7 +718,7 @@ color = '#75fe09';
             });
         });
 
-        // ===== Страница профиля =====
+        // ===== СТРАНИЦА ПРОФИЛЯ =====
         function updateProfilePage() {
             const todayCount = getTodayCount();
             document.getElementById('profileName').innerText = userName;
@@ -740,7 +744,7 @@ color = '#75fe09';
             `;
         }
 
-        // ===== Страница рефералов =====
+        // ===== СТРАНИЦА РЕФЕРАЛОВ =====
         function updateReferralsPage() {
             const refLink = https//t.me/your_bot?start=ref_${userId};
             document.getElementById('referralsContent').innerHTML = `
@@ -760,10 +764,10 @@ color = '#75fe09';
                     </div>
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
-                            <div class="referral-stat-label">Заработано на рефералах</div>
+<div class="referral-stat-label">Заработано на рефералах</div>
                             <div class="referral-stat-value">0 ₽</div>
                         </div>
-</div>
+                    </div>
                 </div>
                 <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
             `;
@@ -778,7 +782,7 @@ color = '#75fe09';
             }, 0);
         }
 
-        // ===== Страница вывода средств =====
+        // ===== СТРАНИЦА ВЫВОДА =====
         function updateWithdrawPage() {
             document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
@@ -791,18 +795,19 @@ color = '#75fe09';
             `;
         }
 
-        // ===== Закрытие модалок по клику на фон =====
+        // ===== ЗАКРЫТИЕ МОДАЛОК ПО КЛИКУ НА ФОН =====
         window.onclick = (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('show');
             }
         };
 
-        // Инициализация
+        // ИНИЦИАЛИЗАЦИЯ (обновляем профиль, но он покажется только при переходе)
         updateProfilePage();
     </script>
 </body>
 </html>
+
 
 
 
