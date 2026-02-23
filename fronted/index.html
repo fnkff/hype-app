@@ -9,10 +9,9 @@
         /* ===== СВЕТЛАЯ ТЕМА ===== */
         body {
             background: #75fe09;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 16px;
-            padding-bottom: 80px;
+            padding: 20px 16px 80px;
             transition: background-color 0.3s, color 0.3s;
             color: black;
         }
@@ -112,54 +111,102 @@
             transform: translateY(0);
         }
 
-        /* ===== ЗАДАНИЯ ===== */
-        .task {
+        /* ===== НОВЫЙ ДИЗАЙН ГЛАВНОЙ (ЗАДАНИЯ) ===== */
+        .greeting {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px;
+        }
+        .task-item {
             background: black;
             color: white;
             border-radius: 16px;
-            padding: 16px;
+            padding: 12px 16px;
             margin: 8px 0;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 12px;
         }
-        .task-info h3 {
-            margin: 0 0 5px;
-            font-size: 18px;
+        body.dark-theme .task-item {
+            background: #75fe09;
+            color: black;
         }
-        .task-info p {
-            margin: 0;
-            color: #ccc;
+        .task-icon {
+            width: 40px;
+            height: 40px;
+            background: #75fe09;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: black;
         }
-        .task-actions {
+        body.dark-theme .task-icon {
+            background: black;
+            color: #75fe09;
+}
+        .task-content {
+            flex: 1;
+        }
+        .task-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .task-desc {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+        .task-right {
             display: flex;
             align-items: center;
             gap: 8px;
         }
         .task-price {
-            font-size: 20px;
             font-weight: bold;
             color: white;
         }
-        .take-btn {
-            background: white;
+        body.dark-theme .task-price {
             color: black;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-weight: bold;
+        }
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid white;
+            border-radius: 8px;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: background 0.2s;
         }
-        .take-btn:hover {
-            opacity: 0.8;
+        .task-checkbox.checked {
+            background: white;
+            position: relative;
         }
-        body.dark-theme .take-btn {
+        .task-checkbox.checked::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: black;
+            font-weight: bold;
+        }
+        body.dark-theme .task-checkbox {
+            border-color: black;
+        }
+        body.dark-theme .task-checkbox.checked {
             background: black;
-color: #75fe09;
+        }
+        body.dark-theme .task-checkbox.checked::after {
+            color: #75fe09;
         }
 
-        /* ===== ПРОФИЛЬ ===== */
+        /* ===== ОСТАЛЬНЫЕ СТРАНИЦЫ (ПРОФИЛЬ, РЕФЕРАЛЫ, ВЫВОД) – ПОКА БЕЗ ИЗМЕНЕНИЙ ===== */
         .profile-header {
             display: flex;
             align-items: center;
@@ -260,7 +307,7 @@ color: #75fe09;
             background: black;
             color: #75fe09;
             border: none;
-            border-radius: 30px;
+border-radius: 30px;
             padding: 12px 20px;
             font-weight: bold;
             cursor: pointer;
@@ -314,7 +361,7 @@ color: #75fe09;
             text-align: center;
             font-size: 18px;
         }
-body.dark-theme .withdraw-balance-info {
+        body.dark-theme .withdraw-balance-info {
             background: #75fe09;
             color: black;
         }
@@ -325,7 +372,7 @@ body.dark-theme .withdraw-balance-info {
         }
         .withdraw-input {
             padding: 14px 16px;
-            border: 1px solid black; /* ЧЁРНАЯ ОБВОДКА в светлой теме */
+            border: 1px solid black;
             border-radius: 30px;
             font-size: 16px;
             outline: none;
@@ -337,14 +384,14 @@ body.dark-theme .withdraw-balance-info {
         body.dark-theme .withdraw-input {
             background: #000;
             color: #75fe09;
-            border-color: #75fe09; /* в тёмной теме зелёная обводка */
+            border-color: #75fe09;
         }
         body.dark-theme .withdraw-input::placeholder {
             color: #888;
         }
         .withdraw-btn {
             background: black;
-            color: white; /* БЕЛЫЙ ТЕКСТ в светлой теме */
+            color: white;
             border: none;
             border-radius: 40px;
             padding: 16px;
@@ -360,7 +407,7 @@ body.dark-theme .withdraw-balance-info {
         }
         body.dark-theme .withdraw-btn {
             background: #75fe09;
-            color: black; /* в тёмной теме чёрный текст на зелёной кнопке */
+            color: black;
         }
 
         /* ===== НИЖНЕЕ МЕНЮ ===== */
@@ -414,7 +461,7 @@ body.dark-theme .withdraw-balance-info {
             max-width: 400px;
             border-radius: 24px;
             overflow: hidden;
-            transform: scale(0.9);
+transform: scale(0.9);
             transition: transform 0.3s ease, background-color 0.3s;
         }
         .modal.show .modal-content {
@@ -464,7 +511,7 @@ body.dark-theme .withdraw-balance-info {
     </style>
 </head>
 <body>
-<div class="header">
+    <div class="header">
         <div class="header-left">
             <span class="logo">ХАЙП</span>
             <span class="beta-badge">[бета тест]</span>
@@ -479,7 +526,35 @@ body.dark-theme .withdraw-balance-info {
 
     <!-- СТРАНИЦЫ -->
     <div id="tasks-page" class="page active-page">
-        <div id="tasks"></div>
+        <div class="greeting">Привет, Тимофей 👋</div>
+        <div class="section-title">Сегодняшние задания</div>
+        <div id="tasks-list"></div>
+        <div class="section-title">На этой неделе</div>
+        <div id="week-tasks" style="margin-bottom: 20px;">
+            <!-- Статический пример, можно заменить динамикой -->
+            <div class="task-item">
+                <div class="task-icon">💧</div>
+                <div class="task-content">
+                    <div class="task-title">Пить воду</div>
+                    <div class="task-desc">Выпивать 2 литра</div>
+                </div>
+                <div class="task-right">
+                    <span class="task-price">0 ₽</span>
+                    <div class="task-checkbox"></div>
+                </div>
+            </div>
+            <div class="task-item">
+                <div class="task-icon">🏋️</div>
+                <div class="task-content">
+                    <div class="task-title">Зарядка</div>
+                    <div class="task-desc">15 минут</div>
+                </div>
+                <div class="task-right">
+                    <span class="task-price">0 ₽</span>
+                    <div class="task-checkbox"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="profile-page" class="page">
@@ -501,7 +576,7 @@ body.dark-theme .withdraw-balance-info {
                 <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
             </div>
         </div>
-        <div class="referral-stats">
+<div class="referral-stats">
             <div class="referral-stat-card">
                 <div class="referral-stat-content">
                     <div class="referral-stat-label">Приглашено друзей</div>
@@ -560,8 +635,7 @@ body.dark-theme .withdraw-balance-info {
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
-        const userName = tg?.
-initDataUnsafe?.user?.first_name || 'Пользователь';
+        const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         // ===== ТЕМА =====
         const themeToggle = document.getElementById('themeToggle');
@@ -598,8 +672,7 @@ initDataUnsafe?.user?.first_name || 'Пользователь';
             counts[key] = (counts[key] || 0) + 1;
             localStorage.setItem('counts', JSON.stringify(counts));
         }
-
-        function canDo(id) {
+function canDo(id) {
             let key = id + '_' + new Date().toDateString();
             return !counts[key] || counts[key] < 3;
         }
@@ -615,57 +688,51 @@ initDataUnsafe?.user?.first_name || 'Пользователь';
 
         // ===== ЗАДАНИЯ =====
         const tasks = [
-            { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
-            { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
+            { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50, icon: '👥' },
+            { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30, icon: '📢' }
         ];
 
-        const container = document.getElementById('tasks');
+        const tasksList = document.getElementById('tasks-list');
         tasks.forEach(t => {
             const div = document.createElement('div');
-            div.className = 'task';
-
-            const infoDiv = document.createElement('div');
-            infoDiv.className = 'task-info';
-            const h3 = document.createElement('h3');
-            h3.innerText = t.name;
-            const p = document.createElement('p');
-            p.innerText = t.desc;
-            infoDiv.appendChild(h3);
-            infoDiv.appendChild(p);
-
-            const actionsDiv = document.createElement('div');
-            actionsDiv.className = 'task-actions';
-            const priceSpan = document.createElement('span');
-            priceSpan.className = 'task-price';
-            priceSpan.innerText = t.price + ' ₽';
-            const btn = document.createElement('button');
-            btn.className = 'take-btn';
-            btn.setAttribute('data-id', t.id);
-            btn.innerText = 'Взять';
-            btn.onclick = function(e) {
-                let id = parseInt(this.dataset.id);
-                if (!canDo(id)) {
-                    alert('Лимит на сегодня');
-                    return;
-                }
-                if (id === 1) {
-                    let link = 'https://t.me/your_bot?start=ref_' + userId;
-                    document.getElementById('refLink').value = link;
-                    document.getElementById('refModal').classList.add('show');
-                } else {
-                    document.getElementById('subModal').classList.add('show');
-                }
-            };
-
-            actionsDiv.appendChild(priceSpan);
-            actionsDiv.appendChild(btn);
-            div.appendChild(infoDiv);
-            div.appendChild(actionsDiv);
-            container.appendChild(div);
+            div.className = 'task-item';
+            div.setAttribute('data-id', t.id);
+            div.innerHTML = `
+                <div class="task-icon">${t.icon}</div>
+                <div class="task-content">
+                    <div class="task-title">${t.name}</div>
+                    <div class="task-desc">${t.desc}</div>
+                </div>
+                <div class="task-right">
+                    <span class="task-price">${t.price} ₽</span>
+                    <div class="task-checkbox" onclick="handleTaskCheck(this, ${t.id})"></div>
+                </div>
+            `;
+            tasksList.appendChild(div);
         });
 
+        window.handleTaskCheck = function(checkbox, taskId) {
+            if (!canDo(taskId)) {
+                alert('Лимит на сегодня');
+                return;
+            }
+            // Помечаем как выполненное (для демо просто добавляем класс)
+            checkbox.classList.toggle('checked');
+            if (checkbox.classList.contains('checked')) {
+                // Начисляем деньги
+                const task = tasks.find(t => t.id === taskId);
+                balance += task.price;
+                saveBalance();
+                document.getElementById('balance').innerText = balance + ' ₽';
+                addCount(taskId);
+                alert(`Задание выполнено! +${task.price} ₽`);
+            } else {
+                // Если снять галочку – деньги не возвращаем, но для простоты не будем реализовывать
+            }
+        };
+
         // ===== МОДАЛКИ =====
-document.getElementById('closeRef').onclick = () => {
+        document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
         document.getElementById('copyBtn').onclick = () => {
@@ -705,7 +772,8 @@ document.getElementById('closeRef').onclick = () => {
             } else {
                 checkResult.style.color = 'red';
                 checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
-                checkBtn.disabled = false;
+                checkBtn.
+disabled = false;
                 checkBtn.innerText = 'Проверить подписку';
             }
         };
@@ -766,7 +834,7 @@ document.getElementById('closeRef').onclick = () => {
         }
 
         // ===== РЕФЕРАЛЫ (оставлена для совместимости) =====
-function updateReferralsPage() {
+        function updateReferralsPage() {
             // статика уже в HTML
         }
 
