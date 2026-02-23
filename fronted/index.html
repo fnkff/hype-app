@@ -315,8 +315,8 @@ color: #75fe09;
         }
         body
 .dark-theme .withdraw-card {
-            background: #75fe09; /* в тёмной теме зелёная */
-            color: black;
+            background: #ffffff; /* в тёмной теме белая */
+            color: #000000;
         }
         .withdraw-balance-info {
             font-size: 18px;
@@ -341,15 +341,15 @@ color: #75fe09;
             border-color: #75fe09;
         }
         body.dark-theme .withdraw-input {
-            background: #000;
-            color: #75fe09;
-            border-color: #75fe09;
+            background: #f0f0f0;  /* светло-серый фон в тёмной теме */
+            color: #000;
+            border-color: #aaa;
         }
         body.dark-theme .withdraw-input::placeholder {
-            color: #888;
+            color: #555;
         }
         .withdraw-btn {
-            background: #75fe09; /* зелёная кнопка на чёрном фоне */
+            background: #75fe09; /* зелёная кнопка на чёрном фоне в светлой теме */
             color: black;
             border: none;
             border-radius: 40px;
@@ -365,8 +365,8 @@ color: #75fe09;
             opacity: 0.8;
         }
         body.dark-theme .withdraw-btn {
-            background: black; /* чёрная кнопка на зелёном фоне */
-            color: #75fe09;
+            background: #000000; /* чёрная кнопка на белом фоне в тёмной теме */
+            color: #ffffff;
         }
 
         /* ===== НИЖНЕЕ МЕНЮ ===== */
@@ -461,10 +461,10 @@ color: #75fe09;
         body.dark-theme .copy-btn,
         body.dark-theme .check-btn {
             background: black;
-            color: #75fe09;
+color: #75fe09;
         }
         .result {
-margin-top: 10px;
+            margin-top: 10px;
             text-align: center;
         }
     </style>
@@ -563,9 +563,9 @@ margin-top: 10px;
     </div>
 
     <script>
-        let tg = window.Telegram?.WebApp;
+let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
-const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         // ===== ТЕМА =====
@@ -663,10 +663,10 @@ const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
             };
 
             actionsDiv.appendChild(priceSpan);
-            actionsDiv.appendChild(btn);
+            actionsDiv.
+appendChild(btn);
             div.appendChild(infoDiv);
-            div.
-appendChild(actionsDiv);
+            div.appendChild(actionsDiv);
             container.appendChild(div);
         });
 
@@ -765,10 +765,10 @@ appendChild(actionsDiv);
                 <div class="stat-card">
                     <div class="stat-content">
                         <div class="stat-label">ID</div>
-                        <div class="stat-value">${userId}</div>
+<div class="stat-value">${userId}</div>
                     </div>
                 </div>
-`;
+            `;
         }
 
         // ===== РЕФЕРАЛЫ (оставлена для совместимости) =====
