@@ -6,7 +6,7 @@
     <title>Хайп</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* ===== СВЕТЛАЯ ТЕМА (ПО УМОЛЧАНИЮ) ===== */
+        /* ===== СВЕТЛАЯ ТЕМА ===== */
         body {
             background: #75fe09;
             font-family: Arial, sans-serif;
@@ -154,8 +154,8 @@
         .task-actions {
             display: flex;
             align-items: center;
-gap: 8px;
-        }
+            gap: 8px;
+}
         .task-price {
             font-size: 20px;
             font-weight: bold;
@@ -309,8 +309,10 @@ gap: 8px;
             font-size: 20px;
             font-weight: bold;
         }
-/* ===== ВЫВОД СРЕДСТВ ===== */
-        .withdraw-balance-info {
+
+        /* ===== ВЫВОД СРЕДСТВ ===== */
+        
+.withdraw-balance-info {
             font-size: 18px;
             margin-bottom: 20px;
             padding: 10px;
@@ -464,8 +466,8 @@ gap: 8px;
 <body>
     <div class="header">
         <div class="header-left">
-<span class="logo">ХАЙП</span>
-            <span class="beta-badge">[бета тест]</span>
+            <span class="logo">ХАЙП</span>
+<span class="beta-badge">[бета тест]</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
             <button class="theme-toggle" id="themeToggle">
@@ -566,8 +568,8 @@ gap: 8px;
         document.getElementById('balance').innerText = balance + ' ₽';
 
         function saveBalance() {
-localStorage.setItem('balance', balance);
-        }
+            localStorage.setItem('balance', balance);
+}
 
         function addCount(id) {
             let key = id + '_' + new Date().toDateString();
@@ -673,10 +675,9 @@ localStorage.setItem('balance', balance);
             if (success) {
                 balance += 30;
                 saveBalance();
-                document.getElementById('balance').
-innerText = balance + ' ₽';
+                document.getElementById('balance').innerText = balance + ' ₽';
                 addCount(2);
-                checkResult.style.color = '#75fe09';
+checkResult.style.color = '#75fe09';
                 checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
@@ -742,7 +743,7 @@ innerText = balance + ' ₽';
             `;
         }
 
-        // ===== РЕФЕРАЛЫ (гарантированно рабочий вариант) =====
+        // ===== РЕФЕРАЛЫ =====
         function updateReferralsPage() {
             const refLink = https//t.me/your_bot?start=ref_${userId};
             const html = `
@@ -770,7 +771,6 @@ innerText = balance + ' ₽';
 <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
             `;
             document.getElementById('referralsContent').innerHTML = html;
-            // обработчик копирования
             setTimeout(() => {
                 document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
                     const input = document.getElementById('refLinkField');
@@ -804,7 +804,6 @@ innerText = balance + ' ₽';
 
         // ИНИЦИАЛИЗАЦИЯ
         updateProfilePage();
-        // Заранее создаём контент рефералов, чтобы при клике он сразу был
         updateReferralsPage();
     </script>
 </body>
