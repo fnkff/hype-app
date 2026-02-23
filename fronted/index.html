@@ -341,7 +341,7 @@ color: #75fe09;
             border-color: #75fe09;
         }
         body.dark-theme .withdraw-input {
-            background: #f0f0f0;  /* светло-серый фон в тёмной теме */
+            background: #f0f0f0;  /* светло-серый фон для контраста с белой карточкой */
             color: #000;
             border-color: #aaa;
         }
@@ -349,7 +349,7 @@ color: #75fe09;
             color: #555;
         }
         .withdraw-btn {
-            background: #75fe09; /* зелёная кнопка на чёрном фоне в светлой теме */
+            background: #75fe09; /* зелёная кнопка в светлой теме на чёрном фоне */
             color: black;
             border: none;
             border-radius: 40px;
@@ -365,8 +365,8 @@ color: #75fe09;
             opacity: 0.8;
         }
         body.dark-theme .withdraw-btn {
-            background: #000000; /* чёрная кнопка на белом фоне в тёмной теме */
-            color: #ffffff;
+            background: #75fe09; /* зелёная кнопка на белом фоне, текст чёрный */
+            color: black;
         }
 
         /* ===== НИЖНЕЕ МЕНЮ ===== */
@@ -525,7 +525,7 @@ color: #75fe09;
     </div>
 
     <div id="withdraw-page" class="page">
-        <!-- Заголовок убран, как на втором скрине -->
+        <!-- Заголовок убран -->
         <div class="withdraw-card" id="withdrawContent"></div>
     </div>
 
@@ -563,7 +563,8 @@ color: #75fe09;
     </div>
 
     <script>
-let tg = window.Telegram?.WebApp;
+        let tg = window.Telegram?.
+WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
@@ -663,8 +664,7 @@ let tg = window.Telegram?.WebApp;
             };
 
             actionsDiv.appendChild(priceSpan);
-            actionsDiv.
-appendChild(btn);
+            actionsDiv.appendChild(btn);
             div.appendChild(infoDiv);
             div.appendChild(actionsDiv);
             container.appendChild(div);
@@ -765,8 +765,8 @@ appendChild(btn);
                 <div class="stat-card">
                     <div class="stat-content">
                         <div class="stat-label">ID</div>
-<div class="stat-value">${userId}</div>
-                    </div>
+                        <div class="stat-value">${userId}</div>
+</div>
                 </div>
             `;
         }
