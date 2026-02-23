@@ -155,8 +155,8 @@
             opacity: 0.8;
         }
         body.dark-theme .take-btn {
-            background: black;
-color: #75fe09;
+background: black;
+            color: #75fe09;
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -312,9 +312,9 @@ color: #75fe09;
             padding: 10px;
             margin-bottom: 20px;
             text-align: center;
-            font-size: 18px;
+font-size: 18px;
         }
-body.dark-theme .withdraw-balance-info {
+        body.dark-theme .withdraw-balance-info {
             background: #75fe09;
             color: black;
         }
@@ -461,10 +461,10 @@ body.dark-theme .withdraw-balance-info {
             margin-top: 10px;
             text-align: center;
         }
-    </style>
+</style>
 </head>
 <body>
-<div class="header">
+    <div class="header">
         <div class="header-left">
             <span class="logo">ХАЙП</span>
             <span class="beta-badge">[бета тест]</span>
@@ -560,8 +560,7 @@ body.dark-theme .withdraw-balance-info {
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
-        const userName = tg?.
-initDataUnsafe?.user?.first_name || 'Пользователь';
+const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         // ===== ТЕМА =====
         const themeToggle = document.getElementById('themeToggle');
@@ -663,9 +662,8 @@ initDataUnsafe?.user?.first_name || 'Пользователь';
             div.appendChild(actionsDiv);
             container.appendChild(div);
         });
-
-        // ===== МОДАЛКИ =====
-document.getElementById('closeRef').onclick = () => {
+// ===== МОДАЛКИ =====
+        document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
         document.getElementById('copyBtn').onclick = () => {
@@ -764,9 +762,8 @@ document.getElementById('closeRef').onclick = () => {
                 </div>
             `;
         }
-
-        // ===== РЕФЕРАЛЫ (оставлена для совместимости) =====
-function updateReferralsPage() {
+// ===== РЕФЕРАЛЫ (оставлена для совместимости) =====
+        function updateReferralsPage() {
             // статика уже в HTML
         }
 
