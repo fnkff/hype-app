@@ -305,70 +305,77 @@ color: #75fe09;
         }
 
         /* ===== ВЫВОД СРЕДСТВ ===== */
-        /* Карточка вывода */
-        .withdraw-card {
-            background: black;  /* в светлой теме чёрная */
-            color: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 10px;
-        }
-        body
-.dark-theme .withdraw-card {
-            background: #ffffff; /* в тёмной теме белая */
-            color: #000000;
-        }
-        .withdraw-balance-info {
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .withdraw-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .withdraw-input {
-            padding: 14px 16px;
-            border: 1px solid #ccc;
-            border-radius: 30px;
-            font-size: 16px;
-            outline: none;
-            background: white;
-            color: black;
-        }
-        .withdraw-input:focus {
-            border-color: #75fe09;
-        }
-        body.dark-theme .withdraw-card {
-    background: #ffffff; /* белый фон */
+/* Карточка вывода */
+.withdraw-card {
+    background: black;  /* в светлой теме чёрная */
+    color: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+/* Тёмная тема: зелёная карточка, чёрный текст */
+body.dark-theme .withdraw-card {
+    background: #75fe09; /* зелёный */
     color: #000000;      /* чёрный текст */
 }
-        body.dark-theme .withdraw-input::placeholder {
-            color: #555;
-        }
-        .withdraw-btn {
-            background: #75fe09; /* зелёная кнопка */
-            color: black;
-            border: none;
-            border-radius: 40px;
-            padding: 16px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .withdraw-btn:hover {
-            opacity: 0.8;
-        }
-        /* в тёмной теме кнопка остаётся зелёной (на белом фоне) */
-        body.dark-theme .withdraw-btn {
-            background: #75fe09;
-            color: black;
-        }
 
+.withdraw-balance-info {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.withdraw-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.withdraw-input {
+    padding: 14px 16px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    font-size: 16px;
+    outline: none;
+    background: white;
+    color: black;
+}
+.withdraw-input:focus {
+    border-color: #75fe09;
+}
+
+/* Тёмная тема для полей: белый фон, чёрная обводка */
+body.dark-theme .withdraw-input {
+    background: #ffffff;
+    color: #000000;
+    border-color: #000000;
+}
+body.dark-theme .withdraw-input::placeholder {
+    color: #555;
+}
+
+/* Кнопка в светлой теме: зелёная на чёрном */
+.withdraw-btn {
+    background: #75fe09;
+    color: black;
+    border: none;
+    border-radius: 40px;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    width: 100%;
+    margin-top: 10px;
+}
+.withdraw-btn:hover {
+    opacity: 0.8;
+}
+
+/* Тёмная тема для кнопки: чёрная на зелёном */
+body.dark-theme .withdraw-btn {
+    background: #000000;
+    color: #ffffff;
+}
         /* ===== НИЖНЕЕ МЕНЮ ===== */
         .nav {
             position: fixed;
