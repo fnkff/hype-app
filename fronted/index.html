@@ -749,7 +749,43 @@ saveBalance();
 
         // ===== СТРАНИЦА РЕФЕРАЛОВ (ГАРАНТИРОВАННО РАБОЧАЯ) =====
         function updateReferralsPage() {
-    document.getElementById('referralsContent').innerHTML = '<p style="color: red; font-size: 20px;">ТЕСТ</p>';
+    const refLink = https//t.me/your_bot?start=ref_${userId};
+    const html = `
+        <div class="referral-link-card">
+            <div class="referral-link-label">Твоя реферальная ссылка</div>
+            <div class="referral-link-field">
+                <input class="referral-link-input" value="${refLink}" readonly id="refLinkField">
+                <button class="referral-copy-btn" id="refPageCopyBtn">Копировать</button>
+            </div>
+        </div>
+        <div class="referral-stats">
+            <div class="referral-stat-card">
+                <div class="referral-stat-content">
+                    <div class="referral-stat-label">Приглашено друзей</div>
+                    <div class="referral-stat-value">0</div>
+                </div>
+            </div>
+            <div class="referral-stat-card">
+                <div class="referral-stat-content">
+                    <div class="referral-stat-label">Заработано на рефералах</div>
+                    <div class="referral-stat-value">0 ₽</div>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
+    `;
+    document.getElementById('referralsContent').innerHTML = html;
+
+    // Добавляем обработчик копирования
+    setTimeout(() => {
+        document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
+            const input = document.getElementById('refLinkField');
+            if (input) {
+                input.select();
+                navigator.clipboard.writeText(input.value).then(() => alert('Ссылка скопирована!'));
+            }
+        });
+    }, 0);
 }
 
         // ===== СТРАНИЦА ВЫВОДА =====
