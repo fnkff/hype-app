@@ -77,24 +77,77 @@
         body.dark-theme .result {
             color: black;
         }
-        /* Цвета для страниц в тёмной теме */
-        body.dark-theme .profile-info,
-        body.dark-theme .referral-info,
-        body.dark-theme .withdraw-info {
-            color: #75fe09;
+        /* Стили для профиля */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
         }
-        body.dark-theme .profile-info p,
-        body.dark-theme .referral-info p,
-        body.dark-theme .withdraw-info p {
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            background: black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
             color: #75fe09;
+            border: 2px solid currentColor;
         }
-        body.dark-theme .ref-link-large {
-            background: #000;
-            color: #75fe09;
-            border-color: #75fe09;
+        body.dark-theme .profile-avatar {
+            background: #75fe09;
+            color: black;
+        }
+        .profile-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .profile-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .stat-card {
+            background: rgba(0,0,0,0.05);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            backdrop-filter: blur(5px);
+        }
+        body.dark-theme .stat-card {
+            background: rgba(117,254,9,0.1);
+        }
+        .stat-icon {
+            font-size: 28px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.1);
+            border-radius: 50%;
+        }
+        body.dark-theme .stat-icon {
+            background: rgba(117,254,9,0.2);
+        }
+        .stat-content {
+            flex: 1;
+        }
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
         }
 
-        /* Стили для страницы вывода */
+        /* Стили для страницы вывода (без изменений) */
         .withdraw-balance-info {
             font-size: 18px;
             margin-bottom: 20px;
@@ -119,7 +172,6 @@
         .withdraw-input:focus {
             border-color: #75fe09;
         }
-        /* Кнопка вывода (контрастная в обеих темах) */
         .withdraw-btn {
             background: black;
             color: #75fe09;
@@ -140,11 +192,10 @@
             background: #75fe09;
             color: black;
         }
-        /* Тёмная тема для полей ввода */
         body.dark-theme .withdraw-input {
             background: #000;
             color: #75fe09;
-border-color: #75fe09;
+            border-color: #75fe09;
         }
         body.dark-theme .withdraw-input::placeholder {
             color: #888;
@@ -153,7 +204,7 @@ border-color: #75fe09;
             color: #75fe09;
         }
 
-        /* Общие стили */
+        /* Остальные стили (без изменений) */
         .header {
             display: flex;
             justify-content: space-between;
@@ -302,7 +353,7 @@ border-color: #75fe09;
         }
         .modal-close {
             background: none;
-border: none;
+            border: none;
             font-size: 24px;
             cursor: pointer;
         }
@@ -330,14 +381,6 @@ border: none;
         .result {
             margin-top: 10px;
             text-align: center;
-        }
-        .profile-info, .referral-info, .withdraw-info {
-            text-align: left;
-            margin: 10px 0;
-        }
-        .profile-info p, .referral-info p, .withdraw-info p {
-            margin: 8px 0;
-            font-size: 16px;
         }
         .ref-link-large {
             width: 100%;
@@ -369,8 +412,9 @@ border: none;
     </div>
 
     <div id="profile-page" class="page">
-        <h3>Профиль</h3>
-        <div class="profile-info" id="profileContent"></div>
+        <!-- Содержимое будет вставлено через JS -->
+        <div class="profile-header" id="profileHeader"></div>
+        <div class="profile-stats" id="profileStats"></div>
     </div>
 
     <div id="referrals-page" class="page">
@@ -397,7 +441,8 @@ border: none;
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
             <div class="modal-body">
                 <h3>Пригласи друга</h3>
-                <p>Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
+                <p>Пригласи друга в Хайп.
+                    Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
                 <input class="ref-link" id="refLink" readonly>
                 <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
@@ -424,8 +469,7 @@ border: none;
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         // ===== Тема =====
-        const themeToggle = document.
-getElementById('themeToggle');
+        const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png'; // Луна
         const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png'; // Солнце
@@ -499,7 +543,8 @@ getElementById('themeToggle');
             const priceSpan = document.createElement('span');
             priceSpan.className = 'task-price';
             priceSpan.innerText = t.price + ' ₽';
-            const btn = document.createElement('button');
+            const btn = document.
+            createElement('button');
             btn.className = 'take-btn';
             btn.setAttribute('data-id', t.id);
             btn.innerText = 'Взять';
@@ -527,8 +572,7 @@ getElementById('themeToggle');
 
         // ===== Обработчики модалок =====
         document.getElementById('closeRef').onclick = () => {
-            document.
-getElementById('refModal').classList.remove('show');
+            document.getElementById('refModal').classList.remove('show');
         };
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
@@ -604,15 +648,35 @@ getElementById('refModal').classList.remove('show');
                 }
             });
         });
-
-        // ===== Страница профиля =====
+        // ===== Страница профиля (обновлённая) =====
         function updateProfilePage() {
             const todayCount = getTodayCount();
-            document.getElementById('profileContent').innerHTML = `
-                <p><strong>Имя:</strong> ${userName}</p>
-                <p><strong>Баланс:</strong> ${balance} ₽</p>
-                <p><strong>Выполнено заданий сегодня:</strong> ${todayCount}</p>
-                <p><strong>ID:</strong> ${userId}</p>
+            document.getElementById('profileHeader').innerHTML = `
+                <div class="profile-avatar">👤</div>
+                <div class="profile-name">${userName}</div>
+            `;
+            document.getElementById('profileStats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Баланс</div>
+                        <div class="stat-value">${balance} ₽</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Выполнено сегодня</div>
+                        <div class="stat-value">${todayCount}</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🆔</div>
+                    <div class="stat-content">
+                        <div class="stat-label">ID</div>
+                        <div class="stat-value">${userId}</div>
+                    </div>
+                </div>
             `;
         }
 
@@ -627,7 +691,7 @@ getElementById('refModal').classList.remove('show');
                 <p><em>Скоро здесь появится статистика</em></p>
             `;
             setTimeout(() => {
-document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
+                document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
                     const input = document.querySelector('#referralsContent .ref-link-large');
                     if (input) {
                         input.select();
@@ -657,11 +721,11 @@ document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
             }
         };
 
-        // Инициализация
-        updateProfilePage();
+        // Инициализация (профиль обновится при первом переходе)
     </script>
 </body>
 </html>
+
 
 
 
