@@ -150,7 +150,7 @@
             color: white;
             border-radius: 16px;
             padding: 16px;
-            margin: 8px 0;
+margin: 8px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -300,7 +300,7 @@
             <button class="theme-toggle" id="themeToggle">
                 <img class="theme-icon" id="themeIcon" src="" alt="theme">
             </button>
-            <div class="balance" id="balance">0 ₽</div>
+<div class="balance" id="balance">0 ₽</div>
         </div>
     </div>
 
@@ -404,7 +404,7 @@
             let key = id + '_' + new Date().toDateString();
             return !counts[key] || counts[key] < 3;
         }
-        function getTodayCount() {
+function getTodayCount() {
             const today = new Date().toDateString();
             let total = 0;
             for (let key in counts) {
@@ -506,7 +506,7 @@
                 checkResult.style.color = 'red';
                 checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
                 checkBtn.
-                disabled = false;
+disabled = false;
                 checkBtn.innerText = 'Проверить подписку';
             }
         };
@@ -525,19 +525,15 @@
                 e.preventDefault();
                 const page = item.dataset.page;
 
-                // Скрываем все страницы
                 Object.values(pages).forEach(p => p.classList.remove('active-page'));
 
-                // Показываем выбранную
                 if (pages[page]) {
                     pages[page].classList.add('active-page');
                 }
 
-                // Обновляем активный класс в меню
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
-                // Если выбрана страница профиля, обновляем её содержимое
                 if (page === 'profile') {
                     updateProfilePage();
                 } else if (page === 'referrals') {
@@ -601,11 +597,13 @@
                 e.target.classList.remove('show');
             }
         };
+
         // Инициализация
         updateProfilePage();
     </script>
 </body>
 </html>
+
 
 
 
