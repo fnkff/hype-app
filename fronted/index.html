@@ -313,7 +313,7 @@ align-items: center;
             color: #75fe09;
         }
 
-        /* ===== ЕДИНЫЙ СТИЛЬ КНОПОК ===== */
+        /* ===== ЕДИНЫЙ СТИЛЬ КНОПОК (как в заданиях) ===== */
         .take-btn,
         .copy-btn,
         .check-btn,
@@ -332,23 +332,23 @@ align-items: center;
         .withdraw-btn:hover {
             opacity: 0.8;
         }
-        /* Светлая тема */
+        /* Светлая тема: белые кнопки с чёрным текстом */
         .take-btn,
         .copy-btn,
         .check-btn,
         .referral-copy-btn,
         .withdraw-btn {
-            background: black;
-            color: white;
+            background: white;
+            color: black;
         }
-        /* Тёмная тема */
+        /* Тёмная тема: чёрные кнопки с зелёным текстом */
         body.dark-theme .take-btn,
         body.dark-theme .copy-btn,
         body.dark-theme .check-btn,
         body.dark-theme .referral-copy-btn,
         body.dark-theme .withdraw-btn {
-            background: #75fe09;
-            color: black;
+            background: black;
+            color: #75fe09;
         }
         /* Индивидуальные размеры */
         .take-btn {
@@ -461,10 +461,10 @@ align-items: center;
             </button>
             <div class="balance" id="balance">0 ₽</div>
         </div>
-    </div>
+</div>
 
     <!-- СТРАНИЦЫ -->
-<div id="tasks-page" class="page active-page">
+    <div id="tasks-page" class="page active-page">
         <div id="tasks"></div>
     </div>
 
@@ -554,8 +554,9 @@ align-items: center;
         const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png';
         const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png';
 
-        const currentTheme = localStorage.getItem('theme') || 'light';
-if (currentTheme === 'dark') {
+        const currentTheme = localStorage.
+getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
             document.body.classList.add('dark-theme');
             themeIcon.src = sunUrl;
         } else {
@@ -660,8 +661,7 @@ if (currentTheme === 'dark') {
         };
 
         const subModal = document.getElementById('subModal');
-        const closeSub = document.
-getElementById('closeSub');
+const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
@@ -720,7 +720,7 @@ getElementById('closeSub');
                 item.classList.add('active');
 
                 if (page === 'profile') updateProfilePage();
-                if (page === 'referrals') updateReferralsPage(); // статическая версия
+                if (page === 'referrals') updateReferralsPage(); // статика
                 if (page === 'withdraw') updateWithdrawPage();
             });
         });
