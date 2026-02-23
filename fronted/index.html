@@ -40,10 +40,6 @@
         body.dark-theme .task-price {
             color: black;
         }
-        body.dark-theme .take-btn {
-            background: black;
-            color: #75fe09;
-        }
         body.dark-theme .nav {
             background: #75fe09;
         }
@@ -68,11 +64,6 @@
             background: #000;
             color: #75fe09;
             border-color: #75fe09;
-        }
-        body.dark-theme .copy-btn,
-        body.dark-theme .check-btn {
-            background: black;
-            color: #75fe09;
         }
         body.dark-theme .result {
             color: black;
@@ -155,26 +146,17 @@
             display: flex;
             align-items: center;
             gap: 8px;
-}
+        }
         .task-price {
             font-size: 20px;
             font-weight: bold;
             color: white;
         }
-        .take-btn {
-            background: white;
-            color: black;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
 
         /* ===== ПРОФИЛЬ ===== */
         .profile-header {
             display: flex;
-            align-items: center;
+align-items: center;
             gap: 16px;
             margin-bottom: 24px;
         }
@@ -264,23 +246,6 @@
             color: #75fe09;
             border-color: #75fe09;
         }
-        .referral-copy-btn {
-            background: black;
-            color: #75fe09;
-            border: none;
-            border-radius: 30px;
-            padding: 12px 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .referral-copy-btn:hover {
-            opacity: 0.8;
-        }
-        body.dark-theme .referral-copy-btn {
-            background: #75fe09;
-            color: black;
-        }
         .referral-stats {
             display: flex;
             flex-direction: column;
@@ -311,8 +276,7 @@
         }
 
         /* ===== ВЫВОД СРЕДСТВ ===== */
-        
-.withdraw-balance-info {
+        .withdraw-balance-info {
             font-size: 18px;
             margin-bottom: 20px;
             padding: 10px;
@@ -336,26 +300,6 @@
         .withdraw-input:focus {
             border-color: #75fe09;
         }
-        .withdraw-btn {
-            background: black;
-            color: #75fe09;
-            border: none;
-            border-radius: 40px;
-            padding: 16px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .withdraw-btn:hover {
-            opacity: 0.8;
-        }
-        body.dark-theme .withdraw-btn {
-            background: #75fe09;
-            color: black;
-        }
         body.dark-theme .withdraw-input {
             background: #000;
             color: #75fe09;
@@ -364,8 +308,60 @@
         body.dark-theme .withdraw-input::placeholder {
             color: #888;
         }
-        body.dark-theme .withdraw-balance-info {
+        body.dark-theme 
+.withdraw-balance-info {
             color: #75fe09;
+        }
+
+        /* ===== ЕДИНЫЙ СТИЛЬ КНОПОК ===== */
+        .take-btn,
+        .copy-btn,
+        .check-btn,
+        .referral-copy-btn,
+        .withdraw-btn {
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .take-btn:hover,
+        .copy-btn:hover,
+        .check-btn:hover,
+        .referral-copy-btn:hover,
+        .withdraw-btn:hover {
+            opacity: 0.8;
+        }
+        /* Светлая тема */
+        .take-btn,
+        .copy-btn,
+        .check-btn,
+        .referral-copy-btn,
+        .withdraw-btn {
+            background: white;
+            color: black;
+        }
+        /* Тёмная тема */
+        body.dark-theme .take-btn,
+        body.dark-theme .copy-btn,
+        body.dark-theme .check-btn,
+        body.dark-theme .referral-copy-btn,
+        body.dark-theme .withdraw-btn {
+            background: black;
+            color: #75fe09;
+        }
+        /* Индивидуальные размеры */
+        .take-btn {
+            padding: 8px 16px;
+        }
+        .copy-btn,
+        .check-btn,
+        .withdraw-btn {
+            padding: 12px;
+            width: 100%;
+        }
+        .referral-copy-btn {
+            padding: 12px 20px;
         }
 
         /* ===== НИЖНЕЕ МЕНЮ ===== */
@@ -447,16 +443,6 @@
             border: 1px solid #ccc;
             background: #f5f5f5;
         }
-        .copy-btn, .check-btn {
-            background: #75fe09;
-            border: none;
-            border-radius: 40px;
-            padding: 12px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
         .result {
             margin-top: 10px;
             text-align: center;
@@ -467,7 +453,7 @@
     <div class="header">
         <div class="header-left">
             <span class="logo">ХАЙП</span>
-<span class="beta-badge">[бета тест]</span>
+            <span class="beta-badge">[бета тест]</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
             <button class="theme-toggle" id="themeToggle">
@@ -478,7 +464,7 @@
     </div>
 
     <!-- СТРАНИЦЫ -->
-    <div id="tasks-page" class="page active-page">
+<div id="tasks-page" class="page active-page">
         <div id="tasks"></div>
     </div>
 
@@ -491,32 +477,32 @@
     </div>
 
     <div id="referrals-page" class="page">
-    <div class="referral-header">
-        <div class="referral-title">Реферальная программа</div>
-    </div>
-    <div class="referral-link-card">
-        <div class="referral-link-label">Твоя реферальная ссылка</div>
-        <div class="referral-link-field">
-            <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
-            <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
+        <div class="referral-header">
+            <div class="referral-title">Реферальная программа</div>
         </div>
-    </div>
-    <div class="referral-stats">
-        <div class="referral-stat-card">
-            <div class="referral-stat-content">
-                <div class="referral-stat-label">Приглашено друзей</div>
-                <div class="referral-stat-value">0</div>
+        <div class="referral-link-card">
+            <div class="referral-link-label">Твоя реферальная ссылка</div>
+            <div class="referral-link-field">
+                <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
+                <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
             </div>
         </div>
-        <div class="referral-stat-card">
-            <div class="referral-stat-content">
-                <div class="referral-stat-label">Заработано на рефералах</div>
-                <div class="referral-stat-value">0 ₽</div>
+        <div class="referral-stats">
+            <div class="referral-stat-card">
+                <div class="referral-stat-content">
+                    <div class="referral-stat-label">Приглашено друзей</div>
+                    <div class="referral-stat-value">0</div>
+                </div>
+            </div>
+            <div class="referral-stat-card">
+                <div class="referral-stat-content">
+                    <div class="referral-stat-label">Заработано на рефералах</div>
+                    <div class="referral-stat-value">0 ₽</div>
+                </div>
             </div>
         </div>
+        <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
     </div>
-    <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
-</div>
 
     <div id="withdraw-page" class="page">
         <h3>Вывод средств</h3>
@@ -569,7 +555,7 @@
         const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png';
 
         const currentTheme = localStorage.getItem('theme') || 'light';
-        if (currentTheme === 'dark') {
+if (currentTheme === 'dark') {
             document.body.classList.add('dark-theme');
             themeIcon.src = sunUrl;
         } else {
@@ -590,7 +576,7 @@
 
         function saveBalance() {
             localStorage.setItem('balance', balance);
-}
+        }
 
         function addCount(id) {
             let key = id + '_' + new Date().toDateString();
@@ -674,7 +660,8 @@
         };
 
         const subModal = document.getElementById('subModal');
-        const closeSub = document.getElementById('closeSub');
+        const closeSub = document.
+getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
@@ -698,7 +685,7 @@
                 saveBalance();
                 document.getElementById('balance').innerText = balance + ' ₽';
                 addCount(2);
-checkResult.style.color = '#75fe09';
+                checkResult.style.color = '#75fe09';
                 checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
@@ -733,7 +720,7 @@ checkResult.style.color = '#75fe09';
                 item.classList.add('active');
 
                 if (page === 'profile') updateProfilePage();
-                if (page === 'referrals') updateReferralsPage();
+                if (page === 'referrals') updateReferralsPage(); // всё ещё вызывается для статики (не обязательно)
                 if (page === 'withdraw') updateWithdrawPage();
             });
         });
@@ -764,43 +751,9 @@ checkResult.style.color = '#75fe09';
             `;
         }
 
-        // ===== РЕФЕРАЛЫ =====
+        // ===== РЕФЕРАЛЫ (функция оставлена, но не используется) =====
         function updateReferralsPage() {
-            const refLink = https//t.me/your_bot?start=ref_${userId};
-            const html = `
-                <div class="referral-link-card">
-                    <div class="referral-link-label">Твоя реферальная ссылка</div>
-                    <div class="referral-link-field">
-                        <input class="referral-link-input" value="${refLink}" readonly id="refLinkField">
-                        <button class="referral-copy-btn" id="refPageCopyBtn">Копировать</button>
-                    </div>
-                </div>
-                <div class="referral-stats">
-                    <div class="referral-stat-card">
-                        <div class="referral-stat-content">
-                            <div class="referral-stat-label">Приглашено друзей</div>
-                            <div class="referral-stat-value">0</div>
-                        </div>
-                    </div>
-                    <div class="referral-stat-card">
-                        <div class="referral-stat-content">
-                            <div class="referral-stat-label">Заработано на рефералах</div>
-                            <div class="referral-stat-value">0 ₽</div>
-                        </div>
-                    </div>
-                </div>
-<p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
-            `;
-            document.getElementById('referralsContent').innerHTML = html;
-            setTimeout(() => {
-                document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
-                    const input = document.getElementById('refLinkField');
-                    if (input) {
-                        input.select();
-                        navigator.clipboard.writeText(input.value).then(() => alert('Ссылка скопирована!'));
-                    }
-                });
-            }, 0);
+            // статическая версия уже в HTML, ничего не делаем
         }
 
         // ===== ВЫВОД =====
@@ -808,7 +761,7 @@ checkResult.style.color = '#75fe09';
             document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
-                    <input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+<input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     <input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
                     <button class="withdraw-btn">Вывести</button>
                 </div>
@@ -825,7 +778,6 @@ checkResult.style.color = '#75fe09';
 
         // ИНИЦИАЛИЗАЦИЯ
         updateProfilePage();
-        updateReferralsPage();
     </script>
 </body>
 </html>
