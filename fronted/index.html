@@ -491,11 +491,32 @@
     </div>
 
     <div id="referrals-page" class="page">
-        <div class="referral-header">
-            <div class="referral-title">Реферальная программа</div>
-        </div>
-        <div id="referralsContent"></div>
+    <div class="referral-header">
+        <div class="referral-title">Реферальная программа</div>
     </div>
+    <div class="referral-link-card">
+        <div class="referral-link-label">Твоя реферальная ссылка</div>
+        <div class="referral-link-field">
+            <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
+            <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
+        </div>
+    </div>
+    <div class="referral-stats">
+        <div class="referral-stat-card">
+            <div class="referral-stat-content">
+                <div class="referral-stat-label">Приглашено друзей</div>
+                <div class="referral-stat-value">0</div>
+            </div>
+        </div>
+        <div class="referral-stat-card">
+            <div class="referral-stat-content">
+                <div class="referral-stat-label">Заработано на рефералах</div>
+                <div class="referral-stat-value">0 ₽</div>
+            </div>
+        </div>
+    </div>
+    <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
+</div>
 
     <div id="withdraw-page" class="page">
         <h3>Вывод средств</h3>
