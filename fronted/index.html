@@ -343,13 +343,13 @@ color: #75fe09;
         body.dark-theme .withdraw-input {
             background: #f0f0f0;  /* светло-серый фон для контраста с белой карточкой */
             color: #000;
-            border-color: #aaa;
+            border-color: #000; /* чёрная обводка */
         }
         body.dark-theme .withdraw-input::placeholder {
             color: #555;
         }
         .withdraw-btn {
-            background: #75fe09; /* зелёная кнопка в светлой теме на чёрном фоне */
+            background: #75fe09; /* зелёная кнопка */
             color: black;
             border: none;
             border-radius: 40px;
@@ -364,8 +364,9 @@ color: #75fe09;
         .withdraw-btn:hover {
             opacity: 0.8;
         }
+        /* в тёмной теме кнопка остаётся зелёной (на белом фоне) */
         body.dark-theme .withdraw-btn {
-            background: #75fe09; /* зелёная кнопка на белом фоне, текст чёрный */
+            background: #75fe09;
             color: black;
         }
 
@@ -460,8 +461,8 @@ color: #75fe09;
         }
         body.dark-theme .copy-btn,
         body.dark-theme .check-btn {
-            background: black;
-color: #75fe09;
+background: black;
+            color: #75fe09;
         }
         .result {
             margin-top: 10px;
@@ -563,8 +564,7 @@ color: #75fe09;
     </div>
 
     <script>
-        let tg = window.Telegram?.
-WebApp;
+let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
@@ -664,7 +664,8 @@ WebApp;
             };
 
             actionsDiv.appendChild(priceSpan);
-            actionsDiv.appendChild(btn);
+            actionsDiv.
+appendChild(btn);
             div.appendChild(infoDiv);
             div.appendChild(actionsDiv);
             container.appendChild(div);
@@ -765,8 +766,8 @@ WebApp;
                 <div class="stat-card">
                     <div class="stat-content">
                         <div class="stat-label">ID</div>
-                        <div class="stat-value">${userId}</div>
-</div>
+<div class="stat-value">${userId}</div>
+                    </div>
                 </div>
             `;
         }
