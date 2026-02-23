@@ -338,8 +338,8 @@ align-items: center;
         .check-btn,
         .referral-copy-btn,
         .withdraw-btn {
-            background: white;
-            color: black;
+            background: black;
+            color: white;
         }
         /* Тёмная тема */
         body.dark-theme .take-btn,
@@ -347,8 +347,8 @@ align-items: center;
         body.dark-theme .check-btn,
         body.dark-theme .referral-copy-btn,
         body.dark-theme .withdraw-btn {
-            background: black;
-            color: #75fe09;
+            background: #75fe09;
+            color: black;
         }
         /* Индивидуальные размеры */
         .take-btn {
@@ -720,7 +720,7 @@ getElementById('closeSub');
                 item.classList.add('active');
 
                 if (page === 'profile') updateProfilePage();
-                if (page === 'referrals') updateReferralsPage(); // всё ещё вызывается для статики (не обязательно)
+                if (page === 'referrals') updateReferralsPage(); // статическая версия
                 if (page === 'withdraw') updateWithdrawPage();
             });
         });
@@ -751,9 +751,9 @@ getElementById('closeSub');
             `;
         }
 
-        // ===== РЕФЕРАЛЫ (функция оставлена, но не используется) =====
+        // ===== РЕФЕРАЛЫ (оставлена для совместимости) =====
         function updateReferralsPage() {
-            // статическая версия уже в HTML, ничего не делаем
+            // статика уже в HTML
         }
 
         // ===== ВЫВОД =====
@@ -761,8 +761,8 @@ getElementById('closeSub');
             document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
-<input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
-                    <input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
+                    <input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+<input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
                     <button class="withdraw-btn">Вывести</button>
                 </div>
                 <p style="margin-top:10px; color: gray;"><em>Вывод будет доступен после бета-теста</em></p>
