@@ -77,7 +77,8 @@
         body.dark-theme .result {
             color: black;
         }
-        /* Стили для профиля */
+
+        /* Стили для профиля (остаются без изменений) */
         .profile-header {
             display: flex;
             align-items: center;
@@ -147,6 +148,108 @@
             font-weight: bold;
         }
 
+        /* Стили для страницы рефералов */
+        .referral-header {
+margin-bottom: 24px;
+        }
+        .referral-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .referral-link-card {
+            background: rgba(0,0,0,0.05);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        body.dark-theme .referral-link-card {
+            background: rgba(117,254,9,0.1);
+        }
+        .referral-link-label {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+        .referral-link-field {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .referral-link-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            font-size: 14px;
+            background: white;
+            color: black;
+            outline: none;
+        }
+        body.dark-theme .referral-link-input {
+            background: #000;
+            color: #75fe09;
+            border-color: #75fe09;
+        }
+        .referral-copy-btn {
+            background: black;
+            color: #75fe09;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .referral-copy-btn:hover {
+            opacity: 0.8;
+        }
+        body.dark-theme .referral-copy-btn {
+            background: #75fe09;
+            color: black;
+        }
+        .referral-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .referral-stat-card {
+            background: rgba(0,0,0,0.05);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        body.dark-theme .referral-stat-card {
+            background: rgba(117,254,9,0.1);
+        }
+        .referral-stat-icon {
+            font-size: 28px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.1);
+            border-radius: 50%;
+        }
+        body.dark-theme .referral-stat-icon {
+            background: rgba(117,254,9,0.2);
+        }
+        .referral-stat-content {
+            flex: 1;
+        }
+        .referral-stat-label {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+        .referral-stat-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
         /* Стили для страницы вывода (без изменений) */
         .withdraw-balance-info {
             font-size: 18px;
@@ -195,7 +298,7 @@
         body.dark-theme .withdraw-input {
             background: #000;
             color: #75fe09;
-            border-color: #75fe09;
+border-color: #75fe09;
         }
         body.dark-theme .withdraw-input::placeholder {
             color: #888;
@@ -204,7 +307,7 @@
             color: #75fe09;
         }
 
-        /* Остальные стили (без изменений) */
+        /* Общие стили */
         .header {
             display: flex;
             justify-content: space-between;
@@ -353,7 +456,7 @@
         }
         .modal-close {
             background: none;
-            border: none;
+border: none;
             font-size: 24px;
             cursor: pointer;
         }
@@ -382,14 +485,6 @@
             margin-top: 10px;
             text-align: center;
         }
-        .ref-link-large {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
-            word-break: break-all;
-        }
     </style>
 </head>
 <body>
@@ -412,14 +507,15 @@
     </div>
 
     <div id="profile-page" class="page">
-        <!-- Содержимое будет вставлено через JS -->
         <div class="profile-header" id="profileHeader"></div>
         <div class="profile-stats" id="profileStats"></div>
     </div>
 
     <div id="referrals-page" class="page">
-        <h3>Рефералы</h3>
-        <div class="referral-info" id="referralsContent"></div>
+        <div class="referral-header">
+            <div class="referral-title">Реферальная программа</div>
+        </div>
+        <div id="referralsContent"></div>
     </div>
 
     <div id="withdraw-page" class="page">
@@ -427,12 +523,12 @@
         <div class="withdraw-info" id="withdrawContent"></div>
     </div>
 
-    <!-- Нижнее меню -->
+    <!-- Нижнее меню (без смайликов) -->
     <div class="nav">
-        <a class="nav-item active" data-page="tasks"><span>📋</span> Задания</a>
-        <a class="nav-item" data-page="profile"><span>👤</span> Профиль</a>
-        <a class="nav-item" data-page="referrals"><span>👥</span> Рефералы</a>
-        <a class="nav-item" data-page="withdraw"><span>💰</span> Вывод</a>
+        <a class="nav-item active" data-page="tasks">Задания</a>
+        <a class="nav-item" data-page="profile">Профиль</a>
+        <a class="nav-item" data-page="referrals">Рефералы</a>
+        <a class="nav-item" data-page="withdraw">Вывод</a>
     </div>
 
     <!-- Модалка рефералки -->
@@ -441,8 +537,7 @@
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
             <div class="modal-body">
                 <h3>Пригласи друга</h3>
-                <p>Пригласи друга в Хайп.
-                    Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
+                <p>Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
                 <input class="ref-link" id="refLink" readonly>
                 <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
@@ -475,7 +570,7 @@
         const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png'; // Солнце
 
         const currentTheme = localStorage.getItem('theme') || 'light';
-        if (currentTheme === 'dark') {
+if (currentTheme === 'dark') {
             document.body.classList.add('dark-theme');
             themeIcon.src = sunUrl;
         } else {
@@ -543,8 +638,7 @@
             const priceSpan = document.createElement('span');
             priceSpan.className = 'task-price';
             priceSpan.innerText = t.price + ' ₽';
-            const btn = document.
-            createElement('button');
+            const btn = document.createElement('button');
             btn.className = 'take-btn';
             btn.setAttribute('data-id', t.id);
             btn.innerText = 'Взять';
@@ -581,7 +675,8 @@
         };
 
         const subModal = document.getElementById('subModal');
-        const closeSub = document.getElementById('closeSub');
+        const closeSub = document.
+getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
@@ -648,7 +743,8 @@
                 }
             });
         });
-        // ===== Страница профиля (обновлённая) =====
+
+        // ===== Страница профиля =====
         function updateProfilePage() {
             const todayCount = getTodayCount();
             document.getElementById('profileHeader').innerHTML = `
@@ -680,19 +776,38 @@
             `;
         }
 
-        // ===== Страница рефералов =====
+        // ===== Страница рефералов (обновлённая) =====
         function updateReferralsPage() {
             const refLink = https//t.me/your_bot?start=ref_${userId};
-            document.getElementById('referralsContent').innerHTML = `
-                <p><strong>Твоя реферальная ссылка:</strong></p>
-                <input class="ref-link-large" value="${refLink}" readonly>
-                <button class="copy-btn" id="refPageCopyBtn">Копировать ссылку</button>
-                <p style="margin-top:20px;"><strong>Приглашено друзей:</strong> 0</p>
-                <p><em>Скоро здесь появится статистика</em></p>
+document.getElementById('referralsContent').innerHTML = `
+                <div class="referral-link-card">
+                    <div class="referral-link-label">Твоя реферальная ссылка</div>
+                    <div class="referral-link-field">
+                        <input class="referral-link-input" value="${refLink}" readonly id="refLinkField">
+                        <button class="referral-copy-btn" id="refPageCopyBtn">Копировать</button>
+                    </div>
+                </div>
+                <div class="referral-stats">
+                    <div class="referral-stat-card">
+                        <div class="referral-stat-icon">👥</div>
+                        <div class="referral-stat-content">
+                            <div class="referral-stat-label">Приглашено друзей</div>
+                            <div class="referral-stat-value">0</div>
+                        </div>
+                    </div>
+                    <div class="referral-stat-card">
+                        <div class="referral-stat-icon">💰</div>
+                        <div class="referral-stat-content">
+                            <div class="referral-stat-label">Заработано на рефералах</div>
+                            <div class="referral-stat-value">0 ₽</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
             `;
             setTimeout(() => {
                 document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
-                    const input = document.querySelector('#referralsContent .ref-link-large');
+                    const input = document.getElementById('refLinkField');
                     if (input) {
                         input.select();
                         navigator.clipboard.writeText(input.value).then(() => alert('Ссылка скопирована!'));
@@ -721,10 +836,12 @@
             }
         };
 
-        // Инициализация (профиль обновится при первом переходе)
+        // Инициализация
+        updateProfilePage();
     </script>
 </body>
 </html>
+
 
 
 
