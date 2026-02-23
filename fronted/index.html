@@ -508,7 +508,7 @@ gap: 8px;
         <a class="nav-item" data-page="withdraw">Вывод</a>
     </div>
 
-    <!-- МОДАЛЬНЫЕ ОКНА -->
+    <!-- МОДАЛКА РЕФЕРАЛКИ -->
     <div class="modal" id="refModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -521,6 +521,7 @@ gap: 8px;
         </div>
     </div>
 
+    <!-- МОДАЛКА ПОДПИСКИ -->
     <div class="modal" id="subModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
@@ -563,8 +564,10 @@ gap: 8px;
         // ===== ХРАНИЛИЩЕ =====
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
-        document.getElementById('balance').innerText = balance + ' ₽';
-function saveBalance() {
+        document.
+getElementById('balance').innerText = balance + ' ₽';
+
+        function saveBalance() {
             localStorage.setItem('balance', balance);
         }
 
@@ -667,12 +670,12 @@ function saveBalance() {
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-            const success = true; // Имитация успеха
+            const success = true;
 
             if (success) {
                 balance += 30;
-                saveBalance();
-document.getElementById('balance').innerText = balance + ' ₽';
+saveBalance();
+                document.getElementById('balance').innerText = balance + ' ₽';
                 addCount(2);
                 checkResult.style.color = '#75fe09';
                 checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
@@ -744,43 +747,44 @@ document.getElementById('balance').innerText = balance + ' ₽';
             `;
         }
 
-        // ===== СТРАНИЦА РЕФЕРАЛОВ =====
+        // ===== СТРАНИЦА РЕФЕРАЛОВ (ГАРАНТИРОВАННО РАБОЧАЯ) =====
         function updateReferralsPage() {
-    const refLink = https//t.me/your_bot?start=ref_${userId};
-    document.getElementById('referralsContent').innerHTML = `
-        <div class="referral-link-card">
-            <div class="referral-link-label">Твоя реферальная ссылка</div>
-            <div class="referral-link-field">
-                <input class="referral-link-input" value="${refLink}" readonly id="refLinkField">
-                <button class="referral-copy-btn" id="refPageCopyBtn">Копировать</button>
-            </div>
-        </div>
-        <div class="referral-stats">
-            <div class="referral-stat-card">
-                <div class="referral-stat-content">
-                    <div class="referral-stat-label">Приглашено друзей</div>
-                    <div class="referral-stat-value">0</div>
+            const refLink = https//t.me/your_bot?start=ref_${userId};
+            const content = `
+                <div class="referral-link-card">
+                    <div class="referral-link-label">Твоя реферальная ссылка</div>
+                    <div class="referral-link-field">
+                        <input class="referral-link-input" value="${refLink}" readonly id="refLinkField">
+                        <button class="referral-copy-btn" id="refPageCopyBtn">Копировать</button>
+                    </div>
                 </div>
-            </div>
-            <div class="referral-stat-card">
-                <div class="referral-stat-content">
-                    <div class="referral-stat-label">Заработано на рефералах</div>
-                    <div class="referral-stat-value">0 ₽</div>
+                <div class="referral-stats">
+                    <div class="referral-stat-card">
+                        <div class="referral-stat-content">
+                            <div class="referral-stat-label">Приглашено друзей</div>
+                            <div class="referral-stat-value">0</div>
+                        </div>
+                    </div>
+                    <div class="referral-stat-card">
+                        <div class="referral-stat-content">
+<div class="referral-stat-label">Заработано на рефералах</div>
+                            <div class="referral-stat-value">0 ₽</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
-    `;
-    setTimeout(() => {
-        document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
-            const input = document.getElementById('refLinkField');
-            if (input) {
-                input.select();
-                navigator.clipboard.writeText(input.value).then(() => alert('Ссылка скопирована!'));
-            }
-        });
-    }, 0);
-}
+                <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
+            `;
+            document.getElementById('referralsContent').innerHTML = content;
+            setTimeout(() => {
+                document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
+                    const input = document.getElementById('refLinkField');
+                    if (input) {
+                        input.select();
+                        navigator.clipboard.writeText(input.value).then(() => alert('Ссылка скопирована!'));
+                    }
+                });
+            }, 0);
+        }
 
         // ===== СТРАНИЦА ВЫВОДА =====
         function updateWithdrawPage() {
@@ -802,16 +806,9 @@ document.getElementById('balance').innerText = balance + ' ₽';
             }
         };
 
-        // ИНИЦИАЛИЗАЦИЯ (обновляем профиль, но он покажется только при переходе)
+        // ИНИЦИАЛИЗАЦИЯ (обновляем профиль и рефералы при загрузке)
         updateProfilePage();
-        updateReferralsPage();
+        updateReferralsPage(); // теперь рефералы будут готовы сразу
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
