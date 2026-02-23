@@ -29,17 +29,6 @@
             background: #75fe09;
             color: black;
         }
-        body.dark-theme .task {
-            background: #75fe09;
-            color: black;
-            border: 1px solid #000;
-        }
-        body.dark-theme .task-info p {
-            color: #333;
-        }
-        body.dark-theme .task-price {
-            color: black;
-        }
         body.dark-theme .nav {
             background: #75fe09;
         }
@@ -123,7 +112,7 @@
             transform: translateY(0);
         }
 
-        /* ===== ЗАДАНИЯ ===== */
+        /* ===== ЗАДАНИЯ (карточки) ===== */
         .task {
             background: black;
             color: white;
@@ -152,11 +141,29 @@
             font-weight: bold;
             color: white;
         }
+        /* Кнопка в заданиях (белая в светлой теме, чёрная в тёмной) */
+        .take-btn {
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .take-btn:hover {
+opacity: 0.8;
+        }
+        body.dark-theme .take-btn {
+            background: black;
+            color: #75fe09;
+        }
 
-        /* ===== ПРОФИЛЬ ===== */
+        /* ===== ПРОФИЛЬ (карточки статистики) ===== */
         .profile-header {
             display: flex;
-align-items: center;
+            align-items: center;
             gap: 16px;
             margin-bottom: 24px;
         }
@@ -179,8 +186,10 @@ align-items: center;
             flex-direction: column;
             gap: 12px;
         }
+        /* Карточки статистики теперь как карточки заданий */
         .stat-card {
-            background: rgba(0,0,0,0.05);
+            background: black;
+            color: white;
             border-radius: 16px;
             padding: 16px;
             display: flex;
@@ -188,7 +197,8 @@ align-items: center;
             gap: 16px;
         }
         body.dark-theme .stat-card {
-            background: rgba(117,254,9,0.1);
+            background: #75fe09;
+            color: black;
         }
         .stat-content {
             flex: 1;
@@ -212,14 +222,17 @@ align-items: center;
             font-weight: bold;
             margin-bottom: 12px;
         }
+        /* Карточка со ссылкой */
         .referral-link-card {
-            background: rgba(0,0,0,0.05);
+            background: black;
+            color: white;
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 20px;
         }
         body.dark-theme .referral-link-card {
-            background: rgba(117,254,9,0.1);
+            background: #75fe09;
+            color: black;
         }
         .referral-link-label {
             font-size: 14px;
@@ -246,13 +259,33 @@ align-items: center;
             color: #75fe09;
             border-color: #75fe09;
         }
+        /* Кнопка Копировать (возвращаем как было) */
+        .referral-copy-btn {
+            background: black;
+            color: #75fe09;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .referral-copy-btn:hover {
+            opacity: 0.8;
+        }
+        body.dark-theme .referral-copy-btn {
+            background: #75fe09;
+            color: black;
+        }
+        /* Карточки статистики рефералов */
         .referral-stats {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
         .referral-stat-card {
-            background: rgba(0,0,0,0.05);
+            background: black;
+            color: white;
             border-radius: 16px;
             padding: 16px;
             display: flex;
@@ -260,7 +293,8 @@ align-items: center;
             gap: 16px;
         }
         body.dark-theme .referral-stat-card {
-            background: rgba(117,254,9,0.1);
+            background: #75fe09;
+            color: black;
         }
         .referral-stat-content {
             flex: 1;
@@ -272,17 +306,22 @@ align-items: center;
         }
         .referral-stat-value {
             font-size: 20px;
-            font-weight: bold;
+font-weight: bold;
         }
 
         /* ===== ВЫВОД СРЕДСТВ ===== */
         .withdraw-balance-info {
-            font-size: 18px;
-            margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(0,0,0,0.05);
+            background: black;
+            color: white;
             border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 20px;
             text-align: center;
+            font-size: 18px;
+        }
+        body.dark-theme .withdraw-balance-info {
+            background: #75fe09;
+            color: black;
         }
         .withdraw-form {
             display: flex;
@@ -308,60 +347,26 @@ align-items: center;
         body.dark-theme .withdraw-input::placeholder {
             color: #888;
         }
-        body.dark-theme 
-.withdraw-balance-info {
-            color: #75fe09;
-        }
-
-        /* ===== ЕДИНЫЙ СТИЛЬ КНОПОК (как в заданиях) ===== */
-        .take-btn,
-        .copy-btn,
-        .check-btn,
-        .referral-copy-btn,
+        /* Кнопка Вывести (возвращаем как было) */
         .withdraw-btn {
+            background: black;
+            color: #75fe09;
             border: none;
-            border-radius: 30px;
+            border-radius: 40px;
+            padding: 16px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
+            width: 100%;
+            margin-top: 10px;
         }
-        .take-btn:hover,
-        .copy-btn:hover,
-        .check-btn:hover,
-        .referral-copy-btn:hover,
         .withdraw-btn:hover {
             opacity: 0.8;
         }
-        /* Светлая тема: белые кнопки с чёрным текстом */
-        .take-btn,
-        .copy-btn,
-        .check-btn,
-        .referral-copy-btn,
-        .withdraw-btn {
-            background: white;
-            color: black;
-        }
-        /* Тёмная тема: чёрные кнопки с зелёным текстом */
-        body.dark-theme .take-btn,
-        body.dark-theme .copy-btn,
-        body.dark-theme .check-btn,
-        body.dark-theme .referral-copy-btn,
         body.dark-theme .withdraw-btn {
-            background: black;
-            color: #75fe09;
-        }
-        /* Индивидуальные размеры */
-        .take-btn {
-            padding: 8px 16px;
-        }
-        .copy-btn,
-        .check-btn,
-        .withdraw-btn {
-            padding: 12px;
-            width: 100%;
-        }
-        .referral-copy-btn {
-            padding: 12px 20px;
+            background: #75fe09;
+            color: black;
         }
 
         /* ===== НИЖНЕЕ МЕНЮ ===== */
@@ -443,6 +448,21 @@ align-items: center;
             border: 1px solid #ccc;
             background: #f5f5f5;
         }
+        .copy-btn, .check-btn {
+            background: #75fe09;
+            border: none;
+            border-radius: 40px;
+            padding: 12px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        body.dark-theme .copy-btn,
+body.dark-theme .check-btn {
+            background: black;
+            color: #75fe09;
+        }
         .result {
             margin-top: 10px;
             text-align: center;
@@ -461,7 +481,7 @@ align-items: center;
             </button>
             <div class="balance" id="balance">0 ₽</div>
         </div>
-</div>
+    </div>
 
     <!-- СТРАНИЦЫ -->
     <div id="tasks-page" class="page active-page">
@@ -539,7 +559,7 @@ align-items: center;
                 <button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
-        </div>
+</div>
     </div>
 
     <script>
@@ -554,8 +574,7 @@ align-items: center;
         const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png';
         const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png';
 
-        const currentTheme = localStorage.
-getItem('theme') || 'light';
+        const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
             document.body.classList.add('dark-theme');
             themeIcon.src = sunUrl;
@@ -643,7 +662,8 @@ getItem('theme') || 'light';
                 }
             };
 
-            actionsDiv.appendChild(priceSpan);
+            actionsDiv.
+appendChild(priceSpan);
             actionsDiv.appendChild(btn);
             div.appendChild(infoDiv);
             div.appendChild(actionsDiv);
@@ -661,7 +681,7 @@ getItem('theme') || 'light';
         };
 
         const subModal = document.getElementById('subModal');
-const closeSub = document.getElementById('closeSub');
+        const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
@@ -743,8 +763,7 @@ const closeSub = document.getElementById('closeSub');
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">ID</div>
+                    <div class="stat-content"><div class="stat-label">ID</div>
                         <div class="stat-value">${userId}</div>
                     </div>
                 </div>
@@ -762,7 +781,7 @@ const closeSub = document.getElementById('closeSub');
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
-<input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
+                    <input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
                     <button class="withdraw-btn">Вывести</button>
                 </div>
                 <p style="margin-top:10px; color: gray;"><em>Вывод будет доступен после бета-теста</em></p>
