@@ -78,28 +78,22 @@
             color: black;
         }
 
-        /* Стили для профиля (остаются без изменений) */
+        /* Стили для профиля */
         .profile-header {
             display: flex;
             align-items: center;
             gap: 16px;
             margin-bottom: 24px;
         }
-        .profile-avatar {
+        .profile-avatar-placeholder {
             width: 64px;
             height: 64px;
             background: black;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            color: #75fe09;
             border: 2px solid currentColor;
         }
-        body.dark-theme .profile-avatar {
+        body.dark-theme .profile-avatar-placeholder {
             background: #75fe09;
-            color: black;
         }
         .profile-name {
             font-size: 24px;
@@ -117,23 +111,9 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            backdrop-filter: blur(5px);
         }
         body.dark-theme .stat-card {
             background: rgba(117,254,9,0.1);
-        }
-        .stat-icon {
-            font-size: 28px;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.1);
-            border-radius: 50%;
-        }
-        body.dark-theme .stat-icon {
-            background: rgba(117,254,9,0.2);
         }
         .stat-content {
             flex: 1;
@@ -150,7 +130,7 @@
 
         /* Стили для страницы рефералов */
         .referral-header {
-margin-bottom: 24px;
+            margin-bottom: 24px;
         }
         .referral-title {
             font-size: 20px;
@@ -224,19 +204,6 @@ margin-bottom: 24px;
         body.dark-theme .referral-stat-card {
             background: rgba(117,254,9,0.1);
         }
-        .referral-stat-icon {
-            font-size: 28px;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.1);
-            border-radius: 50%;
-        }
-        body.dark-theme .referral-stat-icon {
-            background: rgba(117,254,9,0.2);
-        }
         .referral-stat-content {
             flex: 1;
         }
@@ -250,7 +217,7 @@ margin-bottom: 24px;
             font-weight: bold;
         }
 
-        /* Стили для страницы вывода (без изменений) */
+        /* Стили для страницы вывода */
         .withdraw-balance-info {
             font-size: 18px;
             margin-bottom: 20px;
@@ -298,7 +265,7 @@ margin-bottom: 24px;
         body.dark-theme .withdraw-input {
             background: #000;
             color: #75fe09;
-border-color: #75fe09;
+            border-color: #75fe09;
         }
         body.dark-theme .withdraw-input::placeholder {
             color: #888;
@@ -338,7 +305,7 @@ border-color: #75fe09;
             align-items: center;
         }
         .theme-icon {
-            width: 28px;
+width: 28px;
             height: 28px;
             object-fit: contain;
         }
@@ -456,7 +423,7 @@ border-color: #75fe09;
         }
         .modal-close {
             background: none;
-border: none;
+            border: none;
             font-size: 24px;
             cursor: pointer;
         }
@@ -494,7 +461,7 @@ border: none;
             <span class="beta-badge">[бета тест]</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-            <button class="theme-toggle" id="themeToggle">
+<button class="theme-toggle" id="themeToggle">
                 <img class="theme-icon" id="themeIcon" src="" alt="theme">
             </button>
             <div class="balance" id="balance">0 ₽</div>
@@ -507,7 +474,10 @@ border: none;
     </div>
 
     <div id="profile-page" class="page">
-        <div class="profile-header" id="profileHeader"></div>
+        <div class="profile-header">
+            <div class="profile-avatar-placeholder"></div>
+            <div class="profile-name" id="profileName"></div>
+        </div>
         <div class="profile-stats" id="profileStats"></div>
     </div>
 
@@ -570,7 +540,7 @@ border: none;
         const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png'; // Солнце
 
         const currentTheme = localStorage.getItem('theme') || 'light';
-if (currentTheme === 'dark') {
+        if (currentTheme === 'dark') {
             document.body.classList.add('dark-theme');
             themeIcon.src = sunUrl;
         } else {
@@ -594,7 +564,7 @@ if (currentTheme === 'dark') {
         }
 
         function addCount(id) {
-            let key = id + '_' + new Date().toDateString();
+let key = id + '_' + new Date().toDateString();
             counts[key] = (counts[key] || 0) + 1;
             localStorage.setItem('counts', JSON.stringify(counts));
         }
@@ -675,8 +645,7 @@ if (currentTheme === 'dark') {
         };
 
         const subModal = document.getElementById('subModal');
-        const closeSub = document.
-getElementById('closeSub');
+        const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
@@ -700,7 +669,8 @@ getElementById('closeSub');
                 saveBalance();
                 document.getElementById('balance').innerText = balance + ' ₽';
                 addCount(2);
-                checkResult.style.color = '#75fe09';
+                checkResult.style.
+color = '#75fe09';
                 checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
@@ -747,27 +717,21 @@ getElementById('closeSub');
         // ===== Страница профиля =====
         function updateProfilePage() {
             const todayCount = getTodayCount();
-            document.getElementById('profileHeader').innerHTML = `
-                <div class="profile-avatar">👤</div>
-                <div class="profile-name">${userName}</div>
-            `;
+            document.getElementById('profileName').innerText = userName;
             document.getElementById('profileStats').innerHTML = `
                 <div class="stat-card">
-                    <div class="stat-icon">💰</div>
                     <div class="stat-content">
                         <div class="stat-label">Баланс</div>
                         <div class="stat-value">${balance} ₽</div>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">✅</div>
                     <div class="stat-content">
                         <div class="stat-label">Выполнено сегодня</div>
                         <div class="stat-value">${todayCount}</div>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">🆔</div>
                     <div class="stat-content">
                         <div class="stat-label">ID</div>
                         <div class="stat-value">${userId}</div>
@@ -776,10 +740,10 @@ getElementById('closeSub');
             `;
         }
 
-        // ===== Страница рефералов (обновлённая) =====
+        // ===== Страница рефералов =====
         function updateReferralsPage() {
             const refLink = https//t.me/your_bot?start=ref_${userId};
-document.getElementById('referralsContent').innerHTML = `
+            document.getElementById('referralsContent').innerHTML = `
                 <div class="referral-link-card">
                     <div class="referral-link-label">Твоя реферальная ссылка</div>
                     <div class="referral-link-field">
@@ -789,19 +753,17 @@ document.getElementById('referralsContent').innerHTML = `
                 </div>
                 <div class="referral-stats">
                     <div class="referral-stat-card">
-                        <div class="referral-stat-icon">👥</div>
                         <div class="referral-stat-content">
                             <div class="referral-stat-label">Приглашено друзей</div>
                             <div class="referral-stat-value">0</div>
                         </div>
                     </div>
                     <div class="referral-stat-card">
-                        <div class="referral-stat-icon">💰</div>
                         <div class="referral-stat-content">
                             <div class="referral-stat-label">Заработано на рефералах</div>
                             <div class="referral-stat-value">0 ₽</div>
                         </div>
-                    </div>
+</div>
                 </div>
                 <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
             `;
@@ -841,6 +803,7 @@ document.getElementById('referralsContent').innerHTML = `
     </script>
 </body>
 </html>
+
 
 
 
