@@ -155,8 +155,8 @@
             opacity: 0.8;
         }
         body.dark-theme .take-btn {
-background: black;
-            color: #75fe09;
+            background: black;
+color: #75fe09;
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -305,18 +305,23 @@ background: black;
         }
 
         /* ===== ВЫВОД СРЕДСТВ ===== */
-        .withdraw-balance-info {
-            background: black;
+        /* Карточка вывода */
+        .withdraw-card {
+            background: black;  /* в светлой теме чёрная */
             color: white;
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+        body
+.dark-theme .withdraw-card {
+            background: #75fe09; /* в тёмной теме зелёная */
+            color: black;
+        }
+        .withdraw-balance-info {
+            font-size: 18px;
             margin-bottom: 20px;
             text-align: center;
-font-size: 18px;
-        }
-        body.dark-theme .withdraw-balance-info {
-            background: #75fe09;
-            color: black;
         }
         .withdraw-form {
             display: flex;
@@ -325,11 +330,12 @@ font-size: 18px;
         }
         .withdraw-input {
             padding: 14px 16px;
-            border: 1px solid black; /* ЧЁРНАЯ ОБВОДКА в светлой теме */
+            border: 1px solid #ccc;
             border-radius: 30px;
             font-size: 16px;
             outline: none;
             background: white;
+            color: black;
         }
         .withdraw-input:focus {
             border-color: #75fe09;
@@ -337,14 +343,14 @@ font-size: 18px;
         body.dark-theme .withdraw-input {
             background: #000;
             color: #75fe09;
-            border-color: #75fe09; /* в тёмной теме зелёная обводка */
+            border-color: #75fe09;
         }
         body.dark-theme .withdraw-input::placeholder {
             color: #888;
         }
         .withdraw-btn {
-            background: black;
-            color: white; /* БЕЛЫЙ ТЕКСТ в светлой теме */
+            background: #75fe09; /* зелёная кнопка на чёрном фоне */
+            color: black;
             border: none;
             border-radius: 40px;
             padding: 16px;
@@ -359,8 +365,8 @@ font-size: 18px;
             opacity: 0.8;
         }
         body.dark-theme .withdraw-btn {
-            background: #75fe09;
-            color: black; /* в тёмной теме чёрный текст на зелёной кнопке */
+            background: black; /* чёрная кнопка на зелёном фоне */
+            color: #75fe09;
         }
 
         /* ===== НИЖНЕЕ МЕНЮ ===== */
@@ -458,10 +464,10 @@ font-size: 18px;
             color: #75fe09;
         }
         .result {
-            margin-top: 10px;
+margin-top: 10px;
             text-align: center;
         }
-</style>
+    </style>
 </head>
 <body>
     <div class="header">
@@ -519,8 +525,8 @@ font-size: 18px;
     </div>
 
     <div id="withdraw-page" class="page">
-        <h3>Вывод средств</h3>
-        <div class="withdraw-info" id="withdrawContent"></div>
+        <!-- Заголовок убран, как на втором скрине -->
+        <div class="withdraw-card" id="withdrawContent"></div>
     </div>
 
     <!-- НИЖНЕЕ МЕНЮ -->
@@ -559,8 +565,8 @@ font-size: 18px;
     <script>
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
-        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
-const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+        const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         // ===== ТЕМА =====
         const themeToggle = document.getElementById('themeToggle');
@@ -659,10 +665,12 @@ const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользовател
             actionsDiv.appendChild(priceSpan);
             actionsDiv.appendChild(btn);
             div.appendChild(infoDiv);
-            div.appendChild(actionsDiv);
+            div.
+appendChild(actionsDiv);
             container.appendChild(div);
         });
-// ===== МОДАЛКИ =====
+
+        // ===== МОДАЛКИ =====
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
@@ -760,23 +768,25 @@ const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользовател
                         <div class="stat-value">${userId}</div>
                     </div>
                 </div>
-            `;
+`;
         }
-// ===== РЕФЕРАЛЫ (оставлена для совместимости) =====
+
+        // ===== РЕФЕРАЛЫ (оставлена для совместимости) =====
         function updateReferralsPage() {
             // статика уже в HTML
         }
 
         // ===== ВЫВОД =====
         function updateWithdrawPage() {
-            document.getElementById('withdrawContent').innerHTML = `
+            const card = document.getElementById('withdrawContent');
+            card.innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     <input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
                     <button class="withdraw-btn">Вывести</button>
                 </div>
-                <p style="margin-top:10px; color: gray;"><em>Вывод будет доступен после бета-теста</em></p>
+                <p style="margin-top:10px; color: gray; text-align: center;"><em>Вывод будет доступен после бета-теста</em></p>
             `;
         }
 
