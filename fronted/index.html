@@ -746,41 +746,41 @@ document.getElementById('balance').innerText = balance + ' ₽';
 
         // ===== СТРАНИЦА РЕФЕРАЛОВ =====
         function updateReferralsPage() {
-            const refLink = https//t.me/your_bot?start=ref_${userId};
-            document.getElementById('referralsContent').innerHTML = `
-                <div class="referral-link-card">
-                    <div class="referral-link-label">Твоя реферальная ссылка</div>
-                    <div class="referral-link-field">
-                        <input class="referral-link-input" value="${refLink}" readonly id="refLinkField">
-                        <button class="referral-copy-btn" id="refPageCopyBtn">Копировать</button>
-                    </div>
+    const refLink = https//t.me/your_bot?start=ref_${userId};
+    document.getElementById('referralsContent').innerHTML = `
+        <div class="referral-link-card">
+            <div class="referral-link-label">Твоя реферальная ссылка</div>
+            <div class="referral-link-field">
+                <input class="referral-link-input" value="${refLink}" readonly id="refLinkField">
+                <button class="referral-copy-btn" id="refPageCopyBtn">Копировать</button>
+            </div>
+        </div>
+        <div class="referral-stats">
+            <div class="referral-stat-card">
+                <div class="referral-stat-content">
+                    <div class="referral-stat-label">Приглашено друзей</div>
+                    <div class="referral-stat-value">0</div>
                 </div>
-                <div class="referral-stats">
-                    <div class="referral-stat-card">
-                        <div class="referral-stat-content">
-                            <div class="referral-stat-label">Приглашено друзей</div>
-                            <div class="referral-stat-value">0</div>
-                        </div>
-                    </div>
-                    <div class="referral-stat-card">
-                        <div class="referral-stat-content">
-<div class="referral-stat-label">Заработано на рефералах</div>
-                            <div class="referral-stat-value">0 ₽</div>
-                        </div>
-                    </div>
+            </div>
+            <div class="referral-stat-card">
+                <div class="referral-stat-content">
+                    <div class="referral-stat-label">Заработано на рефералах</div>
+                    <div class="referral-stat-value">0 ₽</div>
                 </div>
-                <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
-            `;
-            setTimeout(() => {
-                document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
-                    const input = document.getElementById('refLinkField');
-                    if (input) {
-                        input.select();
-                        navigator.clipboard.writeText(input.value).then(() => alert('Ссылка скопирована!'));
-                    }
-                });
-            }, 0);
-        }
+            </div>
+        </div>
+        <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
+    `;
+    setTimeout(() => {
+        document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
+            const input = document.getElementById('refLinkField');
+            if (input) {
+                input.select();
+                navigator.clipboard.writeText(input.value).then(() => alert('Ссылка скопирована!'));
+            }
+        });
+    }, 0);
+}
 
         // ===== СТРАНИЦА ВЫВОДА =====
         function updateWithdrawPage() {
