@@ -94,6 +94,44 @@
             border-color: #75fe09;
         }
 
+        /* Новые стили для страницы вывода */
+        .withdraw-balance-info {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 12px;
+            text-align: center;
+        }
+        .withdraw-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .withdraw-input {
+            padding: 14px 16px;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            background: white;
+        }
+        .withdraw-input:focus {
+            border-color: #75fe09;
+        }
+        /* Тёмная тема для полей ввода */
+        body.dark-theme .withdraw-input {
+            background: #000;
+            color: #75fe09;
+            border-color: #75fe09;
+        }
+        body.dark-theme .withdraw-input::placeholder {
+            color: #888;
+        }
+        body.dark-theme .withdraw-balance-info {
+            color: #75fe09;
+        }
+
         /* Общие стили */
         .header {
             display: flex;
@@ -108,7 +146,7 @@
         }
         .logo {
             font-size: 24px;
-            font-weight: bold;
+font-weight: bold;
         }
         .beta-badge {
             font-size: 14px;
@@ -150,7 +188,7 @@
             color: white;
             border-radius: 16px;
             padding: 16px;
-margin: 8px 0;
+            margin: 8px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -265,7 +303,7 @@ margin: 8px 0;
             padding: 12px;
             width: 100%;
             font-weight: bold;
-            cursor: pointer;
+cursor: pointer;
             margin-top: 10px;
         }
         .result {
@@ -300,7 +338,7 @@ margin: 8px 0;
             <button class="theme-toggle" id="themeToggle">
                 <img class="theme-icon" id="themeIcon" src="" alt="theme">
             </button>
-<div class="balance" id="balance">0 ₽</div>
+            <div class="balance" id="balance">0 ₽</div>
         </div>
     </div>
 
@@ -376,7 +414,7 @@ margin: 8px 0;
             themeIcon.src = sunUrl;
         } else {
             themeIcon.src = moonUrl;
-        }
+}
 
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-theme');
@@ -404,7 +442,8 @@ margin: 8px 0;
             let key = id + '_' + new Date().toDateString();
             return !counts[key] || counts[key] < 3;
         }
-function getTodayCount() {
+
+        function getTodayCount() {
             const today = new Date().toDateString();
             let total = 0;
             for (let key in counts) {
@@ -479,7 +518,8 @@ function getTodayCount() {
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
-        closeSub.onclick = () => subModal.classList.remove('show');
+        closeSub.
+onclick = () => subModal.classList.remove('show');
 
         checkBtn.onclick = async () => {
             if (!canDo(2)) {
@@ -505,8 +545,7 @@ function getTodayCount() {
             } else {
                 checkResult.style.color = 'red';
                 checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
-                checkBtn.
-disabled = false;
+                checkBtn.disabled = false;
                 checkBtn.innerText = 'Проверить подписку';
             }
         };
@@ -576,19 +615,18 @@ disabled = false;
             }, 0);
         }
 
-        // ===== Страница вывода средств =====
+        // ===== Страница вывода средств (обновлённая) =====
         function updateWithdrawPage() {
-            document.getElementById('withdrawContent').innerHTML = `
-                <p><strong>Доступно для вывода:</strong> ${balance} ₽</p>
-                <p>Минимальная сумма вывода: 50 ₽</p>
-                <button class="copy-btn" id="withdrawBtn" ${balance < 50 ? 'disabled' : ''}>Запросить вывод</button>
+            document.getElementById('withdrawContent').
+innerHTML = `
+                <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
+                <div class="withdraw-form">
+                    <input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+                    <input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
+                    <button class="copy-btn" style="margin-top: 10px;">Вывести</button>
+                </div>
                 <p style="margin-top:10px; color: gray;"><em>Вывод будет доступен после бета-теста</em></p>
             `;
-            if (balance >= 50) {
-                document.getElementById('withdrawBtn')?.addEventListener('click', () => {
-                    alert('Функция вывода в разработке. Скоро будет доступна!');
-                });
-            }
         }
 
         // ===== Закрытие модалок по клику на фон =====
@@ -603,6 +641,7 @@ disabled = false;
     </script>
 </body>
 </html>
+
 
 
 
