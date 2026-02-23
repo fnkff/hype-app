@@ -94,7 +94,7 @@
             border-color: #75fe09;
         }
 
-        /* Новые стили для страницы вывода */
+        /* Стили для страницы вывода */
         .withdraw-balance-info {
             font-size: 18px;
             margin-bottom: 20px;
@@ -119,11 +119,32 @@
         .withdraw-input:focus {
             border-color: #75fe09;
         }
+        /* Кнопка вывода (контрастная в обеих темах) */
+        .withdraw-btn {
+            background: black;
+            color: #75fe09;
+            border: none;
+            border-radius: 40px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .withdraw-btn:hover {
+            opacity: 0.8;
+        }
+        body.dark-theme .withdraw-btn {
+            background: #75fe09;
+            color: black;
+        }
         /* Тёмная тема для полей ввода */
         body.dark-theme .withdraw-input {
             background: #000;
             color: #75fe09;
-            border-color: #75fe09;
+border-color: #75fe09;
         }
         body.dark-theme .withdraw-input::placeholder {
             color: #888;
@@ -146,7 +167,7 @@
         }
         .logo {
             font-size: 24px;
-font-weight: bold;
+            font-weight: bold;
         }
         .beta-badge {
             font-size: 14px;
@@ -281,7 +302,7 @@ font-weight: bold;
         }
         .modal-close {
             background: none;
-            border: none;
+border: none;
             font-size: 24px;
             cursor: pointer;
         }
@@ -303,7 +324,7 @@ font-weight: bold;
             padding: 12px;
             width: 100%;
             font-weight: bold;
-cursor: pointer;
+            cursor: pointer;
             margin-top: 10px;
         }
         .result {
@@ -403,7 +424,8 @@ cursor: pointer;
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         // ===== Тема =====
-        const themeToggle = document.getElementById('themeToggle');
+        const themeToggle = document.
+getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png'; // Луна
         const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png'; // Солнце
@@ -414,7 +436,7 @@ cursor: pointer;
             themeIcon.src = sunUrl;
         } else {
             themeIcon.src = moonUrl;
-}
+        }
 
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-theme');
@@ -505,7 +527,8 @@ cursor: pointer;
 
         // ===== Обработчики модалок =====
         document.getElementById('closeRef').onclick = () => {
-            document.getElementById('refModal').classList.remove('show');
+            document.
+getElementById('refModal').classList.remove('show');
         };
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
@@ -518,8 +541,7 @@ cursor: pointer;
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
-        closeSub.
-onclick = () => subModal.classList.remove('show');
+        closeSub.onclick = () => subModal.classList.remove('show');
 
         checkBtn.onclick = async () => {
             if (!canDo(2)) {
@@ -605,7 +627,7 @@ onclick = () => subModal.classList.remove('show');
                 <p><em>Скоро здесь появится статистика</em></p>
             `;
             setTimeout(() => {
-                document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
+document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
                     const input = document.querySelector('#referralsContent .ref-link-large');
                     if (input) {
                         input.select();
@@ -615,15 +637,14 @@ onclick = () => subModal.classList.remove('show');
             }, 0);
         }
 
-        // ===== Страница вывода средств (обновлённая) =====
+        // ===== Страница вывода средств =====
         function updateWithdrawPage() {
-            document.getElementById('withdrawContent').
-innerHTML = `
+            document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     <input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
-                    <button class="copy-btn" style="margin-top: 10px;">Вывести</button>
+                    <button class="withdraw-btn">Вывести</button>
                 </div>
                 <p style="margin-top:10px; color: gray;"><em>Вывод будет доступен после бета-теста</em></p>
             `;
@@ -641,6 +662,7 @@ innerHTML = `
     </script>
 </body>
 </html>
+
 
 
 
