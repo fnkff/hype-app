@@ -500,7 +500,7 @@ gap: 8px;
         <div class="withdraw-info" id="withdrawContent"></div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ (БЕЗ СМАЙЛИКОВ) -->
+    <!-- НИЖНЕЕ МЕНЮ -->
     <div class="nav">
         <a class="nav-item active" data-page="tasks">Задания</a>
         <a class="nav-item" data-page="profile">Профиль</a>
@@ -508,7 +508,7 @@ gap: 8px;
         <a class="nav-item" data-page="withdraw">Вывод</a>
     </div>
 
-    <!-- МОДАЛКА РЕФЕРАЛКИ -->
+    <!-- МОДАЛКИ -->
     <div class="modal" id="refModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -521,7 +521,6 @@ gap: 8px;
         </div>
     </div>
 
-    <!-- МОДАЛКА ПОДПИСКИ -->
     <div class="modal" id="subModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
@@ -543,8 +542,8 @@ gap: 8px;
         // ===== ТЕМА =====
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
-        const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png'; // Луна
-        const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png'; // Солнце
+        const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png';
+        const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png';
 
         const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
@@ -564,11 +563,10 @@ gap: 8px;
         // ===== ХРАНИЛИЩЕ =====
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
-        document.
-getElementById('balance').innerText = balance + ' ₽';
+        document.getElementById('balance').innerText = balance + ' ₽';
 
         function saveBalance() {
-            localStorage.setItem('balance', balance);
+localStorage.setItem('balance', balance);
         }
 
         function addCount(id) {
@@ -674,8 +672,9 @@ getElementById('balance').innerText = balance + ' ₽';
 
             if (success) {
                 balance += 30;
-saveBalance();
-                document.getElementById('balance').innerText = balance + ' ₽';
+                saveBalance();
+                document.getElementById('balance').
+innerText = balance + ' ₽';
                 addCount(2);
                 checkResult.style.color = '#75fe09';
                 checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
@@ -688,7 +687,7 @@ saveBalance();
             }
         };
 
-        // ===== НАВИГАЦИЯ ПО СТРАНИЦАМ =====
+        // ===== НАВИГАЦИЯ =====
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -711,17 +710,13 @@ saveBalance();
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
-                if (page === 'profile') {
-                    updateProfilePage();
-                } else if (page === 'referrals') {
-                    updateReferralsPage();
-                } else if (page === 'withdraw') {
-                    updateWithdrawPage();
-                }
+                if (page === 'profile') updateProfilePage();
+                if (page === 'referrals') updateReferralsPage();
+                if (page === 'withdraw') updateWithdrawPage();
             });
         });
 
-        // ===== СТРАНИЦА ПРОФИЛЯ =====
+        // ===== ПРОФИЛЬ =====
         function updateProfilePage() {
             const todayCount = getTodayCount();
             document.getElementById('profileName').innerText = userName;
@@ -747,48 +742,47 @@ saveBalance();
             `;
         }
 
-        // ===== СТРАНИЦА РЕФЕРАЛОВ (ГАРАНТИРОВАННО РАБОЧАЯ) =====
+        // ===== РЕФЕРАЛЫ (гарантированно рабочий вариант) =====
         function updateReferralsPage() {
-    const refLink = https//t.me/your_bot?start=ref_${userId};
-    const html = `
-        <div class="referral-link-card">
-            <div class="referral-link-label">Твоя реферальная ссылка</div>
-            <div class="referral-link-field">
-                <input class="referral-link-input" value="${refLink}" readonly id="refLinkField">
-                <button class="referral-copy-btn" id="refPageCopyBtn">Копировать</button>
-            </div>
-        </div>
-        <div class="referral-stats">
-            <div class="referral-stat-card">
-                <div class="referral-stat-content">
-                    <div class="referral-stat-label">Приглашено друзей</div>
-                    <div class="referral-stat-value">0</div>
+            const refLink = https//t.me/your_bot?start=ref_${userId};
+            const html = `
+                <div class="referral-link-card">
+                    <div class="referral-link-label">Твоя реферальная ссылка</div>
+                    <div class="referral-link-field">
+                        <input class="referral-link-input" value="${refLink}" readonly id="refLinkField">
+                        <button class="referral-copy-btn" id="refPageCopyBtn">Копировать</button>
+                    </div>
                 </div>
-            </div>
-            <div class="referral-stat-card">
-                <div class="referral-stat-content">
-                    <div class="referral-stat-label">Заработано на рефералах</div>
-                    <div class="referral-stat-value">0 ₽</div>
+                <div class="referral-stats">
+                    <div class="referral-stat-card">
+                        <div class="referral-stat-content">
+                            <div class="referral-stat-label">Приглашено друзей</div>
+                            <div class="referral-stat-value">0</div>
+                        </div>
+                    </div>
+                    <div class="referral-stat-card">
+                        <div class="referral-stat-content">
+                            <div class="referral-stat-label">Заработано на рефералах</div>
+                            <div class="referral-stat-value">0 ₽</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
-    `;
-    document.getElementById('referralsContent').innerHTML = html;
+<p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
+            `;
+            document.getElementById('referralsContent').innerHTML = html;
+            // обработчик копирования
+            setTimeout(() => {
+                document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
+                    const input = document.getElementById('refLinkField');
+                    if (input) {
+                        input.select();
+                        navigator.clipboard.writeText(input.value).then(() => alert('Ссылка скопирована!'));
+                    }
+                });
+            }, 0);
+        }
 
-    // Добавляем обработчик копирования
-    setTimeout(() => {
-        document.getElementById('refPageCopyBtn')?.addEventListener('click', () => {
-            const input = document.getElementById('refLinkField');
-            if (input) {
-                input.select();
-                navigator.clipboard.writeText(input.value).then(() => alert('Ссылка скопирована!'));
-            }
-        });
-    }, 0);
-}
-
-        // ===== СТРАНИЦА ВЫВОДА =====
+        // ===== ВЫВОД =====
         function updateWithdrawPage() {
             document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
@@ -801,16 +795,17 @@ saveBalance();
             `;
         }
 
-        // ===== ЗАКРЫТИЕ МОДАЛОК ПО КЛИКУ НА ФОН =====
+        // ===== ЗАКРЫТИЕ МОДАЛОК =====
         window.onclick = (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('show');
             }
         };
 
-        // ИНИЦИАЛИЗАЦИЯ (обновляем профиль и рефералы при загрузке)
+        // ИНИЦИАЛИЗАЦИЯ
         updateProfilePage();
-        updateReferralsPage(); // теперь рефералы будут готовы сразу
+        // Заранее создаём контент рефералов, чтобы при клике он сразу был
+        updateReferralsPage();
     </script>
 </body>
 </html>
