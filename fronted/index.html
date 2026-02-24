@@ -51,13 +51,11 @@
             gap: 4px;
         }
 
-        /* ===== КОНТЕЙНЕР ДЛЯ СТРАНИЦ ===== */
         .pages-container {
             position: relative;
             min-height: 350px;
         }
 
-        /* ===== СТРАНИЦЫ ===== */
         .page {
             position: absolute;
             top: 0;
@@ -76,7 +74,6 @@
             pointer-events: auto;
         }
 
-        /* ===== ЗАДАНИЯ ===== */
         .task {
             background: #2a2a2a;
             color: white;
@@ -123,7 +120,6 @@
             opacity: 0.8;
         }
 
-        /* ===== ПРОФИЛЬ ===== */
         .profile-header {
             display: flex;
             align-items: center;
@@ -146,12 +142,12 @@
             flex-direction: column;
             gap: 16px;
         }
-.stat-card {
+        .stat-card {
             background: #2a2a2a;
             color: white;
             border-radius: 20px;
             padding: 20px;
-            display: flex;
+display: flex;
             align-items: center;
             gap: 20px;
         }
@@ -169,7 +165,6 @@
             color: white;
         }
 
-        /* ===== РЕФЕРАЛЫ ===== */
         .referral-header {
             margin-bottom: 28px;
         }
@@ -252,7 +247,6 @@
             color: white;
         }
 
-        /* ===== ВЫВОД ===== */
         .withdraw-balance-info {
             background: #2a2a2a;
             color: white;
@@ -300,14 +294,14 @@
             background: #1DB954;
             color: black;
             border: none;
-border-radius: 50px;
+            border-radius: 50px;
             padding: 18px;
             font-size: 20px;
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
             width: 100%;
-            margin-top: 24px;
+margin-top: 24px;
         }
         .withdraw-btn:hover {
             opacity: 0.8;
@@ -319,7 +313,6 @@ border-radius: 50px;
             font-size: 16px;
         }
 
-        /* ===== НИЖНЕЕ МЕНЮ ===== */
         .nav {
             position: fixed;
             bottom: 0;
@@ -346,7 +339,6 @@ border-radius: 50px;
             color: #1DB954;
         }
 
-        /* ===== МОДАЛЬНЫЕ ОКНА ===== */
         .modal {
             position: fixed;
             top: 0;
@@ -441,7 +433,6 @@ border-radius: 50px;
         <div class="balance" id="balance">0 ₽</div>
     </div>
 
-    <!-- КОНТЕЙНЕР ДЛЯ СТРАНИЦ -->
     <div class="pages-container">
         <div id="tasks-page" class="page active-page">
             <div id="tasks"></div>
@@ -452,7 +443,7 @@ border-radius: 50px;
                 <div class="profile-avatar-placeholder"></div>
                 <div class="profile-name" id="profileName"></div>
             </div>
-<div class="profile-stats" id="profileStats"></div>
+            <div class="profile-stats" id="profileStats"></div>
         </div>
 
         <div id="referrals-page" class="page">
@@ -460,7 +451,7 @@ border-radius: 50px;
                 <div class="referral-title">Реферальная программа</div>
             </div>
             <div class="referral-link-card">
-                <div class="referral-link-label">Твоя реферальная ссылка</div>
+<div class="referral-link-label">Твоя реферальная ссылка</div>
                 <div class="referral-link-field">
                     <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                     <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
@@ -489,7 +480,6 @@ border-radius: 50px;
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ -->
     <div class="nav">
         <a class="nav-item active" data-page="tasks">Задания</a>
         <a class="nav-item" data-page="profile">Профиль</a>
@@ -497,7 +487,114 @@ border-radius: 50px;
         <a class="nav-item" data-page="withdraw">Вывод</a>
     </div>
 
-   // ===== МОДАЛКИ =====
+    <div class="modal" id="refModal">
+        <div class="modal-content">
+            <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
+            <div class="modal-body">
+                <h3>Пригласи друга</h3>
+                <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
+                <input class="ref-link" id="refLink" readonly>
+                <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="subModal">
+        <div class="modal-content">
+            <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
+            <div class="modal-body">
+                <h3>Подпишись на канал</h3>
+                <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
+                <button class="check-btn" id="checkBtn">Проверить подписку</button>
+                <div class="result" id="checkResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram?.WebApp;
+        if (tg) tg.expand();
+        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+        const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+
+        let counts = JSON.parse(localStorage.getItem('counts')) || {};
+        let balance = parseInt(localStorage.getItem('balance')) || 0;
+        document.getElementById('balance').innerText = balance + ' ₽';
+
+        function saveBalance() {
+            localStorage.setItem('balance', balance);
+        }
+
+        function addCount(id) {
+            let key = id + '_' + new Date().toDateString();
+            counts[key] = (counts[key] || 0) + 1;
+            localStorage.setItem('counts', JSON.stringify(counts));
+        }
+
+        function canDo(id) {
+            let key = id + '_' + new Date().toDateString();
+            return !counts[key] || counts[key] < 3;
+        }
+
+        function getTodayCount() {
+            const today = new Date().toDateString();
+            let total = 0;
+            for (let key in counts) {
+                if (key.includes(today)) total += counts[key];
+            }
+return total;
+        }
+
+        const tasks = [
+            { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
+            { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
+        ];
+
+        const container = document.getElementById('tasks');
+        tasks.forEach(t => {
+            const div = document.createElement('div');
+            div.className = 'task';
+
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'task-info';
+            const h3 = document.createElement('h3');
+            h3.innerText = t.name;
+            const p = document.createElement('p');
+            p.innerText = t.desc;
+            infoDiv.appendChild(h3);
+            infoDiv.appendChild(p);
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'task-actions';
+            const priceSpan = document.createElement('span');
+            priceSpan.className = 'task-price';
+            priceSpan.innerText = t.price + ' ₽';
+            const btn = document.createElement('button');
+            btn.className = 'take-btn';
+            btn.setAttribute('data-id', t.id);
+            btn.innerText = 'Взять';
+            btn.onclick = function(e) {
+                let id = parseInt(this.dataset.id);
+                if (!canDo(id)) {
+                    alert('Лимит на сегодня');
+                    return;
+                }
+                if (id === 1) {
+                    let link = 'https://t.me/your_bot?start=ref_' + userId;
+                    document.getElementById('refLink').value = link;
+                    document.getElementById('refModal').classList.add('show');
+                } else {
+                    document.getElementById('subModal').classList.add('show');
+                }
+            };
+
+            actionsDiv.appendChild(priceSpan);
+            actionsDiv.appendChild(btn);
+            div.appendChild(infoDiv);
+            div.appendChild(actionsDiv);
+            container.appendChild(div);
+        });
+
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
@@ -543,11 +640,11 @@ border-radius: 50px;
             }
         };
 
-        // ===== НАВИГАЦИЯ =====
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
-            referrals: document.getElementById('referrals-page'),
+            referrals: document.
+getElementById('referrals-page'),
             withdraw: document.getElementById('withdraw-page')
         };
 
@@ -574,62 +671,7 @@ border-radius: 50px;
             });
         });
 
-        // ===== ПРОФИЛЬ =====
         function updateProfilePage() {
-            const todayCount = getTodayCount();
-            document.getElementById('profileName').innerText = userName;
-            document.getElementById('profileStats').innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Баланс</div>
-                        <div class="stat-value">${balance} ₽</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Выполнено сегодня</div>
-                        <div class="stat-value">${todayCount}</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">ID</div>
-                        <div class="stat-value">${userId}</div>
-                    </div>
-                </div>
-            `;
-        }
-// ===== РЕФЕРАЛЫ (оставлена для совместимости) =====
-        function updateReferralsPage() {
-            // статика уже в HTML
-        }
-
-        // ===== ВЫВОД =====
-        function updateWithdrawPage() {
-            document.getElementById('withdrawContent').innerHTML = `
-                <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
-                <div class="withdraw-form">
-                    <div class="withdraw-field">
-                        <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
-                    </div>
-                    <div class="withdraw-field">
-                        <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
-                    </div>
-                    <button class="withdraw-btn">Вывести</button>
-                </div>
-                <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
-            `;
-        }
-
-        // ===== ЗАКРЫТИЕ МОДАЛОК =====
-        window.onclick = (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('show');
-            }
-        };
-
-        // ИНИЦИАЛИЗАЦИЯ
-        updateProfilePage(); {
             const todayCount = getTodayCount();
             document.getElementById('profileName').innerText = userName;
             document.getElementById('profileStats').innerHTML = `
