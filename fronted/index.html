@@ -4,25 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Хайп</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* ===== ТЁМНАЯ ТЕМА (БАЗОВАЯ, КАК У СПОТИФАЙ) ===== */
+        /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+        }
         body {
             background: #121212;
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 16px;
             padding-bottom: 80px;
-            transition: background-color 0.3s, color 0.3s;
             color: #ffffff;
         }
-        /* Акцентный зелёный (как у Spotify) */
         .accent {
             color: #1DB954;
         }
         .logo {
             font-size: 24px;
-            font-weight: bold;
+            font-weight: 700;
             color: white;
         }
         .beta-badge {
@@ -36,6 +40,7 @@
             color: white;
             padding: 8px 16px;
             border-radius: 20px;
+            font-weight: 500;
         }
         .header {
             display: flex;
@@ -60,7 +65,7 @@
             width: 28px;
             height: 28px;
             object-fit: contain;
-            filter: invert(1); /* чтобы иконки были белыми */
+            filter: invert(1);
         }
 
         /* ===== СТРАНИЦЫ ===== */
@@ -76,25 +81,23 @@
             transform: translateY(0);
         }
 
-        /* ===== ЗАДАНИЯ (В СТИЛЕ ТРЕКОВ SPOTIFY) ===== */
+        /* ===== ЗАДАНИЯ (КАРТОЧКИ С ФОНОМ) ===== */
         .task {
-            background: transparent;
+            background: #2a2a2a;
             color: white;
-            padding: 12px 0;
-            margin: 0;
+            border-radius: 16px;
+            padding: 16px;
+            margin: 8px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #2a2a2a;
-        }
-        .task:last-child {
-            border-bottom: none;
+            animation: fadeSlideIn 0.3s ease;
         }
         .task-info h3 {
-            margin: 0 0 4px;
+            margin: 0 0 5px;
             font-size: 18px;
+            font-weight: 600;
             color: white;
-            font-weight: 500;
         }
         .task-info p {
             margin: 0;
@@ -104,7 +107,7 @@
         .task-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
         .task-price {
             font-size: 18px;
@@ -118,7 +121,7 @@
             border-radius: 20px;
             padding: 6px 16px;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
         }
@@ -132,6 +135,7 @@
             align-items: center;
             gap: 16px;
             margin-bottom: 24px;
+            animation: fadeSlideIn 0.3s ease;
         }
         .profile-avatar-placeholder {
             width: 64px;
@@ -141,7 +145,7 @@
         }
         .profile-name {
             font-size: 24px;
-            font-weight: bold;
+font-weight: 700;
             color: white;
         }
         .profile-stats {
@@ -152,11 +156,22 @@
         .stat-card {
             background: #2a2a2a;
             color: white;
-border-radius: 16px;
+            border-radius: 16px;
             padding: 16px;
             display: flex;
             align-items: center;
             gap: 16px;
+            animation: fadeSlideIn 0.3s ease;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: scale(1.02);
+        }
+        .stat-icon {
+            font-size: 28px;
+            width: 40px;
+            text-align: center;
+            color: #1DB954;
         }
         .stat-content {
             flex: 1;
@@ -168,17 +183,18 @@ border-radius: 16px;
         }
         .stat-value {
             font-size: 20px;
-            font-weight: bold;
+            font-weight: 600;
             color: white;
         }
 
         /* ===== РЕФЕРАЛЫ ===== */
         .referral-header {
             margin-bottom: 24px;
+            animation: fadeSlideIn 0.3s ease;
         }
         .referral-title {
             font-size: 20px;
-            font-weight: bold;
+            font-weight: 700;
             color: white;
             margin-bottom: 12px;
         }
@@ -188,6 +204,7 @@ border-radius: 16px;
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 20px;
+            animation: fadeSlideIn 0.3s ease;
         }
         .referral-link-label {
             font-size: 14px;
@@ -208,6 +225,7 @@ border-radius: 16px;
             background: #121212;
             color: white;
             outline: none;
+            transition: border-color 0.2s;
         }
         .referral-link-input:focus {
             border-color: #1DB954;
@@ -218,7 +236,7 @@ border-radius: 16px;
             border: none;
             border-radius: 30px;
             padding: 12px 20px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
         }
@@ -238,6 +256,13 @@ border-radius: 16px;
             display: flex;
             align-items: center;
             gap: 16px;
+            animation: fadeSlideIn 0.3s ease;
+        }
+        .referral-stat-icon {
+            font-size: 28px;
+            width: 40px;
+            text-align: center;
+            color: #1DB954;
         }
         .referral-stat-content {
             flex: 1;
@@ -249,39 +274,54 @@ border-radius: 16px;
         }
         .referral-stat-value {
             font-size: 20px;
-            font-weight: bold;
+            font-weight: 600;
             color: white;
         }
 
-        /* ===== ВЫВОД СРЕДСТВ ===== */
+        /* ===== ВЫВОД СРЕДСТВ (СТИЛЬ SPOTIFY) ===== */
         .withdraw-balance-info {
             background: #2a2a2a;
             color: white;
-            border-radius: 12px;
-            padding: 10px;
-            margin-bottom: 20px;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
             text-align: center;
             font-size: 18px;
+            font-weight: 600;
+            animation: fadeSlideIn 0.3s ease;
         }
         .withdraw-form {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 20px;
         }
-        .withdraw-input {
-            padding: 14px 16px;
-            border: 1px solid #3e3e3e;
-            border-radius: 30px;
+        .withdraw-field {
+            position: relative;
+            margin-top: 8px;
+        }
+        .withdraw-field input {
+width: 100%;
+            padding: 14px 0 4px 0;
+            border: none;
+            border-bottom: 1px solid #3e3e3e;
+            background: transparent;
+            color: white;
             font-size: 16px;
             outline: none;
-            background: #121212;
-            color: white;
+            transition: border-color 0.2s;
         }
-        .withdraw-input:focus {
-            border-color: #1DB954;
+        .withdraw-field input:focus {
+            border-bottom-color: #1DB954;
         }
-        .withdraw-input::placeholder {
+        .withdraw-field input::placeholder {
             color: #6a6a6a;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .withdraw-field input:focus::placeholder {
+            transform: translateY(-10px);
+            font-size: 12px;
+            color: #b3b3b3;
         }
         .withdraw-btn {
             background: #1DB954;
@@ -290,14 +330,20 @@ border-radius: 16px;
             border-radius: 40px;
             padding: 16px;
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 20px;
         }
         .withdraw-btn:hover {
             opacity: 0.8;
+        }
+        .withdraw-note {
+            margin-top: 16px;
+            color: #b3b3b3;
+            text-align: center;
+            font-size: 14px;
         }
 
         /* ===== НИЖНЕЕ МЕНЮ ===== */
@@ -310,7 +356,8 @@ border-radius: 16px;
             display: flex;
             justify-content: space-around;
             padding: 12px;
-}
+            z-index: 100;
+        }
         .nav-item {
             color: #6a6a6a;
             text-decoration: none;
@@ -320,6 +367,7 @@ border-radius: 16px;
             align-items: center;
             gap: 4px;
             cursor: pointer;
+            transition: color 0.2s;
         }
         .nav-item.active {
             color: #1DB954;
@@ -389,14 +437,30 @@ border-radius: 16px;
             border-radius: 40px;
             padding: 12px;
             width: 100%;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+        .copy-btn:hover, .check-btn:hover {
+            opacity: 0.8;
         }
         .result {
             margin-top: 10px;
             text-align: center;
             color: #b3b3b3;
+        }
+
+        /* ===== АНИМАЦИЯ ===== */
+@keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -440,23 +504,25 @@ border-radius: 16px;
         </div>
         <div class="referral-stats">
             <div class="referral-stat-card">
+                <span class="referral-stat-icon">👥</span>
                 <div class="referral-stat-content">
-<div class="referral-stat-label">Приглашено друзей</div>
+                    <div class="referral-stat-label">Приглашено друзей</div>
                     <div class="referral-stat-value">0</div>
                 </div>
             </div>
             <div class="referral-stat-card">
+                <span class="referral-stat-icon">💰</span>
                 <div class="referral-stat-content">
                     <div class="referral-stat-label">Заработано на рефералах</div>
                     <div class="referral-stat-value">0 ₽</div>
                 </div>
             </div>
         </div>
-        <p style="margin-top:20px; color: #b3b3b3; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
+        <p class="withdraw-note">Статистика появится после приглашения друзей</p>
     </div>
 
     <div id="withdraw-page" class="page">
-        <h3 style="color:white;">Вывод средств</h3>
+        <h3 style="color:white; margin-bottom:16px;">Вывод средств</h3>
         <div class="withdraw-info" id="withdrawContent"></div>
     </div>
 
@@ -486,7 +552,7 @@ border-radius: 16px;
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
-                <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
+<p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
                 <button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
@@ -536,7 +602,7 @@ border-radius: 16px;
 
         function canDo(id) {
             let key = id + '_' + new Date().toDateString();
-return !counts[key] || counts[key] < 3;
+            return !counts[key] || counts[key] < 3;
         }
 
         function getTodayCount() {
@@ -586,7 +652,8 @@ return !counts[key] || counts[key] < 3;
                 if (id === 1) {
                     let link = 'https://t.me/your_bot?start=ref_' + userId;
                     document.getElementById('refLink').value = link;
-                    document.getElementById('refModal').classList.add('show');
+                    document.getElementById('refModal').classList.
+add('show');
                 } else {
                     document.getElementById('subModal').classList.add('show');
                 }
@@ -603,7 +670,6 @@ return !counts[key] || counts[key] < 3;
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
-
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
@@ -628,7 +694,7 @@ return !counts[key] || counts[key] < 3;
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-            const success = true; // Имитация успеха
+            const success = true;
 
             if (success) {
                 balance += 30;
@@ -681,18 +747,21 @@ return !counts[key] || counts[key] < 3;
             document.getElementById('profileName').innerText = userName;
             document.getElementById('profileStats').innerHTML = `
                 <div class="stat-card">
+                    <span class="stat-icon">💰</span>
                     <div class="stat-content">
                         <div class="stat-label">Баланс</div>
                         <div class="stat-value">${balance} ₽</div>
                     </div>
                 </div>
                 <div class="stat-card">
+                    <span class="stat-icon">✅</span>
                     <div class="stat-content">
-                        <div class="stat-label">Выполнено сегодня</div>
+<div class="stat-label">Выполнено сегодня</div>
                         <div class="stat-value">${todayCount}</div>
                     </div>
                 </div>
                 <div class="stat-card">
+                    <span class="stat-icon">🆔</span>
                     <div class="stat-content">
                         <div class="stat-label">ID</div>
                         <div class="stat-value">${userId}</div>
@@ -706,16 +775,20 @@ return !counts[key] || counts[key] < 3;
             // статика уже в HTML
         }
 
-        // ===== ВЫВОД =====
+        // ===== ВЫВОД (НОВЫЙ СТИЛЬ) =====
         function updateWithdrawPage() {
             document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
-                    <input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
-                    <input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
+                    <div class="withdraw-field">
+                        <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+                    </div>
+                    <div class="withdraw-field">
+                        <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
+                    </div>
                     <button class="withdraw-btn">Вывести</button>
                 </div>
-                <p style="margin-top:10px; color: #b3b3b3;"><em>Вывод будет доступен после бета-теста</em></p>
+                <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
             `;
         }
 
