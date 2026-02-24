@@ -74,6 +74,7 @@
             pointer-events: auto;
         }
 
+        /* ===== ЗАДАНИЯ ===== */
         .task {
             background: #2a2a2a;
             color: white;
@@ -104,6 +105,7 @@
             font-size: 20px;
             font-weight: 600;
             color: #1DB954;
+            line-height: 1;
         }
         .take-btn {
             background: #1DB954;
@@ -115,11 +117,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
+            line-height: 1.2;
         }
         .take-btn:hover {
             opacity: 0.8;
         }
 
+        /* ===== ПРОФИЛЬ ===== */
         .profile-header {
             display: flex;
             align-items: center;
@@ -143,11 +147,11 @@
             gap: 16px;
         }
         .stat-card {
-            background: #2a2a2a;
+background: #2a2a2a;
             color: white;
             border-radius: 20px;
             padding: 20px;
-display: flex;
+            display: flex;
             align-items: center;
             gap: 20px;
         }
@@ -165,6 +169,7 @@ display: flex;
             color: white;
         }
 
+        /* ===== РЕФЕРАЛЫ ===== */
         .referral-header {
             margin-bottom: 28px;
         }
@@ -189,10 +194,11 @@ display: flex;
         .referral-link-field {
             display: flex;
             gap: 12px;
-            margin-bottom: 16px;
+            align-items: center;
         }
         .referral-link-input {
             flex: 1;
+            min-width: 0;
             padding: 14px;
             border: 1px solid #3e3e3e;
             border-radius: 40px;
@@ -215,6 +221,9 @@ display: flex;
             font-size: 16px;
             cursor: pointer;
             transition: opacity 0.2s;
+            flex-shrink: 0;
+            white-space: nowrap;
+            max-width: fit-content;
         }
         .referral-copy-btn:hover {
             opacity: 0.8;
@@ -247,6 +256,7 @@ display: flex;
             color: white;
         }
 
+        /* ===== ВЫВОД ===== */
         .withdraw-balance-info {
             background: #2a2a2a;
             color: white;
@@ -290,7 +300,8 @@ display: flex;
             font-size: 14px;
             color: #b3b3b3;
         }
-        .withdraw-btn {
+        
+.withdraw-btn {
             background: #1DB954;
             color: black;
             border: none;
@@ -301,7 +312,7 @@ display: flex;
             cursor: pointer;
             transition: opacity 0.2s;
             width: 100%;
-margin-top: 24px;
+            margin-top: 24px;
         }
         .withdraw-btn:hover {
             opacity: 0.8;
@@ -313,6 +324,7 @@ margin-top: 24px;
             font-size: 16px;
         }
 
+        /* ===== НИЖНЕЕ МЕНЮ ===== */
         .nav {
             position: fixed;
             bottom: 0;
@@ -339,6 +351,7 @@ margin-top: 24px;
             color: #1DB954;
         }
 
+        /* ===== МОДАЛЬНЫЕ ОКНА ===== */
         .modal {
             position: fixed;
             top: 0;
@@ -441,7 +454,7 @@ margin-top: 24px;
         <div id="profile-page" class="page">
             <div class="profile-header">
                 <div class="profile-avatar-placeholder"></div>
-                <div class="profile-name" id="profileName"></div>
+<div class="profile-name" id="profileName"></div>
             </div>
             <div class="profile-stats" id="profileStats"></div>
         </div>
@@ -451,7 +464,7 @@ margin-top: 24px;
                 <div class="referral-title">Реферальная программа</div>
             </div>
             <div class="referral-link-card">
-<div class="referral-link-label">Твоя реферальная ссылка</div>
+                <div class="referral-link-label">Твоя реферальная ссылка</div>
                 <div class="referral-link-field">
                     <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                     <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
@@ -530,8 +543,7 @@ margin-top: 24px;
             counts[key] = (counts[key] || 0) + 1;
             localStorage.setItem('counts', JSON.stringify(counts));
         }
-
-        function canDo(id) {
+function canDo(id) {
             let key = id + '_' + new Date().toDateString();
             return !counts[key] || counts[key] < 3;
         }
@@ -542,7 +554,7 @@ margin-top: 24px;
             for (let key in counts) {
                 if (key.includes(today)) total += counts[key];
             }
-return total;
+            return total;
         }
 
         const tasks = [
@@ -634,7 +646,8 @@ return total;
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
                 checkResult.style.color = 'red';
-                checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
+                checkResult.
+innerText = '❌ Не подписан. Попробуйте снова.';
                 checkBtn.disabled = false;
                 checkBtn.innerText = 'Проверить подписку';
             }
@@ -643,8 +656,7 @@ return total;
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
-            referrals: document.
-getElementById('referrals-page'),
+            referrals: document.getElementById('referrals-page'),
             withdraw: document.getElementById('withdraw-page')
         };
 
