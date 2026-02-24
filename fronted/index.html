@@ -644,8 +644,8 @@ if (pages[page]) {
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
-                // Плавно прокручиваем страницу вверх, чтобы содержимое не уезжало вниз
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // Принудительно прокручиваем страницу вверх
+                window.scrollTo(0, 0);
 
                 if (page === 'profile') updateProfilePage();
                 if (page === 'referrals') updateReferralsPage();
