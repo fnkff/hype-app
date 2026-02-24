@@ -1,3 +1,6 @@
+Понял, дело в том, что display: none не анимируется. Я исправил: теперь страницы скрываются через opacity и visibility, а при активации плавно появляются. Вот обновлённый код – замени им свой index.html. Анимация переключения вкладок должна работать.
+
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,17 +52,20 @@
             align-items: center;
             gap: 4px;
         }
+        /* ===== СТРАНИЦЫ С ПЛАВНЫМ ПЕРЕКЛЮЧЕНИЕМ ===== */
         .page {
-            display: none;
+            display: block; /* убираем display: none, чтобы анимация работала */
             opacity: 0;
+            visibility: hidden;
             transform: translateY(10px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
         }
         .page.active-page {
-            display: block;
             opacity: 1;
+            visibility: visible;
             transform: translateY(0);
         }
+        /* ===== ЗАДАНИЯ ===== */
         .task {
             background: #2a2a2a;
             color: white;
@@ -105,6 +111,7 @@
         .take-btn:hover {
             opacity: 0.8;
         }
+        /* ===== ПРОФИЛЬ ===== */
         .profile-header {
             display: flex;
             align-items: center;
@@ -126,7 +133,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-        }
+}
         .stat-card {
             background: #2a2a2a;
             color: white;
@@ -147,8 +154,9 @@
         .stat-value {
             font-size: 20px;
             font-weight: 600;
-color: white;
+            color: white;
         }
+        /* ===== РЕФЕРАЛЫ ===== */
         .referral-header {
             margin-bottom: 24px;
         }
@@ -229,6 +237,7 @@ color: white;
             font-weight: 600;
             color: white;
         }
+        /* ===== ВЫВОД ===== */
         .withdraw-balance-info {
             background: #2a2a2a;
             color: white;
@@ -277,7 +286,7 @@ color: white;
             color: black;
             border: none;
             border-radius: 40px;
-            padding: 16px;
+padding: 16px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
@@ -294,12 +303,13 @@ color: white;
             text-align: center;
             font-size: 14px;
         }
+        /* ===== НИЖНЕЕ МЕНЮ ===== */
         .nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-background: #0a0a0a;
+            background: #0a0a0a;
             display: flex;
             justify-content: space-around;
             padding: 12px;
@@ -319,6 +329,7 @@ background: #0a0a0a;
         .nav-item.active {
             color: #1DB954;
         }
+        /* ===== МОДАЛЬНЫЕ ОКНА ===== */
         .modal {
             position: fixed;
             top: 0;
@@ -424,7 +435,7 @@ background: #0a0a0a;
             <div class="referral-title">Реферальная программа</div>
         </div>
         <div class="referral-link-card">
-            <div class="referral-link-label">Твоя реферальная ссылка</div>
+<div class="referral-link-label">Твоя реферальная ссылка</div>
             <div class="referral-link-field">
                 <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                 <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
@@ -433,7 +444,7 @@ background: #0a0a0a;
         <div class="referral-stats">
             <div class="referral-stat-card">
                 <div class="referral-stat-content">
-<div class="referral-stat-label">Приглашено друзей</div>
+                    <div class="referral-stat-label">Приглашено друзей</div>
                     <div class="referral-stat-value">0</div>
                 </div>
             </div>
@@ -520,7 +531,7 @@ background: #0a0a0a;
         }
 
         const tasks = [
-            { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
+{ id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
             { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
         ];
 
@@ -535,8 +546,7 @@ background: #0a0a0a;
             h3.innerText = t.name;
             const p = document.createElement('p');
             p.innerText = t.desc;
-            infoDiv.
-appendChild(h3);
+            infoDiv.appendChild(h3);
             infoDiv.appendChild(p);
 
             const actionsDiv = document.createElement('div');
@@ -619,7 +629,8 @@ appendChild(h3);
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
             referrals: document.getElementById('referrals-page'),
-            withdraw: document.getElementById('withdraw-page')
+            withdraw: document.
+getElementById('withdraw-page')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
@@ -638,7 +649,7 @@ appendChild(h3);
                 item.classList.add('active');
 
                 if (page === 'profile') updateProfilePage();
-if (page === 'referrals') updateReferralsPage();
+                if (page === 'referrals') updateReferralsPage();
                 if (page === 'withdraw') updateWithdrawPage();
             });
         });
