@@ -49,19 +49,32 @@
             align-items: center;
             gap: 4px;
         }
-        /* ===== СТРАНИЦЫ С ПЛАВНЫМ ПЕРЕКЛЮЧЕНИЕМ ===== */
+
+        /* ===== КОНТЕЙНЕР ДЛЯ СТРАНИЦ ===== */
+        .pages-container {
+            position: relative;
+            min-height: 300px; /* подбери под свой контент */
+        }
+
+        /* ===== СТРАНИЦЫ ===== */
         .page {
-            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             opacity: 0;
             visibility: hidden;
             transform: translateY(10px);
             transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
+            pointer-events: none;
         }
         .page.active-page {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
+            pointer-events: auto;
         }
+
         /* ===== ЗАДАНИЯ ===== */
         .task {
             background: #2a2a2a;
@@ -108,6 +121,7 @@
         .take-btn:hover {
             opacity: 0.8;
         }
+
         /* ===== ПРОФИЛЬ ===== */
         .profile-header {
             display: flex;
@@ -131,7 +145,7 @@
             flex-direction: column;
             gap: 12px;
         }
-        .stat-card {
+.stat-card {
             background: #2a2a2a;
             color: white;
             border-radius: 16px;
@@ -143,8 +157,7 @@
         .stat-content {
             flex: 1;
         }
-        
-.stat-label {
+        .stat-label {
             font-size: 14px;
             color: #b3b3b3;
             margin-bottom: 4px;
@@ -154,6 +167,7 @@
             font-weight: 600;
             color: white;
         }
+
         /* ===== РЕФЕРАЛЫ ===== */
         .referral-header {
             margin-bottom: 24px;
@@ -235,6 +249,7 @@
             font-weight: 600;
             color: white;
         }
+
         /* ===== ВЫВОД ===== */
         .withdraw-balance-info {
             background: #2a2a2a;
@@ -284,7 +299,7 @@
             color: black;
             border: none;
             border-radius: 40px;
-            padding: 16px;
+padding: 16px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
@@ -296,11 +311,12 @@
             opacity: 0.8;
         }
         .withdraw-note {
-margin-top: 16px;
+            margin-top: 16px;
             color: #b3b3b3;
             text-align: center;
             font-size: 14px;
         }
+
         /* ===== НИЖНЕЕ МЕНЮ ===== */
         .nav {
             position: fixed;
@@ -327,6 +343,7 @@ margin-top: 16px;
         .nav-item.active {
             color: #1DB954;
         }
+
         /* ===== МОДАЛЬНЫЕ ОКНА ===== */
         .modal {
             position: fixed;
@@ -415,51 +432,52 @@ margin-top: 16px;
         <div class="balance" id="balance">0 ₽</div>
     </div>
 
-    <!-- СТРАНИЦЫ -->
-    <div id="tasks-page" class="page active-page">
-        <div id="tasks"></div>
-    </div>
-
-    <div id="profile-page" class="page">
-        <div class="profile-header">
-            <div class="profile-avatar-placeholder"></div>
-            <div class="profile-name" id="profileName"></div>
+    <!-- КОНТЕЙНЕР ДЛЯ СТРАНИЦ -->
+    <div class="pages-container">
+        <div id="tasks-page" class="page active-page">
+            <div id="tasks"></div>
         </div>
-        <div class="profile-stats" id="profileStats"></div>
-    </div>
 
-    <div id="referrals-page" class="page">
-        <div class="referral-header">
-            <div class="referral-title">Реферальная программа</div>
-        </div>
-        <div class="referral-link-card">
-            <div class="referral-link-label">Твоя реферальная ссылка</div>
-            <div class="referral-link-field">
-                <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
-                <button class="referral-copy-btn" onclick="this.previousElementSibling.
-select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
+        <div id="profile-page" class="page">
+            <div class="profile-header">
+                <div class="profile-avatar-placeholder"></div>
+                <div class="profile-name" id="profileName"></div>
             </div>
+            <div class="profile-stats" id="profileStats"></div>
         </div>
-        <div class="referral-stats">
-            <div class="referral-stat-card">
-                <div class="referral-stat-content">
-                    <div class="referral-stat-label">Приглашено друзей</div>
-                    <div class="referral-stat-value">0</div>
+
+        <div id="referrals-page" class="page">
+            <div class="referral-header">
+<div class="referral-title">Реферальная программа</div>
+            </div>
+            <div class="referral-link-card">
+                <div class="referral-link-label">Твоя реферальная ссылка</div>
+                <div class="referral-link-field">
+                    <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
+                    <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
                 </div>
             </div>
-            <div class="referral-stat-card">
-                <div class="referral-stat-content">
-                    <div class="referral-stat-label">Заработано на рефералах</div>
-                    <div class="referral-stat-value">0 ₽</div>
+            <div class="referral-stats">
+                <div class="referral-stat-card">
+                    <div class="referral-stat-content">
+                        <div class="referral-stat-label">Приглашено друзей</div>
+                        <div class="referral-stat-value">0</div>
+                    </div>
+                </div>
+                <div class="referral-stat-card">
+                    <div class="referral-stat-content">
+                        <div class="referral-stat-label">Заработано на рефералах</div>
+                        <div class="referral-stat-value">0 ₽</div>
+                    </div>
                 </div>
             </div>
+            <p class="withdraw-note">Статистика появится после приглашения друзей</p>
         </div>
-        <p class="withdraw-note">Статистика появится после приглашения друзей</p>
-    </div>
 
-    <div id="withdraw-page" class="page">
-        <h3 style="color:white; margin-bottom:16px;">Вывод средств</h3>
-        <div class="withdraw-info" id="withdrawContent"></div>
+        <div id="withdraw-page" class="page">
+            <h3 style="color:white; margin-bottom:16px;">Вывод средств</h3>
+            <div class="withdraw-info" id="withdrawContent"></div>
+        </div>
     </div>
 
     <!-- НИЖНЕЕ МЕНЮ -->
@@ -521,7 +539,8 @@ select(); navigator.clipboard.writeText(this.previousElementSibling.value); aler
         }
 
         function getTodayCount() {
-            const today = new Date().toDateString();
+            const today = new Date().
+toDateString();
             let total = 0;
             for (let key in counts) {
                 if (key.includes(today)) total += counts[key];
@@ -538,7 +557,8 @@ select(); navigator.clipboard.writeText(this.previousElementSibling.value); aler
         tasks.forEach(t => {
             const div = document.createElement('div');
             div.className = 'task';
-const infoDiv = document.createElement('div');
+
+            const infoDiv = document.createElement('div');
             infoDiv.className = 'task-info';
             const h3 = document.createElement('h3');
             h3.innerText = t.name;
@@ -613,18 +633,18 @@ const infoDiv = document.createElement('div');
                 document.getElementById('balance').innerText = balance + ' ₽';
                 addCount(2);
                 checkResult.style.color = '#1DB954';
-                checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
+                checkResult.innerText = ' Подписка подтверждена! +30 ₽';
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
                 checkResult.style.color = 'red';
-                checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
+                checkResult.innerText = ' Не подписан. Попробуй снова.';
                 checkBtn.disabled = false;
                 checkBtn.innerText = 'Проверить подписку';
             }
         };
 
         const pages = {
-            tasks: document.getElementById('tasks-page'),
+tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
             referrals: document.getElementById('referrals-page'),
             withdraw: document.getElementById('withdraw-page')
@@ -637,7 +657,8 @@ const infoDiv = document.createElement('div');
                 const page = item.dataset.page;
 
                 Object.values(pages).forEach(p => p.classList.remove('active-page'));
-if (pages[page]) {
+
+                if (pages[page]) {
                     pages[page].classList.add('active-page');
                 }
 
