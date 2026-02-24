@@ -497,7 +497,7 @@ border-radius: 50px;
         <a class="nav-item" data-page="withdraw">Вывод</a>
     </div>
 
-    // ===== МОДАЛКИ =====
+   // ===== МОДАЛКИ =====
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
@@ -629,7 +629,32 @@ border-radius: 50px;
         };
 
         // ИНИЦИАЛИЗАЦИЯ
-        updateProfilePage();
+        updateProfilePage(); {
+            const todayCount = getTodayCount();
+            document.getElementById('profileName').innerText = userName;
+            document.getElementById('profileStats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-label">Баланс</div>
+                        <div class="stat-value">${balance} ₽</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-label">Выполнено сегодня</div>
+                        <div class="stat-value">${todayCount}</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-label">ID</div>
+                        <div class="stat-value">${userId}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateReferralsPage() {
             // статика уже в HTML
         }
 
