@@ -6,59 +6,37 @@
     <title>Хайп</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* ===== СВЕТЛАЯ ТЕМА ===== */
+        /* ===== ТЁМНАЯ ТЕМА (БАЗОВАЯ, КАК У СПОТИФАЙ) ===== */
         body {
-            background: #75fe09;
+            background: #121212;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 16px;
             padding-bottom: 80px;
             transition: background-color 0.3s, color 0.3s;
-            color: black;
+            color: #ffffff;
         }
-        /* ===== ТЁМНАЯ ТЕМА ===== */
-        body.dark-theme {
-            background: #000000;
-            color: #75fe09;
+        /* Акцентный зелёный (как у Spotify) */
+        .accent {
+            color: #1DB954;
         }
-        body.dark-theme .logo,
-        body.dark-theme .beta-badge {
-            color: #75fe09;
-        }
-        body.dark-theme .balance {
-            background: #75fe09;
-            color: black;
-        }
-        body.dark-theme .nav {
-            background: #75fe09;
-        }
-        body.dark-theme .nav-item {
-            color: black;
-        }
-        body.dark-theme .nav-item.active {
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
             color: white;
         }
-        body.dark-theme .modal-content {
-            background: #75fe09;
-            color: black;
+        .beta-badge {
+            font-size: 14px;
+            color: #b3b3b3;
+            margin-left: 4px;
+            vertical-align: middle;
         }
-        body.dark-theme .modal-header {
-            background: #000;
-            color: #75fe09;
+        .balance {
+            background: #2a2a2a;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
         }
-        body.dark-theme .modal-close {
-            color: #75fe09;
-        }
-        body.dark-theme .ref-link {
-            background: #000;
-            color: #75fe09;
-            border-color: #75fe09;
-        }
-        body.dark-theme .result {
-            color: black;
-        }
-
-        /* ===== ОБЩИЕ СТИЛИ ===== */
         .header {
             display: flex;
             justify-content: space-between;
@@ -69,16 +47,6 @@
             display: flex;
             align-items: center;
             gap: 4px;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .beta-badge {
-            font-size: 14px;
-            color: black;
-            margin-left: 4px;
-            vertical-align: middle;
         }
         .theme-toggle {
             background: none;
@@ -92,11 +60,7 @@
             width: 28px;
             height: 28px;
             object-fit: contain;
-        }
-        .balance {
-            background: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+            filter: invert(1); /* чтобы иконки были белыми */
         }
 
         /* ===== СТРАНИЦЫ ===== */
@@ -114,7 +78,7 @@
 
         /* ===== ЗАДАНИЯ ===== */
         .task {
-            background: black;
+            background: #2a2a2a;
             color: white;
             border-radius: 16px;
             padding: 16px;
@@ -126,10 +90,12 @@
         .task-info h3 {
             margin: 0 0 5px;
             font-size: 18px;
+            color: white;
         }
         .task-info p {
             margin: 0;
-            color: #ccc;
+            color: #b3b3b3;
+            font-size: 14px;
         }
         .task-actions {
             display: flex;
@@ -139,10 +105,10 @@
         .task-price {
             font-size: 20px;
             font-weight: bold;
-            color: white;
+            color: #1DB954; /* зелёный акцент */
         }
         .take-btn {
-            background: white;
+            background: #1DB954;
             color: black;
             border: none;
             border-radius: 30px;
@@ -153,10 +119,6 @@
         }
         .take-btn:hover {
             opacity: 0.8;
-        }
-        body.dark-theme .take-btn {
-            background: black;
-color: #75fe09;
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -169,16 +131,13 @@ color: #75fe09;
         .profile-avatar-placeholder {
             width: 64px;
             height: 64px;
-            background: black;
+            background: #2a2a2a;
             border-radius: 50%;
-            border: 2px solid currentColor;
-        }
-        body.dark-theme .profile-avatar-placeholder {
-            background: #75fe09;
         }
         .profile-name {
             font-size: 24px;
             font-weight: bold;
+            color: white;
         }
         .profile-stats {
             display: flex;
@@ -186,7 +145,7 @@ color: #75fe09;
             gap: 12px;
         }
         .stat-card {
-            background: black;
+            background: #2a2a2a;
             color: white;
             border-radius: 16px;
             padding: 16px;
@@ -194,21 +153,19 @@ color: #75fe09;
             align-items: center;
             gap: 16px;
         }
-        body.dark-theme .stat-card {
-            background: #75fe09;
-            color: black;
-        }
-        .stat-content {
+        
+.stat-content {
             flex: 1;
         }
         .stat-label {
             font-size: 14px;
-            opacity: 0.7;
+            color: #b3b3b3;
             margin-bottom: 4px;
         }
         .stat-value {
             font-size: 20px;
             font-weight: bold;
+            color: white;
         }
 
         /* ===== РЕФЕРАЛЫ ===== */
@@ -218,22 +175,19 @@ color: #75fe09;
         .referral-title {
             font-size: 20px;
             font-weight: bold;
+            color: white;
             margin-bottom: 12px;
         }
         .referral-link-card {
-            background: black;
+            background: #2a2a2a;
             color: white;
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 20px;
         }
-        body.dark-theme .referral-link-card {
-            background: #75fe09;
-            color: black;
-        }
         .referral-link-label {
             font-size: 14px;
-            opacity: 0.7;
+            color: #b3b3b3;
             margin-bottom: 8px;
         }
         .referral-link-field {
@@ -244,21 +198,19 @@ color: #75fe09;
         .referral-link-input {
             flex: 1;
             padding: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid #3e3e3e;
             border-radius: 30px;
             font-size: 14px;
-            background: white;
-            color: black;
+            background: #121212;
+            color: white;
             outline: none;
         }
-        body.dark-theme .referral-link-input {
-            background: #000;
-            color: #75fe09;
-            border-color: #75fe09;
+        .referral-link-input:focus {
+            border-color: #1DB954;
         }
         .referral-copy-btn {
-            background: black;
-            color: #75fe09;
+            background: #1DB954;
+            color: black;
             border: none;
             border-radius: 30px;
             padding: 12px 20px;
@@ -269,17 +221,13 @@ color: #75fe09;
         .referral-copy-btn:hover {
             opacity: 0.8;
         }
-        body.dark-theme .referral-copy-btn {
-            background: #75fe09;
-            color: black;
-        }
         .referral-stats {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
         .referral-stat-card {
-            background: black;
+            background: #2a2a2a;
             color: white;
             border-radius: 16px;
             padding: 16px;
@@ -287,118 +235,90 @@ color: #75fe09;
             align-items: center;
             gap: 16px;
         }
-        body.dark-theme .referral-stat-card {
-            background: #75fe09;
-            color: black;
-        }
         .referral-stat-content {
             flex: 1;
         }
         .referral-stat-label {
             font-size: 14px;
-            opacity: 0.7;
+            color: #b3b3b3;
             margin-bottom: 4px;
         }
         .referral-stat-value {
             font-size: 20px;
             font-weight: bold;
+            color: white;
         }
 
         /* ===== ВЫВОД СРЕДСТВ ===== */
-/* Карточка вывода */
-.withdraw-card {
-    background: black;  /* в светлой теме чёрная */
-    color: white;
-    border-radius: 16px;
-    padding: 20px;
-    margin-top: 10px;
-}
+        .withdraw-balance-info {
+            background: #2a2a2a;
+            color: white;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .withdraw-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .withdraw-input {
+            padding: 14px 16px;
+            border: 1px solid #3e3e3e;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            background: #121212;
+            color: white;
+        }
+        .withdraw-input:focus {
+            border-color: #1DB954;
+        }
+        .withdraw-input::placeholder {
+            color: #6a6a6a;
+        }
+        .withdraw-btn {
+            background: #1DB954;
+            color: black;
+            border: none;
+            border-radius: 40px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .withdraw-btn:hover {
+            opacity: 0.8;
+        }
 
-/* Тёмная тема: зелёная карточка, чёрный текст */
-body.dark-theme .withdraw-card {
-    background: #75fe09; /* зелёный */
-    color: #000000;      /* чёрный текст */
-}
-
-.withdraw-balance-info {
-    font-size: 18px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-.withdraw-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.withdraw-input {
-    padding: 14px 16px;
-    border: 1px solid #ccc;
-    border-radius: 30px;
-    font-size: 16px;
-    outline: none;
-    background: white;
-    color: black;
-}
-.withdraw-input:focus {
-    border-color: #75fe09;
-}
-
-/* Тёмная тема для полей: белый фон, чёрная обводка */
-body.dark-theme .withdraw-input {
-    background: #ffffff;
-    color: #000000;
-    border-color: #000000;
-}
-body.dark-theme .withdraw-input::placeholder {
-    color: #555;
-}
-
-/* Кнопка в светлой теме: зелёная на чёрном */
-.withdraw-btn {
-    background: #75fe09;
-    color: black;
-    border: none;
-    border-radius: 40px;
-    padding: 16px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    width: 100%;
-    margin-top: 10px;
-}
-.withdraw-btn:hover {
-    opacity: 0.8;
-}
-
-/* Тёмная тема для кнопки: чёрная на зелёном */
-body.dark-theme .withdraw-btn {
-    background: #000000;
-    color: #ffffff;
-}
         /* ===== НИЖНЕЕ МЕНЮ ===== */
         .nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: black;
+            background: #0a0a0a;
             display: flex;
             justify-content: space-around;
             padding: 12px;
         }
         .nav-item {
-            color: #aaa;
+            color: #6a6a6a;
             text-decoration: none;
             font-size: 14px;
             display: flex;
-            flex-direction: column;
+flex-direction: column;
             align-items: center;
             gap: 4px;
             cursor: pointer;
         }
         .nav-item.active {
-            color: white;
+            color: #1DB954;
         }
 
         /* ===== МОДАЛЬНЫЕ ОКНА ===== */
@@ -422,19 +342,19 @@ body.dark-theme .withdraw-btn {
             visibility: visible;
         }
         .modal-content {
-            background: white;
+            background: #2a2a2a;
             width: 90%;
             max-width: 400px;
             border-radius: 24px;
             overflow: hidden;
             transform: scale(0.9);
-            transition: transform 0.3s ease, background-color 0.3s;
+            transition: transform 0.3s ease;
         }
         .modal.show .modal-content {
             transform: scale(1);
         }
         .modal-header {
-            background: #f0f0f0;
+            background: #1e1e1e;
             padding: 20px;
             text-align: right;
         }
@@ -443,20 +363,24 @@ body.dark-theme .withdraw-btn {
             border: none;
             font-size: 24px;
             cursor: pointer;
+            color: #b3b3b3;
         }
         .modal-body {
             padding: 20px;
-            color: black;
+            color: white;
         }
         .ref-link {
             width: 100%;
             padding: 8px;
             margin: 10px 0;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
+            border: 1px solid #3e3e3e;
+            border-radius: 30px;
+            background: #121212;
+            color: white;
         }
         .copy-btn, .check-btn {
-            background: #75fe09;
+            background: #1DB954;
+            color: black;
             border: none;
             border-radius: 40px;
             padding: 12px;
@@ -465,33 +389,12 @@ body.dark-theme .withdraw-btn {
             cursor: pointer;
             margin-top: 10px;
         }
-        body.dark-theme .copy-btn,
-        body.dark-theme .check-btn {
-background: black;
-            color: #75fe09;
-        }
         .result {
-        margin-top: 10px;
-        text-align: center;
-    }
-
-    /* ===== ТЁМНАЯ ТЕМА ДЛЯ ЗАДАНИЙ ===== */
-    body.dark-theme .task {
-        background: #75fe09;
-        color: black;
-    }
-    body.dark-theme .task-info p {
-        color: black;
-    }
-    body.dark-theme .task-price {
-        color: black;
-    }
-    body.dark-theme .take-btn {
-        background: black;
-        color: white;
-    }
-
-</style>
+            margin-top: 10px;
+            text-align: center;
+            color: #b3b3b3;
+        }
+    </style>
 </head>
 <body>
     <div class="header">
@@ -538,19 +441,19 @@ background: black;
                     <div class="referral-stat-value">0</div>
                 </div>
             </div>
-            <div class="referral-stat-card">
+<div class="referral-stat-card">
                 <div class="referral-stat-content">
                     <div class="referral-stat-label">Заработано на рефералах</div>
                     <div class="referral-stat-value">0 ₽</div>
                 </div>
             </div>
         </div>
-        <p style="margin-top:20px; color: gray; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
+        <p style="margin-top:20px; color: #b3b3b3; text-align: center;"><em>Статистика появится после приглашения друзей</em></p>
     </div>
 
     <div id="withdraw-page" class="page">
-        <!-- Заголовок убран -->
-        <div class="withdraw-card" id="withdrawContent"></div>
+        <h3 style="color:white;">Вывод средств</h3>
+        <div class="withdraw-info" id="withdrawContent"></div>
     </div>
 
     <!-- НИЖНЕЕ МЕНЮ -->
@@ -567,7 +470,7 @@ background: black;
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
             <div class="modal-body">
                 <h3>Пригласи друга</h3>
-                <p>Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
+                <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
                 <input class="ref-link" id="refLink" readonly>
                 <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
@@ -579,7 +482,7 @@ background: black;
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
-                <p>Подпишись на @HYPE_JOB1 и нажми проверку</p>
+                <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
                 <button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
@@ -587,18 +490,18 @@ background: black;
     </div>
 
     <script>
-let tg = window.Telegram?.WebApp;
+        let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
-        // ===== ТЕМА =====
+        // ===== ТЕМА ===== (переключение убрано, т.к. у нас теперь только одна тёмная тема)
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png';
         const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png';
 
-        const currentTheme = localStorage.getItem('theme') || 'light';
+        const currentTheme = localStorage.getItem('theme') || 'dark';
         if (currentTheme === 'dark') {
             document.body.classList.add('dark-theme');
             themeIcon.src = sunUrl;
@@ -607,8 +510,8 @@ let tg = window.Telegram?.WebApp;
         }
 
         themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-            const isDark = document.body.classList.contains('dark-theme');
+            // переключение темы пока оставим для совместимости, но цвета не меняются
+            const isDark = document.body.classList.toggle('dark-theme');
             themeIcon.src = isDark ? sunUrl : moonUrl;
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
@@ -632,8 +535,7 @@ let tg = window.Telegram?.WebApp;
             let key = id + '_' + new Date().toDateString();
             return !counts[key] || counts[key] < 3;
         }
-
-        function getTodayCount() {
+function getTodayCount() {
             const today = new Date().toDateString();
             let total = 0;
             for (let key in counts) {
@@ -687,8 +589,7 @@ let tg = window.Telegram?.WebApp;
             };
 
             actionsDiv.appendChild(priceSpan);
-            actionsDiv.
-appendChild(btn);
+            actionsDiv.appendChild(btn);
             div.appendChild(infoDiv);
             div.appendChild(actionsDiv);
             container.appendChild(div);
@@ -729,14 +630,14 @@ appendChild(btn);
                 saveBalance();
                 document.getElementById('balance').innerText = balance + ' ₽';
                 addCount(2);
-                checkResult.style.color = '#75fe09';
+                checkResult.style.color = '#1DB954';
                 checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
                 checkResult.style.color = 'red';
                 checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
                 checkBtn.disabled = false;
-                checkBtn.innerText = 'Проверить подписку';
+checkBtn.innerText = 'Проверить подписку';
             }
         };
 
@@ -789,7 +690,7 @@ appendChild(btn);
                 <div class="stat-card">
                     <div class="stat-content">
                         <div class="stat-label">ID</div>
-<div class="stat-value">${userId}</div>
+                        <div class="stat-value">${userId}</div>
                     </div>
                 </div>
             `;
@@ -802,15 +703,14 @@ appendChild(btn);
 
         // ===== ВЫВОД =====
         function updateWithdrawPage() {
-            const card = document.getElementById('withdrawContent');
-            card.innerHTML = `
+            document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <input type="number" class="withdraw-input" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     <input type="text" class="withdraw-input" placeholder="Номер карты (16 цифр)" maxlength="19">
                     <button class="withdraw-btn">Вывести</button>
                 </div>
-                <p style="margin-top:10px; color: gray; text-align: center;"><em>Вывод будет доступен после бета-теста</em></p>
+                <p style="margin-top:10px; color: #b3b3b3;"><em>Вывод будет доступен после бета-теста</em></p>
             `;
         }
 
