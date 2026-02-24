@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
         * {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             box-sizing: border-box;
@@ -20,97 +19,6 @@
             padding: 16px;
             padding-bottom: 80px;
             color: #ffffff;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        /* Светлая тема */
-        body.light-theme {
-            background: #75fe09;
-            color: #000000;
-        }
-        body.light-theme .logo,
-        body.light-theme .beta-badge {
-            color: #000;
-        }
-        body.light-theme .balance {
-            background: #fff;
-            color: #000;
-        }
-        body.light-theme .task {
-            background: #000;
-            color: #fff;
-        }
-        body.light-theme .task-info p {
-            color: #aaa;
-        }
-        body.light-theme .task-price {
-            color: #75fe09;
-        }
-        body.light-theme .take-btn {
-            background: #75fe09;
-            color: #000;
-        }
-        body.light-theme .stat-card,
-        body.light-theme .referral-link-card,
-        body.light-theme .referral-stat-card,
-        body.light-theme .withdraw-balance-info {
-            background: #000;
-            color: #fff;
-        }
-        body.light-theme .referral-link-input {
-            background: #fff;
-            color: #000;
-            border-color: #aaa;
-        }
-        body.light-theme .referral-copy-btn {
-            background: #75fe09;
-            color: #000;
-        }
-        body.light-theme .withdraw-field input {
-            color: #000;
-            border-bottom-color: #000;
-        }
-        body.light-theme .withdraw-field input::placeholder {
-            color: #444;
-        }
-        body.light-theme .withdraw-btn {
-            background: #000;
-            color: #75fe09;
-        }
-        body.light-theme .nav {
-            background: #000;
-        }
-        body.light-theme .nav-item {
-            color: #aaa;
-        }
-        body.light-theme .nav-item.active {
-            color: #75fe09;
-        }
-        body.light-theme .modal-content {
-            background: #fff;
-            color: #000;
-        }
-        body.light-theme .modal-header {
-            background: #f0f0f0;
-        }
-        body.light-theme .modal-close {
-            color: #000;
-        }
-        body.light-theme .ref-link {
-            background: #fff;
-            color: #000;
-            border-color: #ccc;
-        }
-        body.light-theme .copy-btn,
-        body.light-theme .check-btn {
-            background: #75fe09;
-            color: #000;
-        }
-        body.light-theme .result {
-            color: #333;
-        }
-
-        .accent {
-            color: #1DB954;
         }
         .logo {
             font-size: 24px;
@@ -139,27 +47,8 @@
         .header-left {
             display: flex;
             align-items: center;
-gap: 4px;
+            gap: 4px;
         }
-        .theme-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0 8px;
-            display: flex;
-            align-items: center;
-        }
-        .theme-icon {
-            width: 28px;
-            height: 28px;
-            object-fit: contain;
-            filter: invert(1);
-        }
-        body.light-theme .theme-icon {
-            filter: invert(0);
-        }
-
-        /* ===== СТРАНИЦЫ ===== */
         .page {
             display: none;
             opacity: 0;
@@ -171,8 +60,6 @@ gap: 4px;
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* ===== ЗАДАНИЯ ===== */
         .task {
             background: #2a2a2a;
             color: white;
@@ -218,8 +105,6 @@ gap: 4px;
         .take-btn:hover {
             opacity: 0.8;
         }
-
-        /* ===== ПРОФИЛЬ ===== */
         .profile-header {
             display: flex;
             align-items: center;
@@ -250,10 +135,6 @@ gap: 4px;
             display: flex;
             align-items: center;
             gap: 16px;
-            transition: transform 0.2s;
-        }
-        .stat-card:hover {
-            transform: scale(1.02);
         }
         .stat-content {
             flex: 1;
@@ -266,10 +147,8 @@ gap: 4px;
         .stat-value {
             font-size: 20px;
             font-weight: 600;
-            color: white;
+color: white;
         }
-
-        /* ===== РЕФЕРАЛЫ ===== */
         .referral-header {
             margin-bottom: 24px;
         }
@@ -301,7 +180,7 @@ gap: 4px;
             padding: 12px;
             border: 1px solid #3e3e3e;
             border-radius: 30px;
-font-size: 14px;
+            font-size: 14px;
             background: #121212;
             color: white;
             outline: none;
@@ -350,8 +229,6 @@ font-size: 14px;
             font-weight: 600;
             color: white;
         }
-
-        /* ===== ВЫВОД ===== */
         .withdraw-balance-info {
             background: #2a2a2a;
             color: white;
@@ -417,14 +294,12 @@ font-size: 14px;
             text-align: center;
             font-size: 14px;
         }
-
-        /* ===== НИЖНЕЕ МЕНЮ ===== */
         .nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: #0a0a0a;
+background: #0a0a0a;
             display: flex;
             justify-content: space-around;
             padding: 12px;
@@ -444,8 +319,6 @@ font-size: 14px;
         .nav-item.active {
             color: #1DB954;
         }
-
-        /* ===== МОДАЛЬНЫЕ ОКНА ===== */
         .modal {
             position: fixed;
             top: 0;
@@ -454,7 +327,7 @@ font-size: 14px;
             height: 100%;
             background: rgba(0,0,0,0.7);
             display: flex;
-align-items: center;
+            align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
@@ -530,12 +403,7 @@ align-items: center;
             <span class="logo">ХАЙП</span>
             <span class="beta-badge">[бета тест]</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <button class="theme-toggle" id="themeToggle">
-                <img class="theme-icon" id="themeIcon" src="" alt="theme">
-            </button>
-            <div class="balance" id="balance">0 ₽</div>
-        </div>
+        <div class="balance" id="balance">0 ₽</div>
     </div>
 
     <!-- СТРАНИЦЫ -->
@@ -565,7 +433,7 @@ align-items: center;
         <div class="referral-stats">
             <div class="referral-stat-card">
                 <div class="referral-stat-content">
-                    <div class="referral-stat-label">Приглашено друзей</div>
+<div class="referral-stat-label">Приглашено друзей</div>
                     <div class="referral-stat-value">0</div>
                 </div>
             </div>
@@ -576,7 +444,7 @@ align-items: center;
                 </div>
             </div>
         </div>
-<p class="withdraw-note">Статистика появится после приглашения друзей</p>
+        <p class="withdraw-note">Статистика появится после приглашения друзей</p>
     </div>
 
     <div id="withdraw-page" class="page">
@@ -623,29 +491,6 @@ align-items: center;
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
-        // ===== ТЕМА =====
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png';
-        const sunUrl = 'https://i.postimg.cc/13tyNb2V/simple-outline-weather-sun-shape-graphic-element-minimalist-illustration-vector.png';
-
-        // Применяем сохранённую тему
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        if (currentTheme === 'light') {
-            document.body.classList.add('light-theme');
-            themeIcon.src = moonUrl; // в светлой теме показываем луну (чтобы переключить на тёмную)
-        } else {
-            themeIcon.src = sunUrl; // в тёмной теме показываем солнце (чтобы переключить на светлую)
-        }
-
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-            const isLight = document.body.classList.contains('light-theme');
-            themeIcon.src = isLight ? moonUrl : sunUrl;
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        });
-
-        // ===== ХРАНИЛИЩЕ =====
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         document.getElementById('balance').innerText = balance + ' ₽';
@@ -672,9 +517,8 @@ align-items: center;
                 if (key.includes(today)) total += counts[key];
             }
             return total;
-}
+        }
 
-        // ===== ЗАДАНИЯ =====
         const tasks = [
             { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
             { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
@@ -691,7 +535,8 @@ align-items: center;
             h3.innerText = t.name;
             const p = document.createElement('p');
             p.innerText = t.desc;
-            infoDiv.appendChild(h3);
+            infoDiv.
+appendChild(h3);
             infoDiv.appendChild(p);
 
             const actionsDiv = document.createElement('div');
@@ -725,7 +570,6 @@ align-items: center;
             container.appendChild(div);
         });
 
-        // ===== МОДАЛКИ =====
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
@@ -771,11 +615,9 @@ align-items: center;
             }
         };
 
-        // ===== НАВИГАЦИЯ =====
         const pages = {
             tasks: document.getElementById('tasks-page'),
-            profile: document.
-getElementById('profile-page'),
+            profile: document.getElementById('profile-page'),
             referrals: document.getElementById('referrals-page'),
             withdraw: document.getElementById('withdraw-page')
         };
@@ -796,12 +638,11 @@ getElementById('profile-page'),
                 item.classList.add('active');
 
                 if (page === 'profile') updateProfilePage();
-                if (page === 'referrals') updateReferralsPage();
+if (page === 'referrals') updateReferralsPage();
                 if (page === 'withdraw') updateWithdrawPage();
             });
         });
 
-        // ===== ПРОФИЛЬ =====
         function updateProfilePage() {
             const todayCount = getTodayCount();
             document.getElementById('profileName').innerText = userName;
@@ -827,12 +668,10 @@ getElementById('profile-page'),
             `;
         }
 
-        // ===== РЕФЕРАЛЫ (оставлена для совместимости) =====
         function updateReferralsPage() {
             // статика уже в HTML
         }
 
-        // ===== ВЫВОД =====
         function updateWithdrawPage() {
             document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
@@ -849,14 +688,12 @@ getElementById('profile-page'),
             `;
         }
 
-        // ===== ЗАКРЫТИЕ МОДАЛОК =====
         window.onclick = (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('show');
             }
         };
 
-        // ИНИЦИАЛИЗАЦИЯ
         updateProfilePage();
     </script>
 </body>
