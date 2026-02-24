@@ -76,21 +76,25 @@
             transform: translateY(0);
         }
 
-        /* ===== ЗАДАНИЯ ===== */
+        /* ===== ЗАДАНИЯ (В СТИЛЕ ТРЕКОВ SPOTIFY) ===== */
         .task {
-            background: #2a2a2a;
+            background: transparent;
             color: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin: 8px 0;
+            padding: 12px 0;
+            margin: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        .task:last-child {
+            border-bottom: none;
         }
         .task-info h3 {
-            margin: 0 0 5px;
+            margin: 0 0 4px;
             font-size: 18px;
             color: white;
+            font-weight: 500;
         }
         .task-info p {
             margin: 0;
@@ -100,19 +104,20 @@
         .task-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
         .task-price {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1DB954; /* зелёный акцент */
+            font-size: 18px;
+            font-weight: 600;
+            color: #1DB954;
         }
         .take-btn {
             background: #1DB954;
             color: black;
             border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
@@ -147,14 +152,13 @@
         .stat-card {
             background: #2a2a2a;
             color: white;
-            border-radius: 16px;
+border-radius: 16px;
             padding: 16px;
             display: flex;
             align-items: center;
             gap: 16px;
         }
-        
-.stat-content {
+        .stat-content {
             flex: 1;
         }
         .stat-label {
@@ -306,13 +310,13 @@
             display: flex;
             justify-content: space-around;
             padding: 12px;
-        }
+}
         .nav-item {
             color: #6a6a6a;
             text-decoration: none;
             font-size: 14px;
             display: flex;
-flex-direction: column;
+            flex-direction: column;
             align-items: center;
             gap: 4px;
             cursor: pointer;
@@ -437,11 +441,11 @@ flex-direction: column;
         <div class="referral-stats">
             <div class="referral-stat-card">
                 <div class="referral-stat-content">
-                    <div class="referral-stat-label">Приглашено друзей</div>
+<div class="referral-stat-label">Приглашено друзей</div>
                     <div class="referral-stat-value">0</div>
                 </div>
             </div>
-<div class="referral-stat-card">
+            <div class="referral-stat-card">
                 <div class="referral-stat-content">
                     <div class="referral-stat-label">Заработано на рефералах</div>
                     <div class="referral-stat-value">0 ₽</div>
@@ -495,7 +499,7 @@ flex-direction: column;
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
-        // ===== ТЕМА ===== (переключение убрано, т.к. у нас теперь только одна тёмная тема)
+        // ===== ТЕМА =====
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const moonUrl = 'https://i.postimg.cc/X7njnrgQ/1120151-(1).png';
@@ -510,7 +514,6 @@ flex-direction: column;
         }
 
         themeToggle.addEventListener('click', () => {
-            // переключение темы пока оставим для совместимости, но цвета не меняются
             const isDark = document.body.classList.toggle('dark-theme');
             themeIcon.src = isDark ? sunUrl : moonUrl;
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
@@ -533,9 +536,10 @@ flex-direction: column;
 
         function canDo(id) {
             let key = id + '_' + new Date().toDateString();
-            return !counts[key] || counts[key] < 3;
+return !counts[key] || counts[key] < 3;
         }
-function getTodayCount() {
+
+        function getTodayCount() {
             const today = new Date().toDateString();
             let total = 0;
             for (let key in counts) {
@@ -599,6 +603,7 @@ function getTodayCount() {
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
+
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
@@ -623,7 +628,7 @@ function getTodayCount() {
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-            const success = true;
+            const success = true; // Имитация успеха
 
             if (success) {
                 balance += 30;
@@ -637,7 +642,7 @@ function getTodayCount() {
                 checkResult.style.color = 'red';
                 checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
                 checkBtn.disabled = false;
-checkBtn.innerText = 'Проверить подписку';
+                checkBtn.innerText = 'Проверить подписку';
             }
         };
 
