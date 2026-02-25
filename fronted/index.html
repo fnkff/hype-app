@@ -92,7 +92,6 @@
             100% { transform: scale(1); }
         }
 
-        /* Пульсация при нажатии на кнопки */
         .take-btn:active, .copy-btn:active, .check-btn:active, 
         .referral-copy-btn:active, .withdraw-btn:active {
             animation: pulse 0.2s ease;
@@ -109,7 +108,6 @@
             justify-content: space-between;
             align-items: center;
             animation: fadeSlideIn 0.4s ease forwards;
-            opacity: 0; /* начальное состояние для анимации */
         }
         .task-info {
             flex: 1;
@@ -141,11 +139,11 @@
             white-space: nowrap;
         }
         .take-btn {
-background: #1DB954;
+            background: #1DB954;
             color: black;
             border: none;
             border-radius: 30px;
-            padding: 10px 24px;
+padding: 10px 24px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -299,13 +297,13 @@ background: #1DB954;
             font-size: 20px;
             font-weight: 600;
         }
-        .
-withdraw-form {
+        .withdraw-form {
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
-        .withdraw-field {
+        .
+withdraw-field {
             position: relative;
             margin-top: 10px;
         }
@@ -453,11 +451,11 @@ withdraw-form {
             border: 1px solid #3e3e3e;
             border-radius: 40px;
             background: #121212;
-color: white;
+            color: white;
             font-size: 16px;
         }
         .copy-btn, .check-btn {
-            background: #1DB954;
+background: #1DB954;
             color: black;
             border: none;
             border-radius: 50px;
@@ -540,12 +538,11 @@ color: white;
     <div class="nav">
         <a class="nav-item active" data-page="tasks">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.
-5898Z"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
             </svg>
             <span>Задания</span>
         </a>
-        <a class="nav-item" data-page="profile">
+<a class="nav-item" data-page="profile">
             <svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12,11A5,5,0,1,0,7,6,5.006,5.006,0,0,0,12,11Zm0-8A3,3,0,1,1,9,6,3,3,0,0,1,12,3ZM3,22V18a5.006,5.006,0,0,1,5-5h8a5.006,5.006,0,0,1,5,5v4a1,1,0,0,1-2,0V18a3,3,0,0,0-3-3H8a3,3,0,0,0-3,3v4a1,1,0,0,1-2,0Z"/>
             </svg>
@@ -595,9 +592,8 @@ color: white;
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
-const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
-
-        let counts = JSON.parse(localStorage.getItem('counts')) || {};
+        const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         document.getElementById('balance').innerText = balance + ' ₽';
 
@@ -631,11 +627,9 @@ const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользовател
         ];
 
         const container = document.getElementById('tasks');
-        tasks.forEach((t, index) => {
+        tasks.forEach(t => {
             const div = document.createElement('div');
             div.className = 'task';
-            // задержка для появления каждой карточки
-            div.style.animationDelay = ${index * 0.1}s;
 
             const infoDiv = document.createElement('div');
             infoDiv.className = 'task-info';
@@ -697,14 +691,14 @@ const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользовател
             if (!canDo(2)) {
                 checkResult.style.color = 'red';
                 checkResult.innerText = 'Лимит на сегодня';
-return;
+                return;
             }
             checkBtn.disabled = true;
             checkBtn.innerText = 'Проверка...';
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-            const success = true;
+const success = true;
 
             if (success) {
                 balance += 30;
@@ -799,7 +793,7 @@ return;
 
         window.onclick = (e) => {
             if (e.target.classList.contains('modal')) {
-e.target.classList.remove('show');
+                e.target.classList.remove('show');
             }
         };
 
