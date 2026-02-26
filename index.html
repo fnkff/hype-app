@@ -93,11 +93,9 @@
             100% { transform: scale(1); }
         }
 
+        /* Пульсация для всех кликабельных элементов */
         .take-btn:active, .copy-btn:active, .check-btn:active, 
-        .referral-copy-btn:active, .withdraw-btn:active {
-            animation: pulse 0.2s ease;
-        }
-
+        .referral-copy-btn:active, .withdraw-btn:active,
         .nav-item:active {
             animation: pulse 0.2s ease;
         }
@@ -112,8 +110,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0; /* начальное состояние для анимации */
+            animation: fadeSlideUp 0.5s ease forwards;
         }
         .task-info {
             flex: 1;
@@ -799,12 +797,12 @@ infoDiv.appendChild(h3);
 
                 if (!targetPage || targetPage === currentActive) return;
 
-                // Плавное переключение
                 if (currentActive) {
                     currentActive.classList.remove('active-page');
-}
+                }
 
-                targetPage.classList.add('active-page');
+                targetPage.
+classList.add('active-page');
 
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
