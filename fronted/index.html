@@ -87,10 +87,6 @@
             100% { transform: scale(1); }
         }
 
-        .fade-slide-up {
-            animation: fadeSlideUp 0.5s ease forwards;
-        }
-
         .pulse {
             animation: pulse 0.2s ease;
         }
@@ -105,6 +101,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0; /* начальное состояние */
         }
         .task-info {
             flex: 1;
@@ -157,6 +155,9 @@ cursor: pointer;
             align-items: center;
             gap: 20px;
             margin-bottom: 28px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+            animation-delay: 0.05s;
         }
         .profile-avatar {
             width: 80px;
@@ -189,7 +190,12 @@ cursor: pointer;
             display: flex;
             align-items: center;
             gap: 20px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
         }
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.15s; }
+        .stat-card:nth-child(3) { animation-delay: 0.2s; }
         .stat-content {
             flex: 1;
         }
@@ -207,6 +213,9 @@ cursor: pointer;
         /* ===== РЕФЕРАЛЫ ===== */
         .referral-header {
             margin-bottom: 28px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+            animation-delay: 0.05s;
         }
         .referral-title {
             font-size: 24px;
@@ -220,6 +229,9 @@ cursor: pointer;
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 24px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+            animation-delay: 0.1s;
         }
         .referral-link-label {
             font-size: 16px;
@@ -275,7 +287,11 @@ cursor: pointer;
             display: flex;
             align-items: center;
             gap: 20px;
+            animation: fadeSlideUp 0.5s ease forwards;
+opacity: 0;
         }
+        .referral-stat-card:nth-child(1) { animation-delay: 0.15s; }
+        .referral-stat-card:nth-child(2) { animation-delay: 0.2s; }
         .referral-stat-content {
             flex: 1;
         }
@@ -300,9 +316,11 @@ cursor: pointer;
             text-align: center;
             font-size: 20px;
             font-weight: 600;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+            animation-delay: 0.05s;
         }
-        
-withdraw-form {
+        .withdraw-form {
             display: flex;
             flex-direction: column;
             gap: 24px;
@@ -310,7 +328,11 @@ withdraw-form {
         .withdraw-field {
             position: relative;
             margin-top: 10px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
         }
+        .withdraw-field:nth-child(1) { animation-delay: 0.1s; }
+        .withdraw-field:nth-child(2) { animation-delay: 0.15s; }
         .withdraw-field input {
             width: 100%;
             padding: 16px 0 6px 0;
@@ -347,6 +369,9 @@ withdraw-form {
             transition: opacity 0.2s;
             width: 100%;
             margin-top: 24px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+            animation-delay: 0.2s;
         }
         .withdraw-btn:hover {
             opacity: 0.8;
@@ -407,7 +432,7 @@ withdraw-form {
             backdrop-filter: blur(3px);
             display: flex;
             align-items: center;
-            justify-content: center;
+justify-content: center;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -454,7 +479,7 @@ withdraw-form {
             padding: 12px;
             margin: 12px 0;
             border: 1px solid #3e3e3e;
-border-radius: 40px;
+            border-radius: 40px;
             background: #121212;
             color: white;
             font-size: 16px;
@@ -539,7 +564,7 @@ border-radius: 40px;
             </div>
             <div class="referral-stats">
                 <div class="referral-stat-card">
-                    <div class="referral-stat-content">
+<div class="referral-stat-content">
                         <div class="referral-stat-label">Приглашено друзей</div>
                         <div class="referral-stat-value">0</div>
                     </div>
@@ -604,7 +629,7 @@ border-radius: 40px;
 
     <div class="modal" id="subModal">
         <div class="modal-content">
-<div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
+            <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
                 <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
@@ -648,17 +673,6 @@ border-radius: 40px;
             return total;
         }
 
-        // Функция для анимации появления элементов
-        function animateElements(elements, baseDelay = 0) {
-            elements.forEach((el, index) => {
-                if (el) {
-                    setTimeout(() => {
-                        el.classList.add('fade-slide-up');
-                    }, baseDelay + index * 100);
-                }
-            });
-        }
-
         // Функция для пульсации иконки
         function pulseIcon(item) {
             const svg = item.querySelector('svg');
@@ -676,9 +690,11 @@ border-radius: 40px;
         ];
 
         const container = document.getElementById('tasks');
-        tasks.forEach(t => {
+        tasks.forEach((t, index) => {
             const div = document.createElement('div');
             div.className = 'task';
+            // Добавляем задержку анимации в зависимости от индекса
+            div.style.animationDelay = (0.1 + index * 0.1) + 's';
 
             const infoDiv = document.createElement('div');
             infoDiv.className = 'task-info';
@@ -687,7 +703,8 @@ border-radius: 40px;
             const p = document.createElement('p');
             p.innerText = t.desc;
             infoDiv.appendChild(h3);
-            infoDiv.appendChild(p);
+            infoDiv.
+appendChild(p);
 
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'task-actions';
@@ -789,7 +806,8 @@ border-radius: 40px;
                     currentActive.classList.remove('active-page');
                 }
 
-                targetPage.classList.add('active-page');
+                targetPage.classList.
+add('active-page');
 
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
@@ -800,34 +818,6 @@ border-radius: 40px;
                 if (page === 'profile') updateProfilePage();
                 if (page === 'referrals') updateReferralsPage();
                 if (page === 'withdraw') updateWithdrawPage();
-
-                // Анимируем элементы новой страницы
-                setTimeout(() => {
-                    if (page === 'tasks') {
-                        const tasksElements = document.querySelectorAll('.task');
-                        animateElements(tasksElements, 100);
-                    } else if (page === 'profile') {
-                        const profileElements = [
-                            document.querySelector('.profile-header'),
-                            ...document.querySelectorAll('.stat-card')
-                        ].filter(el => el);
-animateElements(profileElements, 100);
-                    } else if (page === 'referrals') {
-                        const refElements = [
-                            document.querySelector('.referral-header'),
-                            document.querySelector('.referral-link-card'),
-                            ...document.querySelectorAll('.referral-stat-card')
-                        ].filter(el => el);
-                        animateElements(refElements, 100);
-                    } else if (page === 'withdraw') {
-                        const withdrawElements = [
-                            document.querySelector('.withdraw-balance-info'),
-                            ...document.querySelectorAll('.withdraw-field'),
-                            document.querySelector('.withdraw-btn')
-                        ].filter(el => el);
-                        animateElements(withdrawElements, 100);
-                    }
-                }, 50);
             });
         });
 
@@ -887,12 +877,6 @@ animateElements(profileElements, 100);
                 e.target.classList.remove('show');
             }
         };
-
-        // Инициализация: анимируем активную страницу (задания) при загрузке
-        setTimeout(() => {
-            const tasksElements = document.querySelectorAll('.task');
-            animateElements(tasksElements, 100);
-        }, 200);
 
         updateProfilePage();
     </script>
