@@ -102,7 +102,7 @@
             justify-content: space-between;
             align-items: center;
             animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0; /* начальное состояние */
+            opacity: 0;
         }
         .task-info {
             flex: 1;
@@ -555,28 +555,7 @@ justify-content: center;
             <div class="referral-header">
                 <div class="referral-title">Реферальная программа</div>
             </div>
-            <div class="referral-link-card">
-                <div class="referral-link-label">Твоя реферальная ссылка</div>
-                <div class="referral-link-field">
-                    <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
-                    <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
-                </div>
-            </div>
-            <div class="referral-stats">
-                <div class="referral-stat-card">
-<div class="referral-stat-content">
-                        <div class="referral-stat-label">Приглашено друзей</div>
-                        <div class="referral-stat-value">0</div>
-                    </div>
-                </div>
-                <div class="referral-stat-card">
-                    <div class="referral-stat-content">
-                        <div class="referral-stat-label">Заработано на рефералах</div>
-                        <div class="referral-stat-value">0 ₽</div>
-                    </div>
-                </div>
-            </div>
-            <p class="withdraw-note">Статистика появится после приглашения друзей</p>
+            <div id="referralsContent"></div>
         </div>
 
         <div id="withdraw-page" class="page">
@@ -629,7 +608,7 @@ justify-content: center;
 
     <div class="modal" id="subModal">
         <div class="modal-content">
-            <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
+<div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
                 <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
@@ -684,58 +663,60 @@ justify-content: center;
             }
         }
 
-        const tasks = [
-            { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
-            { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
-        ];
+        // Функция для обновления страницы заданий (полное пересоздание)
+        function updateTasksPage() {
+            const container = document.getElementById('tasks');
+            container.innerHTML = ''; // очищаем
+            const tasks = [
+                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
+                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
+            ];
+            tasks.forEach((t, index) => {
+                const div = document.createElement('div');
+                div.className = 'task';
+                div.style.animationDelay = (0.1 + index * 0.1) + 's';
 
-        const container = document.getElementById('tasks');
-        tasks.forEach((t, index) => {
-            const div = document.createElement('div');
-            div.className = 'task';
-            // Добавляем задержку анимации в зависимости от индекса
-            div.style.animationDelay = (0.1 + index * 0.1) + 's';
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'task-info';
+                const h3 = document.createElement('h3');
+                h3.innerText = t.name;
+                const p = document.createElement('p');
+                p.innerText = t.desc;
+                infoDiv.appendChild(h3);
+                infoDiv.appendChild(p);
 
-            const infoDiv = document.createElement('div');
-            infoDiv.className = 'task-info';
-            const h3 = document.createElement('h3');
-            h3.innerText = t.name;
-            const p = document.createElement('p');
-            p.innerText = t.desc;
-            infoDiv.appendChild(h3);
-            infoDiv.
-appendChild(p);
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'task-actions';
+                const priceSpan = document.createElement('span');
+                priceSpan.className = 'task-price';
+                priceSpan.innerText = t.price + ' ₽';
+                const btn = document.createElement('button');
+                btn.className = 'take-btn';
+                btn.setAttribute('data-id', t.id);
+                btn.innerText = 'Взять';
+                btn.onclick = function(e) {
+                    let id = parseInt(this.dataset.id);
+                    if (!canDo(id)) {
+                        alert('Лимит на сегодня');
+                        return;
+                    }
+                    if (id === 1) {
+                        let link = 'https://t.me/your_bot?start=ref_' + userId;
+                        document.getElementById('refLink').value = link;
+                        document.getElementById('refModal').classList.add('show');
+                    } else {
+                        document.
+getElementById('subModal').classList.add('show');
+                    }
+                };
 
-            const actionsDiv = document.createElement('div');
-            actionsDiv.className = 'task-actions';
-            const priceSpan = document.createElement('span');
-            priceSpan.className = 'task-price';
-            priceSpan.innerText = t.price + ' ₽';
-            const btn = document.createElement('button');
-            btn.className = 'take-btn';
-            btn.setAttribute('data-id', t.id);
-            btn.innerText = 'Взять';
-            btn.onclick = function(e) {
-                let id = parseInt(this.dataset.id);
-                if (!canDo(id)) {
-                    alert('Лимит на сегодня');
-                    return;
-                }
-                if (id === 1) {
-                    let link = 'https://t.me/your_bot?start=ref_' + userId;
-                    document.getElementById('refLink').value = link;
-                    document.getElementById('refModal').classList.add('show');
-                } else {
-                    document.getElementById('subModal').classList.add('show');
-                }
-            };
-
-            actionsDiv.appendChild(priceSpan);
-            actionsDiv.appendChild(btn);
-            div.appendChild(infoDiv);
-            div.appendChild(actionsDiv);
-            container.appendChild(div);
-        });
+                actionsDiv.appendChild(priceSpan);
+                actionsDiv.appendChild(btn);
+                div.appendChild(infoDiv);
+                div.appendChild(actionsDiv);
+                container.appendChild(div);
+            });
+        }
 
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
@@ -806,8 +787,7 @@ appendChild(p);
                     currentActive.classList.remove('active-page');
                 }
 
-                targetPage.classList.
-add('active-page');
+                targetPage.classList.add('active-page');
 
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
@@ -815,9 +795,15 @@ add('active-page');
                 window.scrollTo(0, 0);
 
                 // Обновляем содержимое страниц
-                if (page === 'profile') updateProfilePage();
-                if (page === 'referrals') updateReferralsPage();
-                if (page === 'withdraw') updateWithdrawPage();
+                if (page === 'tasks') {
+                    updateTasksPage();
+                } else if (page === 'profile') {
+                    updateProfilePage();
+                } else if (page === 'referrals') {
+                    updateReferralsPage();
+                } else if (page === 'withdraw') {
+                    updateWithdrawPage();
+                }
             });
         });
 
@@ -826,7 +812,8 @@ add('active-page');
             document.getElementById('profileName').innerText = userName;
             const avatarEl = document.getElementById('profileAvatar');
             if (userName && userName !== 'Пользователь') {
-                avatarEl.innerText = userName.charAt(0).toUpperCase();
+                avatarEl.innerText = userName.
+charAt(0).toUpperCase();
             } else {
                 avatarEl.innerText = '?';
             }
@@ -853,7 +840,30 @@ add('active-page');
         }
 
         function updateReferralsPage() {
-            // страница рефералов статична, ничего обновлять не нужно
+            document.getElementById('referralsContent').innerHTML = `
+                <div class="referral-link-card">
+                    <div class="referral-link-label">Твоя реферальная ссылка</div>
+                    <div class="referral-link-field">
+                        <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
+                        <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
+                    </div>
+                </div>
+                <div class="referral-stats">
+                    <div class="referral-stat-card">
+                        <div class="referral-stat-content">
+                            <div class="referral-stat-label">Приглашено друзей</div>
+                            <div class="referral-stat-value">0</div>
+                        </div>
+                    </div>
+                    <div class="referral-stat-card">
+                        <div class="referral-stat-content">
+                            <div class="referral-stat-label">Заработано на рефералах</div>
+                            <div class="referral-stat-value">0 ₽</div>
+                        </div>
+                    </div>
+                </div>
+                <p class="withdraw-note">Статистика появится после приглашения друзей</p>
+            `;
         }
 
         function updateWithdrawPage() {
@@ -878,7 +888,11 @@ add('active-page');
             }
         };
 
+        // Инициализация: загружаем все страницы
+        updateTasksPage();
         updateProfilePage();
+        updateReferralsPage();
+        updateWithdrawPage();
     </script>
 </body>
 </html>
