@@ -52,6 +52,14 @@
             gap: 4px;
         }
 
+        /* Единый стиль заголовков страниц */
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 16px;
+        }
+
         .pages-container {
             position: relative;
             min-height: 400px;
@@ -135,13 +143,13 @@
         }
         .take-btn {
             background: #1DB954;
-            color: black;
+color: black;
             border: none;
             border-radius: 30px;
             padding: 10px 24px;
             font-size: 16px;
             font-weight: 600;
-cursor: pointer;
+            cursor: pointer;
             transition: opacity 0.2s;
             white-space: nowrap;
         }
@@ -211,18 +219,6 @@ cursor: pointer;
         }
 
         /* ===== РЕФЕРАЛЫ ===== */
-        .referral-header {
-            margin-bottom: 28px;
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
-            animation-delay: 0.05s;
-        }
-        .referral-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 16px;
-        }
         .referral-link-card {
             background: #2a2a2a;
             color: white;
@@ -288,7 +284,7 @@ cursor: pointer;
             align-items: center;
             gap: 20px;
             animation: fadeSlideUp 0.5s ease forwards;
-opacity: 0;
+            opacity: 0;
         }
         .referral-stat-card:nth-child(1) { animation-delay: 0.15s; }
         .referral-stat-card:nth-child(2) { animation-delay: 0.2s; }
@@ -432,12 +428,12 @@ opacity: 0;
             backdrop-filter: blur(3px);
             display: flex;
             align-items: center;
-justify-content: center;
+            justify-content: center;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
             z-index: 1000;
-        }
+}
         .modal.show {
             opacity: 1;
             visibility: visible;
@@ -507,7 +503,6 @@ justify-content: center;
             font-size: 16px;
         }
 
-        /* Адаптация для очень маленьких экранов */
         @media (max-width: 360px) {
             .logo {
                 font-size: 28px;
@@ -540,10 +535,12 @@ justify-content: center;
 
     <div class="pages-container">
         <div id="tasks-page" class="page active-page">
+            <div class="page-title">Задания</div>
             <div id="tasks"></div>
         </div>
 
         <div id="profile-page" class="page">
+            <div class="page-title">Профиль</div>
             <div class="profile-header">
                 <div class="profile-avatar" id="profileAvatar"></div>
                 <div class="profile-name" id="profileName"></div>
@@ -552,14 +549,12 @@ justify-content: center;
         </div>
 
         <div id="referrals-page" class="page">
-            <div class="referral-header">
-                <div class="referral-title">Реферальная программа</div>
-            </div>
+            <div class="page-title">Реферальная программа</div>
             <div id="referralsContent"></div>
         </div>
 
         <div id="withdraw-page" class="page">
-            <h3 style="color:white; margin-bottom:16px;">Вывод средств</h3>
+            <div class="page-title">Вывод средств</div>
             <div class="withdraw-info" id="withdrawContent"></div>
         </div>
     </div>
@@ -608,11 +603,11 @@ justify-content: center;
 
     <div class="modal" id="subModal">
         <div class="modal-content">
-<div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
+            <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
                 <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
-                <button class="check-btn" id="checkBtn">Проверить подписку</button>
+<button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
         </div>
@@ -663,10 +658,10 @@ justify-content: center;
             }
         }
 
-        // Функция для обновления страницы заданий (полное пересоздание)
+        // Функция для обновления страницы заданий
         function updateTasksPage() {
             const container = document.getElementById('tasks');
-            container.innerHTML = ''; // очищаем
+            container.innerHTML = '';
             const tasks = [
                 { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
                 { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
@@ -705,8 +700,7 @@ justify-content: center;
                         document.getElementById('refLink').value = link;
                         document.getElementById('refModal').classList.add('show');
                     } else {
-                        document.
-getElementById('subModal').classList.add('show');
+                        document.getElementById('subModal').classList.add('show');
                     }
                 };
 
@@ -714,7 +708,8 @@ getElementById('subModal').classList.add('show');
                 actionsDiv.appendChild(btn);
                 div.appendChild(infoDiv);
                 div.appendChild(actionsDiv);
-                container.appendChild(div);
+                container.
+appendChild(div);
             });
         }
 
@@ -812,15 +807,14 @@ getElementById('subModal').classList.add('show');
             document.getElementById('profileName').innerText = userName;
             const avatarEl = document.getElementById('profileAvatar');
             if (userName && userName !== 'Пользователь') {
-                avatarEl.innerText = userName.
-charAt(0).toUpperCase();
+                avatarEl.innerText = userName.charAt(0).toUpperCase();
             } else {
                 avatarEl.innerText = '?';
             }
             document.getElementById('profileStats').innerHTML = `
                 <div class="stat-card">
                     <div class="stat-content">
-                        <div class="stat-label">Баланс</div>
+<div class="stat-label">Баланс</div>
                         <div class="stat-value">${balance} ₽</div>
                     </div>
                 </div>
@@ -888,7 +882,7 @@ charAt(0).toUpperCase();
             }
         };
 
-        // Инициализация: загружаем все страницы
+        // Инициализация
         updateTasksPage();
         updateProfilePage();
         updateReferralsPage();
