@@ -110,14 +110,8 @@
             justify-content: space-between;
             align-items: center;
             animation: fadeSlideIn 0.4s ease forwards;
-            opacity: 0;
+            opacity: 0; /* начальное состояние для анимации */
         }
-        .task:nth-child(1) { animation-delay: 0.1s; }
-        .task:nth-child(2) { animation-delay: 0.2s; }
-        .task:nth-child(3) { animation-delay: 0.3s; }
-        .task:nth-child(4) { animation-delay: 0.4s; }
-        .task:nth-child(5) { animation-delay: 0.5s; }
-        
         .task-info {
             flex: 1;
             min-width: 0;
@@ -137,7 +131,7 @@
         }
         .task-actions {
             display: flex;
-align-items: center;
+            align-items: center;
             gap: 12px;
             flex-shrink: 0;
         }
@@ -146,7 +140,7 @@ align-items: center;
             font-weight: 600;
             color: #1DB954;
             white-space: nowrap;
-        }
+}
         .take-btn {
             background: #1DB954;
             color: black;
@@ -287,7 +281,7 @@ align-items: center;
         }
         .referral-stats {
             display: flex;
-flex-direction: column;
+            flex-direction: column;
             gap: 16px;
         }
         .referral-stat-card {
@@ -295,7 +289,7 @@ flex-direction: column;
             color: white;
             border-radius: 20px;
             padding: 20px;
-            display: flex;
+display: flex;
             align-items: center;
             gap: 20px;
             animation: fadeSlideIn 0.4s ease forwards;
@@ -429,7 +423,7 @@ flex-direction: column;
         .nav-item svg circle,
         .nav-item svg polygon {
             fill: currentColor;
-stroke: currentColor;
+            stroke: currentColor;
         }
 
         /* ===== МОДАЛЬНЫЕ ОКНА ===== */
@@ -439,7 +433,7 @@ stroke: currentColor;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+background: rgba(0,0,0,0.5);
             backdrop-filter: blur(3px);
             display: flex;
             align-items: center;
@@ -571,7 +565,7 @@ stroke: currentColor;
                 <div class="referral-link-field">
                     <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                     <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
-                </div>
+</div>
             </div>
             <div class="referral-stats">
                 <div class="referral-stat-card">
@@ -613,12 +607,12 @@ stroke: currentColor;
         <a class="nav-item" data-page="referrals">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                 <path d="M26.375 14.976c1.164-1.395 1.852-3.297 1.852-5.325 0-4.19-2.913-7.6-6.492-7.6-2.484 0-4.644 1.641-5.735 4.046-1.09-2.405-3.251-4.047-5.734-4.047-3.58 0-6.492 3.41-6.492 7.601 0 2.033.686 3.932 1.851 5.325C3.589 15.933 0 17.729 0 23.134v1.995h6.124c-.245.813-.39 1.747-.39 2.826v1.995H26.265v-1.995c0-1.08-.145-2.013-.39-2.826H32v-1.995c0-5.405-3.589-7.2-5.625-8.158zm-19.32 8.158h-5.06c0-6.006 5.274-6.004 6.445-7.574l.134-.716C6.929 14.01 5.768 12 5.768 9.65c0-3.096 2.014-5.606 4.498-5.606 1.759 0 3.278 1.262 4.016 3.098-2.749.884-4.775 3.834-4.775 7.328 0 2.033.687 3.932 1.852 5.325-1.247.586-3.074 1.488-4.305 3.338zm9.003 4.821h-8.33c0-6.006 5.275-6.004 6.445-7.575l.134-.716c-1.644-.834-2.805-2.842-2.805-5.193 0-3.096 2.014-5.606 4.498-5.606 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.327-2.763 5.173l.153.814c1.284 1.495 6.383 1.592 6.383 7.497h-8.212zm8.886-4.82c-1.23-1.85-3.058-2.752-4.304-3.338 1.164-1.396 1.852-3.298 1.852-5.326 0-3.494-2.026-6.443-4.774-7.328.738-1.836 2.257-3.098 4.017-3.098 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.326-2.763 5.173l.153.814c1.284 1.494 6.383 1.592 6.383 7.496z"/>
-</svg>
+            </svg>
             <span>Рефералы</span>
         </a>
         <a class="nav-item" data-page="withdraw">
             <svg height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
-                <path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z"/>
+<path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z"/>
                 <path d="m16 19h2a1 1 0 0 0 0-2h-1a1 1 0 0 0 -2 0v.18a3 3 0 0 0 1 5.82 1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h1a1 1 0 0 0 2 0v-.18a3 3 0 0 0 -1-5.82 1 1 0 0 1 0-2z"/>
             </svg>
             <span>Вывод</span>
@@ -690,9 +684,11 @@ stroke: currentColor;
         ];
 
         const container = document.getElementById('tasks');
-        tasks.forEach(t => {
+        tasks.forEach((t, index) => {
             const div = document.createElement('div');
             div.className = 'task';
+            // Добавляем задержку анимации в зависимости от индекса
+            div.style.animationDelay = (0.1 + index * 0.05) + 's';
 
             const infoDiv = document.createElement('div');
             infoDiv.className = 'task-info';
@@ -704,8 +700,8 @@ stroke: currentColor;
             infoDiv.appendChild(p);
 
             const actionsDiv = document.createElement('div');
-actionsDiv.className = 'task-actions';
-            const priceSpan = document.createElement('span');
+            actionsDiv.className = 'task-actions';
+const priceSpan = document.createElement('span');
             priceSpan.className = 'task-price';
             priceSpan.innerText = t.price + ' ₽';
             const btn = document.createElement('button');
@@ -802,15 +798,12 @@ actionsDiv.className = 'task-actions';
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                // Запускаем пульсацию
                 pulseIcon(item);
 
                 const page = item.dataset.page;
                 const targetPage = pages[page];
-                const currentActive = Object.values(pages).
-find(p => p.classList.contains('active-page'));
-
-                if (!targetPage || targetPage === currentActive) return;
+                const currentActive = Object.values(pages).find(p => p.classList.contains('active-page'));
+if (!targetPage || targetPage === currentActive) return;
 
                 if (currentActive) {
                     currentActive.classList.remove('active-page');
@@ -861,7 +854,7 @@ find(p => p.classList.contains('active-page'));
         }
 
         function updateReferralsPage() {
-            // статика уже в HTML
+            // статика уже в HTML, анимация задана в CSS
         }
 
         function updateWithdrawPage() {
