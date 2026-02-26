@@ -64,7 +64,7 @@
             width: 100%;
             opacity: 0;
             visibility: hidden;
-            transform: translateX(30px);
+            transform: translateX(20px);
             transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
             pointer-events: none;
         }
@@ -89,16 +89,13 @@
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(0.9); }
+            50% { transform: scale(0.95); }
             100% { transform: scale(1); }
         }
 
         .take-btn:active, .copy-btn:active, .check-btn:active, 
-        .referral-copy-btn:active, .withdraw-btn:active {
-            animation: pulse 0.2s ease;
-        }
-
-        .nav-item svg.pulse {
+        .referral-copy-btn:active, .withdraw-btn:active,
+        .nav-item:active {
             animation: pulse 0.2s ease;
         }
 
@@ -142,10 +139,10 @@
             font-size: 20px;
             font-weight: 600;
             color: #1DB954;
-white-space: nowrap;
+            white-space: nowrap;
         }
         .take-btn {
-            background: #1DB954;
+background: #1DB954;
             color: black;
             border: none;
             border-radius: 30px;
@@ -290,10 +287,9 @@ white-space: nowrap;
             flex-direction: column;
             gap: 16px;
         }
-        
-referral-stat-card {
+        .referral-stat-card {
             background: #2a2a2a;
-            color: white;
+color: white;
             border-radius: 20px;
             padding: 20px;
             display: flex;
@@ -435,9 +431,9 @@ referral-stat-card {
 
         /* ===== МОДАЛЬНЫЕ ОКНА ===== */
         .modal {
-position: fixed;
+            position: fixed;
             top: 0;
-            left: 0;
+left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.5);
@@ -571,8 +567,7 @@ position: fixed;
                 <div class="referral-link-label">Твоя реферальная ссылка</div>
                 <div class="referral-link-field">
                     <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
-                    <button class="referral-copy-btn" onclick="this.previousElementSibling.
-select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
+                    <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
                 </div>
             </div>
             <div class="referral-stats">
@@ -618,7 +613,8 @@ select(); navigator.clipboard.writeText(this.previousElementSibling.value); aler
             </svg>
             <span>Рефералы</span>
         </a>
-        <a class="nav-item" data-page="withdraw"><svg height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+        <a class="nav-item" data-page="withdraw">
+            <svg height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
                 <path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z"/>
                 <path d="m16 19h2a1 1 0 0 0 0-2h-1a1 1 0 0 0 -2 0v.18a3 3 0 0 0 1 5.82 1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h1a1 1 0 0 0 2 0v-.18a3 3 0 0 0 -1-5.82 1 1 0 0 1 0-2z"/>
             </svg>
@@ -706,10 +702,9 @@ select(); navigator.clipboard.writeText(this.previousElementSibling.value); aler
             infoDiv.appendChild(p);
 
             const actionsDiv = document.createElement('div');
-            actionsDiv.
-className = 'task-actions';
+            actionsDiv.className = 'task-actions';
             const priceSpan = document.createElement('span');
-            priceSpan.className = 'task-price';
+priceSpan.className = 'task-price';
             priceSpan.innerText = t.price + ' ₽';
             const btn = document.createElement('button');
             btn.className = 'take-btn';
@@ -791,44 +786,26 @@ className = 'task-actions';
 
         const navItems = document.querySelectorAll('.nav-item');
 
-        // Функция пульсации иконки
-        function pulseIcon(item) {
-            const svg = item.querySelector('svg');
-            if (svg) {
-                svg.classList.add('pulse');
-                setTimeout(() => {
-                    svg.classList.remove('pulse');
-                }, 200);
-            }
-        }
-
-        // Обработчик клика для навигации с анимацией скольжения
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                pulseIcon(item);
-
                 const page = item.dataset.page;
                 const targetPage = pages[page];
-                const currentActive = Object.values(pages).
-find(p => p.classList.contains('active-page'));
+                const currentActive = Object.values(pages).find(p => p.classList.contains('active-page'));
 
                 if (!targetPage || targetPage === currentActive) return;
 
-                // Плавно убираем текущую страницу
                 if (currentActive) {
                     currentActive.classList.remove('active-page');
                 }
 
-                // Показываем новую
                 targetPage.classList.add('active-page');
 
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
                 window.scrollTo(0, 0);
-
-                if (page === 'profile') updateProfilePage();
+if (page === 'profile') updateProfilePage();
                 if (page === 'referrals') updateReferralsPage();
                 if (page === 'withdraw') updateWithdrawPage();
             });
