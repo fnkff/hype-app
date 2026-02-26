@@ -64,8 +64,8 @@
             width: 100%;
             opacity: 0;
             visibility: hidden;
-            transform: translateX(30px);
-            transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1), visibility 0.6s ease;
+            transform: translateX(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
             pointer-events: none;
         }
         .page.active-page {
@@ -105,7 +105,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            opacity: 0;
         }
         .task-info {
             flex: 1;
@@ -141,10 +140,10 @@
             color: black;
             border: none;
             border-radius: 30px;
-padding: 10px 24px;
+            padding: 10px 24px;
             font-size: 16px;
             font-weight: 600;
-            cursor: pointer;
+cursor: pointer;
             transition: opacity 0.2s;
             white-space: nowrap;
         }
@@ -190,7 +189,6 @@ padding: 10px 24px;
             display: flex;
             align-items: center;
             gap: 20px;
-            opacity: 0;
         }
         .stat-content {
             flex: 1;
@@ -277,7 +275,6 @@ padding: 10px 24px;
             display: flex;
             align-items: center;
             gap: 20px;
-            opacity: 0;
         }
         .referral-stat-content {
             flex: 1;
@@ -299,13 +296,13 @@ padding: 10px 24px;
             color: white;
             border-radius: 20px;
             padding: 20px;
-margin-bottom: 28px;
+            margin-bottom: 28px;
             text-align: center;
             font-size: 20px;
             font-weight: 600;
-            opacity: 0;
         }
-        .withdraw-form {
+        
+withdraw-form {
             display: flex;
             flex-direction: column;
             gap: 24px;
@@ -313,7 +310,6 @@ margin-bottom: 28px;
         .withdraw-field {
             position: relative;
             margin-top: 10px;
-            opacity: 0;
         }
         .withdraw-field input {
             width: 100%;
@@ -451,14 +447,14 @@ margin-bottom: 28px;
         }
         .modal-body h3 {
             font-size: 24px;
-margin-bottom: 12px;
+            margin-bottom: 12px;
         }
         .ref-link {
             width: 100%;
             padding: 12px;
             margin: 12px 0;
             border: 1px solid #3e3e3e;
-            border-radius: 40px;
+border-radius: 40px;
             background: #121212;
             color: white;
             font-size: 16px;
@@ -567,7 +563,7 @@ margin-bottom: 12px;
     <!-- НИЖНЕЕ МЕНЮ С ИКОНКАМИ SVG -->
     <div class="nav">
         <a class="nav-item active" data-page="tasks">
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
             </svg>
             <span>Задания</span>
@@ -600,7 +596,7 @@ margin-bottom: 12px;
             <div class="modal-body">
                 <h3>Пригласи друга</h3>
                 <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
-<input class="ref-link" id="refLink" readonly>
+                <input class="ref-link" id="refLink" readonly>
                 <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
         </div>
@@ -608,7 +604,7 @@ margin-bottom: 12px;
 
     <div class="modal" id="subModal">
         <div class="modal-content">
-            <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
+<div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
                 <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
@@ -655,9 +651,11 @@ margin-bottom: 12px;
         // Функция для анимации появления элементов
         function animateElements(elements, baseDelay = 0) {
             elements.forEach((el, index) => {
-                setTimeout(() => {
-                    el.classList.add('fade-slide-up');
-                }, baseDelay + index * 100);
+                if (el) {
+                    setTimeout(() => {
+                        el.classList.add('fade-slide-up');
+                    }, baseDelay + index * 100);
+                }
             });
         }
 
@@ -708,7 +706,7 @@ margin-bottom: 12px;
                 }
                 if (id === 1) {
                     let link = 'https://t.me/your_bot?start=ref_' + userId;
-document.getElementById('refLink').value = link;
+                    document.getElementById('refLink').value = link;
                     document.getElementById('refModal').classList.add('show');
                 } else {
                     document.getElementById('subModal').classList.add('show');
@@ -721,12 +719,6 @@ document.getElementById('refLink').value = link;
             div.appendChild(actionsDiv);
             container.appendChild(div);
         });
-
-        // Анимируем карточки заданий после добавления
-        setTimeout(() => {
-            const tasksElements = document.querySelectorAll('.task');
-            animateElements(tasksElements, 100);
-        }, 100);
 
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
@@ -785,7 +777,6 @@ document.getElementById('refLink').value = link;
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                // Пульсация иконки
                 pulseIcon(item);
 
                 const page = item.dataset.page;
@@ -805,17 +796,22 @@ document.getElementById('refLink').value = link;
 
                 window.scrollTo(0, 0);
 
-                // Анимируем элементы на новой странице
+                // Обновляем содержимое страниц
+                if (page === 'profile') updateProfilePage();
+                if (page === 'referrals') updateReferralsPage();
+                if (page === 'withdraw') updateWithdrawPage();
+
+                // Анимируем элементы новой страницы
                 setTimeout(() => {
                     if (page === 'tasks') {
                         const tasksElements = document.querySelectorAll('.task');
                         animateElements(tasksElements, 100);
                     } else if (page === 'profile') {
-const profileElements = [
+                        const profileElements = [
                             document.querySelector('.profile-header'),
                             ...document.querySelectorAll('.stat-card')
                         ].filter(el => el);
-                        animateElements(profileElements, 100);
+animateElements(profileElements, 100);
                     } else if (page === 'referrals') {
                         const refElements = [
                             document.querySelector('.referral-header'),
@@ -834,12 +830,6 @@ const profileElements = [
                 }, 50);
             });
         });
-
-        // Инициализация: анимируем активную страницу (задания) при загрузке
-        setTimeout(() => {
-            const tasksElements = document.querySelectorAll('.task');
-            animateElements(tasksElements, 100);
-        }, 200);
 
         function updateProfilePage() {
             const todayCount = getTodayCount();
@@ -897,6 +887,12 @@ const profileElements = [
                 e.target.classList.remove('show');
             }
         };
+
+        // Инициализация: анимируем активную страницу (задания) при загрузке
+        setTimeout(() => {
+            const tasksElements = document.querySelectorAll('.task');
+            animateElements(tasksElements, 100);
+        }, 200);
 
         updateProfilePage();
     </script>
