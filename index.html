@@ -55,7 +55,6 @@
             gap: 4px;
         }
 
-        /* Единый стиль заголовков страниц */
         .page-title {
             font-size: 24px;
             font-weight: 700;
@@ -67,7 +66,7 @@
             flex: 1;
             min-height: 0;
             overflow-y: auto;
-            padding-bottom: 20px;
+            padding-bottom: 90px; /* чтобы контент не перекрывался меню */
         }
 
         .page {
@@ -77,7 +76,7 @@
             display: block;
         }
 
-        /* ===== АНИМАЦИИ ===== */
+        /* Анимации */
         @keyframes fadeSlideUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -93,7 +92,7 @@
             animation: pulse 0.2s ease;
         }
 
-        /* ===== ЗАДАНИЯ ===== */
+        /* Задания */
         .task {
             background: #2a2a2a;
             color: white;
@@ -145,13 +144,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
-white-space: nowrap;
-        }
+            white-space: nowrap;
+}
         .take-btn:hover {
             opacity: 0.8;
         }
 
-        /* ===== ПРОФИЛЬ ===== */
+        /* Профиль */
         .profile-header {
             display: flex;
             align-items: center;
@@ -212,7 +211,7 @@ white-space: nowrap;
             color: white;
         }
 
-        /* ===== РЕФЕРАЛЫ ===== */
+        /* Рефералы */
         .referral-link-card {
             background: #2a2a2a;
             color: white;
@@ -291,12 +290,12 @@ white-space: nowrap;
             margin-bottom: 6px;
         }
         .referral-stat-value {
-font-size: 24px;
+            font-size: 24px;
             font-weight: 600;
-            color: white;
+color: white;
         }
 
-        /* ===== ВЫВОД ===== */
+        /* Вывод */
         .withdraw-balance-info {
             background: #2a2a2a;
             color: white;
@@ -373,14 +372,17 @@ font-size: 24px;
             font-size: 16px;
         }
 
-        /* ===== НИЖНЕЕ МЕНЮ С ИКОНКАМИ ===== */
+        /* НИЖНЕЕ МЕНЮ (ФИКСИРОВАННОЕ) */
         .nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
             background: #0a0a0a;
             display: flex;
             justify-content: space-around;
             padding: 14px;
-            flex-shrink: 0;
-            margin-top: 20px;
+            z-index: 100;
         }
         .nav-item {
             color: #6a6a6a;
@@ -408,7 +410,7 @@ font-size: 24px;
             stroke: currentColor;
         }
 
-        /* ===== МОДАЛЬНЫЕ ОКНА ===== */
+        /* МОДАЛЬНЫЕ ОКНА */
         .modal {
             position: fixed;
             top: 0;
@@ -435,8 +437,8 @@ font-size: 24px;
             max-width: 440px;
             border-radius: 28px;
             overflow: hidden;
-transform: scale(0.9);
-            transition: transform 0.3s ease;
+            transform: scale(0.9);
+transition: transform 0.3s ease;
         }
         .modal.show .modal-content {
             transform: scale(1);
@@ -550,7 +552,7 @@ transform: scale(0.9);
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ С ИКОНКАМИ SVG -->
+    <!-- НИЖНЕЕ МЕНЮ (ФИКСИРОВАННОЕ) -->
     <div class="nav">
         <a class="nav-item active" data-page="tasks">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -607,7 +609,8 @@ transform: scale(0.9);
     <script>
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
-const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+        const userId = tg?.
+initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
@@ -638,7 +641,6 @@ const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
             return total;
         }
 
-        // Функция для пульсации иконки
         function pulseIcon(item) {
             const svg = item.querySelector('svg');
             if (svg) {
@@ -649,7 +651,6 @@ const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
             }
         }
 
-        // Функция для обновления страницы заданий
         function updateTasksPage() {
             const container = document.getElementById('tasks');
             container.innerHTML = '';
@@ -707,10 +708,10 @@ const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
             document.getElementById('refModal').classList.remove('show');
         };
         document.getElementById('copyBtn').onclick = () => {
-            let inp = document.
-getElementById('refLink');
+            let inp = document.getElementById('refLink');
             inp.select();
-            navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
+            navigator.clipboard.writeText(inp.value).
+then(() => alert('Ссылка скопирована!'));
         };
 
         const subModal = document.getElementById('subModal');
@@ -777,9 +778,6 @@ getElementById('refLink');
 
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
-
-                // Сброс прокрутки при переключении (опционально)
-                // targetPage.scrollTop = 0;
             });
         });
 
@@ -810,14 +808,14 @@ getElementById('refLink');
                         <div class="stat-label">ID</div>
                         <div class="stat-value">${userId}</div>
                     </div>
-</div>
+                </div>
             `;
         }
 
         function updateReferralsPage() {
             document.getElementById('referralsContent').innerHTML = `
                 <div class="referral-link-card">
-                    <div class="referral-link-label">Твоя реферальная ссылка</div>
+<div class="referral-link-label">Твоя реферальная ссылка</div>
                     <div class="referral-link-field">
                         <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                         <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
