@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Хайп</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,8 +17,9 @@
             background: #121212;
             margin: 0;
             padding: 20px;
-            padding-bottom: 90px;
+            padding-bottom: 110px; /* увеличенный отступ для нижнего меню */
             color: #ffffff;
+            overflow-y: auto;
         }
         .logo {
             font-size: 32px;
@@ -53,7 +54,7 @@
 
         .pages-container {
             position: relative;
-            min-height: 350px;
+            /* высота автоматически подстраивается под контент */
         }
 
         .page {
@@ -72,6 +73,7 @@
             visibility: visible;
             transform: translateY(0);
             pointer-events: auto;
+            position: relative; /* чтобы страница участвовала в потоке */
         }
 
         /* ===== АНИМАЦИИ ===== */
@@ -135,7 +137,7 @@
         .task-price {
             font-size: 20px;
             font-weight: 600;
-            color: #1DB954;
+color: #1DB954;
             white-space: nowrap;
         }
         .take-btn {
@@ -143,7 +145,7 @@
             color: black;
             border: none;
             border-radius: 30px;
-padding: 10px 24px;
+            padding: 10px 24px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -293,7 +295,7 @@ padding: 10px 24px;
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 28px;
-            text-align: center;
+text-align: center;
             font-size: 20px;
             font-weight: 600;
         }
@@ -302,8 +304,7 @@ padding: 10px 24px;
             flex-direction: column;
             gap: 24px;
         }
-        .
-withdraw-field {
+        .withdraw-field {
             position: relative;
             margin-top: 10px;
         }
@@ -447,7 +448,7 @@ withdraw-field {
         .ref-link {
             width: 100%;
             padding: 12px;
-            margin: 12px 0;
+margin: 12px 0;
             border: 1px solid #3e3e3e;
             border-radius: 40px;
             background: #121212;
@@ -455,7 +456,7 @@ withdraw-field {
             font-size: 16px;
         }
         .copy-btn, .check-btn {
-background: #1DB954;
+            background: #1DB954;
             color: black;
             border: none;
             border-radius: 50px;
@@ -475,6 +476,27 @@ background: #1DB954;
             text-align: center;
             color: #b3b3b3;
             font-size: 16px;
+        }
+
+        /* Адаптация для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .logo {
+                font-size: 28px;
+            }
+            .beta-badge {
+                font-size: 14px;
+            }
+            .balance {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
+            .task-info h3 {
+                font-size: 18px;
+            }
+            .task-price, .task-actions .take-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
@@ -538,11 +560,12 @@ background: #1DB954;
     <div class="nav">
         <a class="nav-item active" data-page="tasks">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M22.
+0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
             </svg>
             <span>Задания</span>
         </a>
-<a class="nav-item" data-page="profile">
+        <a class="nav-item" data-page="profile">
             <svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12,11A5,5,0,1,0,7,6,5.006,5.006,0,0,0,12,11Zm0-8A3,3,0,1,1,9,6,3,3,0,0,1,12,3ZM3,22V18a5.006,5.006,0,0,1,5-5h8a5.006,5.006,0,0,1,5,5v4a1,1,0,0,1-2,0V18a3,3,0,0,0-3-3H8a3,3,0,0,0-3,3v4a1,1,0,0,1-2,0Z"/>
             </svg>
@@ -575,8 +598,7 @@ background: #1DB954;
             </div>
         </div>
     </div>
-
-    <div class="modal" id="subModal">
+<div class="modal" id="subModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
@@ -593,7 +615,8 @@ background: #1DB954;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
-let counts = JSON.parse(localStorage.getItem('counts')) || {};
+
+        let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         document.getElementById('balance').innerText = balance + ' ₽';
 
@@ -677,7 +700,8 @@ let counts = JSON.parse(localStorage.getItem('counts')) || {};
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
-            navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
+            navigator.clipboard.writeText(inp.value).
+then(() => alert('Ссылка скопирована!'));
         };
 
         const subModal = document.getElementById('subModal');
@@ -698,7 +722,7 @@ let counts = JSON.parse(localStorage.getItem('counts')) || {};
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-const success = true;
+            const success = true;
 
             if (success) {
                 balance += 30;
@@ -780,7 +804,7 @@ const success = true;
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <div class="withdraw-field">
-                        <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+<input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
