@@ -110,7 +110,14 @@
             justify-content: space-between;
             align-items: center;
             animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
         }
+        .task:nth-child(1) { animation-delay: 0.1s; }
+        .task:nth-child(2) { animation-delay: 0.2s; }
+        .task:nth-child(3) { animation-delay: 0.3s; }
+        .task:nth-child(4) { animation-delay: 0.4s; }
+        .task:nth-child(5) { animation-delay: 0.5s; }
+        
         .task-info {
             flex: 1;
             min-width: 0;
@@ -130,7 +137,7 @@
         }
         .task-actions {
             display: flex;
-            align-items: center;
+align-items: center;
             gap: 12px;
             flex-shrink: 0;
         }
@@ -142,7 +149,7 @@
         }
         .take-btn {
             background: #1DB954;
-color: black;
+            color: black;
             border: none;
             border-radius: 30px;
             padding: 10px 24px;
@@ -194,7 +201,12 @@ color: black;
             display: flex;
             align-items: center;
             gap: 20px;
+            animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
         }
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.15s; }
+        .stat-card:nth-child(3) { animation-delay: 0.2s; }
         .stat-content {
             flex: 1;
         }
@@ -218,6 +230,9 @@ color: black;
             font-weight: 700;
             color: white;
             margin-bottom: 16px;
+            animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
+            animation-delay: 0.1s;
         }
         .referral-link-card {
             background: #2a2a2a;
@@ -225,6 +240,9 @@ color: black;
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 24px;
+            animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
+            animation-delay: 0.15s;
         }
         .referral-link-label {
             font-size: 16px;
@@ -269,7 +287,7 @@ color: black;
         }
         .referral-stats {
             display: flex;
-            flex-direction: column;
+flex-direction: column;
             gap: 16px;
         }
         .referral-stat-card {
@@ -280,7 +298,11 @@ color: black;
             display: flex;
             align-items: center;
             gap: 20px;
+            animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
         }
+        .referral-stat-card:nth-child(1) { animation-delay: 0.2s; }
+        .referral-stat-card:nth-child(2) { animation-delay: 0.25s; }
         .referral-stat-content {
             flex: 1;
         }
@@ -299,12 +321,15 @@ color: black;
         .withdraw-balance-info {
             background: #2a2a2a;
             color: white;
-border-radius: 20px;
+            border-radius: 20px;
             padding: 20px;
             margin-bottom: 28px;
             text-align: center;
             font-size: 20px;
             font-weight: 600;
+            animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
+            animation-delay: 0.1s;
         }
         .withdraw-form {
             display: flex;
@@ -314,7 +339,11 @@ border-radius: 20px;
         .withdraw-field {
             position: relative;
             margin-top: 10px;
+            animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
         }
+        .withdraw-field:nth-child(1) { animation-delay: 0.15s; }
+        .withdraw-field:nth-child(2) { animation-delay: 0.2s; }
         .withdraw-field input {
             width: 100%;
             padding: 16px 0 6px 0;
@@ -351,6 +380,9 @@ border-radius: 20px;
             transition: opacity 0.2s;
             width: 100%;
             margin-top: 24px;
+            animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
+            animation-delay: 0.25s;
         }
         .withdraw-btn:hover {
             opacity: 0.8;
@@ -397,7 +429,7 @@ border-radius: 20px;
         .nav-item svg circle,
         .nav-item svg polygon {
             fill: currentColor;
-            stroke: currentColor;
+stroke: currentColor;
         }
 
         /* ===== МОДАЛЬНЫЕ ОКНА ===== */
@@ -407,7 +439,8 @@ border-radius: 20px;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -452,7 +485,7 @@ border-radius: 20px;
             font-size: 24px;
             margin-bottom: 12px;
         }
-.ref-link {
+        .ref-link {
             width: 100%;
             padding: 12px;
             margin: 12px 0;
@@ -566,8 +599,7 @@ border-radius: 20px;
     <!-- НИЖНЕЕ МЕНЮ С ИКОНКАМИ SVG -->
     <div class="nav">
         <a class="nav-item active" data-page="tasks">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.
-org/2000/svg">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
             </svg>
             <span>Задания</span>
@@ -581,7 +613,7 @@ org/2000/svg">
         <a class="nav-item" data-page="referrals">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                 <path d="M26.375 14.976c1.164-1.395 1.852-3.297 1.852-5.325 0-4.19-2.913-7.6-6.492-7.6-2.484 0-4.644 1.641-5.735 4.046-1.09-2.405-3.251-4.047-5.734-4.047-3.58 0-6.492 3.41-6.492 7.601 0 2.033.686 3.932 1.851 5.325C3.589 15.933 0 17.729 0 23.134v1.995h6.124c-.245.813-.39 1.747-.39 2.826v1.995H26.265v-1.995c0-1.08-.145-2.013-.39-2.826H32v-1.995c0-5.405-3.589-7.2-5.625-8.158zm-19.32 8.158h-5.06c0-6.006 5.274-6.004 6.445-7.574l.134-.716C6.929 14.01 5.768 12 5.768 9.65c0-3.096 2.014-5.606 4.498-5.606 1.759 0 3.278 1.262 4.016 3.098-2.749.884-4.775 3.834-4.775 7.328 0 2.033.687 3.932 1.852 5.325-1.247.586-3.074 1.488-4.305 3.338zm9.003 4.821h-8.33c0-6.006 5.275-6.004 6.445-7.575l.134-.716c-1.644-.834-2.805-2.842-2.805-5.193 0-3.096 2.014-5.606 4.498-5.606 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.327-2.763 5.173l.153.814c1.284 1.495 6.383 1.592 6.383 7.497h-8.212zm8.886-4.82c-1.23-1.85-3.058-2.752-4.304-3.338 1.164-1.396 1.852-3.298 1.852-5.326 0-3.494-2.026-6.443-4.774-7.328.738-1.836 2.257-3.098 4.017-3.098 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.326-2.763 5.173l.153.814c1.284 1.494 6.383 1.592 6.383 7.496z"/>
-            </svg>
+</svg>
             <span>Рефералы</span>
         </a>
         <a class="nav-item" data-page="withdraw">
@@ -601,7 +633,7 @@ org/2000/svg">
                 <h3>Пригласи друга</h3>
                 <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
                 <input class="ref-link" id="refLink" readonly>
-<button class="copy-btn" id="copyBtn">Копировать ссылку</button>
+                <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
         </div>
     </div>
@@ -672,7 +704,7 @@ org/2000/svg">
             infoDiv.appendChild(p);
 
             const actionsDiv = document.createElement('div');
-            actionsDiv.className = 'task-actions';
+actionsDiv.className = 'task-actions';
             const priceSpan = document.createElement('span');
             priceSpan.className = 'task-price';
             priceSpan.innerText = t.price + ' ₽';
@@ -706,7 +738,7 @@ org/2000/svg">
             document.getElementById('refModal').classList.remove('show');
         };
         document.getElementById('copyBtn').onclick = () => {
-let inp = document.getElementById('refLink');
+            let inp = document.getElementById('refLink');
             inp.select();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
@@ -775,7 +807,8 @@ let inp = document.getElementById('refLink');
 
                 const page = item.dataset.page;
                 const targetPage = pages[page];
-                const currentActive = Object.values(pages).find(p => p.classList.contains('active-page'));
+                const currentActive = Object.values(pages).
+find(p => p.classList.contains('active-page'));
 
                 if (!targetPage || targetPage === currentActive) return;
 
@@ -811,7 +844,7 @@ let inp = document.getElementById('refLink');
                         <div class="stat-label">Баланс</div>
                         <div class="stat-value">${balance} ₽</div>
                     </div>
-</div>
+                </div>
                 <div class="stat-card">
                     <div class="stat-content">
                         <div class="stat-label">Выполнено сегодня</div>
