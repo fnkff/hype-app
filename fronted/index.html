@@ -17,7 +17,7 @@
             background: #121212;
             margin: 0;
             padding: 20px;
-            padding-bottom: 110px; /* увеличенный отступ для нижнего меню */
+            padding-bottom: 110px;
             color: #ffffff;
             overflow-y: auto;
         }
@@ -54,7 +54,7 @@
 
         .pages-container {
             position: relative;
-            /* высота автоматически подстраивается под контент */
+            min-height: 400px; /* фиксированная высота, чтобы анимация была плавной */
         }
 
         .page {
@@ -64,16 +64,30 @@
             width: 100%;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(10px);
-            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
+            transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
             pointer-events: none;
         }
         .page.active-page {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateX(0);
             pointer-events: auto;
-            position: relative; /* чтобы страница участвовала в потоке */
+        }
+
+        /* Анимация ухода влево */
+        .page-exit-left {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        /* Анимация появления справа */
+        .page-enter-right {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        /* Активная страница снова видима */
+        .page.active-page {
+            transform: translateX(0);
+            opacity: 1;
         }
 
         /* ===== АНИМАЦИИ ===== */
@@ -125,7 +139,7 @@
         .task-info p {
             margin: 0;
             color: #b3b3b3;
-            font-size: 16px;
+font-size: 16px;
             word-break: break-word;
         }
         .task-actions {
@@ -137,7 +151,7 @@
         .task-price {
             font-size: 20px;
             font-weight: 600;
-color: #1DB954;
+            color: #1DB954;
             white-space: nowrap;
         }
         .take-btn {
@@ -284,7 +298,7 @@ color: #1DB954;
         }
         .referral-stat-value {
             font-size: 24px;
-            font-weight: 600;
+font-weight: 600;
             color: white;
         }
 
@@ -295,7 +309,7 @@ color: #1DB954;
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 28px;
-text-align: center;
+            text-align: center;
             font-size: 20px;
             font-weight: 600;
         }
@@ -436,7 +450,7 @@ text-align: center;
             font-size: 28px;
             cursor: pointer;
             color: #b3b3b3;
-        }
+}
         .modal-body {
             padding: 24px;
             color: white;
@@ -448,7 +462,7 @@ text-align: center;
         .ref-link {
             width: 100%;
             padding: 12px;
-margin: 12px 0;
+            margin: 12px 0;
             border: 1px solid #3e3e3e;
             border-radius: 40px;
             background: #121212;
@@ -476,27 +490,6 @@ margin: 12px 0;
             text-align: center;
             color: #b3b3b3;
             font-size: 16px;
-        }
-
-        /* Адаптация для очень маленьких экранов */
-        @media (max-width: 360px) {
-            .logo {
-                font-size: 28px;
-            }
-            .beta-badge {
-                font-size: 14px;
-            }
-            .balance {
-                font-size: 16px;
-                padding: 8px 16px;
-            }
-            .task-info h3 {
-                font-size: 18px;
-            }
-            .task-price, .task-actions .take-btn {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
         }
     </style>
 </head>
@@ -556,11 +549,12 @@ margin: 12px 0;
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ С ИКОНКАМИ SVG (ИСПРАВЛЕНО) -->
+    <!-- НИЖНЕЕ МЕНЮ С ИКОНКАМИ SVG -->
     <div class="nav">
         <a class="nav-item active" data-page="tasks">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.
+58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
             </svg>
             <span>Задания</span>
         </a>
@@ -597,12 +591,13 @@ margin: 12px 0;
             </div>
         </div>
     </div>
-<div class="modal" id="subModal">
+
+    <div class="modal" id="subModal">
         <div class="modal-content">
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
-                <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
+<p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
                 <button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
@@ -699,14 +694,13 @@ margin: 12px 0;
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
-            navigator.clipboard.writeText(inp.value).
-then(() => alert('Ссылка скопирована!'));
+            navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
 
         const subModal = document.getElementById('subModal');
         const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
-        const checkResult = document.getElementById('checkResult');
+const checkResult = document.getElementById('checkResult');
 
         closeSub.onclick = () => subModal.classList.remove('show');
 
@@ -747,25 +741,66 @@ then(() => alert('Ссылка скопирована!'));
         };
 
         const navItems = document.querySelectorAll('.nav-item');
+        let isAnimating = false;
+
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const page = item.dataset.page;
 
-                Object.values(pages).forEach(p => p.classList.remove('active-page'));
+                // Если уже идёт анимация или страница уже активна – ничего не делаем
+                if (isAnimating) return;
+                const currentActive = Object.values(pages).find(p => p.classList.contains('active-page'));
+                if (currentActive && currentActive.id === page + '-page') return;
 
-                if (pages[page]) {
-                    pages[page].classList.add('active-page');
+                isAnimating = true;
+
+                // Текущая страница уезжает влево
+                if (currentActive) {
+                    currentActive.classList.remove('active-page');
+                    currentActive.classList.add('page-exit-left');
                 }
 
-                navItems.forEach(nav => nav.classList.remove('active'));
-                item.classList.add('active');
+                // Целевая страница появляется справа
+                const targetPage = pages[page];
+                targetPage.classList.remove('active-page');
+                targetPage.classList.add('page-enter-right');
+                targetPage.style.visibility = 'visible'; // делаем видимой, чтобы анимация сработала
 
-                window.scrollTo(0, 0);
+                // Через 10ms запускаем анимацию (чтобы браузер успел применить начальные классы)
+                setTimeout(() => {
+                    if (currentActive) {
+                        currentActive.classList.remove('page-exit-left'); // убираем, чтобы она уехала
+                    }
+                    targetPage.classList.remove('page-enter-right');
+                    targetPage.classList.add('active-page');
+                }, 10);
 
-                if (page === 'profile') updateProfilePage();
-                if (page === 'referrals') updateReferralsPage();
-                if (page === 'withdraw') updateWithdrawPage();
+                // Через время окончания анимации (500ms) сбрасываем состояние и обновляем меню
+                setTimeout(() => {
+                    if (currentActive) {
+                        // Полностью скрываем старую страницу
+                        currentActive.style.visibility = 'hidden';
+                        currentActive.classList.remove('page-exit-left');
+                    }
+                    targetPage.classList.remove('page-enter-right');
+                    targetPage.classList.add('active-page');
+                    targetPage.style.visibility = 'visible';
+
+                    // Обновляем активный пункт меню
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+
+                    // Прокручиваем вверх
+                    window.scrollTo(0, 0);
+
+                    // Обновляем содержимое страниц
+if (page === 'profile') updateProfilePage();
+                    if (page === 'referrals') updateReferralsPage();
+                    if (page === 'withdraw') updateWithdrawPage();
+
+                    isAnimating = false;
+                }, 500);
             });
         });
 
@@ -803,7 +838,7 @@ then(() => alert('Ссылка скопирована!'));
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <div class="withdraw-field">
-<input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+                        <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
