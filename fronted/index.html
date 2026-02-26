@@ -89,17 +89,13 @@
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(0.95); }
+            50% { transform: scale(0.9); }
             100% { transform: scale(1); }
         }
 
         .take-btn:active, .copy-btn:active, .check-btn:active, 
-        .referral-copy-btn:active, .withdraw-btn:active {
-            animation: pulse 0.2s ease;
-        }
-
-        /* Пульсация для всего пункта нижнего меню при нажатии */
-        .nav-item:active {
+        .referral-copy-btn:active, .withdraw-btn:active,
+        .nav-item svg.pulse {
             animation: pulse 0.2s ease;
         }
 
@@ -141,12 +137,12 @@
         .task-price {
             font-size: 20px;
             font-weight: 600;
-color: #1DB954;
+            color: #1DB954;
             white-space: nowrap;
         }
         .take-btn {
             background: #1DB954;
-            color: black;
+color: black;
             border: none;
             border-radius: 30px;
             padding: 10px 24px;
@@ -298,11 +294,12 @@ color: #1DB954;
             font-weight: 600;
             color: white;
         }
-/* ===== ВЫВОД ===== */
+
+        /* ===== ВЫВОД ===== */
         .withdraw-balance-info {
             background: #2a2a2a;
             color: white;
-            border-radius: 20px;
+border-radius: 20px;
             padding: 20px;
             margin-bottom: 28px;
             text-align: center;
@@ -449,13 +446,13 @@ color: #1DB954;
         }
         .modal-body {
             padding: 24px;
-color: white;
+            color: white;
         }
         .modal-body h3 {
             font-size: 24px;
             margin-bottom: 12px;
         }
-        .ref-link {
+.ref-link {
             width: 100%;
             padding: 12px;
             margin: 12px 0;
@@ -568,8 +565,9 @@ color: white;
 
     <!-- НИЖНЕЕ МЕНЮ С ИКОНКАМИ SVG -->
     <div class="nav">
-<a class="nav-item active" data-page="tasks">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <a class="nav-item active" data-page="tasks">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.
+org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
             </svg>
             <span>Задания</span>
@@ -601,10 +599,9 @@ color: white;
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
             <div class="modal-body">
                 <h3>Пригласи друга</h3>
-                <p style="color:#b3b3b3;">Пригласи друга в Хайп.
-Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
+                <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
                 <input class="ref-link" id="refLink" readonly>
-                <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
+<button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
         </div>
     </div>
@@ -706,10 +703,10 @@ color: white;
         });
 
         document.getElementById('closeRef').onclick = () => {
-document.getElementById('refModal').classList.remove('show');
+            document.getElementById('refModal').classList.remove('show');
         };
         document.getElementById('copyBtn').onclick = () => {
-            let inp = document.getElementById('refLink');
+let inp = document.getElementById('refLink');
             inp.select();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
@@ -759,9 +756,23 @@ document.getElementById('refModal').classList.remove('show');
 
         const navItems = document.querySelectorAll('.nav-item');
 
+        // Функция для пульсации иконки
+        function pulseIcon(item) {
+            const svg = item.querySelector('svg');
+            if (svg) {
+                svg.classList.add('pulse');
+                setTimeout(() => {
+                    svg.classList.remove('pulse');
+                }, 200);
+            }
+        }
+
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
+                // Запускаем пульсацию
+                pulseIcon(item);
+
                 const page = item.dataset.page;
                 const targetPage = pages[page];
                 const currentActive = Object.values(pages).find(p => p.classList.contains('active-page'));
@@ -800,12 +811,12 @@ document.getElementById('refModal').classList.remove('show');
                         <div class="stat-label">Баланс</div>
                         <div class="stat-value">${balance} ₽</div>
                     </div>
-                </div>
+</div>
                 <div class="stat-card">
                     <div class="stat-content">
                         <div class="stat-label">Выполнено сегодня</div>
                         <div class="stat-value">${todayCount}</div>
-</div>
+                    </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-content">
