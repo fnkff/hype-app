@@ -16,10 +16,12 @@
         body {
             background: #121212;
             margin: 0;
-            padding: 20px;
-            padding-bottom: 110px;
+            padding: 20px 20px 0 20px;
             color: #ffffff;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
         .logo {
             font-size: 32px;
@@ -45,6 +47,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
+            flex-shrink: 0;
         }
         .header-left {
             display: flex;
@@ -61,26 +64,17 @@
         }
 
         .pages-container {
-            position: relative;
-            min-height: 400px;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-bottom: 20px;
         }
 
         .page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateX(20px);
-            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
-            pointer-events: none;
+            display: none;
         }
         .page.active-page {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(0);
-            pointer-events: auto;
+            display: block;
         }
 
         /* ===== АНИМАЦИИ ===== */
@@ -143,7 +137,7 @@
         }
         .take-btn {
             background: #1DB954;
-color: black;
+            color: black;
             border: none;
             border-radius: 30px;
             padding: 10px 24px;
@@ -151,7 +145,7 @@ color: black;
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s;
-            white-space: nowrap;
+white-space: nowrap;
         }
         .take-btn:hover {
             opacity: 0.8;
@@ -297,7 +291,7 @@ color: black;
             margin-bottom: 6px;
         }
         .referral-stat-value {
-            font-size: 24px;
+font-size: 24px;
             font-weight: 600;
             color: white;
         }
@@ -381,15 +375,12 @@ color: black;
 
         /* ===== НИЖНЕЕ МЕНЮ С ИКОНКАМИ ===== */
         .nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
             background: #0a0a0a;
             display: flex;
             justify-content: space-around;
             padding: 14px;
-            z-index: 100;
+            flex-shrink: 0;
+            margin-top: 20px;
         }
         .nav-item {
             color: #6a6a6a;
@@ -433,7 +424,7 @@ color: black;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
             z-index: 1000;
-}
+        }
         .modal.show {
             opacity: 1;
             visibility: visible;
@@ -444,7 +435,7 @@ color: black;
             max-width: 440px;
             border-radius: 28px;
             overflow: hidden;
-            transform: scale(0.9);
+transform: scale(0.9);
             transition: transform 0.3s ease;
         }
         .modal.show .modal-content {
@@ -607,7 +598,7 @@ color: black;
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
                 <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
-<button class="check-btn" id="checkBtn">Проверить подписку</button>
+                <button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
         </div>
@@ -616,7 +607,7 @@ color: black;
     <script>
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
-        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
@@ -708,8 +699,7 @@ color: black;
                 actionsDiv.appendChild(btn);
                 div.appendChild(infoDiv);
                 div.appendChild(actionsDiv);
-                container.
-appendChild(div);
+                container.appendChild(div);
             });
         }
 
@@ -717,7 +707,8 @@ appendChild(div);
             document.getElementById('refModal').classList.remove('show');
         };
         document.getElementById('copyBtn').onclick = () => {
-            let inp = document.getElementById('refLink');
+            let inp = document.
+getElementById('refLink');
             inp.select();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
@@ -774,7 +765,7 @@ appendChild(div);
 
                 const page = item.dataset.page;
                 const targetPage = pages[page];
-                const currentActive = Object.values(pages).find(p => p.classList.contains('active-page'));
+                const currentActive = document.querySelector('.page.active-page');
 
                 if (!targetPage || targetPage === currentActive) return;
 
@@ -787,18 +778,8 @@ appendChild(div);
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
-                window.scrollTo(0, 0);
-
-                // Обновляем содержимое страниц
-                if (page === 'tasks') {
-                    updateTasksPage();
-                } else if (page === 'profile') {
-                    updateProfilePage();
-                } else if (page === 'referrals') {
-                    updateReferralsPage();
-                } else if (page === 'withdraw') {
-                    updateWithdrawPage();
-                }
+                // Сброс прокрутки при переключении (опционально)
+                // targetPage.scrollTop = 0;
             });
         });
 
@@ -814,7 +795,7 @@ appendChild(div);
             document.getElementById('profileStats').innerHTML = `
                 <div class="stat-card">
                     <div class="stat-content">
-<div class="stat-label">Баланс</div>
+                        <div class="stat-label">Баланс</div>
                         <div class="stat-value">${balance} ₽</div>
                     </div>
                 </div>
@@ -829,7 +810,7 @@ appendChild(div);
                         <div class="stat-label">ID</div>
                         <div class="stat-value">${userId}</div>
                     </div>
-                </div>
+</div>
             `;
         }
 
