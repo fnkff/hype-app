@@ -694,7 +694,6 @@ select(); navigator.clipboard.writeText(this.previousElementSibling.value); aler
         tasks.forEach((t, index) => {
             const div = document.createElement('div');
             div.className = 'task';
-            // Задержка для анимации
             div.style.animationDelay = (0.1 + index * 0.1) + 's';
 
             const infoDiv = document.createElement('div');
@@ -707,7 +706,8 @@ select(); navigator.clipboard.writeText(this.previousElementSibling.value); aler
             infoDiv.appendChild(p);
 
             const actionsDiv = document.createElement('div');
-actionsDiv.className = 'task-actions';
+            actionsDiv.
+className = 'task-actions';
             const priceSpan = document.createElement('span');
             priceSpan.className = 'task-price';
             priceSpan.innerText = t.price + ' ₽';
@@ -806,32 +806,22 @@ actionsDiv.className = 'task-actions';
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                pulseIcon(item); // добавляем пульсацию при клике
+                pulseIcon(item);
 
                 const page = item.dataset.page;
                 const targetPage = pages[page];
-const currentActive = Object.values(pages).find(p => p.classList.contains('active-page'));
+                const currentActive = Object.values(pages).
+find(p => p.classList.contains('active-page'));
 
                 if (!targetPage || targetPage === currentActive) return;
 
-                // Анимация скольжения
+                // Плавно убираем текущую страницу
                 if (currentActive) {
-                    currentActive.style.transform = 'translateX(-20px)';
-                    currentActive.style.opacity = '0';
-                    setTimeout(() => {
-                        currentActive.classList.remove('active-page');
-                        currentActive.style.transform = '';
-                        currentActive.style.opacity = '';
-                    }, 400);
+                    currentActive.classList.remove('active-page');
                 }
 
-                targetPage.style.transform = 'translateX(20px)';
-                targetPage.style.opacity = '0';
+                // Показываем новую
                 targetPage.classList.add('active-page');
-                setTimeout(() => {
-                    targetPage.style.transform = '';
-                    targetPage.style.opacity = '';
-                }, 50);
 
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
@@ -876,7 +866,7 @@ const currentActive = Object.values(pages).find(p => p.classList.contains('activ
         }
 
         function updateReferralsPage() {
-            // статика уже в HTML, анимация уже есть в CSS
+            // страница рефералов статична, анимация уже есть в CSS
         }
 
         function updateWithdrawPage() {
