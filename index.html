@@ -12,21 +12,22 @@
         * {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         body {
             background: #121212;
-            margin: 0;
-            padding: 20px 20px 0 20px;
             color: #ffffff;
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            padding: 20px 20px 0 20px;
         }
         .logo {
             font-size: 32px;
             font-weight: 700;
-            color: #1DB954;
+            color: #1DB954; /* без градиента */
         }
         .beta-badge {
             font-size: 16px;
@@ -55,7 +56,7 @@
             gap: 4px;
         }
 
-        /* Заголовки страниц с динамической полоской */
+        /* Заголовки страниц — динамическая полоска */
         .page-title {
             font-size: 32px;
             font-weight: 700;
@@ -71,8 +72,8 @@
             bottom: -6px;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #1DB954, #0F7A3A);
+            height: 4px;
+            background: linear-gradient(90deg, #1DB954, #0A5C2A); /* более контрастный градиент */
             border-radius: 2px;
         }
 
@@ -81,6 +82,19 @@
             min-height: 0;
             overflow-y: auto;
             padding-bottom: 90px;
+            /* убираем лишние полосы */
+            scrollbar-width: thin;
+            scrollbar-color: #1DB954 #2a2a2a;
+        }
+        .pages-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .pages-container::-webkit-scrollbar-track {
+            background: #2a2a2a;
+        }
+        .pages-container::-webkit-scrollbar-thumb {
+            background: #1DB954;
+            border-radius: 2px;
         }
 
         .page {
@@ -95,13 +109,11 @@
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(0.9); }
             100% { transform: scale(1); }
         }
-
         .pulse {
             animation: pulse 0.2s ease;
         }
@@ -121,7 +133,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .task:hover {
+.task:hover {
             transform: scale(1.02);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
         }
@@ -140,7 +152,7 @@
             margin: 0;
             color: #b3b3b3;
             font-size: 16px;
-word-break: break-word;
+            word-break: break-word;
         }
         .task-actions {
             display: flex;
@@ -149,7 +161,7 @@ word-break: break-word;
             flex-shrink: 0;
         }
         .task-price {
-            background: linear-gradient(135deg, #1DB954, #0F7A3A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -159,8 +171,8 @@ word-break: break-word;
             white-space: nowrap;
         }
         .take-btn {
-            background: linear-gradient(135deg, #1DB954, #0F7A3A);
-            color: black;
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            color: white; /* белый текст */
             border: none;
             border-radius: 30px;
             padding: 10px 24px;
@@ -192,7 +204,7 @@ word-break: break-word;
         .profile-avatar {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #1DB954, #0F7A3A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -201,9 +213,11 @@ word-break: break-word;
             font-weight: 600;
             color: #121212;
             text-transform: uppercase;
+            /* убираем обрезание — теперь рамка внутри */
             border: 3px solid transparent;
             background-clip: padding-box;
             position: relative;
+            flex-shrink: 0;
         }
         .profile-avatar::after {
             content: '';
@@ -213,13 +227,14 @@ word-break: break-word;
             right: -4px;
             bottom: -4px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1DB954, #0F7A3A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
             z-index: -1;
         }
         .profile-name {
             font-size: 28px;
             font-weight: 700;
             color: white;
+            word-break: break-word;
         }
         .profile-stats {
             display: flex;
@@ -278,7 +293,7 @@ word-break: break-word;
             align-items: center;
         }
         .referral-link-input {
-flex: 1;
+            flex: 1;
             min-width: 0;
             padding: 14px;
             border: 1px solid #3e3e3e;
@@ -293,8 +308,8 @@ flex: 1;
             border-color: #1DB954;
         }
         .referral-copy-btn {
-            background: linear-gradient(135deg, #1DB954, #0F7A3A);
-            color: black;
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            color: white; /* белый текст */
             border: none;
             border-radius: 40px;
             padding: 14px 28px;
@@ -389,7 +404,7 @@ flex: 1;
             border-bottom-color: #1DB954;
         }
         .withdraw-field input::placeholder {
-            color: #6a6a6a;
+color: #6a6a6a;
             font-size: 16px;
             transition: all 0.2s;
         }
@@ -399,8 +414,8 @@ flex: 1;
             color: #b3b3b3;
         }
         .withdraw-btn {
-            background: linear-gradient(135deg, #1DB954, #0F7A3A);
-            color: black;
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            color: white; /* белый текст */
             border: none;
             border-radius: 50px;
             padding: 18px;
@@ -410,7 +425,7 @@ flex: 1;
             transition: opacity 0.2s, box-shadow 0.2s;
             width: 100%;
             margin-top: 24px;
-animation: fadeSlideUp 0.5s ease forwards;
+            animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
             animation-delay: 0.2s;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -440,6 +455,7 @@ animation: fadeSlideUp 0.5s ease forwards;
             justify-content: space-around;
             padding: 14px;
             z-index: 100;
+            border-top: 1px solid #1e1e1e; /* лёгкое отделение */
         }
         .nav-item {
             color: #6a6a6a;
@@ -454,7 +470,7 @@ animation: fadeSlideUp 0.5s ease forwards;
             position: relative;
         }
         .nav-item.active {
-            color: #1DB954; /* для иконки (пока сплошной) */
+            color: #1DB954; /* для иконки */
         }
         .nav-item.active::before {
             content: '';
@@ -463,12 +479,12 @@ animation: fadeSlideUp 0.5s ease forwards;
             left: 50%;
             transform: translateX(-50%);
             width: 30px;
-            height: 3px;
-            background: linear-gradient(90deg, #1DB954, #0F7A3A);
+            height: 4px;
+            background: linear-gradient(90deg, #1DB954, #0A5C2A);
             border-radius: 2px;
         }
         .nav-item.active span {
-            background: linear-gradient(135deg, #1DB954, #0F7A3A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -528,7 +544,7 @@ animation: fadeSlideUp 0.5s ease forwards;
             background: none;
             border: none;
             font-size: 28px;
-            cursor: pointer;
+cursor: pointer;
             color: #b3b3b3;
         }
         .modal-body {
@@ -550,12 +566,12 @@ animation: fadeSlideUp 0.5s ease forwards;
             font-size: 16px;
         }
         .copy-btn, .check-btn {
-            background: linear-gradient(135deg, #1DB954, #0F7A3A);
-            color: black;
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            color: white; /* белый текст */
             border: none;
             border-radius: 50px;
             padding: 16px;
-width: 100%;
+            width: 100%;
             font-weight: 600;
             font-size: 18px;
             cursor: pointer;
@@ -639,7 +655,7 @@ width: 100%;
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
             </svg>
-            <span>Задания</span>
+<span>Задания</span>
         </a>
         <a class="nav-item" data-page="profile">
             <svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -691,7 +707,8 @@ width: 100%;
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
-        const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+        const userName = tg?.initDataUnsafe?.
+user?.first_name || 'Пользователь';
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
@@ -713,7 +730,7 @@ width: 100%;
         }
 
         function getTodayCount() {
-const today = new Date().toDateString();
+            const today = new Date().toDateString();
             let total = 0;
             for (let key in counts) {
                 if (key.includes(today)) total += counts[key];
@@ -793,7 +810,8 @@ const today = new Date().toDateString();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
 
-        const subModal = document.getElementById('subModal');
+        const subModal = document.
+getElementById('subModal');
         const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
@@ -814,7 +832,7 @@ const today = new Date().toDateString();
             const success = true;
 
             if (success) {
-balance += 30;
+                balance += 30;
                 saveBalance();
                 document.getElementById('balance').innerText = balance + ' ₽';
                 addCount(2);
@@ -895,7 +913,7 @@ balance += 30;
             document.getElementById('referralsContent').innerHTML = `
                 <div class="referral-link-card">
                     <div class="referral-link-label">Твоя реферальная ссылка</div>
-                    <div class="referral-link-field">
+<div class="referral-link-field">
                         <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                         <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
                     </div>
@@ -905,7 +923,7 @@ balance += 30;
                         <div class="referral-stat-content">
                             <div class="referral-stat-label">Приглашено друзей</div>
                             <div class="referral-stat-value">0</div>
-</div>
+                        </div>
                     </div>
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
