@@ -24,6 +24,40 @@
             overflow: hidden;
             padding: 20px 20px 0 20px;
         }
+
+        /* Заставка */
+        .splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #121212;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeOut 1s ease forwards 0.5s;
+            pointer-events: none;
+        }
+        .splash-logo {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleIn 0.5s ease;
+        }
+        @keyframes scaleIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -96,7 +130,7 @@
             width: 4px;
         }
         .pages-container::-webkit-scrollbar-track {
-            background: #2a2a2a;
+background: #2a2a2a;
         }
         .pages-container::-webkit-scrollbar-thumb {
             background: #1DB954;
@@ -133,7 +167,7 @@
             align-items: center;
             animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .task:hover {
@@ -193,6 +227,31 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         .take-btn:active {
             transform: scale(0.98);
         }
+        .done-btn {
+            background: white !important;
+            color: transparent !important;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: default;
+            white-space: nowrap;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .done-btn::before {
+            content: 'Выполнено';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
 
         /* Профиль */
         .profile-header {
@@ -207,7 +266,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         .profile-avatar {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -269,7 +328,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         .stat-value {
             font-size: 24px;
-font-weight: 600;
+            font-weight: 600;
             color: white;
         }
         .progress-bar {
@@ -343,7 +402,7 @@ font-weight: 600;
         }
         .referral-copy-btn:active {
             transform: scale(0.98);
-        }
+}
         .referral-stats {
             display: flex;
             flex-direction: column;
@@ -405,7 +464,8 @@ font-weight: 600;
         }
         .withdraw-field:nth-child(1) { animation-delay: 0.1s; }
         .withdraw-field:nth-child(2) { animation-delay: 0.15s; }
-        .withdraw-field input {width: 100%;
+        .withdraw-field input {
+            width: 100%;
             padding: 16px 0 6px 0;
             border: none;
             border-bottom: 1px solid #3e3e3e;
@@ -479,7 +539,7 @@ font-weight: 600;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+gap: 6px;
             cursor: pointer;
             transition: color 0.2s;
             position: relative;
@@ -545,7 +605,7 @@ font-weight: 600;
             border-radius: 28px;
             overflow: hidden;
             transform: scale(0.9);
-transition: transform 0.3s ease;
+            transition: transform 0.3s ease;
         }
         .modal.show .modal-content {
             transform: scale(1);
@@ -569,43 +629,6 @@ transition: transform 0.3s ease;
         .modal-body h3 {
             font-size: 24px;
             margin-bottom: 12px;
-        }
-        .ref-link {
-            width: 100%;
-            padding: 12px;
-            margin: 12px 0;
-            border: 1px solid #3e3e3e;
-            border-radius: 40px;
-            background: #121212;
-            color: white;
-            font-size: 16px;
-        }
-        .copy-btn, .check-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 16px;
-            width: 100%;
-            font-weight: 600;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 12px;
-            transition: opacity 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-        .copy-btn:hover, .check-btn:hover {
-            opacity: 0.9;
-            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
-        }
-        .copy-btn:active, .check-btn:active {
-            transform: scale(0.98);
-        }
-        .result {
-            margin-top: 12px;
-            text-align: center;
-            color: #b3b3b3;
-            font-size: 16px;
         }
 
         /* Стили для мини-игры */
@@ -654,6 +677,7 @@ transition: transform 0.3s ease;
             color: #1DB954;
         }
 
+        /* Адаптация */
         @media (max-width: 480px) {
             .balance, .streak {
                 font-size: 14px;
@@ -663,7 +687,7 @@ transition: transform 0.3s ease;
                 width: 70px;
                 height: 70px;
                 font-size: 28px;
-            }
+}
         }
         @media (max-width: 360px) {
             .logo { font-size: 28px; }
@@ -683,13 +707,17 @@ transition: transform 0.3s ease;
     </style>
 </head>
 <body>
+    <div class="splash" id="splash">
+        <div class="splash-logo">ХАЙП</div>
+    </div>
+
     <div class="header">
         <div class="header-left">
             <span class="logo">ХАЙП</span>
             <span class="beta-badge">[бета тест]</span>
         </div>
         <div class="header-right">
-<div class="streak" id="streak">🔥 0</div>
+            <div class="streak" id="streak">🔥 0</div>
             <div class="balance" id="balance">0 ₽</div>
         </div>
     </div>
@@ -742,7 +770,7 @@ transition: transform 0.3s ease;
         </a>
         <a class="nav-item" data-page="withdraw">
             <svg height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
-<path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z"/>
+                <path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z"/>
                 <path d="m16 19h2a1 1 0 0 0 0-2h-1a1 1 0 0 0 -2 0v.18a3 3 0 0 0 1 5.82 1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h1a1 1 0 0 0 2 0v-.18a3 3 0 0 0 -1-5.82 1 1 0 0 1 0-2z"/>
             </svg>
             <span>Вывод</span>
@@ -793,13 +821,18 @@ transition: transform 0.3s ease;
     </div>
 
     <script>
+        // Убираем заставку после анимации
+        document.getElementById('splash').addEventListener('animationend', function(e) {
+            if (e.animationName === 'fadeOut') this.remove();
+        });
+
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
-        let balance = parseInt(localStorage.getItem('balance')) || 0;
+let balance = parseInt(localStorage.getItem('balance')) || 0;
         document.getElementById('balance').innerText = balance + ' ₽';
 
         // ---------- STREAK ----------
@@ -813,23 +846,16 @@ transition: transform 0.3s ease;
             const today = new Date().toDateString();
             const lastDate = getLastStreakDate();
             let streak = getStreak();
-
-            if (lastDate === today) {
-                return streak;
-            }
-
+            if (lastDate === today) return streak;
             const yesterday = new Date(Date.now() - 86400000).toDateString();
-            if (lastDate === yesterday) {
-                streak++;
-            } else {
-                streak = 1;
-            }
-
+            if (lastDate === yesterday) streak++;
+            else streak = 1;
             localStorage.setItem('streak', streak);
             localStorage.setItem('lastStreakDate', today);
             return streak;
         }
-        function updateStreakDisplay() {document.getElementById('streak').innerHTML = '🔥 ' + getStreak();
+        function updateStreakDisplay() {
+            document.getElementById('streak').innerHTML = '🔥 ' + getStreak();
         }
 
         // ---------- РЕЙТИНГ ----------
@@ -880,12 +906,11 @@ transition: transform 0.3s ease;
             const svg = item.querySelector('svg');
             if (svg) {
                 svg.classList.add('pulse');
-                setTimeout(() => {
-                    svg.classList.remove('pulse');
-                }, 200);
+                setTimeout(() => svg.classList.remove('pulse'), 200);
             }
         }
 
+        // Обновление страницы заданий
         function updateTasksPage() {
             const container = document.getElementById('tasks');
             container.innerHTML = '';
@@ -914,27 +939,33 @@ transition: transform 0.3s ease;
                 priceSpan.className = 'task-price';
                 priceSpan.innerText = (typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽');
                 const btn = document.createElement('button');
-                btn.className = 'take-btn';
                 btn.setAttribute('data-id', t.id);
-                btn.innerText = 'Взять';
-                btn.onclick = function(e) {
-                    let id = parseInt(this.dataset.id);
-                    if (!canDo(id)) {
-                        alert('Лимит на сегодня');
-                        return;
-                    }
-                    if (id === 1) {
-                        let link = 'https://t.me/your_bot?start=ref_' + userId;
-                        document.getElementById('refLink').value = link;
-                        document.getElementById('refModal').classList.add('show');
-                    } else if (id === 2) {
-                        document.getElementById('subModal').classList.add('show');
-} else if (id === 3) {
-                        // Сбросим предыдущее состояние игры
-                        resetGameModal();
-                        document.getElementById('gameModal').classList.add('show');
-                    }
-                };
+
+                if (t.id === 3 && !canDo(3)) {
+                    btn.innerText = 'Выполнено';
+                    btn.className = 'done-btn';
+                    btn.disabled = true;
+                } else {
+                    btn.innerText = 'Взять';
+                    btn.className = 'take-btn';
+                    btn.onclick = function(e) {
+                        let id = parseInt(this.dataset.id);
+                        if (!canDo(id)) {
+                            alert('Лимит на сегодня');
+                            return;
+                        }
+                        if (id === 1) {
+                            let link = 'https://t.me/your_bot?start=ref_' + userId;
+                            document.getElementById('refLink').value = link;
+                            document.getElementById('refModal').classList.add('show');
+                        } else if (id === 2) {
+                            document.getElementById('subModal').classList.add('show');
+                        } else if (id === 3) {
+                            resetGameModal();
+                            document.getElementById('gameModal').classList.add('show');
+                        }
+                    };
+                }
 
                 actionsDiv.appendChild(priceSpan);
                 actionsDiv.appendChild(btn);
@@ -954,64 +985,53 @@ transition: transform 0.3s ease;
         function resetGameModal() {
             gameBoxes.forEach(box => {
                 box.classList.remove('disabled');
-                box.style.background = 'linear-gradient(135deg, #1DB954, #0A5C2A)'; // восстанавливаем цвет
+                box.style.background = 'linear-gradient(135deg, #1DB954, #0A5C2A)';
                 box.innerText = '🎁';
             });
             gameMessage.innerText = 'Нажми на коробку';
             gameReward.innerText = '';
         }
 
-        closeGame.onclick = () => {
-            gameModal.classList.remove('show');
-        };
+        closeGame.onclick = () => gameModal.classList.remove('show');
 
         gameBoxes.forEach(box => {
             box.addEventListener('click', function(e) {
-                // Если уже выбрана коробка (игра завершена), не даём нажимать
                 if (this.classList.contains('disabled')) return;
 
-                const id = 3; // id игры
+                const id = 3;
                 if (!canDo(id)) {
                     alert('Лимит на сегодня');
                     gameModal.classList.remove('show');
                     return;
                 }
 
-                // Случайный выигрыш: 5, 10 или 20
                 const rewards = [5, 10, 20];
                 const win = rewards[Math.floor(Math.random() * rewards.length)];
 
-                // Показываем выигрыш на выбранной коробке
                 this.innerText = win + ' ₽';
-                this.style.background = '#0A5C2A'; // темнее после выбора
+                this.style.background = '#0A5C2A';
 
-                // Блокируем все коробки
                 gameBoxes.forEach(b => b.classList.add('disabled'));
 
-                // Показываем сообщение
                 gameMessage.innerText = 'Поздравляем!';
                 gameReward.innerText = +$;{win} ;
 
-                // Начисляем деньги, рейтинг, streak
                 balance += win;
                 saveBalance();
                 updateStreak();
                 addRating(10);
                 document.getElementById('balance').innerText = balance + ' ₽';
                 updateStreakDisplay();
-                addCount(id);
+                addCount(3);
 
-                // Через 2 секунды закрываем модалку
-                setTimeout(() => {
-                    gameModal.classList.remove('show');
-                }, 2000);
+                updateTasksPage();
+
+                setTimeout(() => gameModal.classList.remove('show'), 2000);
             });
         });
 
         // Остальные модалки
-        document.getElementById('closeRef').onclick = () => {
-            document.getElementById('refModal').classList.remove('show');
-        };
+        document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
@@ -1034,8 +1054,9 @@ transition: transform 0.3s ease;
             checkBtn.disabled = true;
             checkBtn.innerText = 'Проверка...';
             checkResult.innerText = '';
-await new Promise(r => setTimeout(r, 1500));
-            const success = true; // здесь будет реальная проверка
+
+            await new Promise(r => setTimeout(r, 1500));
+            const success = true;
 
             if (success) {
                 balance += 20;
@@ -1065,24 +1086,16 @@ await new Promise(r => setTimeout(r, 1500));
         };
 
         const navItems = document.querySelectorAll('.nav-item');
-
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 pulseIcon(item);
-
                 const page = item.dataset.page;
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
-
                 if (!targetPage || targetPage === currentActive) return;
-
-                if (currentActive) {
-                    currentActive.classList.remove('active-page');
-                }
-
+                if (currentActive) currentActive.classList.remove('active-page');
                 targetPage.classList.add('active-page');
-
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
             });
@@ -1092,11 +1105,7 @@ await new Promise(r => setTimeout(r, 1500));
             const todayCount = getTodayCount();
             document.getElementById('profileName').innerText = userName;
             const avatarEl = document.getElementById('profileAvatar');
-            if (userName && userName !== 'Пользователь') {
-                avatarEl.innerText = userName.charAt(0).toUpperCase();
-            } else {
-                avatarEl.innerText = '?';
-            }
+            avatarEl.innerText = (userName && userName !== 'Пользователь') ? userName.charAt(0).toUpperCase() : '?';
 
             const rating = getRating();
             const level = getLevel(rating);
@@ -1122,7 +1131,7 @@ await new Promise(r => setTimeout(r, 1500));
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-content">
+<div class="stat-content">
                         <div class="stat-label">Рейтинг</div>
                         <div class="stat-value">Уровень ${level}</div>
                         <div class="progress-bar">
@@ -1136,7 +1145,7 @@ await new Promise(r => setTimeout(r, 1500));
         function updateReferralsPage() {
             document.getElementById('referralsContent').innerHTML = `
                 <div class="referral-link-card">
-<div class="referral-link-label">Твоя реферальная ссылка</div>
+                    <div class="referral-link-label">Твоя реферальная ссылка</div>
                     <div class="referral-link-field">
                         <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                         <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
@@ -1177,9 +1186,7 @@ await new Promise(r => setTimeout(r, 1500));
         }
 
         window.onclick = (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('show');
-            }
+            if (e.target.classList.contains('modal')) e.target.classList.remove('show');
         };
 
         // Инициализация
