@@ -25,7 +25,7 @@
             padding: 20px 20px 0 20px;
         }
 
-        /* Заставка поверх всего */
+        /* Заставка */
         .splash {
             position: fixed;
             top: 0;
@@ -129,8 +129,7 @@
         .pages-container::-webkit-scrollbar {
             width: 4px;
         }
-        .pages-container::-webkit-scrollbar-track {
-background: #2a2a2a;
+        .pages-container::-webkit-scrollbar-track {background: #2a2a2a;
         }
         .pages-container::-webkit-scrollbar-thumb {
             background: #1DB954;
@@ -931,11 +930,9 @@ justify-content: center;
 
         function canDo(id) {
             let key = id + '_' + new Date().toDateString();
-            // Для мини-игры (id=3) максимум 1 раз в день
             if (id === 3) {
                 return !counts[key] || counts[key] < 1;
             }
-            // Для остальных заданий до 3 раз в день
             return !counts[key] || counts[key] < 3;
         }
 
@@ -947,10 +944,10 @@ justify-content: center;
             }
             return total;
         }
-function pulseIcon(item) {
+
+        function pulseIcon(item) {
             const svg = item.querySelector('svg');
-            if (svg) {
-                svg.classList.add('pulse');
+            if (svg) {svg.classList.add('pulse');
                 setTimeout(() => svg.classList.remove('pulse'), 200);
             }
         }
@@ -1028,7 +1025,7 @@ function pulseIcon(item) {
         const gameReward = document.getElementById('gameReward');
         const claimBtn = document.getElementById('claimBtn');
 
-        let currentWin = 0; // для хранения выигрыша до нажатия "Забрать"
+        let currentWin = 0;
 
         function resetGameModal() {
             gameBoxes.forEach(box => {
@@ -1037,14 +1034,12 @@ function pulseIcon(item) {
                 box.innerText = '🎁';
             });
             gameMessage.innerText = 'Нажми на коробку';
-gameReward.innerText = '';
+            gameReward.innerText = '';
             claimBtn.style.display = 'none';
             currentWin = 0;
         }
 
-        closeGame.onclick = () => {
-            gameModal.classList.remove('show');
-            // при закрытии не сбрасываем, сброс произойдёт при следующем открытии
+        closeGame.onclick = () => {gameModal.classList.remove('show');
         };
 
         gameBoxes.forEach(box => {
@@ -1067,7 +1062,8 @@ gameReward.innerText = '';
                 gameBoxes.forEach(b => b.classList.add('disabled'));
 
                 gameMessage.innerText = 'Поздравляем!';
-                gameReward.innerText = +$;{currentWin} ;
+                // Самая безопасная строка без шаблонных литералов
+                gameReward.innerText = '+ ' + currentWin + ' ₽';
                 claimBtn.style.display = 'block';
             });
         });
@@ -1076,7 +1072,6 @@ gameReward.innerText = '';
             if (currentWin === 0) return;
 
             const id = 3;
-            // Начисляем деньги, рейтинг, streak
             balance += currentWin;
             saveBalance();
             updateStreak();
@@ -1085,12 +1080,9 @@ gameReward.innerText = '';
             updateStreakDisplay();
             addCount(3);
 
-            // Обновляем страницу заданий, чтобы кнопка изменилась на "Выполнено"
             updateTasksPage();
 
-            // Закрываем модалку
             gameModal.classList.remove('show');
-            // Сбрасываем состояние для следующего открытия (но не обязательно, так как при открытии вызывается reset)
         };
 
         // Остальные модалки
@@ -1145,7 +1137,7 @@ gameReward.innerText = '';
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
             referrals: document.getElementById('referrals-page'),
-withdraw: document.getElementById('withdraw-page')
+            withdraw: document.getElementById('withdraw-page')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
@@ -1156,7 +1148,7 @@ withdraw: document.getElementById('withdraw-page')
                 const page = item.dataset.page;
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
-                if (!targetPage || targetPage === currentActive) return;
+if (!targetPage || targetPage === currentActive) return;
                 if (currentActive) currentActive.classList.remove('active-page');
                 targetPage.classList.add('active-page');
                 navItems.forEach(nav => nav.classList.remove('active'));
@@ -1228,7 +1220,7 @@ withdraw: document.getElementById('withdraw-page')
                         </div>
                     </div>
                 </div>
-<p class="withdraw-note">Статистика появится после приглашения друзей</p>
+                <p class="withdraw-note">Статистика появится после приглашения друзей</p>
             `;
         }
 
@@ -1237,7 +1229,7 @@ withdraw: document.getElementById('withdraw-page')
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <div class="withdraw-field">
-                        <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+<input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
