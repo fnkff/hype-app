@@ -25,7 +25,7 @@
             padding: 20px 20px 0 20px;
         }
 
-        /* Заставка */
+        /* Заставка с улучшенной анимацией */
         .splash {
             position: fixed;
             top: 0;
@@ -47,11 +47,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: scaleIn 0.5s ease;
+            animation: scaleInRotate 0.6s ease;
         }
-        @keyframes scaleIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes scaleInRotate {
+            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         @keyframes fadeOut {
             0% { opacity: 1; visibility: visible; }
@@ -129,7 +129,8 @@
         .pages-container::-webkit-scrollbar {
             width: 4px;
         }
-        .pages-container::-webkit-scrollbar-track {background: #2a2a2a;
+        .pages-container::-webkit-scrollbar-track {
+            background: #2a2a2a;
         }
         .pages-container::-webkit-scrollbar-thumb {
             background: #1DB954;
@@ -218,6 +219,10 @@
             transition: opacity 0.2s, box-shadow 0.2s;
             white-space: nowrap;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            line-height: normal;
+            height: auto;
+            min-width: 110px; /* фиксируем минимальную ширину для обеих кнопок */
+            box-sizing: border-box;
         }
         .take-btn:hover {
             opacity: 0.9;
@@ -231,12 +236,15 @@
             color: transparent !important;
             border: none;
             border-radius: 30px;
-            padding: 10px 24px;
+            padding: 10px 24px; /* точно как у .take-btn */
             font-size: 16px;
             font-weight: 600;
             cursor: default;
             white-space: nowrap;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            line-height: normal;
+            min-width: 110px;
+            box-sizing: border-box;
             position: relative;
         }
         .done-btn::before {
@@ -250,6 +258,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         /* Профиль */
@@ -265,7 +274,7 @@
         .profile-avatar {
             width: 80px;
             height: 80px;
-background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -401,7 +410,7 @@ background: linear-gradient(135deg, #1DB954, #0A5C2A);
         }
         .referral-copy-btn:active {
             transform: scale(0.98);
-}
+        }
         .referral-stats {
             display: flex;
             flex-direction: column;
@@ -527,7 +536,7 @@ background: linear-gradient(135deg, #1DB954, #0A5C2A);
             background: #0a0a0a;
             display: flex;
             justify-content: space-around;
-            padding: 14px;
+padding: 14px;
             z-index: 100;
             border-top: 1px solid #1e1e1e;
         }
@@ -538,7 +547,7 @@ background: linear-gradient(135deg, #1DB954, #0A5C2A);
             display: flex;
             flex-direction: column;
             align-items: center;
-gap: 6px;
+            gap: 6px;
             cursor: pointer;
             transition: color 0.2s;
             position: relative;
@@ -670,7 +679,7 @@ gap: 6px;
         /* Стили для мини-игры */
         .game-boxes {
             display: flex;
-            justify-content: space-around;
+justify-content: space-around;
             margin: 20px 0;
         }
         .game-box {
@@ -680,7 +689,7 @@ gap: 6px;
             border-radius: 20px;
             display: flex;
             align-items: center;
-justify-content: center;
+            justify-content: center;
             font-size: 32px;
             font-weight: bold;
             color: white;
@@ -834,7 +843,7 @@ justify-content: center;
             <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
-                <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
+<p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
                 <button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
@@ -844,7 +853,7 @@ justify-content: center;
     <!-- МОДАЛКА ДЛЯ ИГРЫ -->
     <div class="modal" id="gameModal">
         <div class="modal-content">
-<div class="modal-header"><button class="modal-close" id="closeGame">&times;</button></div>
+            <div class="modal-header"><button class="modal-close" id="closeGame">&times;</button></div>
             <div class="modal-body">
                 <h3>Мини-игра</h3>
                 <p style="color:#b3b3b3;">Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
@@ -935,8 +944,7 @@ justify-content: center;
             }
             return !counts[key] || counts[key] < 3;
         }
-
-        function getTodayCount() {
+function getTodayCount() {
             const today = new Date().toDateString();
             let total = 0;
             for (let key in counts) {
@@ -947,7 +955,8 @@ justify-content: center;
 
         function pulseIcon(item) {
             const svg = item.querySelector('svg');
-            if (svg) {svg.classList.add('pulse');
+            if (svg) {
+                svg.classList.add('pulse');
                 setTimeout(() => svg.classList.remove('pulse'), 200);
             }
         }
@@ -1039,7 +1048,8 @@ justify-content: center;
             currentWin = 0;
         }
 
-        closeGame.onclick = () => {gameModal.classList.remove('show');
+        closeGame.onclick = () => {
+            gameModal.classList.remove('show');
         };
 
         gameBoxes.forEach(box => {
@@ -1062,7 +1072,6 @@ justify-content: center;
                 gameBoxes.forEach(b => b.classList.add('disabled'));
 
                 gameMessage.innerText = 'Поздравляем!';
-                // Самая безопасная строка без шаблонных литералов
                 gameReward.innerText = '+ ' + currentWin + ' ₽';
                 claimBtn.style.display = 'block';
             });
@@ -1148,7 +1157,7 @@ justify-content: center;
                 const page = item.dataset.page;
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
-if (!targetPage || targetPage === currentActive) return;
+                if (!targetPage || targetPage === currentActive) return;
                 if (currentActive) currentActive.classList.remove('active-page');
                 targetPage.classList.add('active-page');
                 navItems.forEach(nav => nav.classList.remove('active'));
@@ -1224,12 +1233,11 @@ if (!targetPage || targetPage === currentActive) return;
             `;
         }
 
-        function updateWithdrawPage() {
-            document.getElementById('withdrawContent').innerHTML = `
+        function updateWithdrawPage() {document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <div class="withdraw-field">
-<input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+                        <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
