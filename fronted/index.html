@@ -24,33 +24,40 @@
             overflow: hidden;
             padding: 20px 20px 0 20px;
         }
-        .logo {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1DB954;
-        }
-        .beta-badge {
-            font-size: 16px;
-            color: #b3b3b3;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
         .header {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
             flex-shrink: 0;
+            gap: 10px;
         }
         .header-left {
             display: flex;
             align-items: center;
             gap: 4px;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .beta-badge {
+            font-size: 16px;
+            color: #b3b3b3;
+            margin-left: 4px;
+            white-space: nowrap;
         }
         .header-right {
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         .balance {
             background: #2a2a2a;
@@ -59,6 +66,7 @@
             border-radius: 30px;
             font-weight: 600;
             font-size: 18px;
+            white-space: nowrap;
         }
         .streak {
             background: #2a2a2a;
@@ -70,6 +78,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            white-space: nowrap;
         }
         .page-title {
             font-size: 32px;
@@ -123,7 +132,7 @@
             50% { transform: scale(0.9); }
             100% { transform: scale(1); }
         }
-        .pulse {
+.pulse {
             animation: pulse 0.2s ease;
         }
 
@@ -136,7 +145,7 @@
             margin: 12px 0;
             display: flex;
             justify-content: space-between;
-align-items: center;
+            align-items: center;
             animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -271,7 +280,7 @@ align-items: center;
         .stat-label {
             font-size: 16px;
             color: #b3b3b3;
-margin-bottom: 6px;
+            margin-bottom: 6px;
         }
         .stat-value {
             font-size: 24px;
@@ -400,7 +409,7 @@ margin-bottom: 6px;
         }
         .withdraw-form {
             display: flex;
-            flex-direction: column;
+flex-direction: column;
             gap: 24px;
         }
         .withdraw-field {
@@ -538,7 +547,7 @@ margin-bottom: 6px;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+transition: opacity 0.3s ease, visibility 0.3s ease;
             z-index: 1000;
         }
         .modal.show {
@@ -550,7 +559,7 @@ margin-bottom: 6px;
             width: 90%;
             max-width: 440px;
             border-radius: 28px;
-overflow: hidden;
+            overflow: hidden;
             transform: scale(0.9);
             transition: transform 0.3s ease;
         }
@@ -616,6 +625,14 @@ overflow: hidden;
         }
 
         @media (max-width: 360px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
             .logo { font-size: 28px; }
             .beta-badge { font-size: 14px; }
             .balance { font-size: 16px; padding: 8px 16px; }
@@ -664,7 +681,7 @@ overflow: hidden;
     </div>
 
     <!-- НИЖНЕЕ МЕНЮ -->
-    <div class="nav">
+<div class="nav">
         <a class="nav-item active" data-page="tasks">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
@@ -698,7 +715,7 @@ overflow: hidden;
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
             <div class="modal-body">
                 <h3>Пригласи друга</h3>
-                <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
+                <p style="color:#b3b3b3;">Пригласи друга в Хайп.Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
                 <input class="ref-link" id="refLink" readonly>
                 <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
@@ -711,7 +728,7 @@ overflow: hidden;
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
                 <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
-<button class="check-btn" id="checkBtn">Проверить подписку</button>
+                <button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
         </div>
@@ -755,7 +772,7 @@ overflow: hidden;
             return streak;
         }
         function updateStreakDisplay() {
-            document.getElementById('streak').innerHTML = '🔥 ' + getStreak();;
+            document.getElementById('streak').innerHTML = '🔥 ' + getStreak();
         }
 
         // ---------- РЕЙТИНГ ----------
@@ -770,7 +787,6 @@ overflow: hidden;
         function getLevel(rating) {
             return Math.floor(rating / 100) + 1;
         }
-        // ИСПРАВЛЕННАЯ ФУНКЦИЯ
         function getProgressToNextLevel(rating) {
             const level = getLevel(rating);
             const currentLevelStart = (level - 1) * 100;
@@ -814,7 +830,7 @@ overflow: hidden;
         }
 
         function updateTasksPage() {
-            const container = document.getElementById('tasks');
+const container = document.getElementById('tasks');
             container.innerHTML = '';
             const tasks = [
                 { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
@@ -826,7 +842,7 @@ overflow: hidden;
                 div.style.animationDelay = (0.1 + index * 0.1) + 's';
 
                 const infoDiv = document.createElement('div');
-infoDiv.className = 'task-info';
+                infoDiv.className = 'task-info';
                 const h3 = document.createElement('h3');
                 h3.innerText = t.name;
                 const p = document.createElement('p');
@@ -908,7 +924,8 @@ infoDiv.className = 'task-info';
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
                 checkResult.style.color = 'red';
-                checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
+                checkResult.
+innerText = '❌ Не подписан. Попробуйте снова.';
                 checkBtn.disabled = false;
                 checkBtn.innerText = 'Проверить подписку';
             }
@@ -924,8 +941,7 @@ infoDiv.className = 'task-info';
         const navItems = document.querySelectorAll('.nav-item');
 
         navItems.forEach(item => {
-            item.
-addEventListener('click', (e) => {
+            item.addEventListener('click', (e) => {
                 e.preventDefault();
                 pulseIcon(item);
 
@@ -1003,7 +1019,7 @@ addEventListener('click', (e) => {
                 <div class="referral-stats">
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
-                            <div class="referral-stat-label">Приглашено друзей</div>
+<div class="referral-stat-label">Приглашено друзей</div>
                             <div class="referral-stat-value">0</div>
                         </div>
                     </div>
@@ -1014,7 +1030,7 @@ addEventListener('click', (e) => {
                         </div>
                     </div>
                 </div>
-<p class="withdraw-note">Статистика появится после приглашения друзей</p>
+                <p class="withdraw-note">Статистика появится после приглашения друзей</p>
             `;
         }
 
