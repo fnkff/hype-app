@@ -37,7 +37,7 @@
             align-items: center;
             justify-content: center;
             z-index: 2000;
-            animation: fadeOut 1s ease forwards 0.5s;
+            animation: fadeOut 1.5s ease forwards 1.5s; /* задержка 1.5с, длительность 1.5с */
             pointer-events: none;
         }
         .splash-logo {
@@ -130,7 +130,7 @@
             width: 4px;
         }
         .pages-container::-webkit-scrollbar-track {
-background: #2a2a2a;
+            background: #2a2a2a;
         }
         .pages-container::-webkit-scrollbar-thumb {
             background: #1DB954;
@@ -890,6 +890,10 @@ let balance = parseInt(localStorage.getItem('balance')) || 0;
 
         function canDo(id) {
             let key = id + '_' + new Date().toDateString();
+            // Для мини-игры (id=3) максимум 1 раз в день, для остальных 3
+            if (id === 3) {
+                return !counts[key] || counts[key] < 1;
+            }
             return !counts[key] || counts[key] < 3;
         }
 
@@ -1127,11 +1131,11 @@ let balance = parseInt(localStorage.getItem('balance')) || 0;
                 <div class="stat-card">
                     <div class="stat-content">
                         <div class="stat-label">ID</div>
-                        <div class="stat-value">${userId}</div>
+<div class="stat-value">${userId}</div>
                     </div>
                 </div>
                 <div class="stat-card">
-<div class="stat-content">
+                    <div class="stat-content">
                         <div class="stat-label">Рейтинг</div>
                         <div class="stat-value">Уровень ${level}</div>
                         <div class="progress-bar">
