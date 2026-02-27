@@ -54,7 +54,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-left: auto; /* прижимаем к правому краю */
+            margin-left: auto;
         }
         .balance {
             background: #2a2a2a;
@@ -83,7 +83,6 @@
             color: white;
             margin-bottom: 20px;
             letter-spacing: -0.5px;
-            /* полоска удалена */
         }
         .pages-container {
             flex: 1;
@@ -132,9 +131,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-animation: fadeSlideUp 0.5s ease forwards;
+            animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .task:hover {
@@ -267,10 +266,10 @@ animation: fadeSlideUp 0.5s ease forwards;
             font-size: 16px;
             color: #b3b3b3;
             margin-bottom: 6px;
-}
+        }
         .stat-value {
             font-size: 24px;
-            font-weight: 600;
+font-weight: 600;
             color: white;
         }
         .progress-bar {
@@ -406,8 +405,7 @@ animation: fadeSlideUp 0.5s ease forwards;
         }
         .withdraw-field:nth-child(1) { animation-delay: 0.1s; }
         .withdraw-field:nth-child(2) { animation-delay: 0.15s; }
-        .withdraw-field input {
-            width: 100%;
+        .withdraw-field input {width: 100%;
             padding: 16px 0 6px 0;
             border: none;
             border-bottom: 1px solid #3e3e3e;
@@ -519,7 +517,7 @@ animation: fadeSlideUp 0.5s ease forwards;
             stroke: currentColor;
         }
 
-        /* Модалки */
+        /* Модальные окна */
         .modal {
             position: fixed;
             top: 0;
@@ -545,9 +543,9 @@ animation: fadeSlideUp 0.5s ease forwards;
             width: 90%;
             max-width: 440px;
             border-radius: 28px;
-overflow: hidden;
+            overflow: hidden;
             transform: scale(0.9);
-            transition: transform 0.3s ease;
+transition: transform 0.3s ease;
         }
         .modal.show .modal-content {
             transform: scale(1);
@@ -610,11 +608,61 @@ overflow: hidden;
             font-size: 16px;
         }
 
-        /* Адаптация для маленьких экранов */
+        /* Стили для мини-игры */
+        .game-boxes {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .game-box {
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .game-box:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+        }
+        .game-box:active {
+            transform: scale(0.95);
+        }
+        .game-box.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .game-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #b3b3b3;
+        }
+        .game-reward {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #1DB954;
+        }
+
         @media (max-width: 480px) {
             .balance, .streak {
                 font-size: 14px;
                 padding: 8px 12px;
+            }
+            .game-box {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
             }
         }
         @media (max-width: 360px) {
@@ -626,6 +674,11 @@ overflow: hidden;
             }
             .task-info h3 { font-size: 18px; }
             .task-price, .task-actions .take-btn { font-size: 14px; padding: 8px 16px; }
+            .game-box {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
         }
     </style>
 </head>
@@ -636,7 +689,7 @@ overflow: hidden;
             <span class="beta-badge">[бета тест]</span>
         </div>
         <div class="header-right">
-            <div class="streak" id="streak">🔥 0</div>
+<div class="streak" id="streak">🔥 0</div>
             <div class="balance" id="balance">0 ₽</div>
         </div>
     </div>
@@ -689,7 +742,7 @@ overflow: hidden;
         </a>
         <a class="nav-item" data-page="withdraw">
             <svg height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
-                <path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z"/>
+<path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z"/>
                 <path d="m16 19h2a1 1 0 0 0 0-2h-1a1 1 0 0 0 -2 0v.18a3 3 0 0 0 1 5.82 1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h1a1 1 0 0 0 2 0v-.18a3 3 0 0 0 -1-5.82 1 1 0 0 1 0-2z"/>
             </svg>
             <span>Вывод</span>
@@ -702,7 +755,7 @@ overflow: hidden;
             <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
             <div class="modal-body">
                 <h3>Пригласи друга</h3>
-                <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 50 ₽.</p>
+                <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
                 <input class="ref-link" id="refLink" readonly>
                 <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
@@ -711,12 +764,30 @@ overflow: hidden;
 
     <div class="modal" id="subModal">
         <div class="modal-content">
-<div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
+            <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
             <div class="modal-body">
                 <h3>Подпишись на канал</h3>
                 <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
                 <button class="check-btn" id="checkBtn">Проверить подписку</button>
                 <div class="result" id="checkResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛКА ДЛЯ ИГРЫ -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <div class="modal-header"><button class="modal-close" id="closeGame">&times;</button></div>
+            <div class="modal-body">
+                <h3>Мини-игра</h3>
+                <p style="color:#b3b3b3;">Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
+                <div class="game-boxes">
+                    <div class="game-box" data-box="1">🎁</div>
+                    <div class="game-box" data-box="2">🎁</div>
+                    <div class="game-box" data-box="3">🎁</div>
+                </div>
+                <div class="game-message" id="gameMessage">Нажми на коробку</div>
+                <div class="game-reward" id="gameReward"></div>
             </div>
         </div>
     </div>
@@ -758,8 +829,7 @@ overflow: hidden;
             localStorage.setItem('lastStreakDate', today);
             return streak;
         }
-        function updateStreakDisplay() {
-            document.getElementById('streak').innerHTML = '🔥 ' + getStreak();
+        function updateStreakDisplay() {document.getElementById('streak').innerHTML = '🔥 ' + getStreak();
         }
 
         // ---------- РЕЙТИНГ ----------
@@ -820,10 +890,12 @@ overflow: hidden;
             const container = document.getElementById('tasks');
             container.innerHTML = '';
             const tasks = [
-                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 50 },
-                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 30 }
+                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 30 },
+                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
+                { id: 3, name: 'Мини-игра', desc: '🎁 Выиграй до 20 ₽', price: '5-20' }
             ];
-            tasks.forEach((t, index) => {const div = document.createElement('div');
+            tasks.forEach((t, index) => {
+                const div = document.createElement('div');
                 div.className = 'task';
                 div.style.animationDelay = (0.1 + index * 0.1) + 's';
 
@@ -840,7 +912,7 @@ overflow: hidden;
                 actionsDiv.className = 'task-actions';
                 const priceSpan = document.createElement('span');
                 priceSpan.className = 'task-price';
-                priceSpan.innerText = t.price + ' ₽';
+                priceSpan.innerText = (typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽');
                 const btn = document.createElement('button');
                 btn.className = 'take-btn';
                 btn.setAttribute('data-id', t.id);
@@ -855,8 +927,12 @@ overflow: hidden;
                         let link = 'https://t.me/your_bot?start=ref_' + userId;
                         document.getElementById('refLink').value = link;
                         document.getElementById('refModal').classList.add('show');
-                    } else {
+                    } else if (id === 2) {
                         document.getElementById('subModal').classList.add('show');
+} else if (id === 3) {
+                        // Сбросим предыдущее состояние игры
+                        resetGameModal();
+                        document.getElementById('gameModal').classList.add('show');
                     }
                 };
 
@@ -868,6 +944,71 @@ overflow: hidden;
             });
         }
 
+        // Логика игры
+        const gameModal = document.getElementById('gameModal');
+        const closeGame = document.getElementById('closeGame');
+        const gameBoxes = document.querySelectorAll('.game-box');
+        const gameMessage = document.getElementById('gameMessage');
+        const gameReward = document.getElementById('gameReward');
+
+        function resetGameModal() {
+            gameBoxes.forEach(box => {
+                box.classList.remove('disabled');
+                box.style.background = 'linear-gradient(135deg, #1DB954, #0A5C2A)'; // восстанавливаем цвет
+                box.innerText = '🎁';
+            });
+            gameMessage.innerText = 'Нажми на коробку';
+            gameReward.innerText = '';
+        }
+
+        closeGame.onclick = () => {
+            gameModal.classList.remove('show');
+        };
+
+        gameBoxes.forEach(box => {
+            box.addEventListener('click', function(e) {
+                // Если уже выбрана коробка (игра завершена), не даём нажимать
+                if (this.classList.contains('disabled')) return;
+
+                const id = 3; // id игры
+                if (!canDo(id)) {
+                    alert('Лимит на сегодня');
+                    gameModal.classList.remove('show');
+                    return;
+                }
+
+                // Случайный выигрыш: 5, 10 или 20
+                const rewards = [5, 10, 20];
+                const win = rewards[Math.floor(Math.random() * rewards.length)];
+
+                // Показываем выигрыш на выбранной коробке
+                this.innerText = win + ' ₽';
+                this.style.background = '#0A5C2A'; // темнее после выбора
+
+                // Блокируем все коробки
+                gameBoxes.forEach(b => b.classList.add('disabled'));
+
+                // Показываем сообщение
+                gameMessage.innerText = 'Поздравляем!';
+                gameReward.innerText = +$;{win} ;
+
+                // Начисляем деньги, рейтинг, streak
+                balance += win;
+                saveBalance();
+                updateStreak();
+                addRating(10);
+                document.getElementById('balance').innerText = balance + ' ₽';
+                updateStreakDisplay();
+                addCount(id);
+
+                // Через 2 секунды закрываем модалку
+                setTimeout(() => {
+                    gameModal.classList.remove('show');
+                }, 2000);
+            });
+        });
+
+        // Остальные модалки
         document.getElementById('closeRef').onclick = () => {
             document.getElementById('refModal').classList.remove('show');
         };
@@ -893,12 +1034,11 @@ overflow: hidden;
             checkBtn.disabled = true;
             checkBtn.innerText = 'Проверка...';
             checkResult.innerText = '';
-
-            await new Promise(r => setTimeout(r, 1500));
-            const success = true;
+await new Promise(r => setTimeout(r, 1500));
+            const success = true; // здесь будет реальная проверка
 
             if (success) {
-                balance += 30;
+                balance += 20;
                 saveBalance();
                 updateStreak();
                 addRating(10);
@@ -906,7 +1046,7 @@ overflow: hidden;
                 updateStreakDisplay();
                 addCount(2);
                 checkResult.style.color = '#1DB954';
-                checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
+                checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
                 checkResult.style.color = 'red';
@@ -916,6 +1056,7 @@ overflow: hidden;
             }
         };
 
+        // Навигация
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -995,7 +1136,7 @@ overflow: hidden;
         function updateReferralsPage() {
             document.getElementById('referralsContent').innerHTML = `
                 <div class="referral-link-card">
-                    <div class="referral-link-label">Твоя реферальная ссылка</div>
+<div class="referral-link-label">Твоя реферальная ссылка</div>
                     <div class="referral-link-field">
                         <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                         <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
@@ -1010,7 +1151,7 @@ overflow: hidden;
                     </div>
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
-<div class="referral-stat-label">Заработано на рефералах</div>
+                            <div class="referral-stat-label">Заработано на рефералах</div>
                             <div class="referral-stat-value">0 ₽</div>
                         </div>
                     </div>
