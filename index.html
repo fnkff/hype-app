@@ -26,7 +26,7 @@
         .logo {
             font-size: 32px;
             font-weight: 700;
-            color: #1DB954;
+            color: #1DB954; /* без градиента */
         }
         .beta-badge {
             font-size: 16px;
@@ -55,7 +55,7 @@
             gap: 4px;
         }
 
-        /* Заголовки страниц (пункт 6) - чуть крупнее */
+        /* Заголовки страниц */
         .page-title {
             font-size: 32px;
             font-weight: 700;
@@ -70,7 +70,7 @@
             position: absolute;
             bottom: -4px;
             left: 0;
-            width: 40px;
+            width: 80px; /* удлинено */
             height: 3px;
             background: #1DB954;
             border-radius: 2px;
@@ -106,9 +106,9 @@
             animation: pulse 0.2s ease;
         }
 
-        /* ===== ЗАДАНИЯ (пункт 3) ===== */
+        /* ===== ЗАДАНИЯ ===== */
         .task {
-            background: #2f2f2f; /* светлее */
+            background: #2f2f2f;
             color: white;
             border-radius: 20px;
             padding: 20px;
@@ -149,9 +149,13 @@ word-break: break-word;
             flex-shrink: 0;
         }
         .task-price {
-            font-size: 24px; /* крупнее */
+            background: linear-gradient(135deg, #1DB954, #17a74b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-size: 24px;
             font-weight: 700;
-            color: #1DB954;
             white-space: nowrap;
         }
         .take-btn {
@@ -197,7 +201,6 @@ word-break: break-word;
             font-weight: 600;
             color: #121212;
             text-transform: uppercase;
-            /* пункт 7: рамка с градиентом */
             border: 3px solid transparent;
             background-clip: padding-box;
             position: relative;
@@ -276,12 +279,12 @@ word-break: break-word;
         }
         .referral-link-input {
             flex: 1;
-            min-width: 0;
+min-width: 0;
             padding: 14px;
             border: 1px solid #3e3e3e;
             border-radius: 40px;
             font-size: 16px;
-background: #121212;
+            background: #121212;
             color: white;
             outline: none;
             transition: border-color 0.2s;
@@ -407,13 +410,12 @@ background: #121212;
             transition: opacity 0.2s, box-shadow 0.2s;
             width: 100%;
             margin-top: 24px;
-            animation: fadeSlideUp 0.5s ease forwards;
+animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
             animation-delay: 0.2s;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
-        
-withdraw-btn:hover {
+        .withdraw-btn:hover {
             opacity: 0.9;
             box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
@@ -427,7 +429,7 @@ withdraw-btn:hover {
             font-size: 16px;
         }
 
-        /* ===== НИЖНЕЕ МЕНЮ (пункт 5) ===== */
+        /* ===== НИЖНЕЕ МЕНЮ ===== */
         .nav {
             position: fixed;
             bottom: 0;
@@ -452,7 +454,7 @@ withdraw-btn:hover {
             position: relative;
         }
         .nav-item.active {
-            color: #1DB954;
+            color: #1DB954; /* для иконки (пока сплошной) */
         }
         .nav-item.active::before {
             content: '';
@@ -464,6 +466,13 @@ withdraw-btn:hover {
             height: 3px;
             background: #1DB954;
             border-radius: 2px;
+        }
+        .nav-item.active span {
+            background: linear-gradient(135deg, #1DB954, #17a74b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
         }
         .nav-item svg {
             width: 32px;
@@ -547,7 +556,7 @@ withdraw-btn:hover {
             border-radius: 50px;
             padding: 16px;
             width: 100%;
-            font-weight: 600;
+font-weight: 600;
             font-size: 18px;
             cursor: pointer;
             margin-top: 12px;
@@ -562,7 +571,7 @@ withdraw-btn:hover {
             transform: scale(0.98);
         }
         .result {
-margin-top: 12px;
+            margin-top: 12px;
             text-align: center;
             color: #b3b3b3;
             font-size: 16px;
@@ -704,7 +713,8 @@ margin-top: 12px;
         }
 
         function getTodayCount() {
-            const today = new Date().toDateString();
+            const today = new Date().
+toDateString();
             let total = 0;
             for (let key in counts) {
                 if (key.includes(today)) total += counts[key];
@@ -721,7 +731,8 @@ margin-top: 12px;
                 }, 200);
             }
         }
-function updateTasksPage() {
+
+        function updateTasksPage() {
             const container = document.getElementById('tasks');
             container.innerHTML = '';
             const tasks = [
@@ -806,7 +817,7 @@ function updateTasksPage() {
             if (success) {
                 balance += 30;
                 saveBalance();
-                document.getElementById('balance').innerText = balance + ' ₽';
+document.getElementById('balance').innerText = balance + ' ₽';
                 addCount(2);
                 checkResult.style.color = '#1DB954';
                 checkResult.innerText = '✅ Подписка подтверждена! +30 ₽';
@@ -814,8 +825,7 @@ function updateTasksPage() {
             } else {
                 checkResult.style.color = 'red';
                 checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
-                checkBtn.
-disabled = false;
+                checkBtn.disabled = false;
                 checkBtn.innerText = 'Проверить подписку';
             }
         };
@@ -898,7 +908,7 @@ disabled = false;
                             <div class="referral-stat-value">0</div>
                         </div>
                     </div>
-                    <div class="referral-stat-card">
+<div class="referral-stat-card">
                         <div class="referral-stat-content">
                             <div class="referral-stat-label">Заработано на рефералах</div>
                             <div class="referral-stat-value">0 ₽</div>
@@ -908,7 +918,8 @@ disabled = false;
                 <p class="withdraw-note">Статистика появится после приглашения друзей</p>
             `;
         }
-function updateWithdrawPage() {
+
+        function updateWithdrawPage() {
             document.getElementById('withdrawContent').innerHTML = `
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
