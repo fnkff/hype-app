@@ -144,49 +144,31 @@ font-size: 18px;
 
         /* Контейнер страниц */
         .pages-container {
-            position: relative;
             flex: 1;
             min-height: 0;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        /* Страницы абсолютно позиционированы */
-        .page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateX(20px);
-            transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
-                        transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
-                        visibility 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-            pointer-events: none;
             overflow-y: auto;
-            padding-right: 2px;
+            margin-bottom: 20px;
             scrollbar-width: thin;
             scrollbar-color: #1DB954 #2a2a2a;
             -webkit-overflow-scrolling: touch;
-            touch-action: pan-y;
         }
-        .page::-webkit-scrollbar {
+        .pages-container::-webkit-scrollbar {
             width: 4px;
         }
-        .page::-webkit-scrollbar-track {
+        .pages-container::-webkit-scrollbar-track {
             background: #2a2a2a;
         }
-        .page::-webkit-scrollbar-thumb {
+        .pages-container::-webkit-scrollbar-thumb {
             background: #1DB954;
             border-radius: 2px;
         }
+
+        /* Страницы теперь обычные блочные, переключаются через display */
+        .page {
+            display: none;
+        }
         .page.active-page {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(0);
-            pointer-events: auto;
+            display: block;
         }
 
         /* Анимация для содержимого страниц */
@@ -261,7 +243,7 @@ font-size: 18px;
         }
         .take-btn, .done-btn {
             border: none;
-border-radius: 30px;
+            border-radius: 30px;
             padding: 10px 24px;
             font-size: 16px;
             font-weight: 600;
@@ -278,7 +260,7 @@ border-radius: 30px;
             animation: smoothGradient 8s ease infinite;
             color: white;
             cursor: pointer;
-            transition: opacity 0.2s, box-shadow 0.2s;
+transition: opacity 0.2s, box-shadow 0.2s;
         }
         .take-btn:hover {
             opacity: 0.9;
@@ -345,7 +327,7 @@ border-radius: 30px;
             background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             z-index: -1;
-            margin: -3px; /* создаёт эффект рамки */
+            margin: -3px;
         }
         .profile-name {
             font-size: 28px;
@@ -396,7 +378,7 @@ border-radius: 30px;
         }
 
         /* Рефералы */
-.referral-link-card {
+        .referral-link-card {
             background: #2f2f2f;
             color: white;
             border-radius: 20px;
@@ -419,7 +401,7 @@ border-radius: 30px;
             min-width: 0;
             padding: 14px;
             border: 1px solid #3e3e3e;
-            border-radius: 40px;
+border-radius: 40px;
             font-size: 16px;
             background: #121212;
             color: white;
@@ -533,7 +515,7 @@ border-radius: 30px;
             color: white;
             border: none;
             border-radius: 50px;
-padding: 18px;
+            padding: 18px;
             font-size: 20px;
             font-weight: 600;
             cursor: pointer;
@@ -555,8 +537,7 @@ padding: 18px;
             text-align: center;
             font-size: 16px;
         }
-
-        /* Нижнее меню */
+/* Нижнее меню */
         .nav {
             position: fixed;
             bottom: 0;
@@ -677,7 +658,8 @@ padding: 18px;
             color: white;
             font-size: 16px;
         }
-        .copy-btn, .check-btn, .claim-btn, .channel-btn {background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+        .copy-btn, .check-btn, .claim-btn, .channel-btn {
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             color: white;
@@ -694,7 +676,7 @@ padding: 18px;
         }
         .copy-btn:hover, .check-btn:hover, .claim-btn:hover, .channel-btn:hover {
             opacity: 0.9;
-            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .copy-btn:active, .check-btn:active, .claim-btn:active, .channel-btn:active {
             transform: scale(0.98);
@@ -807,10 +789,11 @@ padding: 18px;
             </div>
         </div>
 
-        <div class="pages-container" id="pagesContainer">
+        <!-- КОНТЕЙНЕР СТРАНИЦ С ПРОКРУТКОЙ -->
+        <div class="pages-container">
             <div id="tasks-page" class="page active-page">
                 <div class="page-title">Задания</div>
-<div class="page-content" id="tasks"></div>
+                <div class="page-content" id="tasks"></div>
             </div>
 
             <div id="profile-page" class="page">
@@ -826,7 +809,7 @@ padding: 18px;
             <div id="withdraw-page" class="page">
                 <div class="page-title">Вывод средств</div>
                 <div class="page-content" id="withdrawContent"></div>
-            </div>
+</div>
         </div>
 
         <!-- НИЖНЕЕ МЕНЮ -->
@@ -862,7 +845,7 @@ padding: 18px;
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
-                <div class="modal-body">
+<div class="modal-body">
                     <h3>Пригласи друга</h3>
                     <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
                     <input class="ref-link" id="refLink" readonly>
@@ -936,7 +919,7 @@ padding: 18px;
             const lastDate = getLastStreakDate();
             let streak = getStreak();
             if (lastDate === today) return streak;
-const yesterday = new Date(Date.now() - 86400000).toDateString();
+            const yesterday = new Date(Date.now() - 86400000).toDateString();
             if (lastDate === yesterday) streak++;
             else streak = 1;
             localStorage.setItem('streak', streak);
@@ -951,8 +934,7 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
         function getRating() {
             return parseInt(localStorage.getItem('rating')) || 0;
         }
-        function addRating(points = 10) {
-            let rating = getRating() + points;
+        function addRating(points = 10) {let rating = getRating() + points;
             localStorage.setItem('rating', rating);
             return rating;
         }
@@ -1056,7 +1038,7 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
                 const priceSpan = document.createElement('span');
                 priceSpan.className = 'task-price';
                 priceSpan.innerText = (typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽');
-                const btn = document.createElement('button');
+const btn = document.createElement('button');
                 btn.setAttribute('data-id', t.id);
 
                 const isDone = (t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'));
@@ -1223,7 +1205,7 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
             }
         };
 
-        // Навигация с плавным переключением и анимацией содержимого
+        // Навигация с переключением страниц и анимацией содержимого
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -1250,7 +1232,8 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
                 item.classList.add('active');
 
                 // Обновляем контент соответствующей страницы
-                if (page === 'profile') {updateProfilePage();
+                if (page === 'profile') {
+                    updateProfilePage();
                 } else if (page === 'referrals') {
                     updateReferralsPage();
                 } else if (page === 'withdraw') {
@@ -1264,7 +1247,7 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
                 if (content) {
                     content.style.animation = 'none';
                     content.offsetHeight; // форсированный reflow
-                    content.style.animation = 'fadeSlideUp 0.8s ease forwards';
+content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                 }
             });
         });
@@ -1331,7 +1314,7 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
                     </div>
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
-<div class="referral-stat-label">Заработано на рефералах</div>
+                            <div class="referral-stat-label">Заработано на рефералах</div>
                             <div class="referral-stat-value">0 ₽</div>
                         </div>
                     </div>
@@ -1345,7 +1328,7 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <div class="withdraw-field">
-                        <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+<input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
