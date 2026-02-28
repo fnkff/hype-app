@@ -60,11 +60,11 @@
             100% { opacity: 0; visibility: hidden; }
         }
         @keyframes smoothGradient {
-            0% { background-position: 0% 50%; filter: brightness(1); }
-            25% { background-position: 50% 50%; filter: brightness(1.1); }
-            50% { background-position: 100% 50%; filter: brightness(1.2); }
-            75% { background-position: 150% 50%; filter: brightness(1.1); }
-            100% { background-position: 200% 50%; filter: brightness(1); }
+            0% { background-position: 0% 50%; }
+            25% { background-position: 50% 50%; }
+            50% { background-position: 100% 50%; }
+            75% { background-position: 150% 50%; }
+            100% { background-position: 200% 50%; }
         }
 
         /* Контейнер основного контента (изначально скрыт) */
@@ -116,12 +116,12 @@
             background: #2a2a2a;
             color: white;
             padding: 12px 20px;
-border-radius: 30px;
+            border-radius: 30px;
             font-weight: 600;
             font-size: 18px;
             white-space: nowrap;
         }
-        .streak {
+.streak {
             background: #2a2a2a;
             color: #ff8c00;
             padding: 12px 20px;
@@ -172,9 +172,15 @@ border-radius: 30px;
             pointer-events: auto;
         }
 
+        /* Анимация для содержимого страниц */
         @keyframes fadeSlideUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-content {
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0; /* начальное значение, анимация перекроет */
         }
 
         @keyframes pulse {
@@ -198,9 +204,6 @@ border-radius: 30px;
             align-items: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .task.animate-in {
-            animation: fadeSlideUp 0.5s ease forwards;
         }
         .task:hover {
             transform: scale(1.02);
@@ -257,8 +260,8 @@ border-radius: 30px;
             background-size: 400% 400%;
             animation: smoothGradient 8s ease infinite;
             color: white;
-cursor: pointer;
-            transition: opacity 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+transition: opacity 0.2s, box-shadow 0.2s;
         }
         .take-btn:hover {
             opacity: 0.9;
@@ -401,8 +404,7 @@ cursor: pointer;
             outline: none;
             transition: border-color 0.2s;
         }
-        .referral-link-input:focus {
-            border-color: #1DB954;
+        .referral-link-input:focus {border-color: #1DB954;
         }
         .referral-copy-btn {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
@@ -539,8 +541,8 @@ cursor: pointer;
             right: 0;
             background: #0a0a0a;
             display: flex;
-justify-content: space-around;
-            padding: 14px;
+            justify-content: space-around;
+padding: 14px;
             z-index: 100;
             border-top: 1px solid #1e1e1e;
         }
@@ -675,9 +677,10 @@ justify-content: space-around;
         .copy-btn:active, .check-btn:active, .claim-btn:active, .channel-btn:active {
             transform: scale(0.98);
         }
-        .result {margin-top: 12px;
+        .result {
+            margin-top: 12px;
             text-align: center;
-            color: #b3b3b3;
+color: #b3b3b3;
             font-size: 16px;
         }
 
@@ -785,34 +788,30 @@ justify-content: space-around;
         <div class="pages-container" id="pagesContainer">
             <div id="tasks-page" class="page active-page">
                 <div class="page-title">Задания</div>
-                <div id="tasks"></div>
+                <div class="page-content" id="tasks"></div>
             </div>
 
             <div id="profile-page" class="page">
                 <div class="page-title">Профиль</div>
-                <div class="profile-header">
-                    <div class="profile-avatar" id="profileAvatar"></div>
-                    <div class="profile-name" id="profileName"></div>
-                </div>
-                <div class="profile-stats" id="profileStats"></div>
+                <div class="page-content" id="profileContent"></div>
             </div>
 
             <div id="referrals-page" class="page">
                 <div class="page-title">Реферальная программа</div>
-                <div id="referralsContent"></div>
+                <div class="page-content" id="referralsContent"></div>
             </div>
 
             <div id="withdraw-page" class="page">
                 <div class="page-title">Вывод средств</div>
-                <div class="withdraw-info" id="withdrawContent"></div>
+                <div class="page-content" id="withdrawContent"></div>
             </div>
         </div>
 
         <!-- НИЖНЕЕ МЕНЮ -->
-<div class="nav">
+        <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
                 </svg>
                 <span>Задания</span>
             </a>
@@ -842,9 +841,9 @@ justify-content: space-around;
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
                 <div class="modal-body">
-<h3>Пригласи друга</h3>
+                    <h3>Пригласи друга</h3>
                     <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
-                    <input class="ref-link" id="refLink" readonly>
+<input class="ref-link" id="refLink" readonly>
                     <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
                 </div>
             </div>
@@ -938,7 +937,7 @@ justify-content: space-around;
         function getLevel(rating) {
             return Math.floor(rating / 100) + 1;
         }
-        function getProgressToNextLevel(rating) {
+function getProgressToNextLevel(rating) {
             const level = getLevel(rating);
             const currentLevelStart = (level - 1) * 100;
             let progress = ((rating - currentLevelStart) / 100) * 100;
@@ -998,17 +997,6 @@ justify-content: space-around;
             }
         }
 
-        // Функция для запуска анимации на всех карточках внутри контейнера
-        function animateTasks(container) {
-            const tasks = container.querySelectorAll('.task');
-            tasks.forEach(task => {
-                task.classList.remove('animate-in');
-                // принудительно вызываем reflow, чтобы анимация перезапустилась
-                void task.offsetWidth;
-                task.classList.add('animate-in');
-            });
-        }
-
         // Обновление страницы заданий
         function updateTasksPage() {
             const container = document.getElementById('tasks');
@@ -1021,7 +1009,6 @@ justify-content: space-around;
             tasks.forEach((t, index) => {
                 const div = document.createElement('div');
                 div.className = 'task';
-                // Задержка для анимации устанавливается через style, но сам класс animate-in добавим позже
                 div.style.animationDelay = (0.1 + index * 0.1) + 's';
 
                 const infoDiv = document.createElement('div');
@@ -1047,7 +1034,7 @@ justify-content: space-around;
                     btn.disabled = true;
                 } else {
                     btn.innerText = 'Взять';
-                    btn.className = 'take-btn';
+btn.className = 'take-btn';
                     btn.onclick = function(e) {
                         let id = parseInt(this.dataset.id);
                         if (!canDo(id)) {
@@ -1073,9 +1060,6 @@ justify-content: space-around;
                 div.appendChild(actionsDiv);
                 container.appendChild(div);
             });
-
-            // Запускаем анимацию для новых карточек
-            animateTasks(container);
             adjustPagesContainerHeight();
         }
 
@@ -1135,7 +1119,7 @@ justify-content: space-around;
 
             const id = 3;
             balance += currentWin;
-saveBalance();
+            saveBalance();
             updateStreak();
             addRating(10);
             document.getElementById('balance').innerText = balance + ' ₽';
@@ -1207,7 +1191,7 @@ saveBalance();
             }
         };
 
-        // Навигация с плавным переключением и перезапуском анимации на странице заданий
+        // Навигация с плавным переключением и анимацией содержимого
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -1233,13 +1217,12 @@ saveBalance();
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
-                // Если переключились на страницу заданий, перезапускаем анимацию карточек
-                if (page === 'tasks') {
-                    // Даём время на рендеринг, затем анимируем
-                    setTimeout(() => {
-                        const tasksContainer = document.getElementById('tasks');
-animateTasks(tasksContainer);
-                    }, 50);
+                // При переключении на любую страницу анимируем её содержимое
+                const content = targetPage.querySelector('.page-content');
+                if (content) {
+                    content.style.animation = 'none';
+                    content.offsetHeight; // форсированный reflow
+                    content.style.animation = 'fadeSlideUp 0.5s ease forwards';
                 }
 
                 setTimeout(adjustPagesContainerHeight, 50);
@@ -1256,31 +1239,37 @@ animateTasks(tasksContainer);
             const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
 
-            document.getElementById('profileStats').innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Баланс</div>
-                        <div class="stat-value">${balance} ₽</div>
-                    </div>
+            document.getElementById('profileContent').innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profileAvatar">${avatarEl.innerText}</div>
+<div class="profile-name">${userName}</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Выполнено сегодня</div>
-                        <div class="stat-value">${todayCount}</div>
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <div class="stat-label">Баланс</div>
+                            <div class="stat-value">${balance} ₽</div>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">ID</div>
-                        <div class="stat-value">${userId}</div>
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <div class="stat-label">Выполнено сегодня</div>
+                            <div class="stat-value">${todayCount}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Рейтинг</div>
-                        <div class="stat-value">Уровень ${level}</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${progress}%;"></div>
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <div class="stat-label">ID</div>
+                            <div class="stat-value">${userId}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <div class="stat-label">Рейтинг</div>
+                            <div class="stat-value">Уровень ${level}</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1323,7 +1312,7 @@ animateTasks(tasksContainer);
                     <div class="withdraw-field">
                         <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
-<div class="withdraw-field">
+                    <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
                     </div>
                     <button class="withdraw-btn">Вывести</button>
@@ -1344,13 +1333,9 @@ animateTasks(tasksContainer);
         updateReferralsPage();
         updateWithdrawPage();
 
+        // Начальная установка высоты контейнера
         window.addEventListener('load', () => {
             adjustPagesContainerHeight();
-            // также анимируем карточки при загрузке (если они уже есть)
-            const tasksContainer = document.getElementById('tasks');
-            if (tasksContainer.children.length > 0) {
-                animateTasks(tasksContainer);
-            }
         });
         window.addEventListener('resize', adjustPagesContainerHeight);
     </script>
