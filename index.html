@@ -155,6 +155,11 @@
             pointer-events: auto;
         }
 
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(0.9); }
@@ -174,6 +179,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
@@ -259,8 +266,7 @@
             font-weight: 600;
             white-space: nowrap;
         }
-
-        /* Профиль */
+/* Профиль */
         .profile-header {
             display: flex;
             align-items: center;
@@ -269,7 +275,7 @@
         }
         .profile-avatar {
             width: 80px;
-height: 80px;
+            height: 80px;
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 50%;
             display: flex;
@@ -403,8 +409,7 @@ height: 80px;
             flex-direction: column;
             gap: 16px;
         }
-        .referral-stat-card {
-            background: #2f2f2f;
+        .referral-stat-card {background: #2f2f2f;
             color: white;
             border-radius: 20px;
             padding: 20px;
@@ -546,8 +551,7 @@ height: 80px;
             background-clip: text;
             color: transparent;
         }
-        .nav-item svg {
-            width: 32px;
+        .nav-item svg {width: 32px;
             height: 32px;
             display: block;
         }
@@ -557,7 +561,8 @@ height: 80px;
             fill: currentColor;
             stroke: currentColor;
         }
-/* Модальные окна */
+
+        /* Модальные окна */
         .modal {
             position: fixed;
             top: 0;
@@ -688,7 +693,7 @@ height: 80px;
         }
         .game-reward {
             text-align: center;
-            font-size: 24px;
+font-size: 24px;
             font-weight: bold;
             margin-top: 10px;
             color: #1DB954;
@@ -698,7 +703,8 @@ height: 80px;
         }
 
         /* Адаптация для маленьких экранов */
-        @media (max-width: 480px) {.balance, .streak {
+        @media (max-width: 480px) {
+            .balance, .streak {
                 font-size: 14px;
                 padding: 8px 12px;
             }
@@ -789,7 +795,7 @@ height: 80px;
                 <span>Профиль</span>
             </a>
             <a class="nav-item" data-page="referrals">
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                     <path d="M26.375 14.976c1.164-1.395 1.852-3.297 1.852-5.325 0-4.19-2.913-7.6-6.492-7.6-2.484 0-4.644 1.641-5.735 4.046-1.09-2.405-3.251-4.047-5.734-4.047-3.58 0-6.492 3.41-6.492 7.601 0 2.033.686 3.932 1.851 5.325C3.589 15.933 0 17.729 0 23.134v1.995h6.124c-.245.813-.39 1.747-.39 2.826v1.995H26.265v-1.995c0-1.08-.145-2.013-.39-2.826H32v-1.995c0-5.405-3.589-7.2-5.625-8.158zm-19.32 8.158h-5.06c0-6.006 5.274-6.004 6.445-7.574l.134-.716C6.929 14.01 5.768 12 5.768 9.65c0-3.096 2.014-5.606 4.498-5.606 1.759 0 3.278 1.262 4.016 3.098-2.749.884-4.775 3.834-4.775 7.328 0 2.033.687 3.932 1.852 5.325-1.247.586-3.074 1.488-4.305 3.338zm9.003 4.821h-8.33c0-6.006 5.275-6.004 6.445-7.575l.134-.716c-1.644-.834-2.805-2.842-2.805-5.193 0-3.096 2.014-5.606 4.498-5.606 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.327-2.763 5.173l.153.814c1.284 1.495 6.383 1.592 6.383 7.497h-8.212zm8.886-4.82c-1.23-1.85-3.058-2.752-4.304-3.338 1.164-1.396 1.852-3.298 1.852-5.326 0-3.494-2.026-6.443-4.774-7.328.738-1.836 2.257-3.098 4.017-3.098 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.326-2.763 5.173l.153.814c1.284 1.494 6.383 1.592 6.383 7.496z"/>
                 </svg>
                 <span>Рефералы</span>
@@ -833,11 +839,11 @@ height: 80px;
         <div class="modal" id="gameModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeGame">&times;</button></div>
-                <div class="modal-body">
+<div class="modal-body">
                     <h3>Мини-игра</h3>
                     <p style="color:#b3b3b3;">Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
                     <div class="game-boxes">
-<div class="game-box" data-box="1">🎁</div>
+                        <div class="game-box" data-box="1">🎁</div>
                         <div class="game-box" data-box="2">🎁</div>
                         <div class="game-box" data-box="3">🎁</div>
                     </div>
@@ -923,12 +929,20 @@ height: 80px;
             localStorage.setItem('counts', JSON.stringify(counts));
         }
 
+        // Проверка возможности выполнения задания
         function canDo(id) {
-            let key = id + '_' + new Date().toDateString();
-            if (id === 3) {
+            if (id === 2) {
+                // Задание "Подпишись на канал" — один раз навсегда
+                return !localStorage.getItem('subscription_done');
+            } else if (id === 3) {
+                // Мини-игра — 1 раз в день
+                let key = id + '_' + new Date().toDateString();
                 return !counts[key] || counts[key] < 1;
+            } else {
+// Остальные задания — до 3 раз в день
+                let key = id + '_' + new Date().toDateString();
+                return !counts[key] || counts[key] < 3;
             }
-            return !counts[key] || counts[key] < 3;
         }
 
         function getTodayCount() {
@@ -944,7 +958,7 @@ height: 80px;
             const svg = item.querySelector('svg');
             if (svg) {
                 svg.classList.add('pulse');
-setTimeout(() => svg.classList.remove('pulse'), 200);
+                setTimeout(() => svg.classList.remove('pulse'), 200);
             }
         }
 
@@ -969,7 +983,7 @@ setTimeout(() => svg.classList.remove('pulse'), 200);
             tasks.forEach((t, index) => {
                 const div = document.createElement('div');
                 div.className = 'task';
-                // анимацию появления оставим через CSS (будет применяться при добавлении)
+                div.style.animationDelay = (0.1 + index * 0.1) + 's';
 
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'task-info';
@@ -988,7 +1002,8 @@ setTimeout(() => svg.classList.remove('pulse'), 200);
                 const btn = document.createElement('button');
                 btn.setAttribute('data-id', t.id);
 
-                if (t.id === 3 && !canDo(3)) {
+                // Проверяем, выполнено ли задание
+                if ((t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'))) {
                     btn.innerText = 'Выполнено';
                     btn.className = 'done-btn';
                     btn.disabled = true;
@@ -1032,7 +1047,8 @@ setTimeout(() => svg.classList.remove('pulse'), 200);
         const claimBtn = document.getElementById('claimBtn');
 
         let currentWin = 0;
-function resetGameModal() {
+
+        function resetGameModal() {
             gameBoxes.forEach(box => {
                 box.classList.remove('disabled');
                 box.style.background = 'linear-gradient(135deg, #1DB954, #0A5C2A)';
@@ -1118,7 +1134,7 @@ function resetGameModal() {
         checkBtn.onclick = async () => {
             if (!canDo(2)) {
                 checkResult.style.color = 'red';
-                checkResult.innerText = 'Лимит на сегодня';
+                checkResult.innerText = 'Задание уже выполнено';
                 return;
             }
             checkBtn.disabled = true;
@@ -1126,7 +1142,7 @@ function resetGameModal() {
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-            const success = true; // здесь будет реальная проверка
+const success = true; // здесь будет реальная проверка
 
             if (success) {
                 balance += 20;
@@ -1135,9 +1151,16 @@ function resetGameModal() {
                 addRating(10);
                 document.getElementById('balance').innerText = balance + ' ₽';
                 updateStreakDisplay();
-                addCount(2);
+
+                // Отмечаем задание как выполненное навсегда
+                localStorage.setItem('subscription_done', 'true');
+
                 checkResult.style.color = '#1DB954';
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
+
+                // Обновляем страницу заданий, чтобы кнопка сменилась на "Выполнено"
+                updateTasksPage();
+
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
                 checkResult.style.color = 'red';
@@ -1174,7 +1197,7 @@ function resetGameModal() {
                 item.classList.add('active');
 
                 // Корректируем высоту контейнера после переключения
-                setTimeout(adjustPagesContainerHeight, 50); // небольшая задержка для завершения рендеринга
+                setTimeout(adjustPagesContainerHeight, 50);
             });
         });
 
@@ -1214,7 +1237,7 @@ function resetGameModal() {
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${progress}%;"></div>
                         </div>
-                    </div>
+</div>
                 </div>
             `;
             adjustPagesContainerHeight();
@@ -1231,7 +1254,7 @@ function resetGameModal() {
                 </div>
                 <div class="referral-stats">
                     <div class="referral-stat-card">
-<div class="referral-stat-content">
+                        <div class="referral-stat-content">
                             <div class="referral-stat-label">Приглашено друзей</div>
                             <div class="referral-stat-value">0</div>
                         </div>
