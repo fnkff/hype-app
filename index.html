@@ -161,9 +161,7 @@ font-size: 18px;
             opacity: 0;
             visibility: hidden;
             transform: translateX(20px);
-            transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), 
-                        transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), 
-                        visibility 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease; /* быстрый сдвиг */
             pointer-events: none;
             overflow-y: auto;
             padding-right: 2px;
@@ -177,12 +175,12 @@ font-size: 18px;
 
         /* Анимация для содержимого страниц */
         @keyframes fadeSlideUp {
-            0% { opacity: 0; transform: translateY(20px); }
+            0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
         .page-content {
-            animation: fadeSlideUp 0.5s ease forwards;
+            animation: fadeSlideUp 0.8s ease forwards; /* медленное появление */
             opacity: 0;
         }
 
@@ -258,9 +256,10 @@ font-size: 18px;
             text-align: center;
             box-sizing: border-box;
         }
-        .take-btn {background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+        .take-btn {
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 500% 500%;
-            animation: smoothGradient 8s ease infinite;
+animation: smoothGradient 8s ease infinite;
             color: white;
             cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
@@ -302,7 +301,9 @@ font-size: 18px;
         .profile-avatar {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background-size: 500% 500%;
+            animation: smoothGradient 8s ease infinite;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -324,7 +325,9 @@ font-size: 18px;
             right: -4px;
             bottom: -4px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background-size: 500% 500%;
+            animation: smoothGradient 8s ease infinite;
             z-index: -1;
         }
         .profile-name {
@@ -394,12 +397,11 @@ font-size: 18px;
             gap: 12px;
             align-items: center;
         }
-        .referral-link-input {
-            flex: 1;
+        .referral-link-input {flex: 1;
             min-width: 0;
             padding: 14px;
             border: 1px solid #3e3e3e;
-border-radius: 40px;
+            border-radius: 40px;
             font-size: 16px;
             background: #121212;
             color: white;
@@ -529,13 +531,13 @@ border-radius: 40px;
         .withdraw-btn:active {
             transform: scale(0.98);
         }
-        .withdraw-note {
-            margin-top: 18px;
+        .withdraw-note {margin-top: 18px;
             color: #b3b3b3;
             text-align: center;
             font-size: 16px;
         }
-/* Нижнее меню */
+
+        /* Нижнее меню */
         .nav {
             position: fixed;
             bottom: 0;
@@ -674,7 +676,7 @@ border-radius: 40px;
         }
         .copy-btn:hover, .check-btn:hover, .claim-btn:hover, .channel-btn:hover {
             opacity: 0.9;
-box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .copy-btn:active, .check-btn:active, .claim-btn:active, .channel-btn:active {
             transform: scale(0.98);
@@ -805,9 +807,9 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
 
             <div id="withdraw-page" class="page">
                 <div class="page-title">Вывод средств</div>
-                <div class="page-content" id="withdrawContent"></div>
+<div class="page-content" id="withdrawContent"></div>
             </div>
-</div>
+        </div>
 
         <!-- НИЖНЕЕ МЕНЮ -->
         <div class="nav">
@@ -841,8 +843,8 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         <!-- МОДАЛКИ -->
         <div class="modal" id="refModal">
             <div class="modal-content">
-                <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
-<div class="modal-body">
+<div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
+                <div class="modal-body">
                     <h3>Пригласи друга</h3>
                     <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
                     <input class="ref-link" id="refLink" readonly>
@@ -931,7 +933,8 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         function getRating() {
             return parseInt(localStorage.getItem('rating')) || 0;
         }
-        function addRating(points = 10) {let rating = getRating() + points;
+        function addRating(points = 10) {
+            let rating = getRating() + points;
             localStorage.setItem('rating', rating);
             return rating;
         }
@@ -989,15 +992,6 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             }
         }
 
-        // Функция для обновления высоты контейнера страниц (для плавной анимации)
-        function adjustPagesContainerHeight() {
-            const container = document.getElementById('pagesContainer');
-            const activePage = container.querySelector('.page.active-page');
-            if (activePage) {
-                container.style.height = activePage.offsetHeight + 'px';
-            }
-        }
-
         // Обновление страницы заданий
         function updateTasksPage() {
             const container = document.getElementById('tasks');
@@ -1036,8 +1030,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
                 } else {
                     btn.innerText = 'Взять';
                     btn.className = 'take-btn';
-                    btn.onclick = function(e) {
-                        let id = parseInt(this.dataset.id);
+                    btn.onclick = function(e) {let id = parseInt(this.dataset.id);
                         if (!canDo(id)) {
                             alert('Лимит на сегодня');
                             return;
@@ -1061,7 +1054,6 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
                 div.appendChild(actionsDiv);
                 container.appendChild(div);
             });
-            adjustPagesContainerHeight();
         }
 
         // Логика игры
@@ -1145,7 +1137,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
                 tg.openTelegramLink('https://t.me/HYPE_JOB1');
             } else {
                 window.open('https://t.me/HYPE_JOB1', '_blank');
-            }
+}
         };
 
         const subModal = document.getElementById('subModal');
@@ -1234,21 +1226,19 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
                 if (content) {
                     content.style.animation = 'none';
                     content.offsetHeight; // форсированный reflow
-                    content.style.animation = 'fadeSlideUp 0.5s ease forwards';
+                    content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                 }
-
-                setTimeout(adjustPagesContainerHeight, 50);
             });
         });
-function updateProfilePage() {
+
+        function updateProfilePage() {
             const todayCount = getTodayCount();
             const avatarLetter = (userName && userName !== 'Пользователь') ? userName.charAt(0).toUpperCase() : '?';
             const rating = getRating();
             const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
 
-            document.getElementById('profileStats').innerHTML = `
-                <div class="profile-header">
+            document.getElementById('profileStats').innerHTML = `<div class="profile-header">
                     <div class="profile-avatar">${avatarLetter}</div>
                     <div class="profile-name">${userName}</div>
                 </div>
@@ -1282,7 +1272,6 @@ function updateProfilePage() {
                     </div>
                 </div>
             `;
-            adjustPagesContainerHeight();
         }
 
         function updateReferralsPage() {
@@ -1310,7 +1299,6 @@ function updateProfilePage() {
                 </div>
                 <p class="withdraw-note">Статистика появится после приглашения друзей</p>
             `;
-            adjustPagesContainerHeight();
         }
 
         function updateWithdrawPage() {
@@ -1319,7 +1307,7 @@ function updateProfilePage() {
                 <div class="withdraw-form">
                     <div class="withdraw-field">
                         <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
-</div>
+                    </div>
                     <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
                     </div>
@@ -1327,7 +1315,6 @@ function updateProfilePage() {
                 </div>
                 <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
             `;
-            adjustPagesContainerHeight();
         }
 
         window.onclick = (e) => {
@@ -1340,12 +1327,6 @@ function updateProfilePage() {
         updateProfilePage();
         updateReferralsPage();
         updateWithdrawPage();
-
-        // Начальная установка высоты контейнера
-        window.addEventListener('load', () => {
-            adjustPagesContainerHeight();
-        });
-        window.addEventListener('resize', adjustPagesContainerHeight);
     </script>
 </body>
 </html>
