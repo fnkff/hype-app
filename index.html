@@ -146,10 +146,11 @@ font-size: 18px;
         .pages-container {
             flex: 1;
             min-height: 0;
-            overflow-y: scroll; /* всегда показываем ползунок, если контент не помещается */
+            overflow-y: auto;
             margin-bottom: 20px;
             scrollbar-width: thin;
             scrollbar-color: #1DB954 #2a2a2a;
+            -webkit-overflow-scrolling: touch;
         }
         .pages-container::-webkit-scrollbar {
             width: 4px;
@@ -1258,19 +1259,6 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
             const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
 
-            // Для теста добавим 20 дополнительных карточек, чтобы гарантировать прокрутку
-            let extraCards = '';
-            for (let i = 1; i <= 20; i++) {
-                extraCards += `
-                    <div class="stat-card" style="opacity:0.8;">
-                        <div class="stat-content">
-                            <div class="stat-label">Тестовая карточка</div>
-                            <div class="stat-value">${i}</div>
-                        </div>
-                    </div>
-                `;
-            }
-
             document.getElementById('profileStats').innerHTML = `
                 <div class="profile-header">
                     <div class="profile-avatar">${avatarLetter}</div>
@@ -1304,7 +1292,6 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                             </div>
                         </div>
                     </div>
-                    ${extraCards}
                 </div>
             `;
         }
@@ -1328,7 +1315,7 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
                             <div class="referral-stat-label">Заработано на рефералах</div>
-<div class="referral-stat-value">0 ₽</div>
+                            <div class="referral-stat-value">0 ₽</div>
                         </div>
                     </div>
                 </div>
@@ -1341,7 +1328,7 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <div class="withdraw-field">
-                        <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+<input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
