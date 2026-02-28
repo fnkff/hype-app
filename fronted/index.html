@@ -43,12 +43,12 @@
         .splash-logo {
             font-size: 64px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: scaleIn 0.5s ease, gradientShift 6s ease infinite alternate;
-            background-size: 200% 200%;
+            background-size: 300% 300%;
+            animation: scaleIn 0.5s ease, gradientShift 3s ease infinite alternate;
             background-position: 0% 50%;
         }
         @keyframes scaleIn {
@@ -60,8 +60,9 @@
             100% { opacity: 0; visibility: hidden; }
         }
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+            0% { background-position: 0% 50%; filter: brightness(1); }
+            50% { background-position: 100% 50%; filter: brightness(1.2); }
+            100% { background-position: 200% 50%; filter: brightness(1); }
         }
 
         /* Контейнер основного контента (изначально скрыт) */
@@ -89,12 +90,12 @@
         .logo {
             font-size: 32px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradientShift 6s ease infinite alternate;
-            background-size: 200% 200%;
+            background-size: 300% 300%;
+            animation: gradientShift 3s ease infinite alternate;
             background-position: 0% 50%;
             display: inline-block;
         }
@@ -118,13 +119,12 @@
             font-size: 18px;
             white-space: nowrap;
         }
-        .streak {
-            background: #2a2a2a;
+        .streak {background: #2a2a2a;
             color: #ff8c00;
             padding: 12px 20px;
             border-radius: 30px;
             font-weight: 600;
-font-size: 18px;
+            font-size: 18px;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -138,13 +138,13 @@ font-size: 18px;
             letter-spacing: -0.5px;
         }
 
-        /* Контейнер страниц с относительным позиционированием */
+        /* Контейнер страниц */
         .pages-container {
             position: relative;
             flex: 1;
-            min-height: 0; /* важно для flex */
-            overflow: hidden;
+            min-height: 0;
             margin-bottom: 20px;
+            overflow: hidden;
         }
 
         /* Страницы абсолютно позиционированы */
@@ -153,11 +153,14 @@ font-size: 18px;
             top: 0;
             left: 0;
             width: 100%;
+            height: 100%;
             opacity: 0;
             visibility: hidden;
             transform: translateX(20px);
             transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
             pointer-events: none;
+            overflow-y: auto;
+            padding-right: 2px;
         }
         .page.active-page {
             opacity: 1;
@@ -402,12 +405,12 @@ font-size: 18px;
             border-radius: 40px;
             padding: 14px 28px;
             font-weight: 600;
-            font-size: 16px;
+font-size: 16px;
             cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
             flex-shrink: 0;
             white-space: nowrap;
-box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
         .referral-copy-btn:hover {
             opacity: 0.9;
@@ -546,14 +549,13 @@ box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         .nav-item.active {
             color: #1DB954;
         }
-        .nav-item.active::before {
-            content: '';
+        .nav-item.active::before {content: '';
             position: absolute;
             top: -10px;
             left: 50%;
             transform: translateX(-50%);
             width: 30px;
-height: 4px;
+            height: 4px;
             background: linear-gradient(90deg, #1DB954, #0A5C2A);
             border-radius: 2px;
         }
@@ -690,7 +692,7 @@ height: 4px;
         }
         .game-box:hover {
             transform: scale(1.1);
-box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .game-box:active {
             transform: scale(0.95);
@@ -841,9 +843,9 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
                 <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
                 <div class="modal-body">
                     <h3>Подпишись на канал</h3>
-                    <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
+<p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
                     <!-- Кнопка для перехода в канал -->
-<button class="channel-btn" id="channelBtn">Перейти в канал</button>
+                    <button class="channel-btn" id="channelBtn">Перейти в канал</button>
                     <button class="check-btn" id="checkBtn">Проверить подписку</button>
                     <div class="result" id="checkResult"></div>
                 </div>
@@ -937,8 +939,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             localStorage.setItem('balance', balance);
         }
 
-        function addCount(id) {
-            let key = id + '_' + new Date().toDateString();
+        function addCount(id) {let key = id + '_' + new Date().toDateString();
             counts[key] = (counts[key] || 0) + 1;
             localStorage.setItem('counts', JSON.stringify(counts));
         }
@@ -992,7 +993,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             const tasks = [
                 { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 30 },
                 { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
-                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' } // убрали эмодзи
+                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' }
             ];
             tasks.forEach((t, index) => {
                 const div = document.createElement('div');
@@ -1142,7 +1143,8 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
-closeSub.onclick = () => subModal.classList.remove('show');
+
+        closeSub.onclick = () => subModal.classList.remove('show');
 
         checkBtn.onclick = async () => {
             if (!canDo(2)) {
@@ -1237,10 +1239,10 @@ closeSub.onclick = () => subModal.classList.remove('show');
                         <div class="stat-value">${todayCount}</div>
                     </div>
                 </div>
-                <div class="stat-card">
+<div class="stat-card">
                     <div class="stat-content">
                         <div class="stat-label">ID</div>
-<div class="stat-value">${userId}</div>
+                        <div class="stat-value">${userId}</div>
                     </div>
                 </div>
                 <div class="stat-card">
