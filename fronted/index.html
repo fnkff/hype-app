@@ -167,7 +167,19 @@ font-size: 18px;
             pointer-events: none;
             overflow-y: auto;
             padding-right: 2px;
+            scrollbar-width: thin;
+            scrollbar-color: #1DB954 #2a2a2a;
             -webkit-overflow-scrolling: touch;
+        }
+        .page::-webkit-scrollbar {
+            width: 4px;
+        }
+        .page::-webkit-scrollbar-track {
+            background: #2a2a2a;
+        }
+        .page::-webkit-scrollbar-thumb {
+            background: #1DB954;
+            border-radius: 2px;
         }
         .page.active-page {
             opacity: 1;
@@ -249,7 +261,7 @@ font-size: 18px;
         .take-btn, .done-btn {
             border: none;
             border-radius: 30px;
-            padding: 10px 24px;
+padding: 10px 24px;
             font-size: 16px;
             font-weight: 600;
             white-space: nowrap;
@@ -259,7 +271,8 @@ font-size: 18px;
             text-align: center;
             box-sizing: border-box;
         }
-        .take-btn {background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+        .take-btn {
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             color: white;
@@ -382,8 +395,7 @@ font-size: 18px;
         }
 
         /* Рефералы */
-        .referral-link-card {
-            background: #2f2f2f;
+        .referral-link-card {background: #2f2f2f;
             color: white;
             border-radius: 20px;
             padding: 20px;
@@ -394,7 +406,7 @@ font-size: 18px;
             font-size: 16px;
             color: #b3b3b3;
             margin-bottom: 12px;
-}
+        }
         .referral-link-field {
             display: flex;
             gap: 12px;
@@ -520,7 +532,7 @@ font-size: 18px;
             border: none;
             border-radius: 50px;
             padding: 18px;
-            font-size: 20px;
+font-size: 20px;
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
@@ -530,7 +542,7 @@ font-size: 18px;
         }
         .withdraw-btn:hover {
             opacity: 0.9;
-box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .withdraw-btn:active {
             transform: scale(0.98);
@@ -665,7 +677,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .copy-btn, .check-btn, .claim-btn, .channel-btn {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
-            background-size: 500% 500%;
+background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             color: white;
             border: none;
@@ -674,7 +686,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             width: 100%;
             font-weight: 600;
             font-size: 18px;
-cursor: pointer;
+            cursor: pointer;
             margin-top: 12px;
             transition: opacity 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -799,15 +811,14 @@ cursor: pointer;
                 <div class="page-title">Задания</div>
                 <div class="page-content" id="tasks"></div>
             </div>
-
-            <div id="profile-page" class="page">
+<div id="profile-page" class="page">
                 <div class="page-title">Профиль</div>
                 <div class="page-content" id="profileStats"></div>
             </div>
 
             <div id="referrals-page" class="page">
                 <div class="page-title">Реферальная программа</div>
-<div class="page-content" id="referralsContent"></div>
+                <div class="page-content" id="referralsContent"></div>
             </div>
 
             <div id="withdraw-page" class="page">
@@ -841,7 +852,7 @@ cursor: pointer;
                     <path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z"/>
                     <path d="m16 19h2a1 1 0 0 0 0-2h-1a1 1 0 0 0 -2 0v.18a3 3 0 0 0 1 5.82 1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h1a1 1 0 0 0 2 0v-.18a3 3 0 0 0 -1-5.82 1 1 0 0 1 0-2z"/>
                 </svg>
-<span>Вывод</span>
+                <span>Вывод</span>
             </a>
         </div>
 
@@ -924,7 +935,7 @@ cursor: pointer;
             let streak = getStreak();
             if (lastDate === today) return streak;
             const yesterday = new Date(Date.now() - 86400000).toDateString();
-            if (lastDate === yesterday) streak++;
+if (lastDate === yesterday) streak++;
             else streak = 1;
             localStorage.setItem('streak', streak);
             localStorage.setItem('lastStreakDate', today);
@@ -1032,7 +1043,7 @@ cursor: pointer;
                     btn.innerText = 'Выполнено';
                     btn.className = 'done-btn';
                     btn.disabled = true;
-} else {
+                } else {
                     btn.innerText = 'Взять';
                     btn.className = 'take-btn';
                     btn.onclick = function(e) {
@@ -1138,7 +1149,8 @@ cursor: pointer;
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
 
-        document.getElementById('channelBtn').onclick = () => {if (tg) {
+        document.getElementById('channelBtn').onclick = () => {
+            if (tg) {
                 tg.openTelegramLink('https://t.me/HYPE_JOB1');
             } else {
                 window.open('https://t.me/HYPE_JOB1', '_blank');
@@ -1235,12 +1247,11 @@ cursor: pointer;
                 }
             });
         });
-
-        function updateProfilePage() {
+function updateProfilePage() {
             const todayCount = getTodayCount();
             const avatarLetter = (userName && userName !== 'Пользователь') ? userName.charAt(0).toUpperCase() : '?';
             const rating = getRating();
-const level = getLevel(rating);
+            const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
 
             document.getElementById('profileStats').innerHTML = `
@@ -1315,11 +1326,11 @@ const level = getLevel(rating);
                         <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
-                        <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
+<input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
                     </div>
                     <button class="withdraw-btn">Вывести</button>
                 </div>
-<p class="withdraw-note">Вывод будет доступен после бета-теста</p>
+                <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
             `;
         }
 
