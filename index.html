@@ -142,7 +142,7 @@ font-size: 18px;
             letter-spacing: -0.5px;
         }
 
-        /* Контейнер страниц */
+        /* Контейнер страниц с собственной прокруткой */
         .pages-container {
             flex: 1;
             min-height: 0;
@@ -163,7 +163,7 @@ font-size: 18px;
             border-radius: 2px;
         }
 
-        /* Страницы теперь обычные блочные, переключаются через display */
+        /* Страницы переключаются через display */
         .page {
             display: none;
         }
@@ -327,7 +327,7 @@ transition: opacity 0.2s, box-shadow 0.2s;
             background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             z-index: -1;
-            margin: -3px;
+            margin: -3px; /* создаёт эффект рамки */
         }
         .profile-name {
             font-size: 28px;
@@ -400,8 +400,8 @@ transition: opacity 0.2s, box-shadow 0.2s;
             flex: 1;
             min-width: 0;
             padding: 14px;
-            border: 1px solid #3e3e3e;
-border-radius: 40px;
+border: 1px solid #3e3e3e;
+            border-radius: 40px;
             font-size: 16px;
             background: #121212;
             color: white;
@@ -535,9 +535,10 @@ border-radius: 40px;
             margin-top: 18px;
             color: #b3b3b3;
             text-align: center;
-            font-size: 16px;
+font-size: 16px;
         }
-/* Нижнее меню */
+
+        /* Нижнее меню */
         .nav {
             position: fixed;
             bottom: 0;
