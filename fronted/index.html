@@ -1010,15 +1010,6 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
             }
         }
 
-        // Функция для обновления высоты контейнера страниц (для корректной прокрутки)
-        function adjustPagesContainerHeight() {
-            const container = document.getElementById('pagesContainer');
-            const activePage = container.querySelector('.page.active-page');
-            if (activePage) {
-                container.style.height = activePage.offsetHeight + 'px';
-            }
-        }
-
         // Обновление страницы заданий с сортировкой (выполненные внизу)
         function updateTasksPage() {
             const container = document.getElementById('tasks');
@@ -1042,7 +1033,8 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
                     notDone.push(task);
                 }
             });
-// Объединяем: сначала невыполненные, потом выполненные
+
+            // Объединяем: сначала невыполненные, потом выполненные
             const sortedTasks = [...notDone, ...done];
 
             sortedTasks.forEach((t, index) => {
@@ -1101,8 +1093,6 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
                 div.appendChild(actionsDiv);
                 container.appendChild(div);
             });
-
-            adjustPagesContainerHeight();
         }
 
         // Логика игры
@@ -1138,7 +1128,7 @@ const yesterday = new Date(Date.now() - 86400000).toDateString();
                 const id = 3;
                 if (!canDo(id)) {
                     alert('Лимит на сегодня');
-gameModal.classList.remove('show');
+                    gameModal.classList.remove('show');
                     return;
                 }
 
@@ -1249,7 +1239,7 @@ gameModal.classList.remove('show');
                 const page = item.dataset.page;
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
-if (!targetPage || targetPage === currentActive) return;
+                if (!targetPage || targetPage === currentActive) return;
 
                 if (currentActive) {
                     currentActive.classList.remove('active-page');
@@ -1260,8 +1250,7 @@ if (!targetPage || targetPage === currentActive) return;
                 item.classList.add('active');
 
                 // Обновляем контент соответствующей страницы
-                if (page === 'profile') {
-                    updateProfilePage();
+                if (page === 'profile') {updateProfilePage();
                 } else if (page === 'referrals') {
                     updateReferralsPage();
                 } else if (page === 'withdraw') {
@@ -1277,8 +1266,6 @@ if (!targetPage || targetPage === currentActive) return;
                     content.offsetHeight; // форсированный reflow
                     content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                 }
-
-                setTimeout(adjustPagesContainerHeight, 50);
             });
         });
 
@@ -1324,7 +1311,6 @@ if (!targetPage || targetPage === currentActive) return;
                     </div>
                 </div>
             `;
-            adjustPagesContainerHeight();
         }
 
         function updateReferralsPage() {
@@ -1335,7 +1321,7 @@ if (!targetPage || targetPage === currentActive) return;
                         <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                         <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
                     </div>
-</div>
+                </div>
                 <div class="referral-stats">
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
@@ -1345,14 +1331,13 @@ if (!targetPage || targetPage === currentActive) return;
                     </div>
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
-                            <div class="referral-stat-label">Заработано на рефералах</div>
+<div class="referral-stat-label">Заработано на рефералах</div>
                             <div class="referral-stat-value">0 ₽</div>
                         </div>
                     </div>
                 </div>
                 <p class="withdraw-note">Статистика появится после приглашения друзей</p>
             `;
-            adjustPagesContainerHeight();
         }
 
         function updateWithdrawPage() {
@@ -1369,7 +1354,6 @@ if (!targetPage || targetPage === currentActive) return;
                 </div>
                 <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
             `;
-            adjustPagesContainerHeight();
         }
 
         window.onclick = (e) => {
@@ -1382,12 +1366,6 @@ if (!targetPage || targetPage === currentActive) return;
         updateProfilePage();
         updateReferralsPage();
         updateWithdrawPage();
-
-        // Начальная установка высоты контейнера
-        window.addEventListener('load', () => {
-            adjustPagesContainerHeight();
-        });
-        window.addEventListener('resize', adjustPagesContainerHeight);
     </script>
 </body>
 </html>
