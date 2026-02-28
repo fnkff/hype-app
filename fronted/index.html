@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Тест прокрутки</title>
+    <title>Хайп</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -21,16 +22,50 @@
             padding: 20px;
         }
         .header {
-            background: #2a2a2a;
-            padding: 20px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
             flex-shrink: 0;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .beta-badge {
+            font-size: 16px;
+            color: #b3b3b3;
+        }
+        .balance {
+            background: #2a2a2a;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: white;
+        }
+        .streak {
+            background: #2a2a2a;
+            color: #ff8c00;
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+        }
+        .header-right {
+            display: flex;
+            gap: 10px;
         }
         .content {
             flex: 1;
             min-height: 0;
             overflow-y: auto;
-            margin-top: 20px;
+            margin-bottom: 20px;
             border: 1px solid #444;
             padding: 10px;
         }
@@ -42,19 +77,35 @@
         }
         .footer {
             background: #0a0a0a;
-            padding: 20px;
-            text-align: center;
+            padding: 14px;
+            display: flex;
+            justify-content: space-around;
             flex-shrink: 0;
-            margin-top: 20px;
+        }
+        .footer-item {
+            color: #6a6a6a;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="header">ХАЙП ДЖОБ (тест)</div>
-    <div class="content" id="content">
-        <!-- 30 элементов для прокрутки -->
+    <div class="header">
+        <div style="display: flex; align-items: center; gap: 4px;">
+            <span class="logo">ХАЙП</span>
+            <span class="beta-badge">[бета тест]</span>
+        </div>
+        <div class="header-right">
+            <div class="streak">🔥 0</div>
+            <div class="balance">0 ₽</div>
+        </div>
     </div>
-    <div class="footer">нижнее меню (тест)</div>
+    <div class="content" id="content"></div>
+    <div class="footer">
+        <div class="footer-item">Задания</div>
+        <div class="footer-item">Профиль</div>
+        <div class="footer-item">Рефералы</div>
+        <div class="footer-item">Вывод</div>
+    </div>
     <script>
         const content = document.getElementById('content');
         for (let i = 1; i <= 30; i++) {
