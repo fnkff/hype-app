@@ -41,13 +41,15 @@
             pointer-events: none;
         }
         .splash-logo {
-            font-size: 64px; /* увеличенный размер */
+            font-size: 64px;
             font-weight: 700;
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: scaleIn 0.5s ease;
+            animation: scaleIn 0.5s ease, gradientShift 6s ease infinite alternate;
+            background-size: 200% 200%;
+            background-position: 0% 50%;
         }
         @keyframes scaleIn {
             0% { transform: scale(0.5); opacity: 0; }
@@ -56,6 +58,10 @@
         @keyframes fadeOut {
             0% { opacity: 1; visibility: visible; }
             100% { opacity: 0; visibility: hidden; }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
 
         /* Контейнер основного контента (изначально скрыт) */
@@ -87,6 +93,10 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: gradientShift 6s ease infinite alternate;
+            background-size: 200% 200%;
+            background-position: 0% 50%;
+            display: inline-block;
         }
         .beta-badge {
             font-size: 16px;
@@ -114,7 +124,7 @@
             padding: 12px 20px;
             border-radius: 30px;
             font-weight: 600;
-            font-size: 18px;
+font-size: 18px;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -129,7 +139,8 @@
         }
 
         /* Контейнер страниц с относительным позиционированием */
-        .pages-container {position: relative;
+        .pages-container {
+            position: relative;
             flex: 1;
             min-height: 0; /* важно для flex */
             overflow: hidden;
@@ -266,7 +277,8 @@
             font-weight: 600;
             white-space: nowrap;
         }
-/* Профиль */
+
+        /* Профиль */
         .profile-header {
             display: flex;
             align-items: center;
@@ -395,7 +407,7 @@
             transition: opacity 0.2s, box-shadow 0.2s;
             flex-shrink: 0;
             white-space: nowrap;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
         .referral-copy-btn:hover {
             opacity: 0.9;
@@ -409,7 +421,8 @@
             flex-direction: column;
             gap: 16px;
         }
-        .referral-stat-card {background: #2f2f2f;
+        .referral-stat-card {
+            background: #2f2f2f;
             color: white;
             border-radius: 20px;
             padding: 20px;
@@ -540,7 +553,7 @@
             left: 50%;
             transform: translateX(-50%);
             width: 30px;
-            height: 4px;
+height: 4px;
             background: linear-gradient(90deg, #1DB954, #0A5C2A);
             border-radius: 2px;
         }
@@ -551,7 +564,8 @@
             background-clip: text;
             color: transparent;
         }
-        .nav-item svg {width: 32px;
+        .nav-item svg {
+            width: 32px;
             height: 32px;
             display: block;
         }
@@ -676,7 +690,7 @@
         }
         .game-box:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .game-box:active {
             transform: scale(0.95);
@@ -693,7 +707,7 @@
         }
         .game-reward {
             text-align: center;
-font-size: 24px;
+            font-size: 24px;
             font-weight: bold;
             margin-top: 10px;
             color: #1DB954;
@@ -829,7 +843,7 @@ font-size: 24px;
                     <h3>Подпишись на канал</h3>
                     <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
                     <!-- Кнопка для перехода в канал -->
-                    <button class="channel-btn" id="channelBtn">Перейти в канал</button>
+<button class="channel-btn" id="channelBtn">Перейти в канал</button>
                     <button class="check-btn" id="checkBtn">Проверить подписку</button>
                     <div class="result" id="checkResult"></div>
                 </div>
@@ -839,7 +853,7 @@ font-size: 24px;
         <div class="modal" id="gameModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeGame">&times;</button></div>
-<div class="modal-body">
+                <div class="modal-body">
                     <h3>Мини-игра</h3>
                     <p style="color:#b3b3b3;">Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
                     <div class="game-boxes">
@@ -939,7 +953,7 @@ font-size: 24px;
                 let key = id + '_' + new Date().toDateString();
                 return !counts[key] || counts[key] < 1;
             } else {
-// Остальные задания — до 3 раз в день
+                // Остальные задания — до 3 раз в день
                 let key = id + '_' + new Date().toDateString();
                 return !counts[key] || counts[key] < 3;
             }
@@ -978,7 +992,7 @@ font-size: 24px;
             const tasks = [
                 { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 30 },
                 { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
-                { id: 3, name: 'Мини-игра', desc: '🎁 Выиграй до 20 ₽', price: '5-20' }
+                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' } // убрали эмодзи
             ];
             tasks.forEach((t, index) => {
                 const div = document.createElement('div');
@@ -1128,8 +1142,7 @@ font-size: 24px;
         const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
-
-        closeSub.onclick = () => subModal.classList.remove('show');
+closeSub.onclick = () => subModal.classList.remove('show');
 
         checkBtn.onclick = async () => {
             if (!canDo(2)) {
@@ -1142,7 +1155,7 @@ font-size: 24px;
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-const success = true; // здесь будет реальная проверка
+            const success = true; // здесь будет реальная проверка
 
             if (success) {
                 balance += 20;
@@ -1227,7 +1240,7 @@ const success = true; // здесь будет реальная проверка
                 <div class="stat-card">
                     <div class="stat-content">
                         <div class="stat-label">ID</div>
-                        <div class="stat-value">${userId}</div>
+<div class="stat-value">${userId}</div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -1237,7 +1250,7 @@ const success = true; // здесь будет реальная проверка
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${progress}%;"></div>
                         </div>
-</div>
+                    </div>
                 </div>
             `;
             adjustPagesContainerHeight();
