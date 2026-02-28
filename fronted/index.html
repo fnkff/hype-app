@@ -161,7 +161,9 @@ font-size: 18px;
             opacity: 0;
             visibility: hidden;
             transform: translateX(20px);
-            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+            transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        visibility 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
             pointer-events: none;
             overflow-y: auto;
             padding-right: 2px;
@@ -256,12 +258,11 @@ font-size: 18px;
             text-align: center;
             box-sizing: border-box;
         }
-        .take-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+        .take-btn {background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             color: white;
-cursor: pointer;
+            cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
         }
         .take-btn:hover {
@@ -392,7 +393,7 @@ cursor: pointer;
             font-size: 16px;
             color: #b3b3b3;
             margin-bottom: 12px;
-        }
+}
         .referral-link-field {
             display: flex;
             gap: 12px;
@@ -401,7 +402,7 @@ cursor: pointer;
         .referral-link-input {
             flex: 1;
             min-width: 0;
-padding: 14px;
+            padding: 14px;
             border: 1px solid #3e3e3e;
             border-radius: 40px;
             font-size: 16px;
@@ -528,7 +529,7 @@ padding: 14px;
         }
         .withdraw-btn:hover {
             opacity: 0.9;
-            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .withdraw-btn:active {
             transform: scale(0.98);
@@ -536,7 +537,7 @@ padding: 14px;
         .withdraw-note {
             margin-top: 18px;
             color: #b3b3b3;
-text-align: center;
+            text-align: center;
             font-size: 16px;
         }
 
@@ -672,12 +673,13 @@ text-align: center;
             width: 100%;
             font-weight: 600;
             font-size: 18px;
-            cursor: pointer;
+cursor: pointer;
             margin-top: 12px;
             transition: opacity 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
-        .copy-btn:hover, .check-btn:hover, .claim-btn:hover, .channel-btn:hover {opacity: 0.9;
+        .copy-btn:hover, .check-btn:hover, .claim-btn:hover, .channel-btn:hover {
+            opacity: 0.9;
             box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .copy-btn:active, .check-btn:active, .claim-btn:active, .channel-btn:active {
@@ -804,13 +806,13 @@ text-align: center;
 
             <div id="referrals-page" class="page">
                 <div class="page-title">Реферальная программа</div>
-                <div class="page-content" id="referralsContent"></div>
+<div class="page-content" id="referralsContent"></div>
             </div>
 
             <div id="withdraw-page" class="page">
                 <div class="page-title">Вывод средств</div>
                 <div class="page-content" id="withdrawContent"></div>
-</div>
+            </div>
         </div>
 
         <!-- НИЖНЕЕ МЕНЮ -->
@@ -838,7 +840,7 @@ text-align: center;
                     <path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z"/>
                     <path d="m16 19h2a1 1 0 0 0 0-2h-1a1 1 0 0 0 -2 0v.18a3 3 0 0 0 1 5.82 1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h1a1 1 0 0 0 2 0v-.18a3 3 0 0 0 -1-5.82 1 1 0 0 1 0-2z"/>
                 </svg>
-                <span>Вывод</span>
+<span>Вывод</span>
             </a>
         </div>
 
@@ -846,7 +848,7 @@ text-align: center;
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
-<div class="modal-body">
+                <div class="modal-body">
                     <h3>Пригласи друга</h3>
                     <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
                     <input class="ref-link" id="refLink" readonly>
@@ -935,7 +937,8 @@ text-align: center;
         function getRating() {
             return parseInt(localStorage.getItem('rating')) || 0;
         }
-        function addRating(points = 10) {let rating = getRating() + points;
+        function addRating(points = 10) {
+            let rating = getRating() + points;
             localStorage.setItem('rating', rating);
             return rating;
         }
@@ -1028,12 +1031,13 @@ text-align: center;
                     btn.innerText = 'Выполнено';
                     btn.className = 'done-btn';
                     btn.disabled = true;
-                } else {
+} else {
                     btn.innerText = 'Взять';
                     btn.className = 'take-btn';
                     btn.onclick = function(e) {
                         let id = parseInt(this.dataset.id);
-                        if (!canDo(id)) {alert('Лимит на сегодня');
+                        if (!canDo(id)) {
+                            alert('Лимит на сегодня');
                             return;
                         }
                         if (id === 1) {
@@ -1133,8 +1137,7 @@ text-align: center;
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
 
-        document.getElementById('channelBtn').onclick = () => {
-            if (tg) {
+        document.getElementById('channelBtn').onclick = () => {if (tg) {
                 tg.openTelegramLink('https://t.me/HYPE_JOB1');
             } else {
                 window.open('https://t.me/HYPE_JOB1', '_blank');
@@ -1142,7 +1145,7 @@ text-align: center;
         };
 
         const subModal = document.getElementById('subModal');
-const closeSub = document.getElementById('closeSub');
+        const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
@@ -1236,17 +1239,8 @@ const closeSub = document.getElementById('closeSub');
             const todayCount = getTodayCount();
             const avatarLetter = (userName && userName !== 'Пользователь') ? userName.charAt(0).toUpperCase() : '?';
             const rating = getRating();
-            const level = getLevel(rating);
+const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
-
-            // Добавляем много контента для проверки прокрутки (потом можно убрать)
-            const extraCards = Array(10).fill(0).map((_, i) => `<div class="stat-card" style="opacity:0.5;">
-                    <div class="stat-content">
-                        <div class="stat-label">Дополнительно</div>
-                        <div class="stat-value">${i+1}</div>
-                    </div>
-                </div>
-            `).join('');
 
             document.getElementById('profileStats').innerHTML = `
                 <div class="profile-header">
@@ -1281,7 +1275,6 @@ const closeSub = document.getElementById('closeSub');
                             </div>
                         </div>
                     </div>
-                    ${extraCards}
                 </div>
             `;
         }
@@ -1321,11 +1314,11 @@ const closeSub = document.getElementById('closeSub');
                         <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
-<input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
+                        <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
                     </div>
                     <button class="withdraw-btn">Вывести</button>
                 </div>
-                <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
+<p class="withdraw-note">Вывод будет доступен после бета-теста</p>
             `;
         }
 
