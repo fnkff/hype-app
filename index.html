@@ -161,7 +161,9 @@ font-size: 18px;
             opacity: 0;
             visibility: hidden;
             transform: translateX(20px);
-            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                        transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                        visibility 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
             pointer-events: none;
             overflow-y: auto;
             padding-right: 2px;
@@ -256,12 +258,11 @@ font-size: 18px;
             text-align: center;
             box-sizing: border-box;
         }
-        .take-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+        .take-btn {background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             color: white;
-cursor: pointer;
+            cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
         }
         .take-btn:hover {
@@ -398,7 +399,7 @@ cursor: pointer;
             min-width: 0;
             padding: 14px;
             border: 1px solid #3e3e3e;
-            border-radius: 40px;
+border-radius: 40px;
             font-size: 16px;
             background: #121212;
             color: white;
@@ -534,8 +535,7 @@ cursor: pointer;
             text-align: center;
             font-size: 16px;
         }
-
-        /* Нижнее меню */
+/* Нижнее меню */
         .nav {
             position: fixed;
             bottom: 0;
@@ -543,7 +543,7 @@ cursor: pointer;
             right: 0;
             background: #0a0a0a;
             display: flex;
-justify-content: space-around;
+            justify-content: space-around;
             padding: 14px;
             z-index: 100;
             border-top: 1px solid #1e1e1e;
@@ -674,12 +674,13 @@ justify-content: space-around;
         }
         .copy-btn:hover, .check-btn:hover, .claim-btn:hover, .channel-btn:hover {
             opacity: 0.9;
-            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .copy-btn:active, .check-btn:active, .claim-btn:active, .channel-btn:active {
             transform: scale(0.98);
         }
-        .result {margin-top: 12px;
+        .result {
+            margin-top: 12px;
             text-align: center;
             color: #b3b3b3;
             font-size: 16px;
@@ -806,7 +807,7 @@ justify-content: space-around;
                 <div class="page-title">Вывод средств</div>
                 <div class="page-content" id="withdrawContent"></div>
             </div>
-        </div>
+</div>
 
         <!-- НИЖНЕЕ МЕНЮ -->
         <div class="nav">
@@ -841,10 +842,10 @@ justify-content: space-around;
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
-                <div class="modal-body">
+<div class="modal-body">
                     <h3>Пригласи друга</h3>
                     <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
-<input class="ref-link" id="refLink" readonly>
+                    <input class="ref-link" id="refLink" readonly>
                     <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
                 </div>
             </div>
@@ -930,15 +931,14 @@ justify-content: space-around;
         function getRating() {
             return parseInt(localStorage.getItem('rating')) || 0;
         }
-        function addRating(points = 10) {
-            let rating = getRating() + points;
+        function addRating(points = 10) {let rating = getRating() + points;
             localStorage.setItem('rating', rating);
             return rating;
         }
         function getLevel(rating) {
             return Math.floor(rating / 100) + 1;
         }
-function getProgressToNextLevel(rating) {
+        function getProgressToNextLevel(rating) {
             const level = getLevel(rating);
             const currentLevelStart = (level - 1) * 100;
             let progress = ((rating - currentLevelStart) / 100) * 100;
@@ -1035,7 +1035,7 @@ function getProgressToNextLevel(rating) {
                     btn.disabled = true;
                 } else {
                     btn.innerText = 'Взять';
-btn.className = 'take-btn';
+                    btn.className = 'take-btn';
                     btn.onclick = function(e) {
                         let id = parseInt(this.dataset.id);
                         if (!canDo(id)) {
@@ -1240,12 +1240,11 @@ btn.className = 'take-btn';
                 setTimeout(adjustPagesContainerHeight, 50);
             });
         });
-
-        function updateProfilePage() {
+function updateProfilePage() {
             const todayCount = getTodayCount();
             const avatarLetter = (userName && userName !== 'Пользователь') ? userName.charAt(0).toUpperCase() : '?';
             const rating = getRating();
-const level = getLevel(rating);
+            const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
 
             document.getElementById('profileStats').innerHTML = `
@@ -1320,11 +1319,11 @@ const level = getLevel(rating);
                 <div class="withdraw-form">
                     <div class="withdraw-field">
                         <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
-                    </div>
+</div>
                     <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
                     </div>
-<button class="withdraw-btn">Вывести</button>
+                    <button class="withdraw-btn">Вывести</button>
                 </div>
                 <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
             `;
