@@ -142,33 +142,50 @@ font-size: 18px;
             letter-spacing: -0.5px;
         }
 
-        /* Контейнер страниц с принудительной прокруткой */
+        /* Контейнер страниц с относительным позиционированием */
         .pages-container {
+            position: relative;
             flex: 1;
             min-height: 0;
-            overflow-y: auto;
             margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        /* Страницы абсолютно позиционированы */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(20px);
+            transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        visibility 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            pointer-events: none;
+            overflow-y: auto;
+            padding-right: 2px;
             scrollbar-width: thin;
             scrollbar-color: #1DB954 #2a2a2a;
             -webkit-overflow-scrolling: touch;
         }
-        .pages-container::-webkit-scrollbar {
+        .page::-webkit-scrollbar {
             width: 4px;
         }
-        .pages-container::-webkit-scrollbar-track {
+        .page::-webkit-scrollbar-track {
             background: #2a2a2a;
         }
-        .pages-container::-webkit-scrollbar-thumb {
+        .page::-webkit-scrollbar-thumb {
             background: #1DB954;
             border-radius: 2px;
         }
-
-        /* Страницы переключаются через display */
-        .page {
-            display: none;
-        }
         .page.active-page {
-            display: block;
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+            pointer-events: auto;
         }
 
         /* Анимация для содержимого страниц */
@@ -243,7 +260,7 @@ font-size: 18px;
         }
         .take-btn, .done-btn {
             border: none;
-            border-radius: 30px;
+border-radius: 30px;
             padding: 10px 24px;
             font-size: 16px;
             font-weight: 600;
@@ -260,7 +277,7 @@ font-size: 18px;
             animation: smoothGradient 8s ease infinite;
             color: white;
             cursor: pointer;
-transition: opacity 0.2s, box-shadow 0.2s;
+            transition: opacity 0.2s, box-shadow 0.2s;
         }
         .take-btn:hover {
             opacity: 0.9;
@@ -378,8 +395,7 @@ transition: opacity 0.2s, box-shadow 0.2s;
         }
 
         /* Рефералы */
-        .referral-link-card {
-            background: #2f2f2f;
+        .referral-link-card {background: #2f2f2f;
             color: white;
             border-radius: 20px;
             padding: 20px;
@@ -401,7 +417,7 @@ transition: opacity 0.2s, box-shadow 0.2s;
             min-width: 0;
             padding: 14px;
             border: 1px solid #3e3e3e;
-border-radius: 40px;
+            border-radius: 40px;
             font-size: 16px;
             background: #121212;
             color: white;
@@ -516,7 +532,7 @@ border-radius: 40px;
             border: none;
             border-radius: 50px;
             padding: 18px;
-            font-size: 20px;
+font-size: 20px;
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
@@ -537,7 +553,8 @@ border-radius: 40px;
             text-align: center;
             font-size: 16px;
         }
-/* Нижнее меню */
+
+        /* Нижнее меню */
         .nav {
             position: fixed;
             bottom: 0;
@@ -660,7 +677,7 @@ border-radius: 40px;
         }
         .copy-btn, .check-btn, .claim-btn, .channel-btn {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
-            background-size: 500% 500%;
+background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             color: white;
             border: none;
@@ -676,7 +693,7 @@ border-radius: 40px;
         }
         .copy-btn:hover, .check-btn:hover, .claim-btn:hover, .channel-btn:hover {
             opacity: 0.9;
-box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .copy-btn:active, .check-btn:active, .claim-btn:active, .channel-btn:active {
             transform: scale(0.98);
@@ -789,14 +806,12 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             </div>
         </div>
 
-        <!-- КОНТЕЙНЕР СТРАНИЦ С ПРОКРУТКОЙ -->
-        <div class="pages-container">
+        <div class="pages-container" id="pagesContainer">
             <div id="tasks-page" class="page active-page">
                 <div class="page-title">Задания</div>
                 <div class="page-content" id="tasks"></div>
             </div>
-
-            <div id="profile-page" class="page">
+<div id="profile-page" class="page">
                 <div class="page-title">Профиль</div>
                 <div class="page-content" id="profileStats"></div>
             </div>
@@ -809,7 +824,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             <div id="withdraw-page" class="page">
                 <div class="page-title">Вывод средств</div>
                 <div class="page-content" id="withdrawContent"></div>
-</div>
+            </div>
         </div>
 
         <!-- НИЖНЕЕ МЕНЮ -->
@@ -845,7 +860,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
-<div class="modal-body">
+                <div class="modal-body">
                     <h3>Пригласи друга</h3>
                     <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
                     <input class="ref-link" id="refLink" readonly>
@@ -920,7 +935,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             let streak = getStreak();
             if (lastDate === today) return streak;
             const yesterday = new Date(Date.now() - 86400000).toDateString();
-            if (lastDate === yesterday) streak++;
+if (lastDate === yesterday) streak++;
             else streak = 1;
             localStorage.setItem('streak', streak);
             localStorage.setItem('lastStreakDate', today);
@@ -934,7 +949,8 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         function getRating() {
             return parseInt(localStorage.getItem('rating')) || 0;
         }
-        function addRating(points = 10) {let rating = getRating() + points;
+        function addRating(points = 10) {
+            let rating = getRating() + points;
             localStorage.setItem('rating', rating);
             return rating;
         }
@@ -992,6 +1008,15 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             }
         }
 
+        // Функция для обновления высоты контейнера страниц (для плавной анимации)
+        function adjustPagesContainerHeight() {
+            const container = document.getElementById('pagesContainer');
+            const activePage = container.querySelector('.page.active-page');
+            if (activePage) {
+                container.style.height = activePage.offsetHeight + 'px';
+            }
+        }
+
         // Обновление страницы заданий с сортировкой (выполненные внизу)
         function updateTasksPage() {
             const container = document.getElementById('tasks');
@@ -1038,7 +1063,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
                 const priceSpan = document.createElement('span');
                 priceSpan.className = 'task-price';
                 priceSpan.innerText = (typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽');
-const btn = document.createElement('button');
+                const btn = document.createElement('button');
                 btn.setAttribute('data-id', t.id);
 
                 const isDone = (t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'));
@@ -1075,6 +1100,7 @@ const btn = document.createElement('button');
                 div.appendChild(actionsDiv);
                 container.appendChild(div);
             });
+            adjustPagesContainerHeight();
         }
 
         // Логика игры
@@ -1113,8 +1139,7 @@ const btn = document.createElement('button');
                     gameModal.classList.remove('show');
                     return;
                 }
-
-                const rewards = [5, 10, 20];
+const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
 
                 this.innerText = currentWin + ' ₽';
@@ -1205,7 +1230,7 @@ const btn = document.createElement('button');
             }
         };
 
-        // Навигация с переключением страниц и анимацией содержимого
+        // Навигация с плавным переключением и анимацией содержимого
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -1222,8 +1247,7 @@ const btn = document.createElement('button');
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
                 if (!targetPage || targetPage === currentActive) return;
-
-                if (currentActive) {
+if (currentActive) {
                     currentActive.classList.remove('active-page');
                 }
                 targetPage.classList.add('active-page');
@@ -1247,8 +1271,10 @@ const btn = document.createElement('button');
                 if (content) {
                     content.style.animation = 'none';
                     content.offsetHeight; // форсированный reflow
-content.style.animation = 'fadeSlideUp 0.8s ease forwards';
+                    content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                 }
+
+                setTimeout(adjustPagesContainerHeight, 50);
             });
         });
 
@@ -1258,19 +1284,6 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
             const rating = getRating();
             const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
-
-            // Генерируем много карточек, чтобы точно появилась прокрутка
-            let extraCards = '';
-            for (let i = 1; i <= 20; i++) {
-                extraCards += `
-                    <div class="stat-card" style="opacity:0.8;">
-                        <div class="stat-content">
-                            <div class="stat-label">Дополнительный блок</div>
-                            <div class="stat-value">${i}</div>
-                        </div>
-                    </div>
-                `;
-            }
 
             document.getElementById('profileStats').innerHTML = `
                 <div class="profile-header">
@@ -1305,9 +1318,9 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                             </div>
                         </div>
                     </div>
-                    ${extraCards}
                 </div>
             `;
+            adjustPagesContainerHeight();
         }
 
         function updateReferralsPage() {
@@ -1320,7 +1333,7 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                     </div>
                 </div>
                 <div class="referral-stats">
-                    <div class="referral-stat-card">
+<div class="referral-stat-card">
                         <div class="referral-stat-content">
                             <div class="referral-stat-label">Приглашено друзей</div>
                             <div class="referral-stat-value">0</div>
@@ -1329,12 +1342,13 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
                             <div class="referral-stat-label">Заработано на рефералах</div>
-<div class="referral-stat-value">0 ₽</div>
+                            <div class="referral-stat-value">0 ₽</div>
                         </div>
                     </div>
                 </div>
                 <p class="withdraw-note">Статистика появится после приглашения друзей</p>
             `;
+            adjustPagesContainerHeight();
         }
 
         function updateWithdrawPage() {
@@ -1351,6 +1365,7 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                 </div>
                 <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
             `;
+            adjustPagesContainerHeight();
         }
 
         window.onclick = (e) => {
@@ -1363,6 +1378,12 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
         updateProfilePage();
         updateReferralsPage();
         updateWithdrawPage();
+
+        // Начальная установка высоты контейнера
+        window.addEventListener('load', () => {
+            adjustPagesContainerHeight();
+        });
+        window.addEventListener('resize', adjustPagesContainerHeight);
     </script>
 </body>
 </html>
