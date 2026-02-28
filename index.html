@@ -170,6 +170,7 @@ font-size: 18px;
             scrollbar-width: thin;
             scrollbar-color: #1DB954 #2a2a2a;
             -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
         .page::-webkit-scrollbar {
             width: 4px;
@@ -260,8 +261,8 @@ font-size: 18px;
         }
         .take-btn, .done-btn {
             border: none;
-            border-radius: 30px;
-padding: 10px 24px;
+border-radius: 30px;
+            padding: 10px 24px;
             font-size: 16px;
             font-weight: 600;
             white-space: nowrap;
@@ -395,7 +396,8 @@ padding: 10px 24px;
         }
 
         /* Рефералы */
-        .referral-link-card {background: #2f2f2f;
+.referral-link-card {
+            background: #2f2f2f;
             color: white;
             border-radius: 20px;
             padding: 20px;
@@ -531,8 +533,8 @@ padding: 10px 24px;
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 18px;
-font-size: 20px;
+padding: 18px;
+            font-size: 20px;
             font-weight: 600;
             cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
@@ -675,9 +677,8 @@ font-size: 20px;
             color: white;
             font-size: 16px;
         }
-        .copy-btn, .check-btn, .claim-btn, .channel-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
-background-size: 500% 500%;
+        .copy-btn, .check-btn, .claim-btn, .channel-btn {background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             color: white;
             border: none;
@@ -809,9 +810,10 @@ background-size: 500% 500%;
         <div class="pages-container" id="pagesContainer">
             <div id="tasks-page" class="page active-page">
                 <div class="page-title">Задания</div>
-                <div class="page-content" id="tasks"></div>
+<div class="page-content" id="tasks"></div>
             </div>
-<div id="profile-page" class="page">
+
+            <div id="profile-page" class="page">
                 <div class="page-title">Профиль</div>
                 <div class="page-content" id="profileStats"></div>
             </div>
@@ -934,8 +936,8 @@ background-size: 500% 500%;
             const lastDate = getLastStreakDate();
             let streak = getStreak();
             if (lastDate === today) return streak;
-            const yesterday = new Date(Date.now() - 86400000).toDateString();
-if (lastDate === yesterday) streak++;
+const yesterday = new Date(Date.now() - 86400000).toDateString();
+            if (lastDate === yesterday) streak++;
             else streak = 1;
             localStorage.setItem('streak', streak);
             localStorage.setItem('lastStreakDate', today);
@@ -1008,16 +1010,42 @@ if (lastDate === yesterday) streak++;
             }
         }
 
-        // Обновление страницы заданий
+        // Функция для обновления высоты контейнера страниц (для корректной прокрутки)
+        function adjustPagesContainerHeight() {
+            const container = document.getElementById('pagesContainer');
+            const activePage = container.querySelector('.page.active-page');
+            if (activePage) {
+                container.style.height = activePage.offsetHeight + 'px';
+            }
+        }
+
+        // Обновление страницы заданий с сортировкой (выполненные внизу)
         function updateTasksPage() {
             const container = document.getElementById('tasks');
             container.innerHTML = '';
-            const tasks = [
+            
+            const allTasks = [
                 { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 30 },
                 { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
                 { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' }
             ];
-            tasks.forEach((t, index) => {
+
+            // Разделяем на невыполненные и выполненные
+            const notDone = [];
+            const done = [];
+
+            allTasks.forEach(task => {
+                const isDone = (task.id === 3 && !canDo(3)) || (task.id === 2 && localStorage.getItem('subscription_done'));
+                if (isDone) {
+                    done.push(task);
+                } else {
+                    notDone.push(task);
+                }
+            });
+// Объединяем: сначала невыполненные, потом выполненные
+            const sortedTasks = [...notDone, ...done];
+
+            sortedTasks.forEach((t, index) => {
                 const div = document.createElement('div');
                 div.className = 'task';
                 div.style.animationDelay = (0.1 + index * 0.1) + 's';
@@ -1039,7 +1067,9 @@ if (lastDate === yesterday) streak++;
                 const btn = document.createElement('button');
                 btn.setAttribute('data-id', t.id);
 
-                if ((t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'))) {
+                const isDone = (t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'));
+
+                if (isDone) {
                     btn.innerText = 'Выполнено';
                     btn.className = 'done-btn';
                     btn.disabled = true;
@@ -1071,6 +1101,8 @@ if (lastDate === yesterday) streak++;
                 div.appendChild(actionsDiv);
                 container.appendChild(div);
             });
+
+            adjustPagesContainerHeight();
         }
 
         // Логика игры
@@ -1106,7 +1138,7 @@ if (lastDate === yesterday) streak++;
                 const id = 3;
                 if (!canDo(id)) {
                     alert('Лимит на сегодня');
-                    gameModal.classList.remove('show');
+gameModal.classList.remove('show');
                     return;
                 }
 
@@ -1217,7 +1249,7 @@ if (lastDate === yesterday) streak++;
                 const page = item.dataset.page;
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
-                if (!targetPage || targetPage === currentActive) return;
+if (!targetPage || targetPage === currentActive) return;
 
                 if (currentActive) {
                     currentActive.classList.remove('active-page');
@@ -1245,9 +1277,12 @@ if (lastDate === yesterday) streak++;
                     content.offsetHeight; // форсированный reflow
                     content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                 }
+
+                setTimeout(adjustPagesContainerHeight, 50);
             });
         });
-function updateProfilePage() {
+
+        function updateProfilePage() {
             const todayCount = getTodayCount();
             const avatarLetter = (userName && userName !== 'Пользователь') ? userName.charAt(0).toUpperCase() : '?';
             const rating = getRating();
@@ -1289,6 +1324,7 @@ function updateProfilePage() {
                     </div>
                 </div>
             `;
+            adjustPagesContainerHeight();
         }
 
         function updateReferralsPage() {
@@ -1299,7 +1335,7 @@ function updateProfilePage() {
                         <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
                         <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
                     </div>
-                </div>
+</div>
                 <div class="referral-stats">
                     <div class="referral-stat-card">
                         <div class="referral-stat-content">
@@ -1316,6 +1352,7 @@ function updateProfilePage() {
                 </div>
                 <p class="withdraw-note">Статистика появится после приглашения друзей</p>
             `;
+            adjustPagesContainerHeight();
         }
 
         function updateWithdrawPage() {
@@ -1326,12 +1363,13 @@ function updateProfilePage() {
                         <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
-<input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
+                        <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
                     </div>
                     <button class="withdraw-btn">Вывести</button>
                 </div>
                 <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
             `;
+            adjustPagesContainerHeight();
         }
 
         window.onclick = (e) => {
@@ -1344,6 +1382,12 @@ function updateProfilePage() {
         updateProfilePage();
         updateReferralsPage();
         updateWithdrawPage();
+
+        // Начальная установка высоты контейнера
+        window.addEventListener('load', () => {
+            adjustPagesContainerHeight();
+        });
+        window.addEventListener('resize', adjustPagesContainerHeight);
     </script>
 </body>
 </html>
