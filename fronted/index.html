@@ -43,7 +43,7 @@
         .splash-logo {
             font-size: 64px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -92,7 +92,7 @@
         .logo {
             font-size: 32px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -116,8 +116,8 @@
             background: #2a2a2a;
             color: white;
             padding: 12px 20px;
-            border-radius: 30px;
-font-weight: 600;
+border-radius: 30px;
+            font-weight: 600;
             font-size: 18px;
             white-space: nowrap;
         }
@@ -196,10 +196,11 @@ font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            opacity: 0;
-            animation: fadeSlideUp 0.5s ease forwards;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .task.animate-in {
+            animation: fadeSlideUp 0.5s ease forwards;
         }
         .task:hover {
             transform: scale(1.02);
@@ -252,11 +253,11 @@ font-weight: 600;
             box-sizing: border-box;
         }
         .take-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 400% 400%;
             animation: smoothGradient 8s ease infinite;
             color: white;
-            cursor: pointer;
+cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
         }
         .take-btn:hover {
@@ -404,7 +405,7 @@ font-weight: 600;
             border-color: #1DB954;
         }
         .referral-copy-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 400% 400%;
             animation: smoothGradient 8s ease infinite;
             color: white;
@@ -501,7 +502,7 @@ font-weight: 600;
             color: #b3b3b3;
         }
         .withdraw-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 400% 400%;
             animation: smoothGradient 8s ease infinite;
             color: white;
@@ -538,10 +539,10 @@ font-weight: 600;
             right: 0;
             background: #0a0a0a;
             display: flex;
-            justify-content: space-around;
+justify-content: space-around;
             padding: 14px;
             z-index: 100;
-border-top: 1px solid #1e1e1e;
+            border-top: 1px solid #1e1e1e;
         }
         .nav-item {
             color: #6a6a6a;
@@ -652,7 +653,7 @@ border-top: 1px solid #1e1e1e;
             font-size: 16px;
         }
         .copy-btn, .check-btn, .claim-btn, .channel-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 400% 400%;
             animation: smoothGradient 8s ease infinite;
             color: white;
@@ -674,12 +675,11 @@ border-top: 1px solid #1e1e1e;
         .copy-btn:active, .check-btn:active, .claim-btn:active, .channel-btn:active {
             transform: scale(0.98);
         }
-        .result {
-            margin-top: 12px;
+        .result {margin-top: 12px;
             text-align: center;
             color: #b3b3b3;
             font-size: 16px;
-}
+        }
 
         /* Стили для мини-игры */
         .game-boxes {
@@ -809,9 +809,9 @@ border-top: 1px solid #1e1e1e;
         </div>
 
         <!-- НИЖНЕЕ МЕНЮ -->
-        <div class="nav">
+<div class="nav">
             <a class="nav-item active" data-page="tasks">
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z"/>
                 </svg>
                 <span>Задания</span>
@@ -842,8 +842,8 @@ border-top: 1px solid #1e1e1e;
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
                 <div class="modal-body">
-                    <h3>Пригласи друга</h3>
-                    <p style="color:#b3b3b3;">Пригласи друга в Хайп.Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
+<h3>Пригласи друга</h3>
+                    <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
                     <input class="ref-link" id="refLink" readonly>
                     <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
                 </div>
@@ -856,7 +856,6 @@ border-top: 1px solid #1e1e1e;
                 <div class="modal-body">
                     <h3>Подпишись на канал</h3>
                     <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
-                    <!-- Кнопка для перехода в канал -->
                     <button class="channel-btn" id="channelBtn">Перейти в канал</button>
                     <button class="check-btn" id="checkBtn">Проверить подписку</button>
                     <div class="result" id="checkResult"></div>
@@ -936,7 +935,7 @@ border-top: 1px solid #1e1e1e;
             localStorage.setItem('rating', rating);
             return rating;
         }
-function getLevel(rating) {
+        function getLevel(rating) {
             return Math.floor(rating / 100) + 1;
         }
         function getProgressToNextLevel(rating) {
@@ -999,6 +998,17 @@ function getLevel(rating) {
             }
         }
 
+        // Функция для запуска анимации на всех карточках внутри контейнера
+        function animateTasks(container) {
+            const tasks = container.querySelectorAll('.task');
+            tasks.forEach(task => {
+                task.classList.remove('animate-in');
+                // принудительно вызываем reflow, чтобы анимация перезапустилась
+                void task.offsetWidth;
+                task.classList.add('animate-in');
+            });
+        }
+
         // Обновление страницы заданий
         function updateTasksPage() {
             const container = document.getElementById('tasks');
@@ -1011,6 +1021,7 @@ function getLevel(rating) {
             tasks.forEach((t, index) => {
                 const div = document.createElement('div');
                 div.className = 'task';
+                // Задержка для анимации устанавливается через style, но сам класс animate-in добавим позже
                 div.style.animationDelay = (0.1 + index * 0.1) + 's';
 
                 const infoDiv = document.createElement('div');
@@ -1030,7 +1041,6 @@ function getLevel(rating) {
                 const btn = document.createElement('button');
                 btn.setAttribute('data-id', t.id);
 
-                // Проверяем, выполнено ли задание
                 if ((t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'))) {
                     btn.innerText = 'Выполнено';
                     btn.className = 'done-btn';
@@ -1063,7 +1073,10 @@ function getLevel(rating) {
                 div.appendChild(actionsDiv);
                 container.appendChild(div);
             });
-            adjustPagesContainerHeight(); // после обновления контента корректируем высоту
+
+            // Запускаем анимацию для новых карточек
+            animateTasks(container);
+            adjustPagesContainerHeight();
         }
 
         // Логика игры
@@ -1122,7 +1135,7 @@ function getLevel(rating) {
 
             const id = 3;
             balance += currentWin;
-            saveBalance();
+saveBalance();
             updateStreak();
             addRating(10);
             document.getElementById('balance').innerText = balance + ' ₽';
@@ -1142,9 +1155,7 @@ function getLevel(rating) {
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
 
-        // Кнопка перехода в канал
         document.getElementById('channelBtn').onclick = () => {
-            // Открываем канал через Telegram WebApp
             if (tg) {
                 tg.openTelegramLink('https://t.me/HYPE_JOB1');
             } else {
@@ -1170,7 +1181,7 @@ function getLevel(rating) {
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-            const success = true; // здесь будет реальная проверка
+            const success = true;
 
             if (success) {
                 balance += 20;
@@ -1180,13 +1191,11 @@ function getLevel(rating) {
                 document.getElementById('balance').innerText = balance + ' ₽';
                 updateStreakDisplay();
 
-                // Отмечаем задание как выполненное навсегда
                 localStorage.setItem('subscription_done', 'true');
 
                 checkResult.style.color = '#1DB954';
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
 
-                // Обновляем страницу заданий, чтобы кнопка сменилась на "Выполнено"
                 updateTasksPage();
 
                 setTimeout(() => subModal.classList.remove('show'), 1500);
@@ -1198,7 +1207,7 @@ function getLevel(rating) {
             }
         };
 
-        // Навигация с плавным переключением
+        // Навигация с плавным переключением и перезапуском анимации на странице заданий
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -1224,7 +1233,15 @@ function getLevel(rating) {
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
-                // Корректируем высоту контейнера после переключения
+                // Если переключились на страницу заданий, перезапускаем анимацию карточек
+                if (page === 'tasks') {
+                    // Даём время на рендеринг, затем анимируем
+                    setTimeout(() => {
+                        const tasksContainer = document.getElementById('tasks');
+animateTasks(tasksContainer);
+                    }, 50);
+                }
+
                 setTimeout(adjustPagesContainerHeight, 50);
             });
         });
@@ -1241,7 +1258,7 @@ function getLevel(rating) {
 
             document.getElementById('profileStats').innerHTML = `
                 <div class="stat-card">
-<div class="stat-content">
+                    <div class="stat-content">
                         <div class="stat-label">Баланс</div>
                         <div class="stat-value">${balance} ₽</div>
                     </div>
@@ -1306,7 +1323,7 @@ function getLevel(rating) {
                     <div class="withdraw-field">
                         <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
-                    <div class="withdraw-field">
+<div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
                     </div>
                     <button class="withdraw-btn">Вывести</button>
@@ -1327,9 +1344,13 @@ function getLevel(rating) {
         updateReferralsPage();
         updateWithdrawPage();
 
-        // Начальная установка высоты контейнера
         window.addEventListener('load', () => {
             adjustPagesContainerHeight();
+            // также анимируем карточки при загрузке (если они уже есть)
+            const tasksContainer = document.getElementById('tasks');
+            if (tasksContainer.children.length > 0) {
+                animateTasks(tasksContainer);
+            }
         });
         window.addEventListener('resize', adjustPagesContainerHeight);
     </script>
