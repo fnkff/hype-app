@@ -163,23 +163,12 @@ font-size: 18px;
             border-radius: 2px;
         }
 
-        /* Страницы переключаются через display, без абсолютного позиционирования */
+        /* Страницы переключаются через display */
         .page {
             display: none;
         }
         .page.active-page {
             display: block;
-        }
-
-        /* Анимация для содержимого страниц */
-        @keyframes fadeSlideUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .page-content {
-            animation: fadeSlideUp 0.8s ease forwards;
-            opacity: 0;
         }
 
         @keyframes pulse {
@@ -260,7 +249,7 @@ font-size: 18px;
             animation: smoothGradient 8s ease infinite;
             color: white;
             cursor: pointer;
-transition: opacity 0.2s, box-shadow 0.2s;
+            transition: opacity 0.2s, box-shadow 0.2s;
         }
         .take-btn:hover {
             opacity: 0.9;
@@ -271,7 +260,7 @@ transition: opacity 0.2s, box-shadow 0.2s;
         }
         .done-btn {
             background: white !important;
-            color: transparent !important;
+color: transparent !important;
             cursor: default;
             position: relative;
         }
@@ -401,7 +390,7 @@ transition: opacity 0.2s, box-shadow 0.2s;
             min-width: 0;
             padding: 14px;
             border: 1px solid #3e3e3e;
-border-radius: 40px;
+            border-radius: 40px;
             font-size: 16px;
             background: #121212;
             color: white;
@@ -411,8 +400,7 @@ border-radius: 40px;
         .referral-link-input:focus {
             border-color: #1DB954;
         }
-        .referral-copy-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+        .referral-copy-btn {background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 500% 500%;
             animation: smoothGradient 8s ease infinite;
             color: white;
@@ -537,7 +525,8 @@ border-radius: 40px;
             text-align: center;
             font-size: 16px;
         }
-/* Нижнее меню */
+
+        /* Нижнее меню */
         .nav {
             position: fixed;
             bottom: 0;
@@ -548,7 +537,7 @@ border-radius: 40px;
             justify-content: space-around;
             padding: 14px;
             z-index: 100;
-            border-top: 1px solid #1e1e1e;
+border-top: 1px solid #1e1e1e;
         }
         .nav-item {
             color: #6a6a6a;
@@ -676,7 +665,7 @@ border-radius: 40px;
         }
         .copy-btn:hover, .check-btn:hover, .claim-btn:hover, .channel-btn:hover {
             opacity: 0.9;
-box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
+            box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
         .copy-btn:active, .check-btn:active, .claim-btn:active, .channel-btn:active {
             transform: scale(0.98);
@@ -686,7 +675,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             text-align: center;
             color: #b3b3b3;
             font-size: 16px;
-        }
+}
 
         /* Стили для мини-игры */
         .game-boxes {
@@ -792,25 +781,26 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         <div class="pages-container">
             <div id="tasks-page" class="page active-page">
                 <div class="page-title">Задания</div>
-                <div class="page-content" id="tasks"></div>
+                <div id="tasks"></div>
             </div>
 
             <div id="profile-page" class="page">
                 <div class="page-title">Профиль</div>
-                <div class="page-content" id="profileStats"></div>
+                <div id="profileStats"></div>
             </div>
 
             <div id="referrals-page" class="page">
                 <div class="page-title">Реферальная программа</div>
-                <div class="page-content" id="referralsContent"></div>
+                <div id="referralsContent"></div>
             </div>
 
             <div id="withdraw-page" class="page">
                 <div class="page-title">Вывод средств</div>
-                <div class="page-content" id="withdrawContent"></div>
+                <div id="withdrawContent"></div>
             </div>
         </div>
-<!-- НИЖНЕЕ МЕНЮ -->
+
+        <!-- НИЖНЕЕ МЕНЮ -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -843,7 +833,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
-<div class="modal-body">
+                <div class="modal-body">
                     <h3>Пригласи друга</h3>
                     <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
                     <input class="ref-link" id="refLink" readonly>
@@ -851,8 +841,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
                 </div>
             </div>
         </div>
-
-        <div class="modal" id="subModal">
+<div class="modal" id="subModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
                 <div class="modal-body">
@@ -932,7 +921,8 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         function getRating() {
             return parseInt(localStorage.getItem('rating')) || 0;
         }
-        function addRating(points = 10) {let rating = getRating() + points;
+        function addRating(points = 10) {
+            let rating = getRating() + points;
             localStorage.setItem('rating', rating);
             return rating;
         }
@@ -1020,7 +1010,6 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
             sortedTasks.forEach((t, index) => {
                 const div = document.createElement('div');
                 div.className = 'task';
-                div.style.animationDelay = (0.1 + index * 0.1) + 's';
 
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'task-info';
@@ -1036,7 +1025,7 @@ box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
                 const priceSpan = document.createElement('span');
                 priceSpan.className = 'task-price';
                 priceSpan.innerText = (typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽');
-const btn = document.createElement('button');
+                const btn = document.createElement('button');
                 btn.setAttribute('data-id', t.id);
 
                 const isDone = (t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'));
@@ -1203,7 +1192,7 @@ const btn = document.createElement('button');
             }
         };
 
-        // Навигация с переключением страниц (без анимации сдвига)
+        // Навигация с переключением страниц
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -1239,14 +1228,6 @@ const btn = document.createElement('button');
                 } else if (page === 'tasks') {
                     updateTasksPage();
                 }
-
-                // При переключении на любую страницу анимируем её содержимое
-                const content = targetPage.querySelector('.page-content');
-                if (content) {
-                    content.style.animation = 'none';
-                    content.offsetHeight; // форсированный reflow
-content.style.animation = 'fadeSlideUp 0.8s ease forwards';
-                }
             });
         });
 
@@ -1266,7 +1247,7 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                     <div class="stat-card">
                         <div class="stat-content">
                             <div class="stat-label">Баланс</div>
-                            <div class="stat-value">${balance} ₽</div>
+<div class="stat-value">${balance} ₽</div>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -1326,7 +1307,7 @@ content.style.animation = 'fadeSlideUp 0.8s ease forwards';
                 <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
                 <div class="withdraw-form">
                     <div class="withdraw-field">
-<input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
+                        <input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
                     </div>
                     <div class="withdraw-field">
                         <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
