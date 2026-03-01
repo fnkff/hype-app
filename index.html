@@ -44,12 +44,12 @@
         .splash-logo {
             font-size: 64px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background: linear-gradient(135deg, #1DB954, #2ECC71, #0A5C2A, #27AE60, #1DB954);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 500% 500%;
-            animation: scaleIn 0.5s ease, smoothGradient 8s ease infinite;
+            animation: scaleIn 0.5s ease, richGradient 6s ease infinite;
             background-position: 0% 50%;
         }
 
@@ -61,13 +61,13 @@
             0% { opacity: 1; visibility: visible; }
             100% { opacity: 0; visibility: hidden; }
         }
-        @keyframes smoothGradient {
+        /* Более насыщенный градиент с плавным бесконечным движением */
+        @keyframes richGradient {
             0% { background-position: 0% 50%; }
-            20% { background-position: 50% 50%; }
-            40% { background-position: 100% 50%; }
-            60% { background-position: 150% 50%; }
-            80% { background-position: 200% 50%; }
-            100% { background-position: 250% 50%; }
+            25% { background-position: 50% 50%; }
+            50% { background-position: 100% 50%; }
+            75% { background-position: 150% 50%; }
+            100% { background-position: 200% 50%; }
         }
 
         .app-content {
@@ -78,10 +78,15 @@
             flex-direction: column;
         }
 
-        /* ===== ОБНОВЛЁННЫЙ ДИЗАЙН ===== */
-        /* Главный экран: приветствие + градиентный блок */
+        /* Верхняя часть с приветствием и стриком */
         .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 20px;
+        }
+        .greeting-block {
+            flex: 1;
         }
         .greeting {
             font-size: 32px;
@@ -98,12 +103,30 @@
         .date {
             font-size: 16px;
             color: #b3b3b3;
-            margin-bottom: 20px;
         }
+        .streak-badge {
+            background: #2f2f2f;
+            border-radius: 40px;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 18px;
+            color: #ff8c00;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+        .streak-badge span {
+            color: white;
+            margin-left: 4px;
+        }
+
+        /* Градиентный баннер (только баланс справа) */
         .gradient-banner {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
-            background-size: 300% 300%;
-            animation: smoothGradient 8s ease infinite;
+            background: linear-gradient(135deg, #1DB954, #2ECC71, #0A5C2A, #27AE60, #1DB954);
+            background-size: 500% 500%;
+            animation: richGradient 8s ease infinite;
             border-radius: 30px;
             padding: 25px 20px;
             display: flex;
@@ -118,20 +141,16 @@
             color: white;
             text-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        .banner-stats {
-            display: flex;
-            gap: 25px;
-        }
-        .banner-stat {
+        .banner-balance {
             text-align: center;
         }
-        .banner-stat-value {
-            font-size: 28px;
+        .banner-balance .value {
+            font-size: 32px;
             font-weight: 700;
             color: white;
             line-height: 1.2;
         }
-        .banner-stat-label {
+        .banner-balance .label {
             font-size: 14px;
             color: rgba(255,255,255,0.8);
             text-transform: uppercase;
@@ -143,7 +162,7 @@
             flex: 1;
             min-height: 0;
             overflow-y: auto;
-            margin-bottom: 80px; /* чтобы навигация не перекрывала */
+            margin-bottom: 80px;
             scrollbar-width: thin;
             scrollbar-color: #1DB954 #2a2a2a;
             -webkit-overflow-scrolling: touch;
@@ -166,13 +185,11 @@
             display: block;
         }
 
-        /* Анимация появления элементов */
         @keyframes fadeSlideUp {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* Заголовки страниц */
         .page-title {
             font-size: 34px;
             font-weight: 700;
@@ -181,7 +198,7 @@
             letter-spacing: -0.5px;
         }
 
-        /* Карточки заданий (обновлённые) */
+        /* Карточки заданий */
         .task {
             background: #2f2f2f;
             border-radius: 25px;
@@ -551,7 +568,7 @@
             border-bottom: none;
         }
 
-        /* Нижняя навигация (обновлённая) */
+        /* Нижняя навигация */
         .nav {
             position: fixed;
             bottom: 0;
@@ -603,14 +620,8 @@
         .nav-item span {
             font-weight: 500;
         }
-        /* Градиент для иконок */
-        .nav-gradient {
-            position: absolute;
-            width: 0;
-            height: 0;
-        }
 
-        /* Модалки (без изменений) */
+        /* Модалки */
         .modal {
             position: fixed;
             top: 0;
@@ -735,30 +746,36 @@
     </style>
 </head>
 <body>
+    <!-- Скрытый SVG-градиент для иконок навигации -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#1DB954" />
+                <stop offset="100%" stop-color="#0A5C2A" />
+            </linearGradient>
+        </defs>
+    </svg>
+
     <div class="splash" id="splash">
         <div class="splash-logo">ХАЙП</div>
     </div>
 
     <div class="app-content" id="appContent">
-        <!-- Верхний блок теперь внутри страниц, а не глобально -->
         <div class="pages-container" id="pagesContainer">
             <!-- Главная страница -->
             <div id="tasks-page" class="page active-page">
                 <div class="welcome-section">
-                    <div class="greeting">Привет, <span id="userNameDisplay">Пользователь</span>!</div>
-                    <div class="date" id="currentDate"></div>
+                    <div class="greeting-block">
+                        <div class="greeting">Привет, <span id="userNameDisplay">Пользователь</span>!</div>
+                        <div class="date" id="currentDate"></div>
+                    </div>
+                    <div class="streak-badge" id="streakBadge">🔥 <span id="streakValue">0</span></div>
                 </div>
                 <div class="gradient-banner">
                     <div class="banner-logo">ХАЙП</div>
-                    <div class="banner-stats">
-                        <div class="banner-stat">
-                            <div class="banner-stat-value" id="bannerBalance">0</div>
-                            <div class="banner-stat-label">Баланс</div>
-                        </div>
-                        <div class="banner-stat">
-                            <div class="banner-stat-value" id="bannerStreak">0</div>
-                            <div class="banner-stat-label">🔥 Стрик</div>
-                        </div>
+                    <div class="banner-balance">
+                        <div class="value" id="bannerBalance">0</div>
+                        <div class="label">Баланс</div>
                     </div>
                 </div>
                 <div class="page-title">Задания</div>
@@ -784,7 +801,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация (обновлённая) -->
+        <!-- Нижняя навигация -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -858,7 +875,6 @@
     </div>
 
     <script>
-        // --- Вся логика осталась без изменений ---
         const splash = document.getElementById('splash');
         const appContent = document.getElementById('appContent');
 
@@ -882,7 +898,6 @@
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         function updateBalanceDisplay() {
-            document.getElementById('balance').innerText = balance + ' ₽';
             document.getElementById('bannerBalance').innerText = balance;
         }
         updateBalanceDisplay();
@@ -907,8 +922,7 @@
         }
         function updateStreakDisplay() {
             const streak = getStreak();
-            document.getElementById('streak').innerHTML = '🔥 ' + streak;
-            document.getElementById('bannerStreak').innerText = streak;
+            document.getElementById('streakValue').innerText = streak;
         }
 
         function getRating() {
@@ -970,7 +984,7 @@
             }
         }
 
-        // Обновление страницы заданий (с иконками)
+        // Обновление страницы заданий
         function updateTasksPage() {
             const container = document.getElementById('tasks');
             container.innerHTML = '';
@@ -1097,7 +1111,7 @@
             `;
             container.appendChild(statsDiv);
 
-            // Пример списка друзей (заглушка)
+            // Пример списка друзей
             const friendsDiv = document.createElement('div');
             friendsDiv.className = 'friends-list';
             friendsDiv.style.animationDelay = '0.2s';
@@ -1167,7 +1181,7 @@
             });
         }
 
-        // Модалки игры (без изменений)
+        // Игра
         const gameModal = document.getElementById('gameModal');
         const closeGame = document.getElementById('closeGame');
         const gameBoxes = document.querySelectorAll('.game-box');
@@ -1223,7 +1237,7 @@
             gameModal.classList.remove('show');
         };
 
-        // Остальные модалки
+        // Модалки рефералов и подписки
         document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
