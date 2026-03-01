@@ -60,7 +60,6 @@
             0% { opacity: 1; visibility: visible; }
             100% { opacity: 0; visibility: hidden; }
         }
-        /* Единая анимация градиента для всех элементов */
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -153,7 +152,7 @@
             line-height: 1.2;
         }
         .banner-balance .label {
-            font-size: 14px;
+            font-size: 16px;
             color: rgba(255,255,255,0.8);
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -201,7 +200,7 @@
             letter-spacing: -0.5px;
         }
 
-        /* Карточки заданий (без иконок, увеличенный текст) */
+        /* Карточки заданий (увеличенный текст) */
         .task {
             background: #2f2f2f;
             border-radius: 25px;
@@ -226,14 +225,15 @@
         }
         .task-info p {
             color: #b3b3b3;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 500;
         }
         .task-actions {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 12px;
-            flex-shrink: 0;
+            flex: 1;
         }
         .task-price {
             font-size: 24px;
@@ -247,11 +247,11 @@
             border: none;
             border-radius: 40px;
             padding: 10px 24px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             white-space: nowrap;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            width: 110px;
+            width: 120px;
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
@@ -282,9 +282,10 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 600;
+            font-size: 18px;
         }
 
-        /* Профиль (обновлённая структура) */
+        /* Профиль (увеличенные шрифты) */
         .profile-header {
             display: flex;
             align-items: center;
@@ -314,7 +315,6 @@
             font-size: 32px;
             font-weight: 700;
         }
-        /* Полноширинные блоки ID и уровня */
         .profile-wide-card {
             background: #2f2f2f;
             border-radius: 25px;
@@ -325,13 +325,13 @@
             opacity: 0;
         }
         .wide-label {
-            font-size: 14px;
+            font-size: 16px;
             color: #b3b3b3;
             margin-bottom: 8px;
             font-weight: 500;
         }
         .wide-value {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: white;
         }
@@ -349,7 +349,6 @@
             height: 100%;
             transition: width 0.3s;
         }
-        /* Блоки баланса и выполнено сегодня остаются в сетке */
         .stat-grid {
             display: flex;
             flex-wrap: wrap;
@@ -366,8 +365,19 @@
             animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
         }
+        .stat-label {
+            font-size: 16px;
+            color: #b3b3b3;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+        }
 
-        /* Рефералы */
+        /* Рефералы (увеличенная кнопка, уменьшенное поле) */
         .referral-link-card {
             background: #2f2f2f;
             border-radius: 25px;
@@ -378,7 +388,7 @@
             opacity: 0;
         }
         .referral-link-label {
-            font-size: 14px;
+            font-size: 16px;
             color: #b3b3b3;
             margin-bottom: 12px;
             font-weight: 500;
@@ -389,7 +399,7 @@
             align-items: center;
         }
         .referral-link-input {
-            width: 70%; /* уменьшено, чтобы кнопка поместилась */
+            width: 60%;
             padding: 14px;
             border: 1px solid #3e3e3e;
             border-radius: 40px;
@@ -408,8 +418,9 @@
             animation: gradientShift 6s ease infinite;
             border: none;
             border-radius: 40px;
-            padding: 14px 20px;
+            padding: 14px 28px;
             font-weight: 600;
+            font-size: 18px;
             color: white;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -435,11 +446,10 @@
             opacity: 0;
         }
         .referral-stat-value {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: white;
         }
-        /* Список друзей – полностью пустой */
         .friends-list {
             background: #2f2f2f;
             border-radius: 25px;
@@ -475,7 +485,7 @@
         .friend-reward {
             color: #1DB954;
             font-weight: 600;
-            opacity: 0; /* скрыто */
+            opacity: 0;
         }
 
         /* Вывод средств */
@@ -534,6 +544,7 @@
             color: #6a6a6a;
             transition: 0.2s;
             font-weight: 500;
+            font-size: 16px;
         }
         .withdraw-field input:focus::placeholder {
             transform: translateY(-12px);
@@ -564,13 +575,41 @@
             font-weight: 600;
             margin: 25px 0 15px;
         }
-        .history-list {
+        /* История выплат, стилизованная как список друзей */
+        .withdraw-history-list {
             background: #2f2f2f;
             border-radius: 25px;
             padding: 20px;
-            color: #b3b3b3;
-            text-align: center;
-            font-weight: 500;
+        }
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #3e3e3e;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-avatar {
+            width: 40px;
+            height: 40px;
+            background: #3e3e3e;
+            border-radius: 50%;
+        }
+        .history-info {
+            flex: 1;
+        }
+        .history-date {
+            height: 20px;
+        }
+        .history-amount {
+            height: 16px;
+        }
+        .history-status {
+            color: #1DB954;
+            font-weight: 600;
+            opacity: 0;
         }
 
         /* Нижняя навигация */
@@ -590,7 +629,7 @@
         .nav-item {
             color: #6a6a6a;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -679,9 +718,13 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
+        .modal-body p {
+            font-size: 16px;
+            line-height: 1.4;
+        }
         .ref-link {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin: 12px 0;
             border: 1px solid #3e3e3e;
             border-radius: 40px;
@@ -696,9 +739,10 @@
             animation: gradientShift 6s ease infinite;
             border: none;
             border-radius: 50px;
-            padding: 14px;
+            padding: 16px;
             width: 100%;
             font-weight: 600;
+            font-size: 18px;
             color: white;
             cursor: pointer;
             margin-top: 10px;
@@ -712,6 +756,7 @@
             text-align: center;
             color: #b3b3b3;
             font-weight: 500;
+            font-size: 16px;
         }
 
         /* Игра */
@@ -793,7 +838,7 @@
                 <div id="tasks"></div>
             </div>
 
-            <!-- Профиль (обновлённая структура) -->
+            <!-- Профиль -->
             <div id="profile-page" class="page">
                 <div class="page-title">Профиль</div>
                 <div id="profileStats"></div>
@@ -846,7 +891,7 @@
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
                 <div class="modal-body">
                     <h3>Пригласи друга</h3>
-                    <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
+                    <p>Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
                     <input class="ref-link" id="refLink" readonly>
                     <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
                 </div>
@@ -858,7 +903,7 @@
                 <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
                 <div class="modal-body">
                     <h3>Подпишись на канал</h3>
-                    <p style="color:#b3b3b3;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
+                    <p>Подпишись на @HYPE_JOB1 и нажми проверку</p>
                     <button class="channel-btn" id="channelBtn">Перейти в канал</button>
                     <button class="check-btn" id="checkBtn">Проверить подписку</button>
                     <div class="result" id="checkResult"></div>
@@ -871,7 +916,7 @@
                 <div class="modal-header"><button class="modal-close" id="closeGame">&times;</button></div>
                 <div class="modal-body">
                     <h3>Мини-игра</h3>
-                    <p style="color:#b3b3b3;">Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
+                    <p>Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
                     <div class="game-boxes">
                         <div class="game-box" data-box="1">?</div>
                         <div class="game-box" data-box="2">?</div>
@@ -1046,7 +1091,7 @@
             });
         }
 
-        // Обновление профиля (новая структура)
+        // Обновление профиля
         function updateProfilePage() {
             const container = document.getElementById('profileStats');
             container.innerHTML = '';
@@ -1056,7 +1101,6 @@
             const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
 
-            // Шапка с аватаром
             const headerDiv = document.createElement('div');
             headerDiv.className = 'profile-header';
             headerDiv.style.animationDelay = '0.05s';
@@ -1066,7 +1110,6 @@
             `;
             container.appendChild(headerDiv);
 
-            // Блок ID (на всю ширину)
             const idCard = document.createElement('div');
             idCard.className = 'profile-wide-card';
             idCard.style.animationDelay = '0.1s';
@@ -1076,7 +1119,6 @@
             `;
             container.appendChild(idCard);
 
-            // Блок уровня с прогрессом (на всю ширину)
             const levelCard = document.createElement('div');
             levelCard.className = 'profile-wide-card';
             levelCard.style.animationDelay = '0.15s';
@@ -1087,7 +1129,6 @@
             `;
             container.appendChild(levelCard);
 
-            // Сетка для баланса и выполненных заданий
             const statGrid = document.createElement('div');
             statGrid.className = 'stat-grid';
             statGrid.innerHTML = `
@@ -1134,7 +1175,6 @@
             `;
             container.appendChild(statsDiv);
 
-            // Полностью пустой список друзей
             const friendsDiv = document.createElement('div');
             friendsDiv.className = 'friends-list';
             friendsDiv.style.animationDelay = '0.2s';
@@ -1191,7 +1231,25 @@
             const historyDiv = document.createElement('div');
             historyDiv.innerHTML = `
                 <div class="history-title">История выплат</div>
-                <div class="history-list">История выплат пуста</div>
+                <div class="withdraw-history-list">
+                    <div class="history-item">
+                        <div class="history-avatar"></div>
+                        <div class="history-info">
+                            <div class="history-date"></div>
+                            <div class="history-amount"></div>
+                        </div>
+                        <div class="history-status"></div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-avatar"></div>
+                        <div class="history-info">
+                            <div class="history-date"></div>
+                            <div class="history-amount"></div>
+                        </div>
+                        <div class="history-status"></div>
+                    </div>
+                    <div style="text-align:center; margin-top:12px; color:#b3b3b3;">История выплат пуста</div>
+                </div>
             `;
             container.appendChild(historyDiv);
 
