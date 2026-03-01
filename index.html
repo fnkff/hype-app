@@ -123,7 +123,7 @@
             font-weight: 600;
         }
 
-        /* Градиентный баннер с толстыми непрерывными полосами */
+        /* Градиентный баннер с толстыми полосами, качающимися влево-вправо */
         .gradient-banner {
             position: relative;
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
@@ -150,14 +150,15 @@
                 rgba(255,255,255,0.3) 2px, 
                 transparent 2px, 
                 transparent 22px);
-            background-size: 28px 28px; /* период, примерно равный (2+20)*1.414 */
-            animation: slideStripes 90s linear infinite;
+            background-size: 34px 34px; /* период с учётом угла */
+            transform-origin: 0 0;
+            animation: swingStripes 10s ease-in-out infinite alternate;
             pointer-events: none;
             z-index: 1;
         }
-        @keyframes slideStripes {
-            0% { background-position: 0 0; }
-            100% { background-position: 28px 0; }
+        @keyframes swingStripes {
+            0% { transform: translateX(-25px); }
+            100% { transform: translateX(25px); }
         }
         .banner-logo {
             font-size: 48px;
@@ -549,8 +550,9 @@
                 rgba(255,255,255,0.3) 2px, 
                 transparent 2px, 
                 transparent 22px);
-            background-size: 28px 28px;
-            animation: slideStripes 90s linear infinite;
+            background-size: 34px 34px;
+            transform-origin: 0 0;
+            animation: swingStripes 10s ease-in-out infinite alternate;
             pointer-events: none;
             z-index: 1;
         }
