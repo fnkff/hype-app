@@ -68,7 +68,6 @@
             100% { background-position: 250% 50%; }
         }
 
-        /* Контейнер основного контента (изначально скрыт) */
         .app-content {
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -119,7 +118,7 @@
             padding: 12px 20px;
             border-radius: 30px;
             font-weight: 600;
-font-size: 18px;
+            font-size: 18px;
             white-space: nowrap;
         }
         .streak {
@@ -142,7 +141,7 @@ font-size: 18px;
             letter-spacing: -0.5px;
         }
 
-        /* Контейнер страниц с обычным скроллбаром (стилизованным) */
+        /* Контейнер страниц с обычным скроллбаром */
         .pages-container {
             flex: 1;
             min-height: 0;
@@ -163,7 +162,6 @@ font-size: 18px;
             border-radius: 2px;
         }
 
-        /* Страницы переключаются через display */
         .page {
             display: none;
         }
@@ -171,15 +169,10 @@ font-size: 18px;
             display: block;
         }
 
-        /* Анимация для содержимого страниц */
+        /* Анимация появления */
         @keyframes fadeSlideUp {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .page-content {
-            animation: fadeSlideUp 0.8s ease forwards;
-            opacity: 0;
         }
 
         @keyframes pulse {
@@ -259,7 +252,7 @@ font-size: 18px;
         .take-btn {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             background-size: 500% 500%;
-animation: smoothGradient 8s ease infinite;
+            animation: smoothGradient 8s ease infinite;
             color: white;
             cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
@@ -297,6 +290,12 @@ animation: smoothGradient 8s ease infinite;
             align-items: center;
             gap: 20px;
             margin-bottom: 28px;
+            background: #2f2f2f;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
         }
         .profile-avatar {
             width: 80px;
@@ -337,20 +336,15 @@ animation: smoothGradient 8s ease infinite;
             color: white;
             word-break: break-word;
         }
-        .profile-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
         .stat-card {
             background: #2f2f2f;
             color: white;
             border-radius: 20px;
             padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
+            margin: 12px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
         }
         .stat-content {
             flex: 1;
@@ -387,6 +381,8 @@ animation: smoothGradient 8s ease infinite;
             padding: 20px;
             margin-bottom: 24px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
         }
         .referral-link-label {
             font-size: 16px;
@@ -398,10 +394,11 @@ animation: smoothGradient 8s ease infinite;
             gap: 12px;
             align-items: center;
         }
-        .referral-link-input {flex: 1;
+        .referral-link-input {
+            flex: 1;
             min-width: 0;
             padding: 14px;
-            border: 1px solid #3e3e3e;
+border: 1px solid #3e3e3e;
             border-radius: 40px;
             font-size: 16px;
             background: #121212;
@@ -435,20 +432,15 @@ animation: smoothGradient 8s ease infinite;
         .referral-copy-btn:active {
             transform: scale(0.98);
         }
-        .referral-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
         .referral-stat-card {
             background: #2f2f2f;
             color: white;
             border-radius: 20px;
             padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
+            margin: 12px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
         }
         .referral-stat-content {
             flex: 1;
@@ -475,6 +467,8 @@ animation: smoothGradient 8s ease infinite;
             font-size: 20px;
             font-weight: 600;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
         }
         .withdraw-form {
             display: flex;
@@ -484,6 +478,12 @@ animation: smoothGradient 8s ease infinite;
         .withdraw-field {
             position: relative;
             margin-top: 10px;
+            background: #2f2f2f;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
         }
         .withdraw-field input {
             width: 100%;
@@ -529,10 +529,11 @@ animation: smoothGradient 8s ease infinite;
             opacity: 0.9;
             box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
-        .withdraw-btn:active {
+.withdraw-btn:active {
             transform: scale(0.98);
         }
-        .withdraw-note {margin-top: 18px;
+        .withdraw-note {
+            margin-top: 18px;
             color: #b3b3b3;
             text-align: center;
             font-size: 16px;
@@ -738,7 +739,6 @@ animation: smoothGradient 8s ease infinite;
             margin-top: 20px;
         }
 
-        /* Адаптация для маленьких экранов */
         @media (max-width: 480px) {
             .balance, .streak {
                 font-size: 14px;
@@ -807,8 +807,8 @@ animation: smoothGradient 8s ease infinite;
             </div>
 
             <div id="withdraw-page" class="page">
-                <div class="page-title">Вывод средств</div>
-<div class="page-content" id="withdrawContent"></div>
+<div class="page-title">Вывод средств</div>
+                <div class="page-content" id="withdrawContent"></div>
             </div>
         </div>
 
@@ -843,8 +843,8 @@ animation: smoothGradient 8s ease infinite;
 
         <!-- МОДАЛКИ -->
         <div class="modal" id="refModal">
-            <div class="modal-content">
-<div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
+<div class="modal-content">
+                <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
                 <div class="modal-body">
                     <h3>Пригласи друга</h3>
                     <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
@@ -887,7 +887,6 @@ animation: smoothGradient 8s ease infinite;
     </div>
 
     <script>
-        // Убираем заставку после анимации и показываем контент
         const splash = document.getElementById('splash');
         const appContent = document.getElementById('appContent');
 
@@ -907,7 +906,6 @@ animation: smoothGradient 8s ease infinite;
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         document.getElementById('balance').innerText = balance + ' ₽';
 
-        // ---------- STREAK ----------
         function getStreak() {
             return parseInt(localStorage.getItem('streak')) || 0;
         }
@@ -930,12 +928,10 @@ animation: smoothGradient 8s ease infinite;
             document.getElementById('streak').innerHTML = '🔥 ' + getStreak();
         }
 
-        // ---------- РЕЙТИНГ ----------
         function getRating() {
             return parseInt(localStorage.getItem('rating')) || 0;
         }
-        function addRating(points = 10) {
-            let rating = getRating() + points;
+        function addRating(points = 10) {let rating = getRating() + points;
             localStorage.setItem('rating', rating);
             return rating;
         }
@@ -960,17 +956,13 @@ animation: smoothGradient 8s ease infinite;
             localStorage.setItem('counts', JSON.stringify(counts));
         }
 
-        // Проверка возможности выполнения задания
         function canDo(id) {
             if (id === 2) {
-                // Задание "Подпишись на канал" — один раз навсегда
                 return !localStorage.getItem('subscription_done');
             } else if (id === 3) {
-                // Мини-игра — 1 раз в день
                 let key = id + '_' + new Date().toDateString();
                 return !counts[key] || counts[key] < 1;
             } else {
-                // Остальные задания — до 3 раз в день
                 let key = id + '_' + new Date().toDateString();
                 return !counts[key] || counts[key] < 3;
             }
@@ -993,21 +985,17 @@ animation: smoothGradient 8s ease infinite;
             }
         }
 
-        // Обновление страницы заданий с сортировкой (выполненные внизу)
+        // Обновление страницы заданий
         function updateTasksPage() {
             const container = document.getElementById('tasks');
             container.innerHTML = '';
-            
             const allTasks = [
                 { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку', price: 30 },
                 { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
                 { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' }
             ];
-
-            // Разделяем на невыполненные и выполненные
             const notDone = [];
             const done = [];
-
             allTasks.forEach(task => {
                 const isDone = (task.id === 3 && !canDo(3)) || (task.id === 2 && localStorage.getItem('subscription_done'));
                 if (isDone) {
@@ -1016,15 +1004,11 @@ animation: smoothGradient 8s ease infinite;
                     notDone.push(task);
                 }
             });
-
-            // Объединяем: сначала невыполненные, потом выполненные
             const sortedTasks = [...notDone, ...done];
-
             sortedTasks.forEach((t, index) => {
                 const div = document.createElement('div');
                 div.className = 'task';
                 div.style.animationDelay = (0.1 + index * 0.1) + 's';
-
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'task-info';
                 const h3 = document.createElement('h3');
@@ -1033,7 +1017,6 @@ animation: smoothGradient 8s ease infinite;
                 p.innerText = t.desc;
                 infoDiv.appendChild(h3);
                 infoDiv.appendChild(p);
-
                 const actionsDiv = document.createElement('div');
                 actionsDiv.className = 'task-actions';
                 const priceSpan = document.createElement('span');
@@ -1041,9 +1024,7 @@ animation: smoothGradient 8s ease infinite;
                 priceSpan.innerText = (typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽');
                 const btn = document.createElement('button');
                 btn.setAttribute('data-id', t.id);
-
                 const isDone = (t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'));
-
                 if (isDone) {
                     btn.innerText = 'Выполнено';
                     btn.className = 'done-btn';
@@ -1069,13 +1050,133 @@ animation: smoothGradient 8s ease infinite;
                         }
                     };
                 }
-
                 actionsDiv.appendChild(priceSpan);
                 actionsDiv.appendChild(btn);
                 div.appendChild(infoDiv);
                 div.appendChild(actionsDiv);
                 container.appendChild(div);
             });
+        }
+
+        // Обновление страницы профиля с анимацией
+        function updateProfilePage() {
+            const container = document.getElementById('profileStats');
+            container.innerHTML = '';
+            const todayCount = getTodayCount();
+            const avatarLetter = (userName && userName !== 'Пользователь') ? userName.charAt(0).toUpperCase() : '?';
+            const rating = getRating();
+            const level = getLevel(rating);
+            const progress = getProgressToNextLevel(rating);
+            const elements = [];
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'profile-header';
+            headerDiv.style.animationDelay = '0.05s';
+            headerDiv.innerHTML = `
+                <div class="profile-avatar">${avatarLetter}</div>
+                <div class="profile-name">${userName}</div>
+            `;
+            elements.push(headerDiv);
+            const stats = [
+                { label: 'Баланс', value: balance + ' ₽' },
+                { label: 'Выполнено сегодня', value: todayCount },
+                { label: 'ID', value: userId },
+                { label: 'Рейтинг', value: 'Уровень ' + level, progress: progress }
+            ];
+            stats.forEach((stat, idx) => {
+                const card = document.createElement('div');
+                card.className = 'stat-card';
+                card.style.animationDelay = (0.1 + idx * 0.1) + 's';
+                let progressHtml = '';
+                if (stat.progress !== undefined) {
+                    progressHtml = <div class="progress-bar"><div class="progress-fill" style="width: ${stat.progress}%;"></div></div>;
+                }
+                card.innerHTML = `
+                    <div class="stat-content">
+                        <div class="stat-label">${stat.label}</div>
+                        <div class="stat-value">${stat.value}</div>
+                        ${progressHtml}
+                    </div>
+                `;
+                elements.push(card);
+            });
+            elements.forEach(el => container.appendChild(el));
+        }
+
+        // Обновление страницы рефералов с анимацией
+        function updateReferralsPage() {
+            const container = document.getElementById('referralsContent');
+            container.innerHTML = '';
+            const linkCard = document.createElement('div');
+            linkCard.className = 'referral-link-card';
+            linkCard.style.animationDelay = '0.05s';
+            linkCard.innerHTML = `
+                <div class="referral-link-label">Твоя реферальная ссылка</div>
+                <div class="referral-link-field">
+                    <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
+                    <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
+                </div>
+            `;
+            container.appendChild(linkCard);
+            const stats = [
+                { label: 'Приглашено друзей', value: 0 },
+                { label: 'Заработано на рефералах', value: '0 ₽' }
+            ];
+            stats.forEach((stat, idx) => {
+                const card = document.createElement('div');
+                card.className = 'referral-stat-card';
+                card.style.animationDelay = (0.1 + idx * 0.1) + 's';
+                card.innerHTML = `
+                    <div class="referral-stat-content">
+                        <div class="referral-stat-label">${stat.label}</div>
+                        <div class="referral-stat-value">${stat.value}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            const note = document.createElement('p');
+            note.className = 'withdraw-note';
+            note.style.animationDelay = '0.25s';
+            note.innerText = 'Статистика появится после приглашения друзей';
+            container.appendChild(note);
+        }
+
+        // Обновление страницы вывода с анимацией
+        function updateWithdrawPage() {
+            const container = document.getElementById('withdrawContent');
+            container.innerHTML = '';
+            const balanceInfo = document.createElement('div');
+            balanceInfo.className = 'withdraw-balance-info';
+            balanceInfo.style.animationDelay = '0.05s';
+            balanceInfo.innerText = 'Текущий баланс: ' + balance + ' ₽';
+            container.appendChild(balanceInfo);
+            const fields = [
+                { placeholder: 'Сумма (мин. 50 ₽)', type: 'number', min: 50, step: 10, id: 'withdrawAmount' },
+                { placeholder: 'Номер карты (16 цифр)', type: 'text', maxlength: 19, id: 'withdrawCard' }
+            ];
+            fields.forEach((field, idx) => {
+                const fieldDiv = document.createElement('div');
+                fieldDiv.className = 'withdraw-field';
+                fieldDiv.style.animationDelay = (0.1 + idx * 0.1) + 's';
+                const input = document.createElement('input');
+                input.type = field.type;
+                input.placeholder = field.placeholder;
+                if (field.min) input.min = field.min;
+                if (field.step) input.step = field.step;
+                if (field.maxlength) input.maxLength = field.maxlength;
+                input.id = field.id;
+                fieldDiv.appendChild(input);
+                container.appendChild(fieldDiv);
+            });
+            const withdrawBtn = document.createElement('button');
+            withdrawBtn.className = 'withdraw-btn';
+            withdrawBtn.style.animationDelay = '0.2s';
+            withdrawBtn.innerText = 'Вывести';
+            container.appendChild(withdrawBtn);
+            const note = document.createElement('p');
+            note.className = 'withdraw-note';
+            note.style.animationDelay = '0.25s';
+            note.innerText = 'Вывод будет доступен после бета-теста';
+            container.appendChild(note);
         }
 
         // Логика игры
@@ -1085,7 +1186,6 @@ animation: smoothGradient 8s ease infinite;
         const gameMessage = document.getElementById('gameMessage');
         const gameReward = document.getElementById('gameReward');
         const claimBtn = document.getElementById('claimBtn');
-
         let currentWin = 0;
 
         function resetGameModal() {
@@ -1107,22 +1207,17 @@ animation: smoothGradient 8s ease infinite;
         gameBoxes.forEach(box => {
             box.addEventListener('click', function(e) {
                 if (this.classList.contains('disabled')) return;
-
                 const id = 3;
                 if (!canDo(id)) {
                     alert('Лимит на сегодня');
                     gameModal.classList.remove('show');
                     return;
                 }
-
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
-
                 this.innerText = currentWin + ' ₽';
                 this.style.background = '#0A5C2A';
-
                 gameBoxes.forEach(b => b.classList.add('disabled'));
-
                 gameMessage.innerText = 'Поздравляем!';
                 gameReward.innerText = '+ ' + currentWin + ' ₽';
                 claimBtn.style.display = 'block';
@@ -1131,7 +1226,6 @@ animation: smoothGradient 8s ease infinite;
 
         claimBtn.onclick = () => {
             if (currentWin === 0) return;
-
             const id = 3;
             balance += currentWin;
             saveBalance();
@@ -1140,12 +1234,10 @@ animation: smoothGradient 8s ease infinite;
             document.getElementById('balance').innerText = balance + ' ₽';
             updateStreakDisplay();
             addCount(3);
-
             updateTasksPage();
-
             gameModal.classList.remove('show');
         };
-// Обработчики модалок
+
         document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
@@ -1177,10 +1269,8 @@ animation: smoothGradient 8s ease infinite;
             checkBtn.disabled = true;
             checkBtn.innerText = 'Проверка...';
             checkResult.innerText = '';
-
             await new Promise(r => setTimeout(r, 1500));
             const success = true;
-
             if (success) {
                 balance += 20;
                 saveBalance();
@@ -1188,14 +1278,10 @@ animation: smoothGradient 8s ease infinite;
                 addRating(10);
                 document.getElementById('balance').innerText = balance + ' ₽';
                 updateStreakDisplay();
-
                 localStorage.setItem('subscription_done', 'true');
-
                 checkResult.style.color = '#1DB954';
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
-
                 updateTasksPage();
-
                 setTimeout(() => subModal.classList.remove('show'), 1500);
             } else {
                 checkResult.style.color = 'red';
@@ -1205,12 +1291,10 @@ animation: smoothGradient 8s ease infinite;
             }
         };
 
-        // Навигация с переключением страниц
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
-            referrals: document.getElementById('referrals-page'),
-            withdraw: document.getElementById('withdraw-page')
+            referrals: document.getElementById('referrals-page'),withdraw: document.getElementById('withdraw-page')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
@@ -1222,16 +1306,12 @@ animation: smoothGradient 8s ease infinite;
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
                 if (!targetPage || targetPage === currentActive) return;
-
                 if (currentActive) {
                     currentActive.classList.remove('active-page');
                 }
                 targetPage.classList.add('active-page');
-
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
-
-                // Обновляем контент соответствующей страницы
                 if (page === 'profile') {
                     updateProfilePage();
                 } else if (page === 'referrals') {
@@ -1241,109 +1321,13 @@ animation: smoothGradient 8s ease infinite;
                 } else if (page === 'tasks') {
                     updateTasksPage();
                 }
-
-                // При переключении на любую страницу анимируем её содержимое
-                const content = targetPage.querySelector('.page-content');
-                if (content) {
-                    content.style.animation = 'none';
-                    content.offsetHeight; // форсированный reflow
-                    content.style.animation = 'fadeSlideUp 0.8s ease forwards';
-                }
             });
         });
-
-        function updateProfilePage() {
-            const todayCount = getTodayCount();
-            const avatarLetter = (userName && userName !== 'Пользователь') ? userName.charAt(0).toUpperCase() : '?';
-            const rating = getRating();
-            const level = getLevel(rating);
-            const progress = getProgressToNextLevel(rating);
-
-            document.getElementById('profileStats').innerHTML = `
-                <div class="profile-header">
-                    <div class="profile-avatar">${avatarLetter}</div>
-                    <div class="profile-name">${userName}</div>
-                </div>
-                <div class="profile-stats">
-                    <div class="stat-card">
-                        <div class="stat-content">
-                            <div class="stat-label">Баланс</div>
-                            <div class="stat-value">${balance} ₽</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-content">
-                            <div class="stat-label">Выполнено сегодня</div>
-                            <div class="stat-value">${todayCount}</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-content">
-                            <div class="stat-label">ID</div>
-                            <div class="stat-value">${userId}</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-content">
-                            <div class="stat-label">Рейтинг</div>
-                            <div class="stat-value">Уровень ${level}</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: ${progress}%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function updateReferralsPage() {
-            document.getElementById('referralsContent').innerHTML = `
-                <div class="referral-link-card">
-                    <div class="referral-link-label">Твоя реферальная ссылка</div>
-                    <div class="referral-link-field">
-                        <input class="referral-link-input" value="https://t.me/your_bot?start=ref_123456" readonly id="refLinkField">
-                        <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
-                    </div>
-                </div>
-                <div class="referral-stats">
-                    <div class="referral-stat-card">
-                        <div class="referral-stat-content">
-                            <div class="referral-stat-label">Приглашено друзей</div>
-                            <div class="referral-stat-value">0</div>
-                        </div>
-                    </div>
-                    <div class="referral-stat-card">
-                        <div class="referral-stat-content">
-                            <div class="referral-stat-label">Заработано на рефералах</div>
-                            <div class="referral-stat-value">0 ₽</div>
-                        </div>
-                    </div>
-                </div>
-                <p class="withdraw-note">Статистика появится после приглашения друзей</p>
-            `;
-        }
-
-        function updateWithdrawPage() {
-            document.getElementById('withdrawContent').innerHTML = `
-                <div class="withdraw-balance-info">Текущий баланс: ${balance} ₽</div>
-                <div class="withdraw-form">
-                    <div class="withdraw-field">
-<input type="number" id="withdrawAmount" placeholder="Сумма (мин. 50 ₽)" min="50" step="10">
-                    </div>
-                    <div class="withdraw-field">
-                        <input type="text" id="withdrawCard" placeholder="Номер карты (16 цифр)" maxlength="19">
-                    </div>
-                    <button class="withdraw-btn">Вывести</button>
-                </div>
-                <p class="withdraw-note">Вывод будет доступен после бета-теста</p>
-            `;
-        }
 
         window.onclick = (e) => {
             if (e.target.classList.contains('modal')) e.target.classList.remove('show');
         };
 
-        // Инициализация
         updateStreakDisplay();
         updateTasksPage();
         updateProfilePage();
