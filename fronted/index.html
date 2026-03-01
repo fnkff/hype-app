@@ -42,11 +42,13 @@
         .splash-logo {
             font-size: 64px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: scaleIn 0.5s ease;
+            background-size: 500% 500%;
+            animation: scaleIn 0.5s ease, smoothGradient 8s ease infinite;
+            background-position: 0% 50%;
         }
         @keyframes scaleIn {
             0% { transform: scale(0.5); opacity: 0; }
@@ -55,6 +57,14 @@
         @keyframes fadeOut {
             0% { opacity: 1; visibility: visible; }
             100% { opacity: 0; visibility: hidden; }
+        }
+        @keyframes smoothGradient {
+            0% { background-position: 0% 50%; }
+            20% { background-position: 50% 50%; }
+            40% { background-position: 100% 50%; }
+            60% { background-position: 150% 50%; }
+            80% { background-position: 200% 50%; }
+            100% { background-position: 250% 50%; }
         }
 
         .app-content {
@@ -81,10 +91,14 @@
         .logo {
             font-size: 32px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            background-size: 500% 500%;
+            animation: smoothGradient 8s ease infinite;
+            background-position: 0% 50%;
+            display: inline-block;
         }
         .beta-badge {
             font-size: 16px;
@@ -153,7 +167,6 @@
             display: block;
         }
 
-        /* Анимация появления элементов */
         @keyframes fadeSlideUp {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -168,7 +181,6 @@
             animation: pulse 0.2s ease;
         }
 
-        /* Задания */
         .task {
             background: #2f2f2f;
             color: white;
@@ -234,7 +246,9 @@
             box-sizing: border-box;
         }
         .take-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background-size: 500% 500%;
+            animation: smoothGradient 8s ease infinite;
             color: white;
             cursor: pointer;
             transition: opacity 0.2s, box-shadow 0.2s;
@@ -266,7 +280,6 @@
             white-space: nowrap;
         }
 
-        /* Профиль */
         .profile-header {
             display: flex;
             align-items: center;
@@ -282,7 +295,9 @@
         .profile-avatar {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background-size: 500% 500%;
+            animation: smoothGradient 8s ease infinite;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -299,13 +314,16 @@
         .profile-avatar::after {
             content: '';
             position: absolute;
-            top: -4px;
-            left: -4px;
-            right: -4px;
-            bottom: -4px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background-size: 500% 500%;
+            animation: smoothGradient 8s ease infinite;
             z-index: -1;
+            margin: -3px;
         }
         .profile-name {
             font-size: 28px;
@@ -350,7 +368,6 @@
             transition: width 0.3s ease;
         }
 
-        /* Рефералы */
         .referral-link-card {
             background: #2f2f2f;
             color: white;
@@ -387,7 +404,9 @@
             border-color: #1DB954;
         }
         .referral-copy-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background-size: 500% 500%;
+            animation: smoothGradient 8s ease infinite;
             color: white;
             border: none;
             border-radius: 40px;
@@ -431,7 +450,6 @@
             color: white;
         }
 
-        /* Вывод */
         .withdraw-balance-info {
             background: #2f2f2f;
             color: white;
@@ -485,7 +503,9 @@
             color: #b3b3b3;
         }
         .withdraw-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background-size: 500% 500%;
+            animation: smoothGradient 8s ease infinite;
             color: white;
             border: none;
             border-radius: 50px;
@@ -514,7 +534,6 @@
             font-size: 16px;
         }
 
-        /* Нижнее меню */
         .nav {
             position: fixed;
             bottom: 0;
@@ -572,7 +591,6 @@
             stroke: currentColor;
         }
 
-        /* Модальные окна */
         .modal {
             position: fixed;
             top: 0;
@@ -636,7 +654,9 @@
             font-size: 16px;
         }
         .copy-btn, .check-btn, .claim-btn, .channel-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A, #1DB954);
+            background-size: 500% 500%;
+            animation: smoothGradient 8s ease infinite;
             color: white;
             border: none;
             border-radius: 50px;
@@ -663,7 +683,6 @@
             font-size: 16px;
         }
 
-        /* Стили для мини-игры */
         .game-boxes {
             display: flex;
             justify-content: space-around;
@@ -785,7 +804,6 @@
             </div>
         </div>
 
-        <!-- НИЖНЕЕ МЕНЮ -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -814,7 +832,6 @@
             </a>
         </div>
 
-        <!-- МОДАЛКИ -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -959,7 +976,6 @@
             }
         }
 
-        // Обновление страницы заданий (сортировка + анимация)
         function updateTasksPage() {
             const container = document.getElementById('tasks');
             container.innerHTML = '';
@@ -1011,7 +1027,6 @@
             });
         }
 
-        // Обновление страницы профиля с анимацией
         function updateProfilePage() {
             const container = document.getElementById('profileStats');
             container.innerHTML = '';
@@ -1055,7 +1070,6 @@
             });
         }
 
-        // Обновление страницы рефералов с анимацией
         function updateReferralsPage() {
             const container = document.getElementById('referralsContent');
             container.innerHTML = '';
@@ -1096,7 +1110,6 @@
             container.appendChild(note);
         }
 
-        // Обновление страницы вывода с анимацией
         function updateWithdrawPage() {
             const container = document.getElementById('withdrawContent');
             container.innerHTML = '';
@@ -1139,7 +1152,6 @@
             container.appendChild(note);
         }
 
-        // Логика игры
         const gameModal = document.getElementById('gameModal');
         const closeGame = document.getElementById('closeGame');
         const gameBoxes = document.querySelectorAll('.game-box');
@@ -1280,7 +1292,6 @@
             if (e.target.classList.contains('modal')) e.target.classList.remove('show');
         };
 
-        // Инициализация
         updateStreakDisplay();
         updateTasksPage();
         updateProfilePage();
