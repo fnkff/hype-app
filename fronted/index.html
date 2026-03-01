@@ -123,7 +123,7 @@
             font-weight: 600;
         }
 
-        /* Градиентный баннер с узором */
+        /* Градиентный баннер с движущимися полосами */
         .gradient-banner {
             position: relative;
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
@@ -145,8 +145,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(circle at 10px 10px, rgba(255,255,255,0.15) 2px, transparent 2px);
-            background-size: 30px 30px;
+            background: repeating-linear-gradient(45deg, 
+                rgba(255,255,255,0.1) 0px, 
+                rgba(255,255,255,0.1) 2px, 
+                transparent 2px, 
+                transparent 8px);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite; /* синхронно с градиентом */
             pointer-events: none;
             z-index: 1;
         }
@@ -218,7 +223,7 @@
             letter-spacing: -0.5px;
         }
 
-        /* Карточки заданий (увеличенный текст, горизонтальные цена и кнопка) */
+        /* Карточки заданий */
         .task {
             background: #2f2f2f;
             border-radius: 25px;
@@ -234,14 +239,14 @@
         }
         .task-info {
             flex: 1;
-            min-width: 0; /* позволяет тексту сжиматься */
+            min-width: 0;
         }
         .task-info h3 {
             font-size: 22px;
             font-weight: 600;
             margin-bottom: 6px;
             color: white;
-            white-space: normal; /* перенос при необходимости */
+            white-space: normal;
             word-break: break-word;
         }
         .task-info p {
@@ -255,7 +260,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            flex-shrink: 0; /* блок действий не сжимается */
+            flex-shrink: 0;
         }
         .task-price {
             font-size: 24px;
@@ -278,6 +283,9 @@
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
+            /* одинаковые размеры */
+            height: auto;
+            line-height: normal;
         }
         .take-btn {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
@@ -533,8 +541,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(circle at 10px 10px, rgba(255,255,255,0.15) 2px, transparent 2px);
-            background-size: 30px 30px;
+            background: repeating-linear-gradient(45deg, 
+                rgba(255,255,255,0.1) 0px, 
+                rgba(255,255,255,0.1) 2px, 
+                transparent 2px, 
+                transparent 8px);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
             pointer-events: none;
             z-index: 1;
         }
