@@ -123,7 +123,7 @@
             font-weight: 600;
         }
 
-        /* Градиентный баннер с толстыми полосами, качающимися влево-вправо */
+        /* Градиентный баннер с волнистыми линиями (извиваются на месте) */
         .gradient-banner {
             position: relative;
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
@@ -145,20 +145,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(45deg, 
-                rgba(255,255,255,0.3) 0px, 
-                rgba(255,255,255,0.3) 2px, 
-                transparent 2px, 
-                transparent 22px);
-            background-size: 34px 34px; /* период с учётом угла */
-            transform-origin: 0 0;
-            animation: swingStripes 10s ease-in-out infinite alternate;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cpath d='M0 30 Q 20 20, 40 30 T 80 30 T 120 30 T 160 30 T 200 30' stroke='rgba(255,255,255,0.25)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 50 Q 30 40, 60 50 T 100 50 T 140 50 T 180 50' stroke='rgba(255,255,255,0.2)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 70 Q 40 80, 80 70 T 120 70 T 160 70' stroke='rgba(255,255,255,0.3)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 90 Q 20 100, 40 90 T 80 90 T 120 90 T 160 90' stroke='rgba(255,255,255,0.2)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 110 Q 30 120, 60 110 T 100 110 T 140 110' stroke='rgba(255,255,255,0.25)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 130 Q 40 120, 80 130 T 120 130 T 160 130' stroke='rgba(255,255,255,0.3)' fill='none' stroke-width='2' /%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.4;
+            animation: breathe 8s ease-in-out infinite;
             pointer-events: none;
             z-index: 1;
         }
-        @keyframes swingStripes {
-            0% { transform: translateX(-25px); }
-            100% { transform: translateX(25px); }
+        @keyframes breathe {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { opacity: 0.3; }
         }
         .banner-logo {
             font-size: 48px;
@@ -545,14 +543,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(45deg, 
-                rgba(255,255,255,0.3) 0px, 
-                rgba(255,255,255,0.3) 2px, 
-                transparent 2px, 
-                transparent 22px);
-            background-size: 34px 34px;
-            transform-origin: 0 0;
-            animation: swingStripes 10s ease-in-out infinite alternate;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cpath d='M0 30 Q 20 20, 40 30 T 80 30 T 120 30 T 160 30 T 200 30' stroke='rgba(255,255,255,0.25)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 50 Q 30 40, 60 50 T 100 50 T 140 50 T 180 50' stroke='rgba(255,255,255,0.2)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 70 Q 40 80, 80 70 T 120 70 T 160 70' stroke='rgba(255,255,255,0.3)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 90 Q 20 100, 40 90 T 80 90 T 120 90 T 160 90' stroke='rgba(255,255,255,0.2)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 110 Q 30 120, 60 110 T 100 110 T 140 110' stroke='rgba(255,255,255,0.25)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 130 Q 40 120, 80 130 T 120 130 T 160 130' stroke='rgba(255,255,255,0.3)' fill='none' stroke-width='2' /%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.4;
+            animation: breathe 8s ease-in-out infinite;
             pointer-events: none;
             z-index: 1;
         }
