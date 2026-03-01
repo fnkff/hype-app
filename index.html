@@ -123,7 +123,7 @@
             font-weight: 600;
         }
 
-        /* Градиентный баннер с движущимися полосами */
+        /* Градиентный баннер с волнистыми полосами */
         .gradient-banner {
             position: relative;
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
@@ -145,15 +145,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(45deg, 
-                rgba(255,255,255,0.1) 0px, 
-                rgba(255,255,255,0.1) 2px, 
-                transparent 2px, 
-                transparent 8px);
-            background-size: 200% 200%;
-            animation: gradientShift 8s ease infinite; /* синхронно с градиентом */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M0 30 Q 20 20, 40 30 T 80 30 T 120 30' stroke='rgba(255,255,255,0.15)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 50 Q 30 40, 60 50 T 120 50' stroke='rgba(255,255,255,0.1)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 70 Q 40 80, 80 70 T 160 70' stroke='rgba(255,255,255,0.2)' fill='none' stroke-width='2' /%3E%3C/svg%3E");
+            background-size: 200px 200px;
+            background-repeat: repeat;
+            background-position: 0 0;
+            animation: waveShift 20s linear infinite;
             pointer-events: none;
             z-index: 1;
+            opacity: 0.5;
+        }
+        @keyframes waveShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 200px 0; }
         }
         .banner-logo {
             font-size: 48px;
@@ -223,7 +226,7 @@
             letter-spacing: -0.5px;
         }
 
-        /* Карточки заданий */
+        /* Карточки заданий (вертикальное расположение цены под кнопкой) */
         .task {
             background: #2f2f2f;
             border-radius: 25px;
@@ -258,12 +261,13 @@
         }
         .task-actions {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 6px;
             flex-shrink: 0;
         }
         .task-price {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             -webkit-background-clip: text;
@@ -274,17 +278,14 @@
         .take-btn, .done-btn {
             border: none;
             border-radius: 40px;
-            padding: 10px 16px;
-            font-size: 18px;
+            padding: 8px 12px;
+            font-size: 16px;
             font-weight: 600;
             white-space: nowrap;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            min-width: 110px;
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
-            /* одинаковые размеры */
-            height: auto;
             line-height: normal;
         }
         .take-btn {
@@ -292,6 +293,7 @@
             background-size: 400% 400%;
             animation: gradientShift 6s ease infinite;
             color: white;
+            width: 110px;
         }
         .take-btn:active {
             transform: scale(0.96);
@@ -301,6 +303,8 @@
             color: transparent;
             position: relative;
             pointer-events: none;
+            width: 90px; /* уменьшенная ширина */
+            padding: 8px 8px;
         }
         .done-btn::before {
             content: 'Выполнено';
@@ -313,7 +317,7 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 16px;
             white-space: nowrap;
         }
 
@@ -541,15 +545,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(45deg, 
-                rgba(255,255,255,0.1) 0px, 
-                rgba(255,255,255,0.1) 2px, 
-                transparent 2px, 
-                transparent 8px);
-            background-size: 200% 200%;
-            animation: gradientShift 8s ease infinite;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M0 30 Q 20 20, 40 30 T 80 30 T 120 30' stroke='rgba(255,255,255,0.15)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 50 Q 30 40, 60 50 T 120 50' stroke='rgba(255,255,255,0.1)' fill='none' stroke-width='2' /%3E%3Cpath d='M0 70 Q 40 80, 80 70 T 160 70' stroke='rgba(255,255,255,0.2)' fill='none' stroke-width='2' /%3E%3C/svg%3E");
+            background-size: 200px 200px;
+            background-repeat: repeat;
+            background-position: 0 0;
+            animation: waveShift 20s linear infinite;
             pointer-events: none;
             z-index: 1;
+            opacity: 0.5;
         }
         .withdraw-balance-label {
             font-size: 16px;
@@ -1120,8 +1123,8 @@
                         <p>${t.desc}</p>
                     </div>
                     <div class="task-actions">
-                        <span class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</span>
                         <button class="${(t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done')) ? 'done-btn' : 'take-btn'}" data-id="${t.id}" ${((t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'))) ? 'disabled' : ''}>${((t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'))) ? 'Выполнено' : 'Взять'}</button>
+                        <span class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</span>
                     </div>
                 `;
                 const btn = div.querySelector('button');
