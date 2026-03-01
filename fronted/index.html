@@ -49,7 +49,7 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 400% 400%;
-            animation: scaleIn 0.5s ease, gradientSmooth 6s ease infinite;
+            animation: scaleIn 0.5s ease, gradientShift 6s ease infinite;
         }
 
         @keyframes scaleIn {
@@ -60,7 +60,8 @@
             0% { opacity: 1; visibility: visible; }
             100% { opacity: 0; visibility: hidden; }
         }
-        @keyframes gradientSmooth {
+        /* Единая анимация градиента для всех элементов */
+        @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
@@ -90,11 +91,13 @@
             color: #fff;
             margin-bottom: 4px;
         }
-        .greeting span {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+        .greeting-name {
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background-size: 400% 400%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: gradientShift 6s ease infinite;
             font-weight: 700;
         }
         .date {
@@ -125,7 +128,7 @@
         .gradient-banner {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             background-size: 400% 400%;
-            animation: gradientSmooth 8s ease infinite;
+            animation: gradientShift 8s ease infinite;
             border-radius: 30px;
             padding: 25px 20px;
             display: flex;
@@ -198,11 +201,11 @@
             letter-spacing: -0.5px;
         }
 
-        /* Карточки заданий (без иконок) */
+        /* Карточки заданий (без иконок, увеличенный текст) */
         .task {
             background: #2f2f2f;
             border-radius: 25px;
-            padding: 18px 20px;
+            padding: 20px 22px;
             margin: 12px 0;
             display: flex;
             align-items: center;
@@ -216,14 +219,14 @@
             flex: 1;
         }
         .task-info h3 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             color: white;
         }
         .task-info p {
             color: #b3b3b3;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 500;
         }
         .task-actions {
@@ -256,7 +259,7 @@
         .take-btn {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             background-size: 400% 400%;
-            animation: gradientSmooth 6s ease infinite;
+            animation: gradientShift 6s ease infinite;
             color: white;
         }
         .take-btn:active {
@@ -281,20 +284,22 @@
             font-weight: 600;
         }
 
-        /* Профиль */
+        /* Профиль (обновлённая структура) */
         .profile-header {
             display: flex;
             align-items: center;
             gap: 20px;
             margin-bottom: 30px;
-            margin-left: 5px; /* сдвиг вправо */
+            margin-left: 5px;
             animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
         }
         .profile-avatar {
             width: 90px;
             height: 90px;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background-size: 400% 400%;
+            animation: gradientShift 6s ease infinite;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -303,36 +308,29 @@
             font-weight: 600;
             color: #121212;
             text-transform: uppercase;
-            border: 3px solid #1DB954;
-            box-shadow: 0 0 0 2px #0A5C2A;
+            border: 3px solid transparent;
         }
         .profile-name {
             font-size: 32px;
             font-weight: 700;
         }
-        .stat-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
+        /* Полноширинные блоки ID и уровня */
+        .profile-wide-card {
             background: #2f2f2f;
             border-radius: 25px;
             padding: 20px;
-            flex: 1 1 calc(50% - 15px);
-            min-width: 140px;
+            margin: 12px 0;
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
             animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
         }
-        .stat-label {
+        .wide-label {
             font-size: 14px;
             color: #b3b3b3;
             margin-bottom: 8px;
             font-weight: 500;
         }
-        .stat-value {
+        .wide-value {
             font-size: 28px;
             font-weight: 700;
             color: white;
@@ -345,9 +343,28 @@
             overflow: hidden;
         }
         .progress-fill {
-            background: linear-gradient(90deg, #1DB954, #0A5C2A);
+            background: linear-gradient(90deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background-size: 400% 400%;
+            animation: gradientShift 6s ease infinite;
             height: 100%;
             transition: width 0.3s;
+        }
+        /* Блоки баланса и выполнено сегодня остаются в сетке */
+        .stat-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: #2f2f2f;
+            border-radius: 25px;
+            padding: 20px;
+            flex: 1 1 calc(50% - 15px);
+            min-width: 140px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
         }
 
         /* Рефералы */
@@ -369,9 +386,10 @@
         .referral-link-field {
             display: flex;
             gap: 12px;
+            align-items: center;
         }
         .referral-link-input {
-            flex: 1;
+            width: 70%; /* уменьшено, чтобы кнопка поместилась */
             padding: 14px;
             border: 1px solid #3e3e3e;
             border-radius: 40px;
@@ -387,16 +405,17 @@
         .referral-copy-btn {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             background-size: 400% 400%;
-            animation: gradientSmooth 6s ease infinite;
+            animation: gradientShift 6s ease infinite;
             border: none;
             border-radius: 40px;
-            padding: 14px 28px;
+            padding: 14px 20px;
             font-weight: 600;
             color: white;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
             transition: 0.2s;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .referral-copy-btn:active {
             transform: scale(0.96);
@@ -420,6 +439,7 @@
             font-weight: 700;
             color: white;
         }
+        /* Список друзей – полностью пустой */
         .friends-list {
             background: #2f2f2f;
             border-radius: 25px;
@@ -447,31 +467,27 @@
             flex: 1;
         }
         .friend-name {
-            font-weight: 600;
-            color: white;
-            height: 20px; /* пустое поле */
+            height: 20px;
         }
         .friend-status {
-            font-size: 13px;
-            color: #b3b3b3;
-            font-weight: 500;
+            height: 16px;
         }
         .friend-reward {
             color: #1DB954;
             font-weight: 600;
+            opacity: 0; /* скрыто */
         }
 
         /* Вывод средств */
         .withdraw-balance-block {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             background-size: 400% 400%;
-            animation: gradientSmooth 8s ease infinite;
+            animation: gradientShift 8s ease infinite, fadeSlideUp 0.5s ease forwards;
             border-radius: 30px;
             padding: 25px;
             margin-bottom: 25px;
             text-align: center;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
         }
         .withdraw-balance-label {
@@ -527,7 +543,7 @@
         .withdraw-btn {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             background-size: 400% 400%;
-            animation: gradientSmooth 6s ease infinite;
+            animation: gradientShift 6s ease infinite, fadeSlideUp 0.5s ease forwards;
             border: none;
             border-radius: 50px;
             padding: 18px;
@@ -538,7 +554,6 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
             transition: 0.2s;
             margin-top: 10px;
-            animation: fadeSlideUp 0.5s ease forwards, gradientSmooth 6s ease infinite;
             opacity: 0;
         }
         .withdraw-btn:active {
@@ -553,17 +568,9 @@
             background: #2f2f2f;
             border-radius: 25px;
             padding: 20px;
-        }
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #3e3e3e;
             color: #b3b3b3;
+            text-align: center;
             font-weight: 500;
-        }
-        .history-item:last-child {
-            border-bottom: none;
         }
 
         /* Нижняя навигация */
@@ -686,7 +693,7 @@
         .copy-btn, .check-btn, .claim-btn, .channel-btn {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             background-size: 400% 400%;
-            animation: gradientSmooth 6s ease infinite;
+            animation: gradientShift 6s ease infinite;
             border: none;
             border-radius: 50px;
             padding: 14px;
@@ -768,7 +775,9 @@
             <div id="tasks-page" class="page active-page">
                 <div class="welcome-section">
                     <div class="greeting-block">
-                        <div class="greeting">Привет, <span id="userNameDisplay">Пользователь</span>!</div>
+                        <div class="greeting">
+                            Привет, <span class="greeting-name" id="userNameDisplay">Пользователь</span>!
+                        </div>
                         <div class="date" id="currentDate"></div>
                     </div>
                     <div class="streak-badge" id="streakBadge">🔥 <span id="streakValue">0</span></div>
@@ -784,7 +793,7 @@
                 <div id="tasks"></div>
             </div>
 
-            <!-- Профиль -->
+            <!-- Профиль (обновлённая структура) -->
             <div id="profile-page" class="page">
                 <div class="page-title">Профиль</div>
                 <div id="profileStats"></div>
@@ -864,9 +873,9 @@
                     <h3>Мини-игра</h3>
                     <p style="color:#b3b3b3;">Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
                     <div class="game-boxes">
-                        <div class="game-box" data-box="1">🎁</div>
-                        <div class="game-box" data-box="2">🎁</div>
-                        <div class="game-box" data-box="3">🎁</div>
+                        <div class="game-box" data-box="1">?</div>
+                        <div class="game-box" data-box="2">?</div>
+                        <div class="game-box" data-box="3">?</div>
                     </div>
                     <div class="game-message" id="gameMessage">Нажми на коробку</div>
                     <div class="game-reward" id="gameReward"></div>
@@ -985,7 +994,7 @@
             }
         }
 
-        // Обновление страницы заданий (без иконок)
+        // Обновление страницы заданий
         function updateTasksPage() {
             const container = document.getElementById('tasks');
             container.innerHTML = '';
@@ -1037,7 +1046,7 @@
             });
         }
 
-        // Обновление профиля (без иконок)
+        // Обновление профиля (новая структура)
         function updateProfilePage() {
             const container = document.getElementById('profileStats');
             container.innerHTML = '';
@@ -1047,6 +1056,7 @@
             const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
 
+            // Шапка с аватаром
             const headerDiv = document.createElement('div');
             headerDiv.className = 'profile-header';
             headerDiv.style.animationDelay = '0.05s';
@@ -1056,25 +1066,38 @@
             `;
             container.appendChild(headerDiv);
 
+            // Блок ID (на всю ширину)
+            const idCard = document.createElement('div');
+            idCard.className = 'profile-wide-card';
+            idCard.style.animationDelay = '0.1s';
+            idCard.innerHTML = `
+                <div class="wide-label">ID</div>
+                <div class="wide-value">${userId}</div>
+            `;
+            container.appendChild(idCard);
+
+            // Блок уровня с прогрессом (на всю ширину)
+            const levelCard = document.createElement('div');
+            levelCard.className = 'profile-wide-card';
+            levelCard.style.animationDelay = '0.15s';
+            levelCard.innerHTML = `
+                <div class="wide-label">Рейтинг</div>
+                <div class="wide-value">Уровень ${level}</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>
+            `;
+            container.appendChild(levelCard);
+
+            // Сетка для баланса и выполненных заданий
             const statGrid = document.createElement('div');
             statGrid.className = 'stat-grid';
             statGrid.innerHTML = `
-                <div class="stat-card" style="animation-delay:0.1s">
+                <div class="stat-card" style="animation-delay:0.2s">
                     <div class="stat-label">Баланс</div>
                     <div class="stat-value">${balance} ₽</div>
                 </div>
-                <div class="stat-card" style="animation-delay:0.15s">
+                <div class="stat-card" style="animation-delay:0.25s">
                     <div class="stat-label">Выполнено сегодня</div>
                     <div class="stat-value">${todayCount}</div>
-                </div>
-                <div class="stat-card" style="animation-delay:0.2s">
-                    <div class="stat-label">ID</div>
-                    <div class="stat-value">${userId}</div>
-                </div>
-                <div class="stat-card" style="animation-delay:0.25s">
-                    <div class="stat-label">Рейтинг</div>
-                    <div class="stat-value">Уровень ${level}</div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>
                 </div>
             `;
             container.appendChild(statGrid);
@@ -1111,7 +1134,7 @@
             `;
             container.appendChild(statsDiv);
 
-            // Список друзей без имён
+            // Полностью пустой список друзей
             const friendsDiv = document.createElement('div');
             friendsDiv.className = 'friends-list';
             friendsDiv.style.animationDelay = '0.2s';
@@ -1121,17 +1144,17 @@
                     <div class="friend-avatar"></div>
                     <div class="friend-info">
                         <div class="friend-name"></div>
-                        <div class="friend-status">Выполнил 1 задание</div>
+                        <div class="friend-status"></div>
                     </div>
-                    <div class="friend-reward">+30₽</div>
+                    <div class="friend-reward"></div>
                 </div>
                 <div class="friend-item">
                     <div class="friend-avatar"></div>
                     <div class="friend-info">
                         <div class="friend-name"></div>
-                        <div class="friend-status">Зарегистрирована</div>
+                        <div class="friend-status"></div>
                     </div>
-                    <div class="friend-reward">—</div>
+                    <div class="friend-reward"></div>
                 </div>
                 <div style="text-align:center; margin-top:12px; color:#b3b3b3;">Приглашай друзей, чтобы список заполнился</div>
             `;
@@ -1168,11 +1191,7 @@
             const historyDiv = document.createElement('div');
             historyDiv.innerHTML = `
                 <div class="history-title">История выплат</div>
-                <div class="history-list">
-                    <div class="history-item"><span>12 мая 2025</span><span>150 ₽</span></div>
-                    <div class="history-item"><span>5 мая 2025</span><span>80 ₽</span></div>
-                    <div class="history-item"><span>28 апреля 2025</span><span>200 ₽</span></div>
-                </div>
+                <div class="history-list">История выплат пуста</div>
             `;
             container.appendChild(historyDiv);
 
