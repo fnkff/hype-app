@@ -25,7 +25,6 @@
             padding: 20px 20px 0 20px;
         }
 
-        /* Заставка */
         .splash {
             position: fixed;
             top: 0;
@@ -121,8 +120,7 @@
             font-size: 18px;
             white-space: nowrap;
         }
-        .streak {
-            background: #2a2a2a;
+        .streak {background: #2a2a2a;
             color: #ff8c00;
             padding: 12px 20px;
             border-radius: 30px;
@@ -141,7 +139,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* Контейнер страниц с обычным скроллбаром */
         .pages-container {
             flex: 1;
             min-height: 0;
@@ -169,7 +166,6 @@
             display: block;
         }
 
-        /* Анимация появления */
         @keyframes fadeSlideUp {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -264,8 +260,7 @@
         .take-btn:active {
             transform: scale(0.98);
         }
-        .done-btn {
-            background: white !important;
+        .done-btn {background: white !important;
             color: transparent !important;
             cursor: default;
             position: relative;
@@ -398,10 +393,10 @@
             flex: 1;
             min-width: 0;
             padding: 14px;
-border: 1px solid #3e3e3e;
+            border: 1px solid #3e3e3e;
             border-radius: 40px;
             font-size: 16px;
-            background: #121212;
+background: #121212;
             color: white;
             outline: none;
             transition: border-color 0.2s;
@@ -529,7 +524,7 @@ border: 1px solid #3e3e3e;
             opacity: 0.9;
             box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
-.withdraw-btn:active {
+        .withdraw-btn:active {
             transform: scale(0.98);
         }
         .withdraw-note {
@@ -676,7 +671,7 @@ border: 1px solid #3e3e3e;
             transition: opacity 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
-        .copy-btn:hover, .check-btn:hover, .claim-btn:hover, .channel-btn:hover {
+.copy-btn:hover, .check-btn:hover, .claim-btn:hover, .channel-btn:hover {
             opacity: 0.9;
             box-shadow: 0 6px 12px rgba(29, 185, 84, 0.4);
         }
@@ -807,12 +802,11 @@ border: 1px solid #3e3e3e;
             </div>
 
             <div id="withdraw-page" class="page">
-<div class="page-title">Вывод средств</div>
-                <div class="page-content" id="withdrawContent"></div>
+                <div class="page-title">Вывод средств</div>
+<div class="page-content" id="withdrawContent"></div>
             </div>
         </div>
 
-        <!-- НИЖНЕЕ МЕНЮ -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -843,8 +837,8 @@ border: 1px solid #3e3e3e;
 
         <!-- МОДАЛКИ -->
         <div class="modal" id="refModal">
-<div class="modal-content">
-                <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
+            <div class="modal-content">
+<div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
                 <div class="modal-body">
                     <h3>Пригласи друга</h3>
                     <p style="color:#b3b3b3;">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
@@ -931,7 +925,8 @@ border: 1px solid #3e3e3e;
         function getRating() {
             return parseInt(localStorage.getItem('rating')) || 0;
         }
-        function addRating(points = 10) {let rating = getRating() + points;
+        function addRating(points = 10) {
+            let rating = getRating() + points;
             localStorage.setItem('rating', rating);
             return rating;
         }
@@ -985,7 +980,7 @@ border: 1px solid #3e3e3e;
             }
         }
 
-        // Обновление страницы заданий
+        // Обновление страницы заданий (сортировка + анимация)
         function updateTasksPage() {
             const container = document.getElementById('tasks');
             container.innerHTML = '';
@@ -998,49 +993,32 @@ border: 1px solid #3e3e3e;
             const done = [];
             allTasks.forEach(task => {
                 const isDone = (task.id === 3 && !canDo(3)) || (task.id === 2 && localStorage.getItem('subscription_done'));
-                if (isDone) {
-                    done.push(task);
-                } else {
-                    notDone.push(task);
-                }
+                if (isDone) done.push(task);
+                else notDone.push(task);
             });
             const sortedTasks = [...notDone, ...done];
             sortedTasks.forEach((t, index) => {
                 const div = document.createElement('div');
                 div.className = 'task';
                 div.style.animationDelay = (0.1 + index * 0.1) + 's';
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'task-info';
-                const h3 = document.createElement('h3');
-                h3.innerText = t.name;
-                const p = document.createElement('p');
-                p.innerText = t.desc;
-                infoDiv.appendChild(h3);
-                infoDiv.appendChild(p);
-                const actionsDiv = document.createElement('div');
-                actionsDiv.className = 'task-actions';
-                const priceSpan = document.createElement('span');
-                priceSpan.className = 'task-price';
-                priceSpan.innerText = (typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽');
-                const btn = document.createElement('button');
-                btn.setAttribute('data-id', t.id);
-                const isDone = (t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'));
-                if (isDone) {
-                    btn.innerText = 'Выполнено';
-                    btn.className = 'done-btn';
-                    btn.disabled = true;
-                } else {
-                    btn.innerText = 'Взять';
-                    btn.className = 'take-btn';
+                div.innerHTML = `
+                    <div class="task-info">
+                        <h3>${t.name}</h3>
+                        <p>${t.desc}</p>
+                    </div>
+                    <div class="task-actions">
+                        <span class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</span>
+                        <button class="${(t.id === 3 && !canDo(3))  (t.id === 2 && localStorage.getItem('subscription_done')) ? 'done-btn' : 'take-btn'}" data-id="${t.id}" ${((t.id === 3 && !canDo(3))  (t.id === 2 && localStorage.getItem('subscription_done'))) ? 'disabled' : ''}>${((t.id === 3 && !canDo(3)) || (t.id === 2 && localStorage.getItem('subscription_done'))) ? 'Выполнено' : 'Взять'}</button>
+                    </div>
+                `;
+                const btn = div.querySelector('button');
+                if (btn && !btn.disabled) {
                     btn.onclick = function(e) {
                         let id = parseInt(this.dataset.id);
-                        if (!canDo(id)) {
-                            alert('Лимит на сегодня');
-                            return;
-                        }
+                        if (!canDo(id)) { alert('Лимит на сегодня'); return; }
                         if (id === 1) {
                             let link = 'https://t.me/your_bot?start=ref_' + userId;
-                            document.getElementById('refLink').value = link;
+document.getElementById('refLink').value = link;
                             document.getElementById('refModal').classList.add('show');
                         } else if (id === 2) {
                             document.getElementById('subModal').classList.add('show');
@@ -1050,10 +1028,6 @@ border: 1px solid #3e3e3e;
                         }
                     };
                 }
-                actionsDiv.appendChild(priceSpan);
-                actionsDiv.appendChild(btn);
-                div.appendChild(infoDiv);
-                div.appendChild(actionsDiv);
                 container.appendChild(div);
             });
         }
@@ -1067,7 +1041,7 @@ border: 1px solid #3e3e3e;
             const rating = getRating();
             const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
-            const elements = [];
+
             const headerDiv = document.createElement('div');
             headerDiv.className = 'profile-header';
             headerDiv.style.animationDelay = '0.05s';
@@ -1075,7 +1049,8 @@ border: 1px solid #3e3e3e;
                 <div class="profile-avatar">${avatarLetter}</div>
                 <div class="profile-name">${userName}</div>
             `;
-            elements.push(headerDiv);
+            container.appendChild(headerDiv);
+
             const stats = [
                 { label: 'Баланс', value: balance + ' ₽' },
                 { label: 'Выполнено сегодня', value: todayCount },
@@ -1097,15 +1072,15 @@ border: 1px solid #3e3e3e;
                         ${progressHtml}
                     </div>
                 `;
-                elements.push(card);
+                container.appendChild(card);
             });
-            elements.forEach(el => container.appendChild(el));
         }
 
         // Обновление страницы рефералов с анимацией
         function updateReferralsPage() {
             const container = document.getElementById('referralsContent');
             container.innerHTML = '';
+
             const linkCard = document.createElement('div');
             linkCard.className = 'referral-link-card';
             linkCard.style.animationDelay = '0.05s';
@@ -1117,6 +1092,7 @@ border: 1px solid #3e3e3e;
                 </div>
             `;
             container.appendChild(linkCard);
+
             const stats = [
                 { label: 'Приглашено друзей', value: 0 },
                 { label: 'Заработано на рефералах', value: '0 ₽' }
@@ -1125,14 +1101,14 @@ border: 1px solid #3e3e3e;
                 const card = document.createElement('div');
                 card.className = 'referral-stat-card';
                 card.style.animationDelay = (0.1 + idx * 0.1) + 's';
-                card.innerHTML = `
-                    <div class="referral-stat-content">
+                card.innerHTML = `<div class="referral-stat-content">
                         <div class="referral-stat-label">${stat.label}</div>
                         <div class="referral-stat-value">${stat.value}</div>
                     </div>
                 `;
                 container.appendChild(card);
             });
+
             const note = document.createElement('p');
             note.className = 'withdraw-note';
             note.style.animationDelay = '0.25s';
@@ -1144,11 +1120,13 @@ border: 1px solid #3e3e3e;
         function updateWithdrawPage() {
             const container = document.getElementById('withdrawContent');
             container.innerHTML = '';
+
             const balanceInfo = document.createElement('div');
             balanceInfo.className = 'withdraw-balance-info';
             balanceInfo.style.animationDelay = '0.05s';
             balanceInfo.innerText = 'Текущий баланс: ' + balance + ' ₽';
             container.appendChild(balanceInfo);
+
             const fields = [
                 { placeholder: 'Сумма (мин. 50 ₽)', type: 'number', min: 50, step: 10, id: 'withdrawAmount' },
                 { placeholder: 'Номер карты (16 цифр)', type: 'text', maxlength: 19, id: 'withdrawCard' }
@@ -1167,11 +1145,13 @@ border: 1px solid #3e3e3e;
                 fieldDiv.appendChild(input);
                 container.appendChild(fieldDiv);
             });
+
             const withdrawBtn = document.createElement('button');
             withdrawBtn.className = 'withdraw-btn';
             withdrawBtn.style.animationDelay = '0.2s';
             withdrawBtn.innerText = 'Вывести';
             container.appendChild(withdrawBtn);
+
             const note = document.createElement('p');
             note.className = 'withdraw-note';
             note.style.animationDelay = '0.25s';
@@ -1200,9 +1180,7 @@ border: 1px solid #3e3e3e;
             currentWin = 0;
         }
 
-        closeGame.onclick = () => {
-            gameModal.classList.remove('show');
-        };
+        closeGame.onclick = () => gameModal.classList.remove('show');
 
         gameBoxes.forEach(box => {
             box.addEventListener('click', function(e) {
@@ -1215,7 +1193,7 @@ border: 1px solid #3e3e3e;
                 }
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
-                this.innerText = currentWin + ' ₽';
+this.innerText = currentWin + ' ₽';
                 this.style.background = '#0A5C2A';
                 gameBoxes.forEach(b => b.classList.add('disabled'));
                 gameMessage.innerText = 'Поздравляем!';
@@ -1246,11 +1224,8 @@ border: 1px solid #3e3e3e;
         };
 
         document.getElementById('channelBtn').onclick = () => {
-            if (tg) {
-                tg.openTelegramLink('https://t.me/HYPE_JOB1');
-            } else {
-                window.open('https://t.me/HYPE_JOB1', '_blank');
-            }
+            if (tg) tg.openTelegramLink('https://t.me/HYPE_JOB1');
+            else window.open('https://t.me/HYPE_JOB1', '_blank');
         };
 
         const subModal = document.getElementById('subModal');
@@ -1269,8 +1244,10 @@ border: 1px solid #3e3e3e;
             checkBtn.disabled = true;
             checkBtn.innerText = 'Проверка...';
             checkResult.innerText = '';
+
             await new Promise(r => setTimeout(r, 1500));
             const success = true;
+
             if (success) {
                 balance += 20;
                 saveBalance();
@@ -1294,7 +1271,8 @@ border: 1px solid #3e3e3e;
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
-            referrals: document.getElementById('referrals-page'),withdraw: document.getElementById('withdraw-page')
+            referrals: document.getElementById('referrals-page'),
+            withdraw: document.getElementById('withdraw-page')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
@@ -1306,21 +1284,15 @@ border: 1px solid #3e3e3e;
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
                 if (!targetPage || targetPage === currentActive) return;
-                if (currentActive) {
-                    currentActive.classList.remove('active-page');
-                }
+                if (currentActive) currentActive.classList.remove('active-page');
                 targetPage.classList.add('active-page');
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
-                if (page === 'profile') {
-                    updateProfilePage();
-                } else if (page === 'referrals') {
-                    updateReferralsPage();
-                } else if (page === 'withdraw') {
-                    updateWithdrawPage();
-                } else if (page === 'tasks') {
-                    updateTasksPage();
-                }
+
+                if (page === 'profile') updateProfilePage();
+else if (page === 'referrals') updateReferralsPage();
+                else if (page === 'withdraw') updateWithdrawPage();
+                else if (page === 'tasks') updateTasksPage();
             });
         });
 
@@ -1328,6 +1300,7 @@ border: 1px solid #3e3e3e;
             if (e.target.classList.contains('modal')) e.target.classList.remove('show');
         };
 
+        // Инициализация
         updateStreakDisplay();
         updateTasksPage();
         updateProfilePage();
