@@ -26,7 +26,7 @@
             padding: 0;
         }
 
-        /* Анимированный градиентный фон: больше черного, плавный переход */
+        /* Анимированный градиентный фон */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -60,7 +60,6 @@
             z-index: -1;
             mix-blend-mode: overlay;
         }
-        /* Второй слой бликов для большей интенсивности */
         .glare-layer2 {
             position: fixed;
             top: 0;
@@ -139,7 +138,7 @@
             z-index: 1;
         }
 
-        /* ===== ОСНОВНЫЕ СТИЛИ С ЭФФЕКТОМ СТЕКЛА ===== */
+        /* ===== ОСНОВНЫЕ СТИЛИ ===== */
         .glass-card {
             background: rgba(0, 0, 0, 0.65);
             backdrop-filter: blur(34px);
@@ -149,26 +148,27 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }
 
-        .glass-button {
-            background: rgba(29, 185, 84, 0.3);
-            backdrop-filter: blur(34px);
-            -webkit-backdrop-filter: blur(34px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 40px;
-            color: white;
-            font-weight: 700;
-            font-size: 18px;
-            padding: 14px 24px;
-            transition: all 0.2s;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        /* Блик на кнопках и карточках */
+        .glass-button, .action-btn, .task-card, .ref-link-field button, .modal button {
+            position: relative;
+            overflow: hidden;
         }
-        .glass-button:hover {
-            background: rgba(29, 185, 84, 0.4);
-            border-color: rgba(255, 255, 255, 0.3);
+        .glass-button::after, .action-btn::after, .task-card::after, .ref-link-field button::after, .modal button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            animation: buttonGlare 10s ease infinite;
+            pointer-events: none;
+            mix-blend-mode: overlay;
         }
-        .glass-button:active {
-            transform: scale(0.97);
+        @keyframes buttonGlare {
+            0% { transform: translate(-30%, -30%) scale(1); opacity: 0.3; }
+            50% { transform: translate(30%, 30%) scale(1.5); opacity: 0.6; }
+            100% { transform: translate(-30%, -30%) scale(1); opacity: 0.3; }
         }
 
         /* Страницы */
@@ -199,9 +199,21 @@
             display: block;
         }
 
+        /* Анимация появления страницы: выезд снизу + сдвиг слева */
         @keyframes fadeSlideUp {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideFromLeft {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        .page.active-page .main-page,
+        .page.active-page .profile-page,
+        .page.active-page .analytics-page,
+        .page.active-page .referral-page,
+        .page.active-page .withdraw-page {
+            animation: fadeSlideUp 0.5s ease forwards, slideFromLeft 0.4s ease forwards;
         }
 
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
@@ -221,7 +233,6 @@
             color: white;
             text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(29,185,84,0.5);
             animation: logoGlow 6s ease-in-out infinite;
-            position: relative;
         }
         @keyframes logoGlow {
             0% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(29,185,84,0.5); }
@@ -306,7 +317,6 @@
             text-shadow: 0 0 5px rgba(29,185,84,0.5);
         }
 
-        /* Табы (фильтры) */
         .filters-tabs {
             display: flex;
             gap: 15px;
@@ -404,10 +414,9 @@
         .profile-name {
             font-size: 28px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: white;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(29,185,84,0.5);
+            animation: logoGlow 6s ease-in-out infinite;
         }
         .profile-stats {
             display: flex;
@@ -536,7 +545,7 @@
         .card-glow {
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 20px;
-            padding: 30px 20px 60px 20px; /* ещё больше удлинено */
+            padding: 30px 20px 70px 20px; /* ещё больше места внизу */
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
@@ -559,16 +568,16 @@
             color: white;
         }
         .card-number {
-            font-size: 20px;
+            font-size: 24px;
             letter-spacing: 2px;
-            margin-bottom: 15px;
-            font-weight: 600;
+            margin-bottom: 20px;
+            font-weight: 700;
         }
         .card-details {
             display: flex;
             justify-content: space-between;
-            font-size: 16px;
-            font-weight: 500;
+            font-size: 18px;
+            font-weight: 600;
         }
         .balance-block {
             background: rgba(0,0,0,0.65);
@@ -694,7 +703,7 @@
             fill: currentColor;
         }
 
-        /* Модалки с уменьшенным размытием */
+        /* Модалки */
         .modal {
             position: fixed;
             top: 0;
@@ -723,27 +732,42 @@
             width: 90%;
             max-width: 400px;
             padding: 25px;
+            position: relative;
         }
         .modal-header {
-            display: flex;
-            justify-content: flex-end;
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
         .modal-close {
             background: none;
             border: none;
             font-size: 28px;
-            color: rgba(255,255,255,0.6);
+            color: rgba(255,255,255,0.8);
             cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        .modal-close:hover {
+            background: rgba(255,255,255,0.1);
         }
         .modal h3 {
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 10px;
+            margin-top: 0;
+            padding-right: 30px;
         }
         .modal p {
             font-size: 16px;
             font-weight: 500;
             color: rgba(255,255,255,0.7);
+            margin-bottom: 20px;
         }
         .modal input {
             width: 100%;
@@ -754,7 +778,7 @@
             color: white;
             font-size: 16px;
             font-weight: 500;
-            margin: 10px 0;
+            margin: 10px 0 20px;
         }
         .modal button {
             width: 100%;
@@ -770,6 +794,11 @@
         }
         .modal button:active {
             transform: scale(0.97);
+        }
+        .result {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -950,18 +979,18 @@
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
-        const userName = tg?.initDataUnsafe?.user?.first_name || 'Тимофей';
-        const userUsername = tg?.initDataUnsafe?.user?.username ? '@' + tg.initDataUnsafe.user.username : userName;
-        document.getElementById('avatarLetter').innerText = userName.charAt(0).toUpperCase();
-        document.getElementById('profileAvatar').innerText = userName.charAt(0).toUpperCase();
-        document.getElementById('profileName').innerText = userName;
+        const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+        const userName = tg?.initDataUnsafe?.user?.username ? '@' + tg.initDataUnsafe.user.username : firstName;
+        document.getElementById('avatarLetter').innerText = firstName.charAt(0).toUpperCase();
+        document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
+        document.getElementById('profileName').innerText = firstName;
 
         // Данные
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         function updateBalanceDisplay() {
             document.getElementById('mainBalance').innerText = balance + ' ₽';
-            document.getElementById('mainChange').innerText = `+${Math.floor(balance/10)} ₽ (${Math.floor(balance/100)}%)`; // заглушка
+            document.getElementById('mainChange').innerText = `+${Math.floor(balance/10)} ₽ (${Math.floor(balance/100)}%)`;
         }
         updateBalanceDisplay();
 
@@ -1035,7 +1064,7 @@
             return total;
         }
 
-        // Обновление списка заданий на главной
+        // Обновление списка заданий
         function updateTasksGrid() {
             const container = document.getElementById('tasksContainer');
             if (!container) return;
@@ -1132,7 +1161,7 @@
             `;
         }
 
-        // Обновление вывода (карта с новыми данными)
+        // Обновление вывода (карта с новым именем)
         function updateWithdrawPage() {
             const container = document.getElementById('withdrawContent');
             if (!container) return;
@@ -1142,7 +1171,7 @@
                     <div class="card-number">2200 0000 0000 0000</div>
                     <div class="card-details">
                         <span>01/29</span>
-                        <span>${userUsername}</span>
+                        <span>${userName}</span>
                     </div>
                 </div>
                 <div class="balance-block">
