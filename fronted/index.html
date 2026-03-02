@@ -143,7 +143,7 @@
             background: rgba(0, 0, 0, 0.65);
             backdrop-filter: blur(34px);
             -webkit-backdrop-filter: blur(34px);
-            border: none; /* убрали границы */
+            border: none;
             border-radius: 24px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }
@@ -199,22 +199,17 @@
             display: block;
         }
 
-        /* Плавные анимации появления */
-        @keyframes fadeSlideUp {
-            0% { opacity: 0; transform: translateY(30px); }
+        /* Новая анимация: появление сверху вниз, плавная */
+        @keyframes slideFromTop {
+            0% { opacity: 0; transform: translateY(-30px); }
             100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideFromLeft {
-            0% { opacity: 0; transform: translateX(-15px); }
-            100% { opacity: 1; transform: translateX(0); }
         }
         .page.active-page .main-page,
         .page.active-page .profile-page,
         .page.active-page .analytics-page,
         .page.active-page .referral-page,
         .page.active-page .withdraw-page {
-            animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards, 
-                       slideFromLeft 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+            animation: slideFromTop 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
         }
 
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
@@ -367,9 +362,11 @@
             align-items: center;
             justify-content: center;
             font-size: 0;
+            flex-shrink: 0;
         }
         .task-info {
             flex: 1;
+            min-width: 0;
         }
         .task-info h4 {
             font-size: 18px;
@@ -387,6 +384,8 @@
             font-weight: 700;
             color: #4ade80;
             text-shadow: 0 0 5px rgba(74,222,128,0.5);
+            white-space: nowrap;
+            margin-left: 8px;
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -547,13 +546,16 @@
         .card-glow {
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 20px;
-            padding: 30px 20px 70px 20px; /* текст внизу */
+            padding: 30px 20px 70px 20px;
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 0 30px rgba(29,185,84,0.3);
             display: flex;
             flex-direction: column;
+            max-width: 340px; /* сужена */
+            margin-left: auto;
+            margin-right: auto;
         }
         .card-glow::before {
             content: '';
@@ -767,14 +769,14 @@
         }
         .modal-header {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px; /* выровнено с заголовком */
+            right: 15px;
         }
         .modal-close {
             background: none;
             border: none;
             font-size: 28px;
-            color: rgba(255,255,255,0.8);
+            color: white; /* белый крестик */
             cursor: pointer;
             width: 40px;
             height: 40px;
@@ -792,7 +794,7 @@
             font-weight: 700;
             margin-bottom: 10px;
             margin-top: 0;
-            padding-right: 30px;
+            padding-right: 40px;
         }
         .modal p {
             font-size: 16px;
@@ -833,7 +835,7 @@
             font-weight: 500;
         }
 
-        /* Игра */
+        /* Игра (яркие кнопки) */
         .game-boxes {
             display: flex;
             justify-content: space-around;
@@ -842,7 +844,7 @@
         .game-box {
             width: 70px;
             height: 70px;
-            background: rgba(29,185,84,0.3);
+            background: rgba(29,185,84,0.6); /* ярче */
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -850,6 +852,7 @@
             font-size: 28px;
             cursor: pointer;
             transition: 0.2s;
+            box-shadow: 0 0 15px rgba(29,185,84,0.5);
         }
         .game-box:active {
             transform: scale(0.9);
@@ -857,6 +860,20 @@
         .game-box.disabled {
             opacity: 0.5;
             pointer-events: none;
+        }
+        .game-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .game-reward {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4ade80;
         }
     </style>
 </head>
@@ -1016,8 +1033,10 @@
                     <div class="game-box" data-box="2">?</div>
                     <div class="game-box" data-box="3">?</div>
                 </div>
-                <div class="game-message" id="gameMessage">Нажми на коробку</div>
-                <div class="game-reward" id="gameReward"></div>
+                <div class="game-message" id="gameMessage">
+                    <span>Нажми на коробку</span>
+                    <span class="game-reward" id="gameReward"></span>
+                </div>
                 <button class="claim-btn" id="claimBtn" style="display:none;">Забрать</button>
             </div>
         </div>
@@ -1304,11 +1323,11 @@
         function resetGameModal() {
             gameBoxes.forEach(box => {
                 box.classList.remove('disabled');
-                box.style.background = 'rgba(29,185,84,0.3)';
+                box.style.background = 'rgba(29,185,84,0.6)'; // ярче
                 box.innerText = '?';
                 box.style.pointerEvents = 'auto';
             });
-            gameMessage.innerText = 'Нажми на коробку';
+            gameMessage.innerHTML = '<span>Нажми на коробку</span><span class="game-reward" id="gameReward"></span>';
             gameReward.innerText = '';
             claimBtn.style.display = 'none';
             currentWin = 0;
@@ -1328,10 +1347,9 @@
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
                 this.innerText = currentWin + ' ₽';
-                this.style.background = '#0A5C2A';
+                this.style.background = '#0A5C2A'; // ещё ярче
                 gameBoxes.forEach(b => b.classList.add('disabled'));
-                gameMessage.innerText = 'Поздравляем!';
-                gameReward.innerText = '+ ' + currentWin + ' ₽';
+                gameMessage.innerHTML = '<span>Поздравляем!</span><span class="game-reward">+ ' + currentWin + ' ₽</span>';
                 claimBtn.style.display = 'block';
             });
         });
@@ -1436,8 +1454,8 @@
                 const content = activePage.querySelector('.main-page, .profile-page, .analytics-page, .referral-page, .withdraw-page');
                 if (content) {
                     content.style.animation = 'none';
-                    content.offsetHeight; // форсированный reflow
-                    content.style.animation = 'fadeSlideUp 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards, slideFromLeft 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards';
+                    content.offsetHeight;
+                    content.style.animation = 'slideFromTop 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) forwards';
                 }
             }
         }
@@ -1449,7 +1467,7 @@
         updateWithdrawPage();
         updateAnalyticsPage();
         updateStreak();
-        restartAnimation(); // запускаем анимацию для главной
+        restartAnimation();
     </script>
 </body>
 </html>
