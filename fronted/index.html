@@ -123,7 +123,7 @@
             font-weight: 600;
         }
 
-        /* Градиентный баннер с толстыми полосами, извивающимися в разные стороны (как в последней версии) */
+        /* Градиентный баннер с толстыми полосами, извивающимися в разные стороны */
         .gradient-banner {
             position: relative;
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
@@ -556,7 +556,7 @@
         }
 
         /* ========== НОВЫЙ ДИЗАЙН ВКЛАДКИ ВЫВОД ========== */
-        /* Карта */
+        /* Карта — увеличена по высоте */
         .card-container {
             margin-bottom: 25px;
             animation: fadeSlideUp 0.5s ease forwards;
@@ -567,7 +567,7 @@
             background-size: 400% 400%;
             animation: gradientShift 10s ease infinite;
             border-radius: 25px;
-            padding: 20px;
+            padding: 20px 20px 40px 20px; /* увеличена нижняя часть */
             color: white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5);
             position: relative;
@@ -693,6 +693,7 @@
             font-weight: 600;
             margin: 25px 0 15px;
         }
+        /* Пустые операции (как в друзьях) */
         .recent-transfers {
             background: #2f2f2f;
             border-radius: 25px;
@@ -713,31 +714,23 @@
             height: 40px;
             background: #3e3e3e;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #1DB954;
-            font-weight: 600;
         }
         .transfer-info {
             flex: 1;
         }
         .transfer-name {
-            font-weight: 600;
+            height: 20px;
         }
         .transfer-date {
-            font-size: 13px;
-            color: #b3b3b3;
+            height: 16px;
         }
         .transfer-amount {
-            font-weight: 600;
             color: #1DB954;
-        }
-        .transfer-amount.negative {
-            color: #ff6b6b;
+            font-weight: 600;
+            opacity: 0;
         }
 
-        /* ========== НОВАЯ ВКЛАДКА АНАЛИТИКА ========== */
+        /* ========== НОВАЯ ВКЛАДКА АНАЛИТИКА (полностью пустая) ========== */
         .analytics-period {
             display: flex;
             gap: 10px;
@@ -780,10 +773,15 @@
             font-size: 36px;
             font-weight: 700;
             color: white;
+            opacity: 0.2; /* сделаем едва заметным, чтобы показать пустоту */
+        }
+        .total-value::before {
+            content: '—';
         }
         .total-change {
             font-size: 16px;
             color: #1DB954;
+            opacity: 0;
         }
         .chart-container {
             background: #2f2f2f;
@@ -792,6 +790,18 @@
             margin-bottom: 25px;
             animation: fadeSlideUp 0.5s ease forwards;
             opacity: 0;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #b3b3b3;
+        }
+        .stats-row span:last-child {
+            opacity: 0.2;
+        }
+        .stats-row span:last-child::before {
+            content: '—';
         }
         .chart-bars {
             display: flex;
@@ -804,7 +814,8 @@
             width: 20px;
             background: linear-gradient(to top, #1DB954, #0A5C2A);
             border-radius: 10px 10px 0 0;
-            transition: height 0.3s;
+            height: 0; /* пустые столбцы */
+            opacity: 0.2;
         }
         .bar-label {
             text-align: center;
@@ -812,13 +823,14 @@
             color: #b3b3b3;
             margin-top: 8px;
         }
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
+        /* Заглушка для активности */
+        .analytics-placeholder {
+            text-align: center;
+            color: #b3b3b3;
+            padding: 20px;
         }
 
-        /* Нижняя навигация (5 пунктов) */
+        /* Нижняя навигация (5 пунктов, аналитика по центру) */
         .nav {
             position: fixed;
             bottom: 0;
@@ -1050,26 +1062,26 @@
                 <div id="profileStats"></div>
             </div>
 
+            <!-- Аналитика (теперь по центру меню) -->
+            <div id="analytics-page" class="page">
+                <div class="page-title">Аналитика</div>
+                <div id="analyticsContent"></div>
+            </div>
+
             <!-- Рефералы -->
             <div id="referrals-page" class="page">
                 <div class="page-title">Рефералы</div>
                 <div id="referralsContent"></div>
             </div>
 
-            <!-- Вывод средств (обновлённый) -->
+            <!-- Вывод средств -->
             <div id="withdraw-page" class="page">
                 <div class="page-title">Вывод</div>
                 <div id="withdrawContent"></div>
             </div>
-
-            <!-- Новая страница Аналитика -->
-            <div id="analytics-page" class="page">
-                <div class="page-title">Аналитика</div>
-                <div id="analyticsContent"></div>
-            </div>
         </div>
 
-        <!-- Нижняя навигация (5 пунктов) -->
+        <!-- Нижняя навигация (аналитика по центру) -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1083,6 +1095,12 @@
                 </svg>
                 <span>Профиль</span>
             </a>
+            <a class="nav-item" data-page="analytics">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" fill="currentColor"/>
+                </svg>
+                <span>Аналитика</span>
+            </a>
             <a class="nav-item" data-page="referrals">
                 <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                     <path d="M26.375 14.976c1.164-1.395 1.852-3.297 1.852-5.325 0-4.19-2.913-7.6-6.492-7.6-2.484 0-4.644 1.641-5.735 4.046-1.09-2.405-3.251-4.047-5.734-4.047-3.58 0-6.492 3.41-6.492 7.601 0 2.033.686 3.932 1.851 5.325C3.589 15.933 0 17.729 0 23.134v1.995h6.124c-.245.813-.39 1.747-.39 2.826v1.995H26.265v-1.995c0-1.08-.145-2.013-.39-2.826H32v-1.995c0-5.405-3.589-7.2-5.625-8.158zm-19.32 8.158h-5.06c0-6.006 5.274-6.004 6.445-7.574l.134-.716C6.929 14.01 5.768 12 5.768 9.65c0-3.096 2.014-5.606 4.498-5.606 1.759 0 3.278 1.262 4.016 3.098-2.749.884-4.775 3.834-4.775 7.328 0 2.033.687 3.932 1.852 5.325-1.247.586-3.074 1.488-4.305 3.338zm9.003 4.821h-8.33c0-6.006 5.275-6.004 6.445-7.575l.134-.716c-1.644-.834-2.805-2.842-2.805-5.193 0-3.096 2.014-5.606 4.498-5.606 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.327-2.763 5.173l.153.814c1.284 1.495 6.383 1.592 6.383 7.497h-8.212zm8.886-4.82c-1.23-1.85-3.058-2.752-4.304-3.338 1.164-1.396 1.852-3.298 1.852-5.326 0-3.494-2.026-6.443-4.774-7.328.738-1.836 2.257-3.098 4.017-3.098 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.326-2.763 5.173l.153.814c1.284 1.494 6.383 1.592 6.383 7.496z" fill="currentColor"/>
@@ -1094,12 +1112,6 @@
                     <path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z M16 19h2a1 1 0 0 0 0-2h-1a1 1 0 0 0 -2 0v.18a3 3 0 0 0 1 5.82 1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h1a1 1 0 0 0 2 0v-.18a3 3 0 0 0 -1-5.82 1 1 0 0 1 0-2z" fill="currentColor"/>
                 </svg>
                 <span>Вывод</span>
-            </a>
-            <a class="nav-item" data-page="analytics">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" fill="currentColor"/>
-                </svg>
-                <span>Аналитика</span>
             </a>
         </div>
 
@@ -1419,12 +1431,12 @@
             container.appendChild(friendsDiv);
         }
 
-        // Обновление вывода средств (новый дизайн)
+        // Обновление вывода средств (новый дизайн, пустые операции)
         function updateWithdrawPage() {
             const container = document.getElementById('withdrawContent');
             container.innerHTML = '';
 
-            // Карта
+            // Карта (растянута вниз)
             const cardDiv = document.createElement('div');
             cardDiv.className = 'card-container';
             cardDiv.style.animationDelay = '0.05s';
@@ -1450,7 +1462,7 @@
             `;
             container.appendChild(balanceBlock);
 
-            // Форма вывода (оставим как есть, но можно стилизовать)
+            // Форма вывода (оставим)
             const formDiv = document.createElement('div');
             formDiv.className = 'withdraw-form';
             formDiv.innerHTML = `
@@ -1464,35 +1476,36 @@
             `;
             container.appendChild(formDiv);
 
-            // История выплат (Recent Transfers)
+            // История выплат (пустая, как в рефералах)
             const historyDiv = document.createElement('div');
             historyDiv.innerHTML = `
-                <div class="history-title">Recent Transfers</div>
+                <div class="history-title">Недавние операции</div>
                 <div class="recent-transfers">
                     <div class="transfer-item">
-                        <div class="transfer-icon">🍔</div>
+                        <div class="transfer-icon"></div>
                         <div class="transfer-info">
-                            <div class="transfer-name">Bill Food</div>
-                            <div class="transfer-date">12 мая 2025</div>
+                            <div class="transfer-name"></div>
+                            <div class="transfer-date"></div>
                         </div>
-                        <div class="transfer-amount">-26.81 ₽</div>
+                        <div class="transfer-amount"></div>
                     </div>
                     <div class="transfer-item">
-                        <div class="transfer-icon">🎬</div>
+                        <div class="transfer-icon"></div>
                         <div class="transfer-info">
-                            <div class="transfer-name">Movie</div>
-                            <div class="transfer-date">5 мая 2025</div>
+                            <div class="transfer-name"></div>
+                            <div class="transfer-date"></div>
                         </div>
-                        <div class="transfer-amount">-16.24 ₽</div>
+                        <div class="transfer-amount"></div>
                     </div>
                     <div class="transfer-item">
-                        <div class="transfer-icon">🚗</div>
+                        <div class="transfer-icon"></div>
                         <div class="transfer-info">
-                            <div class="transfer-name">Uber</div>
-                            <div class="transfer-date">28 апреля 2025</div>
+                            <div class="transfer-name"></div>
+                            <div class="transfer-date"></div>
                         </div>
-                        <div class="transfer-amount">-0.00 ₽</div>
+                        <div class="transfer-amount"></div>
                     </div>
+                    <div style="text-align:center; margin-top:12px; color:#b3b3b3;">Здесь появятся последние операции</div>
                 </div>
             `;
             container.appendChild(historyDiv);
@@ -1502,108 +1515,109 @@
             });
         }
 
-        // Обновление аналитики (новая страница)
+        // Обновление аналитики (полностью пустая)
         function updateAnalyticsPage() {
             const container = document.getElementById('analyticsContent');
             container.innerHTML = '';
 
-            // Переключатели периодов
+            // Переключатели периодов (оставляем, они не фейковые)
             const periodDiv = document.createElement('div');
             periodDiv.className = 'analytics-period';
             periodDiv.style.animationDelay = '0.05s';
             periodDiv.innerHTML = `
-                <button class="period-btn active">Day</button>
-                <button class="period-btn">Week</button>
-                <button class="period-btn">Month</button>
+                <button class="period-btn active">День</button>
+                <button class="period-btn">Неделя</button>
+                <button class="period-btn">Месяц</button>
             `;
             container.appendChild(periodDiv);
 
-            // Общая статистика
+            // Блок общего баланса — пустой
             const totalDiv = document.createElement('div');
             totalDiv.className = 'analytics-total';
             totalDiv.style.animationDelay = '0.1s';
             totalDiv.innerHTML = `
-                <div class="total-label">Total Balance</div>
-                <div class="total-value">${balance} ₽</div>
-                <div class="total-change">+4,560.50 (12.5%)</div>
+                <div class="total-label">Общий доход</div>
+                <div class="total-value"></div>
+                <div class="total-change"></div>
             `;
             container.appendChild(totalDiv);
 
-            // График (имитация)
+            // График — пустые столбцы
             const chartDiv = document.createElement('div');
             chartDiv.className = 'chart-container';
             chartDiv.style.animationDelay = '0.15s';
             chartDiv.innerHTML = `
                 <div class="stats-row">
-                    <span>Income</span>
-                    <span>8,567 ₽</span>
+                    <span>Доход</span>
+                    <span></span>
                 </div>
                 <div class="stats-row">
-                    <span>Expense</span>
-                    <span>2,331 ₽</span>
+                    <span>Расход</span>
+                    <span></span>
                 </div>
                 <div class="chart-bars">
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 70px;"></div>
+                        <div class="bar" style="height: 0;"></div>
                         <div class="bar-label">Пн</div>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 90px;"></div>
+                        <div class="bar" style="height: 0;"></div>
                         <div class="bar-label">Вт</div>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 50px;"></div>
+                        <div class="bar" style="height: 0;"></div>
                         <div class="bar-label">Ср</div>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 110px;"></div>
+                        <div class="bar" style="height: 0;"></div>
                         <div class="bar-label">Чт</div>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 80px;"></div>
+                        <div class="bar" style="height: 0;"></div>
                         <div class="bar-label">Пт</div>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 60px;"></div>
+                        <div class="bar" style="height: 0;"></div>
                         <div class="bar-label">Сб</div>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 40px;"></div>
+                        <div class="bar" style="height: 0;"></div>
                         <div class="bar-label">Вс</div>
                     </div>
                 </div>
             `;
             container.appendChild(chartDiv);
 
-            // Последние операции (можно скопировать из истории)
+            // Последние операции — пустой список
             const recentDiv = document.createElement('div');
             recentDiv.innerHTML = `
-                <div class="history-title">Recent Activity</div>
+                <div class="history-title">Последние операции</div>
                 <div class="recent-transfers">
                     <div class="transfer-item">
-                        <div class="transfer-icon">🍔</div>
+                        <div class="transfer-icon"></div>
                         <div class="transfer-info">
-                            <div class="transfer-name">Bill Food</div>
-                            <div class="transfer-date">12 мая 2025</div>
+                            <div class="transfer-name"></div>
+                            <div class="transfer-date"></div>
                         </div>
-                        <div class="transfer-amount negative">-26.81 ₽</div>
+                        <div class="transfer-amount"></div>
                     </div>
                     <div class="transfer-item">
-                        <div class="transfer-icon">🎬</div>
+                        <div class="transfer-icon"></div>
                         <div class="transfer-info">
-                            <div class="transfer-name">Movie</div>
-                            <div class="transfer-date">5 мая 2025</div>
+                            <div class="transfer-name"></div>
+                            <div class="transfer-date"></div>
                         </div>
-                        <div class="transfer-amount negative">-16.24 ₽</div>
+                        <div class="transfer-amount"></div>
                     </div>
                     <div class="transfer-item">
-                        <div class="transfer-icon">🚗</div>
+                        <div class="transfer-icon"></div>
                         <div class="transfer-info">
-                            <div class="transfer-name">Uber</div>
-                            <div class="transfer-date">28 апреля 2025</div>
+                            <div class="transfer-name"></div>
+                            <div class="transfer-date"></div>
                         </div>
-                        <div class="transfer-amount negative">-0.00 ₽</div>
+                        <div class="transfer-amount"></div>
                     </div>
+                    <div style="text-align:center; margin-top:12px; color:#b3b3b3;">Здесь появится статистика</div>
                 </div>
             `;
             container.appendChild(recentDiv);
@@ -1719,9 +1733,9 @@
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
+            analytics: document.getElementById('analytics-page'),
             referrals: document.getElementById('referrals-page'),
-            withdraw: document.getElementById('withdraw-page'),
-            analytics: document.getElementById('analytics-page')
+            withdraw: document.getElementById('withdraw-page')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
