@@ -17,13 +17,31 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0a1a0a 0%, #1a2a1a 50%, #0a2a1a 100%);
+            background: #0a1a0a;
             color: #ffffff;
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
             padding: 0;
+        }
+
+        /* Анимированный градиентный фон (переливается) */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a1a0a, #1DB954, #0A5C2A, #0a1a0a);
+            background-size: 400% 400%;
+            animation: bgGradient 15s ease infinite;
+            z-index: -2;
+        }
+        @keyframes bgGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* Splash screen */
@@ -72,6 +90,8 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            position: relative;
+            z-index: 1;
         }
 
         /* ===== ОСНОВНЫЕ СТИЛИ (СТЕКЛО, ЗЕЛЁНАЯ ГАММА) ===== */
@@ -148,15 +168,9 @@
             align-items: center;
             margin-bottom: 20px;
         }
-        .greeting h2 {
-            font-size: 20px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.8);
-        }
-        .greeting h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-top: 4px;
+        .logo {
+            font-size: 36px;
+            font-weight: 800;
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             -webkit-background-clip: text;
             background-clip: text;
@@ -264,7 +278,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0; /* убираем эмодзи */
+            font-size: 0;
         }
         .task-info {
             flex: 1;
@@ -303,18 +317,6 @@
         .tab.active {
             color: white;
             border-bottom-color: #1DB954;
-        }
-
-        .signup-prompt {
-            margin-top: 30px;
-            padding: 20px;
-            text-align: center;
-            color: rgba(255,255,255,0.6);
-        }
-        .signup-prompt a {
-            color: #1DB954;
-            text-decoration: none;
-            font-weight: 600;
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -399,7 +401,7 @@
             margin-top: 10px;
         }
         .ref-link-field input {
-            flex: 1;
+            width: 55%; /* уменьшено, чтобы кнопка поместилась */
             background: rgba(0,0,0,0.3);
             border: 1px solid rgba(29, 185, 84, 0.3);
             border-radius: 40px;
@@ -417,6 +419,7 @@
             color: white;
             font-weight: 600;
             cursor: pointer;
+            white-space: nowrap;
         }
         .referral-stats {
             display: flex;
@@ -459,7 +462,7 @@
         .card-glow {
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 20px;
-            padding: 20px;
+            padding: 20px 20px 40px 20px; /* увеличена нижняя часть */
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
@@ -650,21 +653,20 @@
     </style>
 </head>
 <body>
+    <div class="animated-bg"></div> <!-- Анимированный градиентный фон -->
+
     <div class="splash" id="splash">
         <div class="splash-logo">ХАЙП</div>
     </div>
 
     <div class="app-content" id="appContent">
         <div class="pages-container" id="pagesContainer">
-            <!-- Главная страница (зелёная тема, русский текст) -->
+            <!-- Главная страница (обновлённая) -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
-                    <!-- Верхняя панель -->
+                    <!-- Верхняя панель с логотипом вместо приветствия -->
                     <div class="top-bar">
-                        <div class="greeting">
-                            <h2>Доброе утро!</h2>
-                            <h1 id="userNameDisplay">Тимофей</h1>
-                        </div>
+                        <div class="logo">ХАЙП</div>
                         <div class="avatar" id="avatarLetter">Т</div>
                     </div>
 
@@ -675,11 +677,11 @@
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
 
-                    <!-- Кнопки действий -->
+                    <!-- Новые кнопки: История, Бонусы, Помощь -->
                     <div class="action-buttons">
-                        <div class="action-btn" onclick="alert('Получить')">Получить</div>
-                        <div class="action-btn" onclick="alert('Запросить')">Запросить</div>
-                        <div class="action-btn" onclick="alert('Перевести')">Перевести</div>
+                        <div class="action-btn" onclick="alert('История операций')">История</div>
+                        <div class="action-btn" onclick="alert('Ежедневные бонусы')">Бонусы</div>
+                        <div class="action-btn" onclick="alert('Помощь и поддержка')">Помощь</div>
                     </div>
 
                     <!-- Раздел "Мои задания" -->
@@ -691,7 +693,7 @@
                         <!-- будут вставлены задания через js -->
                     </div>
 
-                    <!-- Раздел "Избранное / Топ / Новые / Лидеры" -->
+                    <!-- Раздел "Избранное / Топ / Новые / Лидеры" (без регистрации) -->
                     <div class="favorites-section">
                         <div class="favorites-tabs">
                             <span class="tab active">Избранное</span>
@@ -702,10 +704,7 @@
                         <!-- заглушка -->
                     </div>
 
-                    <!-- Призыв к регистрации -->
-                    <div class="signup-prompt">
-                        Ещё нет аккаунта? <a href="#">Регистрация</a>
-                    </div>
+                    <!-- Надпись про регистрацию полностью удалена -->
                 </div>
             </div>
 
@@ -747,7 +746,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация (русский текст) -->
+        <!-- Нижняя навигация -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24">
@@ -841,10 +840,9 @@
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Тимофей';
-        document.getElementById('userNameDisplay').innerText = userName;
-        document.getElementById('profileName').innerText = userName;
         document.getElementById('avatarLetter').innerText = userName.charAt(0).toUpperCase();
         document.getElementById('profileAvatar').innerText = userName.charAt(0).toUpperCase();
+        document.getElementById('profileName').innerText = userName;
 
         // Данные
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
@@ -925,7 +923,7 @@
             return total;
         }
 
-        // Обновление списка заданий на главной (без эмодзи)
+        // Обновление списка заданий на главной
         function updateTasksGrid() {
             const container = document.getElementById('tasksContainer');
             if (!container) return;
@@ -991,7 +989,7 @@
             `;
         }
 
-        // Обновление рефералов
+        // Обновление рефералов (с уменьшенным полем ввода)
         function updateReferralsPage() {
             const container = document.getElementById('referralsContent');
             if (!container) return;
@@ -999,7 +997,7 @@
                 <div class="referral-link-block">
                     <div class="referral-link-label">Твоя реферальная ссылка</div>
                     <div class="ref-link-field">
-                        <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField">
+                        <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField" style="width:55%;">
                         <button onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
                     </div>
                 </div>
@@ -1022,7 +1020,7 @@
             `;
         }
 
-        // Обновление вывода
+        // Обновление вывода (карта удлинена)
         function updateWithdrawPage() {
             const container = document.getElementById('withdrawContent');
             if (!container) return;
