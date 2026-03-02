@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ХАЙП</title>
+    <title>ХАЙП — главная</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
@@ -17,13 +17,13 @@
         }
 
         body {
-            background: #121212;
+            background: linear-gradient(135deg, #0f0f1f 0%, #1a1a2f 50%, #2a1a3a 100%);
             color: #ffffff;
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
-            padding: 0; /* убрал отступы для главной */
+            padding: 0;
         }
 
         /* Splash screen */
@@ -33,7 +33,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #121212;
+            background: #0f0f1f;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -44,7 +44,7 @@
         .splash-logo {
             font-size: 64px;
             font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
+            background: linear-gradient(135deg, #a855f7, #3b82f6, #a855f7, #3b82f6);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -74,6 +74,36 @@
             flex-direction: column;
         }
 
+        /* ===== ОСНОВНЫЕ СТИЛИ (СТЕКЛО) ===== */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .glass-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        .glass-button:active {
+            transform: scale(0.97);
+        }
+
         /* Страницы */
         .pages-container {
             flex: 1;
@@ -81,17 +111,17 @@
             overflow-y: auto;
             margin-bottom: 80px;
             scrollbar-width: thin;
-            scrollbar-color: #1DB954 #2a2a2a;
+            scrollbar-color: #a855f7 #2a1a3a;
             -webkit-overflow-scrolling: touch;
         }
         .pages-container::-webkit-scrollbar {
             width: 4px;
         }
         .pages-container::-webkit-scrollbar-track {
-            background: #2a2a2a;
+            background: #2a1a3a;
         }
         .pages-container::-webkit-scrollbar-thumb {
-            background: #1DB954;
+            background: #a855f7;
             border-radius: 2px;
         }
 
@@ -102,688 +132,466 @@
             display: block;
         }
 
-        /* ===== ГЛАВНАЯ СТРАНИЦА (НОВЫЙ ДИЗАЙН ПО РЕФЕРЕНСУ) ===== */
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== ГЛАВНАЯ СТРАНИЦА (В СТИЛЕ РЕФЕРЕНСА) ===== */
         .main-page {
-            width: 100%;
-            min-height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px 20px;
-        }
-
-        .main-logo {
-            font-size: 72px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 400% 400%;
-            animation: gradientShift 6s ease infinite;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .main-subtitle {
-            font-size: 22px;
-            color: #b3b3b3;
-            margin-bottom: 60px;
-            text-align: center;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        /* Карточки в стиле референса */
-        .cards-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            max-width: 1200px;
-            width: 100%;
-            margin-bottom: 40px;
-        }
-
-        .glow-card {
-            flex: 1 1 250px;
-            max-width: 300px;
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(5px);
-            border-radius: 30px;
-            padding: 30px 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(29,185,84,0.3);
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(29,185,84,0.3);
-        }
-
-        .glow-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 50px rgba(29,185,84,0.5);
-        }
-
-        /* Эффект неонового свечения (движущиеся линии) */
-        .glow-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, 
-                rgba(29,185,84,0.5), 
-                rgba(10,92,42,0.5), 
-                rgba(29,185,84,0.5), 
-                rgba(10,92,42,0.5));
-            background-size: 400% 400%;
-            border-radius: 30px;
-            z-index: -2;
-            animation: borderGlow 8s ease infinite;
-            filter: blur(8px);
-            opacity: 0.8;
-        }
-
-        .glow-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #1a1a1a;
-            border-radius: 28px;
-            z-index: -1;
-        }
-
-        @keyframes borderGlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .card-title {
-            font-size: 32px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .card-desc {
-            font-size: 18px;
-            color: #b3b3b3;
-            font-weight: 500;
-        }
-
-        .card-price {
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
-            margin-top: 15px;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .extra-text {
-            font-size: 18px;
-            color: #6a6a6a;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        /* ===== СТРАНИЦЫ (ПРОФИЛЬ, АНАЛИТИКА, РЕФЕРАЛЫ, ВЫВОД) ===== */
-        /* Эти стили остались из предыдущих версий, немного адаптированы под padding */
-        .page-content {
             padding: 20px;
         }
 
-        .page-title {
-            font-size: 34px;
-            font-weight: 700;
-            color: white;
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            letter-spacing: -0.5px;
-            padding: 0 20px;
+        }
+        .greeting h2 {
+            font-size: 20px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.8);
+        }
+        .greeting h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
         }
 
-        /* Профиль */
+        .total-balance {
+            margin-bottom: 25px;
+        }
+        .balance-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.5px;
+        }
+        .balance-value {
+            font-size: 42px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .balance-change {
+            color: #4ade80;
+            font-size: 16px;
+            margin-top: 4px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .action-btn {
+            flex: 1;
+            padding: 14px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .action-btn:active {
+            background: rgba(255,255,255,0.25);
+            transform: scale(0.97);
+        }
+
+        /* Карточки заданий (в стиле "My Funds") */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 25px 0 15px;
+        }
+        .section-title h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .section-title a {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .tasks-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .task-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .task-card:active {
+            background: rgba(255,255,255,0.2);
+        }
+        .task-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(168,85,247,0.3);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .task-info {
+            flex: 1;
+        }
+        .task-info h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .task-info p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+        }
+        .task-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4ade80;
+        }
+
+        .favorites-section {
+            margin-top: 30px;
+        }
+        .favorites-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .tab {
+            color: rgba(255,255,255,0.6);
+            font-size: 16px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+            color: white;
+            border-bottom-color: #a855f7;
+        }
+
+        .signup-prompt {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+        }
+        .signup-prompt a {
+            color: #a855f7;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* ===== ПРОФИЛЬ (СТЕКЛО) ===== */
+        .profile-page {
+            padding: 20px;
+        }
         .profile-header {
             display: flex;
             align-items: center;
             gap: 20px;
             margin-bottom: 30px;
-            margin-left: 5px;
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
-            padding: 0 20px;
         }
         .profile-avatar {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
-            background-size: 400% 400%;
-            animation: gradientShift 6s ease infinite;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 44px;
+            font-size: 36px;
             font-weight: 600;
-            color: #121212;
-            text-transform: uppercase;
-            border: 3px solid transparent;
-        }
-        .profile-name {
-            font-size: 32px;
-            font-weight: 700;
-        }
-        .profile-wide-card {
-            background: #2f2f2f;
-            border-radius: 25px;
-            padding: 20px;
-            margin: 12px 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
-        }
-        .wide-label {
-            font-size: 16px;
-            color: #b3b3b3;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        .wide-value {
-            font-size: 32px;
-            font-weight: 700;
             color: white;
         }
+        .profile-name {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .profile-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 16px;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 4px;
+        }
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+        }
         .progress-bar {
-            background: #3e3e3e;
-            height: 8px;
-            border-radius: 4px;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
             margin-top: 12px;
             overflow: hidden;
         }
         .progress-fill {
-            background: linear-gradient(90deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
-            background-size: 400% 400%;
-            animation: gradientShift 6s ease infinite;
             height: 100%;
-            transition: width 0.3s;
-        }
-        .stat-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-            padding: 0 20px;
-        }
-        .stat-card {
-            background: #2f2f2f;
-            border-radius: 25px;
-            padding: 20px;
-            flex: 1 1 calc(50% - 15px);
-            min-width: 140px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
-        }
-        .stat-label {
-            font-size: 16px;
-            color: #b3b3b3;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: white;
+            background: linear-gradient(90deg, #a855f7, #3b82f6);
+            width: 0%;
         }
 
-        /* Рефералы */
-        .referral-link-card {
-            background: #2f2f2f;
-            border-radius: 25px;
+        /* ===== РЕФЕРАЛЫ ===== */
+        .referral-page {
             padding: 20px;
-            margin: 12px 20px 25px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
         }
-        .referral-link-label {
-            font-size: 16px;
-            color: #b3b3b3;
-            margin-bottom: 12px;
-            font-weight: 500;
+        .referral-link-block {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
-        .referral-link-field {
+        .ref-link-field {
             display: flex;
-            gap: 12px;
-            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
         }
-        .referral-link-input {
-            width: 60%;
+        .ref-link-field input {
+            flex: 1;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 40px;
             padding: 14px;
-            border: 1px solid #3e3e3e;
-            border-radius: 40px;
-            background: #121212;
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             outline: none;
-            font-weight: 500;
         }
-        .referral-link-input:focus {
-            border-color: #1DB954;
-        }
-        .referral-copy-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
-            background-size: 400% 400%;
-            animation: gradientShift 6s ease infinite;
-            border: none;
+        .ref-link-field button {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.3);
             border-radius: 40px;
-            padding: 14px 28px;
-            font-weight: 600;
-            font-size: 18px;
+            padding: 14px 24px;
             color: white;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            transition: 0.2s;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .referral-copy-btn:active {
-            transform: scale(0.96);
         }
         .referral-stats {
             display: flex;
             gap: 15px;
-            margin: 12px 20px 20px;
+            margin-bottom: 20px;
         }
         .referral-stat-card {
-            background: #2f2f2f;
-            border-radius: 25px;
-            padding: 20px;
             flex: 1;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
-        }
-        .referral-stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: white;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 16px;
         }
         .friends-list {
-            background: #2f2f2f;
-            border-radius: 25px;
-            padding: 20px;
-            margin: 12px 20px;
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 16px;
         }
         .friend-item {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 12px 0;
-            border-bottom: 1px solid #3e3e3e;
-        }
-        .friend-item:last-child {
-            border-bottom: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .friend-avatar {
             width: 40px;
             height: 40px;
-            background: #3e3e3e;
+            background: rgba(255,255,255,0.2);
             border-radius: 50%;
         }
-        .friend-info {
-            flex: 1;
-        }
-        .friend-name {
-            height: 20px;
-        }
-        .friend-status {
-            height: 16px;
-        }
-        .friend-reward {
-            color: #1DB954;
-            font-weight: 600;
-            opacity: 0;
-        }
 
-        /* Вывод средств */
-        .card-container {
-            margin: 20px 20px 25px;
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
+        /* ===== ВЫВОД ===== */
+        .withdraw-page {
+            padding: 20px;
         }
-        .gradient-card {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
-            background-size: 400% 400%;
-            animation: gradientShift 10s ease infinite;
-            border-radius: 25px;
-            padding: 20px 20px 40px 20px;
-            color: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        .card-glow {
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
             position: relative;
             overflow: hidden;
         }
-        .gradient-card::before {
+        .card-glow::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(45deg, 
-                rgba(255,255,255,0.2) 0px, 
-                rgba(255,255,255,0.2) 2px, 
-                transparent 2px, 
-                transparent 22px);
-            background-size: 34px 34px;
+            background: repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 10px, transparent 10px, transparent 20px);
             pointer-events: none;
-            z-index: 1;
         }
         .card-logo {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 800;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 2;
+            margin-bottom: 20px;
         }
         .card-number {
-            font-size: 20px;
+            font-size: 18px;
             letter-spacing: 2px;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 2;
-        }
-        .card-details {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            position: relative;
-            z-index: 2;
+            margin-bottom: 10px;
         }
         .balance-block {
-            background: #2f2f2f;
-            border-radius: 25px;
-            padding: 20px;
-            margin: 0 20px 25px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
-        }
-        .balance-label {
-            font-size: 16px;
-            color: #b3b3b3;
-        }
-        .balance-amount {
-            font-size: 32px;
-            font-weight: 700;
-            color: white;
-        }
-        .withdraw-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin: 0 20px;
         }
         .withdraw-field {
-            background: #2f2f2f;
-            border-radius: 25px;
-            padding: 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 15px;
         }
         .withdraw-field input {
             width: 100%;
-            padding: 16px 0 8px 0;
-            border: none;
-            border-bottom: 1px solid #3e3e3e;
             background: transparent;
+            border: none;
             color: white;
             font-size: 18px;
             outline: none;
-            font-weight: 500;
-        }
-        .withdraw-field input:focus {
-            border-bottom-color: #1DB954;
         }
         .withdraw-field input::placeholder {
-            color: #6a6a6a;
-            transition: 0.2s;
-            font-weight: 500;
-            font-size: 16px;
-        }
-        .withdraw-field input:focus::placeholder {
-            transform: translateY(-12px);
-            font-size: 14px;
-            color: #b3b3b3;
-        }
-        .withdraw-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
-            background-size: 400% 400%;
-            animation: gradientShift 6s ease infinite, fadeSlideUp 0.5s ease forwards;
-            border: none;
-            border-radius: 50px;
-            padding: 18px;
-            font-size: 20px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            transition: 0.2s;
-            margin-top: 10px;
-            opacity: 0;
-        }
-        .withdraw-btn:active {
-            transform: scale(0.98);
-        }
-        .history-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin: 25px 20px 15px;
-        }
-        .recent-transfers {
-            background: #2f2f2f;
-            border-radius: 25px;
-            padding: 20px;
-            margin: 0 20px;
-        }
-        .transfer-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid #3e3e3e;
-        }
-        .transfer-item:last-child {
-            border-bottom: none;
-        }
-        .transfer-icon {
-            width: 40px;
-            height: 40px;
-            background: #3e3e3e;
-            border-radius: 50%;
-        }
-        .transfer-info {
-            flex: 1;
-        }
-        .transfer-name {
-            height: 20px;
-        }
-        .transfer-date {
-            height: 16px;
-        }
-        .transfer-amount {
-            color: #1DB954;
-            font-weight: 600;
-            opacity: 0;
+            color: rgba(255,255,255,0.4);
         }
 
-        /* Аналитика (пустая) */
-        .analytics-period {
+        /* ===== АНАЛИТИКА ===== */
+        .analytics-page {
+            padding: 20px;
+        }
+        .period-tabs {
             display: flex;
             gap: 10px;
-            margin: 20px 20px 20px;
-            background: #2f2f2f;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 40px;
             padding: 5px;
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
         }
-        .period-btn {
+        .period-tab {
             flex: 1;
-            background: transparent;
-            border: none;
-            color: #b3b3b3;
-            font-size: 16px;
-            font-weight: 500;
+            text-align: center;
             padding: 10px;
             border-radius: 30px;
+            color: rgba(255,255,255,0.6);
             cursor: pointer;
-            transition: 0.2s;
         }
-        .period-btn.active {
-            background: #1DB954;
+        .period-tab.active {
+            background: rgba(168,85,247,0.3);
             color: white;
         }
         .analytics-total {
-            background: #2f2f2f;
-            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
             padding: 20px;
-            margin: 0 20px 25px;
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
+            margin-bottom: 20px;
         }
-        .total-label {
-            font-size: 14px;
-            color: #b3b3b3;
-        }
-        .total-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: white;
-            opacity: 0.2;
-        }
-        .total-value::before {
-            content: '—';
-        }
-        .total-change {
-            font-size: 16px;
-            color: #1DB954;
-            opacity: 0;
-        }
-        .chart-container {
-            background: #2f2f2f;
-            border-radius: 25px;
-            padding: 20px;
-            margin: 0 20px 25px;
-            animation: fadeSlideUp 0.5s ease forwards;
-            opacity: 0;
-        }
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            color: #b3b3b3;
-        }
-        .stats-row span:last-child {
-            opacity: 0.2;
-        }
-        .stats-row span:last-child::before {
-            content: '—';
-        }
-        .chart-bars {
+        .chart-placeholder {
             display: flex;
             align-items: flex-end;
             justify-content: space-around;
             height: 150px;
             margin: 20px 0;
         }
-        .bar {
+        .chart-bar {
             width: 20px;
-            background: linear-gradient(to top, #1DB954, #0A5C2A);
+            background: linear-gradient(to top, #a855f7, #3b82f6);
             border-radius: 10px 10px 0 0;
             height: 0;
-            opacity: 0.2;
-        }
-        .bar-label {
-            text-align: center;
-            font-size: 12px;
-            color: #b3b3b3;
-            margin-top: 8px;
+            opacity: 0.5;
         }
 
-        /* Анимация */
-        @keyframes fadeSlideUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Нижняя навигация (5 пунктов) */
+        /* ===== НИЖНЯЯ НАВИГАЦИЯ (СТЕКЛО) ===== */
         .nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: #0a0a0a;
+            background: rgba(20, 20, 40, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             justify-content: space-around;
-            padding: 8px 5px 12px;
-            border-top: 1px solid #1e1e1e;
-            backdrop-filter: blur(10px);
+            padding: 10px 5px 20px;
             z-index: 100;
         }
         .nav-item {
-            color: #6a6a6a;
+            color: rgba(255,255,255,0.5);
             text-decoration: none;
             font-size: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
+            gap: 4px;
             cursor: pointer;
             transition: all 0.2s;
-            position: relative;
             flex: 1;
             max-width: 70px;
-            font-weight: 500;
         }
         .nav-item.active {
-            color: transparent;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 600;
+            color: white;
         }
-        .nav-item.active svg path,
-        .nav-item.active svg circle,
-        .nav-item.active svg polygon {
-            fill: url(#gradient);
-            stroke: url(#gradient);
+        .nav-item.active svg path {
+            fill: #a855f7;
         }
         .nav-item svg {
             width: 24px;
             height: 24px;
-            transition: transform 0.2s;
         }
-        .nav-item.active svg {
-            transform: translateY(-2px);
+        .nav-item svg path {
+            fill: currentColor;
         }
 
         /* Модалки */
@@ -793,8 +601,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -808,262 +616,200 @@
             visibility: visible;
         }
         .modal-content {
-            background: #2a2a2a;
+            background: rgba(30, 30, 50, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
             width: 90%;
             max-width: 400px;
-            border-radius: 30px;
-            overflow: hidden;
-            transform: scale(0.9);
-            transition: 0.3s;
-        }
-        .modal.show .modal-content {
-            transform: scale(1);
+            padding: 20px;
         }
         .modal-header {
-            background: #1e1e1e;
-            padding: 20px;
-            text-align: right;
+            display: flex;
+            justify-content: flex-end;
         }
         .modal-close {
             background: none;
             border: none;
             font-size: 28px;
-            color: #b3b3b3;
+            color: rgba(255,255,255,0.6);
             cursor: pointer;
-        }
-        .modal-body {
-            padding: 25px;
-            color: white;
-        }
-        .modal-body h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        .modal-body p {
-            font-size: 16px;
-            line-height: 1.4;
-        }
-        .ref-link {
-            width: 100%;
-            padding: 14px;
-            margin: 12px 0;
-            border: 1px solid #3e3e3e;
-            border-radius: 40px;
-            background: #121212;
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        .copy-btn, .check-btn, .claim-btn, .channel-btn {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
-            background-size: 400% 400%;
-            animation: gradientShift 6s ease infinite;
-            border: none;
-            border-radius: 50px;
-            padding: 16px;
-            width: 100%;
-            font-weight: 600;
-            font-size: 18px;
-            color: white;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.2s;
-        }
-        .copy-btn:active, .check-btn:active, .claim-btn:active, .channel-btn:active {
-            transform: scale(0.97);
-        }
-        .result {
-            margin-top: 10px;
-            text-align: center;
-            color: #b3b3b3;
-            font-weight: 500;
-            font-size: 16px;
-        }
-
-        /* Игра */
-        .game-boxes {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-        .game-box {
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            color: white;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-        .game-box:active {
-            transform: scale(0.9);
-        }
-        .game-box.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-        .game-message {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 18px;
-            font-weight: 500;
-        }
-        .game-reward {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #1DB954;
         }
     </style>
 </head>
 <body>
-    <svg width="0" height="0" style="position:absolute">
-        <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#1DB954" />
-                <stop offset="100%" stop-color="#0A5C2A" />
-            </linearGradient>
-        </defs>
-    </svg>
-
     <div class="splash" id="splash">
         <div class="splash-logo">ХАЙП</div>
     </div>
 
     <div class="app-content" id="appContent">
         <div class="pages-container" id="pagesContainer">
-            <!-- Главная страница (новый дизайн) -->
+            <!-- Главная страница (новый стиль) -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
-                    <div class="main-logo">ХАЙП</div>
-                    <div class="main-subtitle">Зарабатывай на микрозадачах</div>
-                    <div class="cards-grid">
-                        <div class="glow-card">
-                            <div class="card-title">Пригласи друга</div>
-                            <div class="card-desc">Отправь ссылку другу</div>
-                            <div class="card-price">30 ₽</div>
+                    <!-- Верхняя панель -->
+                    <div class="top-bar">
+                        <div class="greeting">
+                            <h2>Good morning!</h2>
+                            <h1 id="userNameDisplay">Тимофей</h1>
                         </div>
-                        <div class="glow-card">
-                            <div class="card-title">Подпишись</div>
-                            <div class="card-desc">на @HYPE_JOB1</div>
-                            <div class="card-price">20 ₽</div>
-                        </div>
-                        <div class="glow-card">
-                            <div class="card-title">Мини-игра</div>
-                            <div class="card-desc">Выиграй до 20 ₽</div>
-                            <div class="card-price">5-20 ₽</div>
-                        </div>
+                        <div class="avatar" id="avatarLetter">Т</div>
                     </div>
-                    <div class="extra-text">и другие задания</div>
+
+                    <!-- Баланс -->
+                    <div class="total-balance">
+                        <div class="balance-label">Total Balance</div>
+                        <div class="balance-value" id="mainBalance">0 ₽</div>
+                        <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
+                    </div>
+
+                    <!-- Кнопки действий (Receive / Request / Transfer) -->
+                    <div class="action-buttons">
+                        <div class="action-btn" onclick="alert('Receive')">Receive</div>
+                        <div class="action-btn" onclick="alert('Request')">Request</div>
+                        <div class="action-btn" onclick="alert('Transfer')">Transfer</div>
+                    </div>
+
+                    <!-- Раздел "My Funds" (задания) -->
+                    <div class="section-title">
+                        <h3>My Funds</h3>
+                        <a href="#">View All</a>
+                    </div>
+                    <div class="tasks-grid" id="tasksContainer">
+                        <!-- будут вставлены задания через js -->
+                    </div>
+
+                    <!-- Раздел Favorites / Top / New / Gainers -->
+                    <div class="favorites-section">
+                        <div class="favorites-tabs">
+                            <span class="tab active">Favorites</span>
+                            <span class="tab">Top</span>
+                            <span class="tab">New</span>
+                            <span class="tab">Gainers</span>
+                        </div>
+                        <!-- Заглушка, можно добавить позже -->
+                    </div>
+
+                    <!-- Призыв к регистрации -->
+                    <div class="signup-prompt">
+                        Don't have an account yet? <a href="#">Sign Up</a>
+                    </div>
                 </div>
             </div>
 
             <!-- Профиль -->
             <div id="profile-page" class="page">
-                <div class="page-title">Профиль</div>
-                <div id="profileStats"></div>
+                <div class="profile-page">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profileAvatar">Т</div>
+                        <div class="profile-name" id="profileName">Тимофей</div>
+                    </div>
+                    <div class="profile-stats" id="profileStats"></div>
+                </div>
             </div>
 
             <!-- Аналитика -->
             <div id="analytics-page" class="page">
-                <div class="page-title">Аналитика</div>
-                <div id="analyticsContent"></div>
+                <div class="analytics-page">
+                    <div class="period-tabs">
+                        <span class="period-tab active">Day</span>
+                        <span class="period-tab">Week</span>
+                        <span class="period-tab">Month</span>
+                    </div>
+                    <div id="analyticsContent"></div>
+                </div>
             </div>
 
             <!-- Рефералы -->
             <div id="referrals-page" class="page">
-                <div class="page-title">Рефералы</div>
-                <div id="referralsContent"></div>
+                <div class="referral-page">
+                    <div id="referralsContent"></div>
+                </div>
             </div>
 
             <!-- Вывод средств -->
             <div id="withdraw-page" class="page">
-                <div class="page-title">Вывод</div>
-                <div id="withdrawContent"></div>
+                <div class="withdraw-page">
+                    <div id="withdrawContent"></div>
+                </div>
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
+        <!-- Нижняя навигация (стекло) -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
-                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0002 5H25.0002C25.5302 5.00153 26.038 5.21274 26.4128 5.58748C26.7875 5.96222 26.9987 6.47004 27.0002 7V18H25.0002V7H22.0002V10H10.0002V7H7.00024V28H16.0002V30H7.00024C6.47028 29.9985 5.96246 29.7873 5.58772 29.4125C5.21298 29.0378 5.00177 28.53 5.00024 28V7C5.00177 6.47004 5.21298 5.96222 5.58772 5.58748C5.96246 5.21274 6.47028 5.00153 7.00024 5H10.0002V4C10.0018 3.47004 10.213 2.96222 10.5877 2.58748C10.9625 2.21274 11.4703 2.00153 12.0002 2H20.0002C20.5302 2.00153 21.038 2.21274 21.4128 2.58748C21.7875 2.96222 21.9987 3.47004 22.0002 4V5ZM12.0002 8H20.0002V4H12.0002V8ZM19.4102 24.5898L22.0002 27.1798L28.5902 20.5898L30.0002 21.9998L22.0002 29.9998L18.0002 25.9998L19.4102 24.5898Z" fill="currentColor"/>
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                 </svg>
-                <span>Главная</span>
+                <span>Home</span>
             </a>
             <a class="nav-item" data-page="profile">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12,11A5,5,0,1,0,7,6,5.006,5.006,0,0,0,12,11Zm0-8A3,3,0,1,1,9,6,3,3,0,0,1,12,3ZM3,22V18a5.006,5.006,0,0,1,5-5h8a5.006,5.006,0,0,1,5,5v4a1,1,0,0,1-2,0V18a3,3,0,0,0-3-3H8a3,3,0,0,0-3,3v4a1,1,0,0,1-2,0Z" fill="currentColor"/>
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
-                <span>Профиль</span>
+                <span>Profile</span>
             </a>
             <a class="nav-item" data-page="analytics">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" fill="currentColor"/>
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
                 </svg>
-                <span>Аналитика</span>
+                <span>Analytics</span>
             </a>
             <a class="nav-item" data-page="referrals">
-                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M26.375 14.976c1.164-1.395 1.852-3.297 1.852-5.325 0-4.19-2.913-7.6-6.492-7.6-2.484 0-4.644 1.641-5.735 4.046-1.09-2.405-3.251-4.047-5.734-4.047-3.58 0-6.492 3.41-6.492 7.601 0 2.033.686 3.932 1.851 5.325C3.589 15.933 0 17.729 0 23.134v1.995h6.124c-.245.813-.39 1.747-.39 2.826v1.995H26.265v-1.995c0-1.08-.145-2.013-.39-2.826H32v-1.995c0-5.405-3.589-7.2-5.625-8.158zm-19.32 8.158h-5.06c0-6.006 5.274-6.004 6.445-7.574l.134-.716C6.929 14.01 5.768 12 5.768 9.65c0-3.096 2.014-5.606 4.498-5.606 1.759 0 3.278 1.262 4.016 3.098-2.749.884-4.775 3.834-4.775 7.328 0 2.033.687 3.932 1.852 5.325-1.247.586-3.074 1.488-4.305 3.338zm9.003 4.821h-8.33c0-6.006 5.275-6.004 6.445-7.575l.134-.716c-1.644-.834-2.805-2.842-2.805-5.193 0-3.096 2.014-5.606 4.498-5.606 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.327-2.763 5.173l.153.814c1.284 1.495 6.383 1.592 6.383 7.497h-8.212zm8.886-4.82c-1.23-1.85-3.058-2.752-4.304-3.338 1.164-1.396 1.852-3.298 1.852-5.326 0-3.494-2.026-6.443-4.774-7.328.738-1.836 2.257-3.098 4.017-3.098 2.483 0 4.497 2.51 4.497 5.606 0 2.33-1.14 4.326-2.763 5.173l.153.814c1.284 1.494 6.383 1.592 6.383 7.496z" fill="currentColor"/>
+                <svg viewBox="0 0 24 24">
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
                 </svg>
-                <span>Рефералы</span>
+                <span>Referrals</span>
             </a>
             <a class="nav-item" data-page="withdraw">
-                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                    <path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z M16 19h2a1 1 0 0 0 0-2h-1a1 1 0 0 0 -2 0v.18a3 3 0 0 0 1 5.82 1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h1a1 1 0 0 0 2 0v-.18a3 3 0 0 0 -1-5.82 1 1 0 0 1 0-2z" fill="currentColor"/>
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
                 </svg>
-                <span>Вывод</span>
+                <span>Withdraw</span>
             </a>
         </div>
 
-        <!-- Модальные окна -->
+        <!-- Модальные окна (игра, подписка, реферал) -->
         <div class="modal" id="refModal">
             <div class="modal-content">
-                <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
-                <div class="modal-body">
-                    <h3>Пригласи друга</h3>
-                    <p>Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
-                    <input class="ref-link" id="refLink" readonly>
-                    <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
+                <div class="modal-header">
+                    <button class="modal-close" id="closeRef">&times;</button>
                 </div>
+                <h3>Пригласи друга</h3>
+                <p style="margin: 10px 0; color: rgba(255,255,255,0.7);">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
+                <input class="ref-link" id="refLink" readonly style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); border-radius:40px; color:white; margin:10px 0;">
+                <button class="copy-btn" id="copyBtn" style="width:100%; padding:14px; background:rgba(168,85,247,0.5); border:none; border-radius:40px; color:white; font-weight:600;">Копировать ссылку</button>
             </div>
         </div>
 
         <div class="modal" id="subModal">
             <div class="modal-content">
-                <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
-                <div class="modal-body">
-                    <h3>Подпишись на канал</h3>
-                    <p>Подпишись на @HYPE_JOB1 и нажми проверку</p>
-                    <button class="channel-btn" id="channelBtn">Перейти в канал</button>
-                    <button class="check-btn" id="checkBtn">Проверить подписку</button>
-                    <div class="result" id="checkResult"></div>
+                <div class="modal-header">
+                    <button class="modal-close" id="closeSub">&times;</button>
                 </div>
+                <h3>Подпишись на канал</h3>
+                <p style="margin:10px 0;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
+                <button class="channel-btn" id="channelBtn" style="width:100%; padding:14px; background:rgba(168,85,247,0.5); border:none; border-radius:40px; color:white; font-weight:600; margin-bottom:10px;">Перейти в канал</button>
+                <button class="check-btn" id="checkBtn" style="width:100%; padding:14px; background:rgba(168,85,247,0.5); border:none; border-radius:40px; color:white; font-weight:600;">Проверить подписку</button>
+                <div class="result" id="checkResult" style="margin-top:10px; text-align:center;"></div>
             </div>
         </div>
 
         <div class="modal" id="gameModal">
             <div class="modal-content">
-                <div class="modal-header"><button class="modal-close" id="closeGame">&times;</button></div>
-                <div class="modal-body">
-                    <h3>Мини-игра</h3>
-                    <p>Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
-                    <div class="game-boxes">
-                        <div class="game-box" data-box="1">?</div>
-                        <div class="game-box" data-box="2">?</div>
-                        <div class="game-box" data-box="3">?</div>
-                    </div>
-                    <div class="game-message" id="gameMessage">Нажми на коробку</div>
-                    <div class="game-reward" id="gameReward"></div>
-                    <button class="claim-btn" id="claimBtn" style="display: none;">Забрать</button>
+                <div class="modal-header">
+                    <button class="modal-close" id="closeGame">&times;</button>
                 </div>
+                <h3>Мини-игра</h3>
+                <p style="margin:10px 0;">Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
+                <div class="game-boxes" style="display:flex; justify-content:space-around; margin:20px 0;">
+                    <div class="game-box" data-box="1" style="width:70px; height:70px; background:rgba(168,85,247,0.5); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:28px;">?</div>
+                    <div class="game-box" data-box="2" style="width:70px; height:70px; background:rgba(168,85,247,0.5); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:28px;">?</div>
+                    <div class="game-box" data-box="3" style="width:70px; height:70px; background:rgba(168,85,247,0.5); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:28px;">?</div>
+                </div>
+                <div class="game-message" id="gameMessage" style="text-align:center;">Нажми на коробку</div>
+                <div class="game-reward" id="gameReward" style="text-align:center; font-size:24px; color:#4ade80;"></div>
+                <button class="claim-btn" id="claimBtn" style="display:none; width:100%; padding:14px; background:rgba(168,85,247,0.5); border:none; border-radius:40px; color:white; font-weight:600; margin-top:15px;">Забрать</button>
             </div>
         </div>
     </div>
@@ -1082,14 +828,18 @@
         let tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
-        const userName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
-        // Используем имя для главной страницы, но в новом дизайне приветствие не используется, поэтому оставим на будущее
+        const userName = tg?.initDataUnsafe?.user?.first_name || 'Тимофей';
+        document.getElementById('userNameDisplay').innerText = userName;
+        document.getElementById('profileName').innerText = userName;
+        document.getElementById('avatarLetter').innerText = userName.charAt(0).toUpperCase();
+        document.getElementById('profileAvatar').innerText = userName.charAt(0).toUpperCase();
 
-        // Данные localStorage
+        // Данные
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         function updateBalanceDisplay() {
-            // баланс показывается только в профиле и выводе, обновим позже
+            document.getElementById('mainBalance').innerText = balance + ' ₽';
+            document.getElementById('mainChange').innerText = `+${Math.floor(balance/10)} ₽ (${Math.floor(balance/100)}%)`; // заглушка
         }
         updateBalanceDisplay();
 
@@ -1110,10 +860,6 @@
             localStorage.setItem('streak', streak);
             localStorage.setItem('lastStreakDate', today);
             return streak;
-        }
-        function updateStreakDisplay() {
-            const streak = getStreak();
-            // можно использовать для отображения стрика где-то
         }
 
         function getRating() {
@@ -1137,6 +883,7 @@
 
         function saveBalance() {
             localStorage.setItem('balance', balance);
+            updateBalanceDisplay();
         }
 
         function addCount(id) {
@@ -1166,310 +913,176 @@
             return total;
         }
 
-        function pulseIcon(item) {
-            const svg = item.querySelector('svg');
-            if (svg) {
-                svg.classList.add('pulse');
-                setTimeout(() => svg.classList.remove('pulse'), 200);
-            }
-        }
-
-        // Функции обновления страниц (профиль, рефералы, вывод, аналитика)
-        function updateProfilePage() {
-            const container = document.getElementById('profileStats');
+        // Обновление списка заданий на главной
+        function updateTasksGrid() {
+            const container = document.getElementById('tasksContainer');
             if (!container) return;
             container.innerHTML = '';
-            const todayCount = getTodayCount();
-            const avatarLetter = (userName && userName !== 'Пользователь') ? userName.charAt(0).toUpperCase() : '?';
-            const rating = getRating();
-            const level = getLevel(rating);
-            const progress = getProgressToNextLevel(rating);
-
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'profile-header';
-            headerDiv.style.animationDelay = '0.05s';
-            headerDiv.innerHTML = `
-                <div class="profile-avatar">${avatarLetter}</div>
-                <div class="profile-name">${userName}</div>
-            `;
-            container.appendChild(headerDiv);
-
-            const idCard = document.createElement('div');
-            idCard.className = 'profile-wide-card';
-            idCard.style.animationDelay = '0.1s';
-            idCard.innerHTML = `
-                <div class="wide-label">ID</div>
-                <div class="wide-value">${userId}</div>
-            `;
-            container.appendChild(idCard);
-
-            const levelCard = document.createElement('div');
-            levelCard.className = 'profile-wide-card';
-            levelCard.style.animationDelay = '0.15s';
-            levelCard.innerHTML = `
-                <div class="wide-label">Рейтинг</div>
-                <div class="wide-value">Уровень ${level}</div>
-                <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>
-            `;
-            container.appendChild(levelCard);
-
-            const statGrid = document.createElement('div');
-            statGrid.className = 'stat-grid';
-            statGrid.innerHTML = `
-                <div class="stat-card" style="animation-delay:0.2s">
-                    <div class="stat-label">Баланс</div>
-                    <div class="stat-value">${balance} ₽</div>
-                </div>
-                <div class="stat-card" style="animation-delay:0.25s">
-                    <div class="stat-label">Выполнено сегодня</div>
-                    <div class="stat-value">${todayCount}</div>
-                </div>
-            `;
-            container.appendChild(statGrid);
-        }
-
-        function updateReferralsPage() {
-            const container = document.getElementById('referralsContent');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const linkCard = document.createElement('div');
-            linkCard.className = 'referral-link-card';
-            linkCard.style.animationDelay = '0.05s';
-            linkCard.innerHTML = `
-                <div class="referral-link-label">Твоя реферальная ссылка</div>
-                <div class="referral-link-field">
-                    <input class="referral-link-input" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField">
-                    <button class="referral-copy-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
-                </div>
-            `;
-            container.appendChild(linkCard);
-
-            const statsDiv = document.createElement('div');
-            statsDiv.className = 'referral-stats';
-            statsDiv.innerHTML = `
-                <div class="referral-stat-card" style="animation-delay:0.1s">
-                    <div class="stat-label">Приглашено</div>
-                    <div class="referral-stat-value">0</div>
-                </div>
-                <div class="referral-stat-card" style="animation-delay:0.15s">
-                    <div class="stat-label">Заработано</div>
-                    <div class="referral-stat-value">0 ₽</div>
-                </div>
-            `;
-            container.appendChild(statsDiv);
-
-            const friendsDiv = document.createElement('div');
-            friendsDiv.className = 'friends-list';
-            friendsDiv.style.animationDelay = '0.2s';
-            friendsDiv.innerHTML = `
-                <div style="font-weight:600; margin-bottom:12px;">Недавно приглашённые</div>
-                <div class="friend-item">
-                    <div class="friend-avatar"></div>
-                    <div class="friend-info">
-                        <div class="friend-name"></div>
-                        <div class="friend-status"></div>
+            const allTasks = [
+                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку другу', price: 30, icon: '👥' },
+                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20, icon: '📢' },
+                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20', icon: '🎮' }
+            ];
+            allTasks.forEach((t, index) => {
+                const card = document.createElement('div');
+                card.className = 'task-card';
+                card.innerHTML = `
+                    <div class="task-icon">${t.icon}</div>
+                    <div class="task-info">
+                        <h4>${t.name}</h4>
+                        <p>${t.desc}</p>
                     </div>
-                    <div class="friend-reward"></div>
-                </div>
-                <div class="friend-item">
-                    <div class="friend-avatar"></div>
-                    <div class="friend-info">
-                        <div class="friend-name"></div>
-                        <div class="friend-status"></div>
-                    </div>
-                    <div class="friend-reward"></div>
-                </div>
-                <div style="text-align:center; margin-top:12px; color:#b3b3b3;">Приглашай друзей, чтобы список заполнился</div>
-            `;
-            container.appendChild(friendsDiv);
-        }
-
-        function updateWithdrawPage() {
-            const container = document.getElementById('withdrawContent');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const cardDiv = document.createElement('div');
-            cardDiv.className = 'card-container';
-            cardDiv.style.animationDelay = '0.05s';
-            cardDiv.innerHTML = `
-                <div class="gradient-card">
-                    <div class="card-logo">ХАЙП</div>
-                    <div class="card-number">•••• •••• •••• 3377</div>
-                    <div class="card-details">
-                        <span>01/29</span>
-                        <span>Тимофей</span>
-                    </div>
-                </div>
-            `;
-            container.appendChild(cardDiv);
-
-            const balanceBlock = document.createElement('div');
-            balanceBlock.className = 'balance-block';
-            balanceBlock.style.animationDelay = '0.1s';
-            balanceBlock.innerHTML = `
-                <span class="balance-label">Твой баланс</span>
-                <span class="balance-amount">${balance} ₽</span>
-            `;
-            container.appendChild(balanceBlock);
-
-            const formDiv = document.createElement('div');
-            formDiv.className = 'withdraw-form';
-            formDiv.innerHTML = `
-                <div class="withdraw-field" style="animation-delay:0.15s">
-                    <input type="number" placeholder="Сумма (мин. 50 ₽)" id="withdrawAmount">
-                </div>
-                <div class="withdraw-field" style="animation-delay:0.2s">
-                    <input type="text" placeholder="Номер карты или кошелька" id="withdrawCard">
-                </div>
-                <button class="withdraw-btn" style="animation-delay:0.25s" id="withdrawSubmit">Вывести</button>
-            `;
-            container.appendChild(formDiv);
-
-            const historyDiv = document.createElement('div');
-            historyDiv.innerHTML = `
-                <div class="history-title">Недавние операции</div>
-                <div class="recent-transfers">
-                    <div class="transfer-item">
-                        <div class="transfer-icon"></div>
-                        <div class="transfer-info">
-                            <div class="transfer-name"></div>
-                            <div class="transfer-date"></div>
-                        </div>
-                        <div class="transfer-amount"></div>
-                    </div>
-                    <div class="transfer-item">
-                        <div class="transfer-icon"></div>
-                        <div class="transfer-info">
-                            <div class="transfer-name"></div>
-                            <div class="transfer-date"></div>
-                        </div>
-                        <div class="transfer-amount"></div>
-                    </div>
-                    <div class="transfer-item">
-                        <div class="transfer-icon"></div>
-                        <div class="transfer-info">
-                            <div class="transfer-name"></div>
-                            <div class="transfer-date"></div>
-                        </div>
-                        <div class="transfer-amount"></div>
-                    </div>
-                    <div style="text-align:center; margin-top:12px; color:#b3b3b3;">Здесь появятся последние операции</div>
-                </div>
-            `;
-            container.appendChild(historyDiv);
-
-            document.getElementById('withdrawSubmit')?.addEventListener('click', () => {
-                alert('Вывод средств временно недоступен в бета-версии');
+                    <div class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
+                `;
+                card.onclick = () => {
+                    if (t.id === 1) {
+                        let link = 'https://t.me/your_bot?start=ref_' + userId;
+                        document.getElementById('refLink').value = link;
+                        document.getElementById('refModal').classList.add('show');
+                    } else if (t.id === 2) {
+                        document.getElementById('subModal').classList.add('show');
+                    } else if (t.id === 3) {
+                        resetGameModal();
+                        document.getElementById('gameModal').classList.add('show');
+                    }
+                };
+                container.appendChild(card);
             });
         }
 
+        // Обновление профиля
+        function updateProfilePage() {
+            const container = document.getElementById('profileStats');
+            if (!container) return;
+            const todayCount = getTodayCount();
+            const rating = getRating();
+            const level = getLevel(rating);
+            const progress = getProgressToNextLevel(rating);
+            container.innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-label">ID</div>
+                    <div class="stat-number">${userId}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Рейтинг</div>
+                    <div class="stat-number">Уровень ${level}</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Баланс</div>
+                    <div class="stat-number">${balance} ₽</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Выполнено сегодня</div>
+                    <div class="stat-number">${todayCount}</div>
+                </div>
+            `;
+        }
+
+        // Обновление рефералов
+        function updateReferralsPage() {
+            const container = document.getElementById('referralsContent');
+            if (!container) return;
+            container.innerHTML = `
+                <div class="referral-link-block">
+                    <div class="referral-link-label">Твоя реферальная ссылка</div>
+                    <div class="ref-link-field">
+                        <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField">
+                        <button onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
+                    </div>
+                </div>
+                <div class="referral-stats">
+                    <div class="referral-stat-card">
+                        <div class="stat-label">Приглашено</div>
+                        <div class="stat-number">0</div>
+                    </div>
+                    <div class="referral-stat-card">
+                        <div class="stat-label">Заработано</div>
+                        <div class="stat-number">0 ₽</div>
+                    </div>
+                </div>
+                <div class="friends-list">
+                    <h4 style="margin-bottom:15px;">Недавно приглашённые</h4>
+                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                    <div style="text-align:center; margin-top:12px; color:rgba(255,255,255,0.4);">Приглашай друзей, чтобы список заполнился</div>
+                </div>
+            `;
+        }
+
+        // Обновление вывода
+        function updateWithdrawPage() {
+            const container = document.getElementById('withdrawContent');
+            if (!container) return;
+            container.innerHTML = `
+                <div class="card-glow">
+                    <div class="card-logo">ХАЙП</div>
+                    <div class="card-number">•••• •••• •••• 3377</div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span>01/29</span>
+                        <span>${userName}</span>
+                    </div>
+                </div>
+                <div class="balance-block">
+                    <span class="balance-label">Твой баланс</span>
+                    <span class="balance-number">${balance} ₽</span>
+                </div>
+                <div class="withdraw-field">
+                    <input type="number" placeholder="Сумма (мин. 50 ₽)" id="withdrawAmount">
+                </div>
+                <div class="withdraw-field">
+                    <input type="text" placeholder="Номер карты или кошелька" id="withdrawCard">
+                </div>
+                <button class="glass-button" style="width:100%; padding:16px; font-size:18px; margin-top:10px;" onclick="alert('Вывод временно недоступен')">Вывести</button>
+                <div style="margin-top:25px;">
+                    <h4 style="margin-bottom:15px;">Недавние операции</h4>
+                    <div class="recent-transfers" style="background:rgba(255,255,255,0.1); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:16px;">
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div style="text-align:center; margin-top:12px; color:rgba(255,255,255,0.4);">Здесь появятся последние операции</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Обновление аналитики
         function updateAnalyticsPage() {
             const container = document.getElementById('analyticsContent');
             if (!container) return;
-            container.innerHTML = '';
-
-            const periodDiv = document.createElement('div');
-            periodDiv.className = 'analytics-period';
-            periodDiv.style.animationDelay = '0.05s';
-            periodDiv.innerHTML = `
-                <button class="period-btn active">День</button>
-                <button class="period-btn">Неделя</button>
-                <button class="period-btn">Месяц</button>
-            `;
-            container.appendChild(periodDiv);
-
-            const totalDiv = document.createElement('div');
-            totalDiv.className = 'analytics-total';
-            totalDiv.style.animationDelay = '0.1s';
-            totalDiv.innerHTML = `
-                <div class="total-label">Общий доход</div>
-                <div class="total-value"></div>
-                <div class="total-change"></div>
-            `;
-            container.appendChild(totalDiv);
-
-            const chartDiv = document.createElement('div');
-            chartDiv.className = 'chart-container';
-            chartDiv.style.animationDelay = '0.15s';
-            chartDiv.innerHTML = `
-                <div class="stats-row">
-                    <span>Доход</span>
-                    <span></span>
+            container.innerHTML = `
+                <div class="analytics-total">
+                    <div class="balance-label">Общий доход</div>
+                    <div class="balance-value" style="font-size:36px;">—</div>
                 </div>
-                <div class="stats-row">
-                    <span>Расход</span>
-                    <span></span>
+                <div class="analytics-total">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span>Доход</span>
+                        <span>—</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                        <span>Расход</span>
+                        <span>—</span>
+                    </div>
+                    <div class="chart-placeholder">
+                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
+                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
+                    </div>
+                    <div style="text-align:center; color:rgba(255,255,255,0.4); margin-top:10px;">Статистика скоро появится</div>
                 </div>
-                <div class="chart-bars">
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 0;"></div>
-                        <div class="bar-label">Пн</div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 0;"></div>
-                        <div class="bar-label">Вт</div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 0;"></div>
-                        <div class="bar-label">Ср</div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 0;"></div>
-                        <div class="bar-label">Чт</div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 0;"></div>
-                        <div class="bar-label">Пт</div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 0;"></div>
-                        <div class="bar-label">Сб</div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="bar" style="height: 0;"></div>
-                        <div class="bar-label">Вс</div>
+                <div style="margin-top:25px;">
+                    <h4 style="margin-bottom:15px;">Последние операции</h4>
+                    <div class="recent-transfers" style="background:rgba(255,255,255,0.1); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:16px;">
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div style="text-align:center; margin-top:12px; color:rgba(255,255,255,0.4);">Здесь появится статистика</div>
                     </div>
                 </div>
             `;
-            container.appendChild(chartDiv);
-
-            const recentDiv = document.createElement('div');
-            recentDiv.innerHTML = `
-                <div class="history-title">Последние операции</div>
-                <div class="recent-transfers">
-                    <div class="transfer-item">
-                        <div class="transfer-icon"></div>
-                        <div class="transfer-info">
-                            <div class="transfer-name"></div>
-                            <div class="transfer-date"></div>
-                        </div>
-                        <div class="transfer-amount"></div>
-                    </div>
-                    <div class="transfer-item">
-                        <div class="transfer-icon"></div>
-                        <div class="transfer-info">
-                            <div class="transfer-name"></div>
-                            <div class="transfer-date"></div>
-                        </div>
-                        <div class="transfer-amount"></div>
-                    </div>
-                    <div class="transfer-item">
-                        <div class="transfer-icon"></div>
-                        <div class="transfer-info">
-                            <div class="transfer-name"></div>
-                            <div class="transfer-date"></div>
-                        </div>
-                        <div class="transfer-amount"></div>
-                    </div>
-                    <div style="text-align:center; margin-top:12px; color:#b3b3b3;">Здесь появится статистика</div>
-                </div>
-            `;
-            container.appendChild(recentDiv);
         }
 
-        // Модалки игры
+        // Модалка игры
         const gameModal = document.getElementById('gameModal');
         const closeGame = document.getElementById('closeGame');
         const gameBoxes = document.querySelectorAll('.game-box');
@@ -1481,7 +1094,7 @@
         function resetGameModal() {
             gameBoxes.forEach(box => {
                 box.classList.remove('disabled');
-                box.style.background = '';
+                box.style.background = 'rgba(168,85,247,0.5)';
                 box.innerText = '?';
             });
             gameMessage.innerText = 'Нажми на коробку';
@@ -1504,7 +1117,7 @@
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
                 this.innerText = currentWin + ' ₽';
-                this.style.background = '#0A5C2A';
+                this.style.background = '#3b82f6';
                 gameBoxes.forEach(b => b.classList.add('disabled'));
                 gameMessage.innerText = 'Поздравляем!';
                 gameReward.innerText = '+ ' + currentWin + ' ₽';
@@ -1519,15 +1132,13 @@
             saveBalance();
             updateStreak();
             addRating(10);
-            updateStreakDisplay();
             addCount(3);
-            // обновим профиль, если он активен
-            if (document.getElementById('profile-page').classList.contains('active-page')) {
-                updateProfilePage();
-            }
+            updateTasksGrid();
+            if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
         };
 
+        // Остальные модалки
         document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
@@ -1540,12 +1151,11 @@
             else window.open('https://t.me/HYPE_JOB1', '_blank');
         };
 
-        const subModal = document.getElementById('subModal');
         const closeSub = document.getElementById('closeSub');
         const checkBtn = document.getElementById('checkBtn');
         const checkResult = document.getElementById('checkResult');
 
-        closeSub.onclick = () => subModal.classList.remove('show');
+        closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
 
         checkBtn.onclick = async () => {
             if (!canDo(2)) {
@@ -1558,22 +1168,19 @@
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
-            const success = true; // симуляция
+            const success = true;
 
             if (success) {
                 balance += 20;
                 saveBalance();
                 updateStreak();
                 addRating(10);
-                updateStreakDisplay();
                 localStorage.setItem('subscription_done', 'true');
-                checkResult.style.color = '#1DB954';
+                checkResult.style.color = '#4ade80';
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
-                // обновим профиль
-                if (document.getElementById('profile-page').classList.contains('active-page')) {
-                    updateProfilePage();
-                }
-                setTimeout(() => subModal.classList.remove('show'), 1500);
+                updateTasksGrid();
+                if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
+                setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
             } else {
                 checkResult.style.color = 'red';
                 checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
@@ -1595,7 +1202,6 @@
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                pulseIcon(item);
                 const page = item.dataset.page;
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
@@ -1605,25 +1211,21 @@
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
-                // Обновляем контент при переключении
+                // Обновляем контент
                 if (page === 'profile') updateProfilePage();
                 else if (page === 'referrals') updateReferralsPage();
                 else if (page === 'withdraw') updateWithdrawPage();
                 else if (page === 'analytics') updateAnalyticsPage();
-                // tasks не требует обновления, она статична
             });
         });
 
-        window.onclick = (e) => {
-            if (e.target.classList.contains('modal')) e.target.classList.remove('show');
-        };
-
-        updateStreakDisplay();
-        // Загружаем начальные данные для профиля и других страниц (кроме главной)
+        // Инициализация
+        updateTasksGrid();
         updateProfilePage();
         updateReferralsPage();
         updateWithdrawPage();
         updateAnalyticsPage();
+        updateStreak();
     </script>
 </body>
 </html>
