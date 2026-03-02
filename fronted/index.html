@@ -123,7 +123,7 @@
             font-weight: 600;
         }
 
-        /* Градиентный баннер с толстыми полосами, извивающимися в разные стороны */
+        /* Градиентный баннер с толстыми полосами, извивающимися в разные стороны (как в последней версии) */
         .gradient-banner {
             position: relative;
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
@@ -138,7 +138,6 @@
             margin-bottom: 25px;
             overflow: hidden;
         }
-        /* Первый слой полос — основной изгиб */
         .gradient-banner::before {
             content: '';
             position: absolute;
@@ -157,7 +156,6 @@
             pointer-events: none;
             z-index: 1;
         }
-        /* Второй слой полос — дополнительное движение, чтобы убрать треугольники */
         .gradient-banner::after {
             content: '';
             position: absolute;
@@ -557,21 +555,25 @@
             opacity: 0;
         }
 
-        /* Вывод средств */
-        .withdraw-balance-block {
+        /* ========== НОВЫЙ ДИЗАЙН ВКЛАДКИ ВЫВОД ========== */
+        /* Карта */
+        .card-container {
+            margin-bottom: 25px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        .gradient-card {
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             background-size: 400% 400%;
-            animation: gradientShift 8s ease infinite, fadeSlideUp 0.5s ease forwards;
-            border-radius: 30px;
-            padding: 25px;
-            margin-bottom: 25px;
-            text-align: center;
+            animation: gradientShift 10s ease infinite;
+            border-radius: 25px;
+            padding: 20px;
+            color: white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            opacity: 0;
             position: relative;
             overflow: hidden;
         }
-        .withdraw-balance-block::before {
+        .gradient-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -579,50 +581,55 @@
             width: 100%;
             height: 100%;
             background: repeating-linear-gradient(45deg, 
-                rgba(255,255,255,0.3) 0px, 
-                rgba(255,255,255,0.3) 2px, 
+                rgba(255,255,255,0.2) 0px, 
+                rgba(255,255,255,0.2) 2px, 
                 transparent 2px, 
                 transparent 22px);
             background-size: 34px 34px;
-            transform-origin: center;
-            animation: waveSkew1 16s ease-in-out infinite;
             pointer-events: none;
             z-index: 1;
         }
-        .withdraw-balance-block::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(45deg, 
-                rgba(255,255,255,0.15) 0px, 
-                rgba(255,255,255,0.15) 2px, 
-                transparent 2px, 
-                transparent 22px);
-            background-size: 34px 34px;
-            transform-origin: center;
-            animation: waveSkew2 20s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .withdraw-balance-label {
-            font-size: 16px;
-            color: rgba(255,255,255,0.9);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
+        .card-logo {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 30px;
             position: relative;
             z-index: 2;
         }
-        .withdraw-balance-amount {
-            font-size: 48px;
+        .card-number {
+            font-size: 20px;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+        .balance-block {
+            background: #2f2f2f;
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        .balance-label {
+            font-size: 16px;
+            color: #b3b3b3;
+        }
+        .balance-amount {
+            font-size: 32px;
             font-weight: 700;
             color: white;
-            line-height: 1.2;
-            position: relative;
-            z-index: 2;
         }
         .withdraw-form {
             display: flex;
@@ -686,43 +693,132 @@
             font-weight: 600;
             margin: 25px 0 15px;
         }
-        .withdraw-history-list {
+        .recent-transfers {
             background: #2f2f2f;
             border-radius: 25px;
             padding: 20px;
         }
-        .history-item {
+        .transfer-item {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 12px 0;
             border-bottom: 1px solid #3e3e3e;
         }
-        .history-item:last-child {
+        .transfer-item:last-child {
             border-bottom: none;
         }
-        .history-avatar {
+        .transfer-icon {
             width: 40px;
             height: 40px;
             background: #3e3e3e;
             border-radius: 50%;
-        }
-        .history-info {
-            flex: 1;
-        }
-        .history-date {
-            height: 20px;
-        }
-        .history-amount {
-            height: 16px;
-        }
-        .history-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: #1DB954;
             font-weight: 600;
-            opacity: 0;
+        }
+        .transfer-info {
+            flex: 1;
+        }
+        .transfer-name {
+            font-weight: 600;
+        }
+        .transfer-date {
+            font-size: 13px;
+            color: #b3b3b3;
+        }
+        .transfer-amount {
+            font-weight: 600;
+            color: #1DB954;
+        }
+        .transfer-amount.negative {
+            color: #ff6b6b;
         }
 
-        /* Нижняя навигация */
+        /* ========== НОВАЯ ВКЛАДКА АНАЛИТИКА ========== */
+        .analytics-period {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: #2f2f2f;
+            border-radius: 40px;
+            padding: 5px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        .period-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #b3b3b3;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .period-btn.active {
+            background: #1DB954;
+            color: white;
+        }
+        .analytics-total {
+            background: #2f2f2f;
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 25px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        .total-label {
+            font-size: 14px;
+            color: #b3b3b3;
+        }
+        .total-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+        }
+        .total-change {
+            font-size: 16px;
+            color: #1DB954;
+        }
+        .chart-container {
+            background: #2f2f2f;
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 25px;
+            animation: fadeSlideUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 150px;
+            margin: 20px 0;
+        }
+        .bar {
+            width: 20px;
+            background: linear-gradient(to top, #1DB954, #0A5C2A);
+            border-radius: 10px 10px 0 0;
+            transition: height 0.3s;
+        }
+        .bar-label {
+            text-align: center;
+            font-size: 12px;
+            color: #b3b3b3;
+            margin-top: 8px;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        /* Нижняя навигация (5 пунктов) */
         .nav {
             position: fixed;
             bottom: 0;
@@ -731,7 +827,7 @@
             background: #0a0a0a;
             display: flex;
             justify-content: space-around;
-            padding: 12px 10px 18px;
+            padding: 8px 5px 12px;
             border-top: 1px solid #1e1e1e;
             backdrop-filter: blur(10px);
             z-index: 100;
@@ -739,11 +835,11 @@
         .nav-item {
             color: #6a6a6a;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
@@ -766,8 +862,8 @@
             stroke: url(#gradient);
         }
         .nav-item svg {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             transition: transform 0.2s;
         }
         .nav-item.active svg {
@@ -960,14 +1056,20 @@
                 <div id="referralsContent"></div>
             </div>
 
-            <!-- Вывод средств -->
+            <!-- Вывод средств (обновлённый) -->
             <div id="withdraw-page" class="page">
                 <div class="page-title">Вывод</div>
                 <div id="withdrawContent"></div>
             </div>
+
+            <!-- Новая страница Аналитика -->
+            <div id="analytics-page" class="page">
+                <div class="page-title">Аналитика</div>
+                <div id="analyticsContent"></div>
+            </div>
         </div>
 
-        <!-- Нижняя навигация -->
+        <!-- Нижняя навигация (5 пунктов) -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -992,6 +1094,12 @@
                     <path d="m29 4h-7v-1a3 3 0 0 0 -3-3h-6a3 3 0 0 0 -3 3v1h-7a3 3 0 0 0 -3 3v8a1 1 0 0 0 .74 1h.26v9a3 3 0 0 0 3 3h4a10 10 0 0 0 16 0h4a3 3 0 0 0 3-3v-9l.26-.06a1 1 0 0 0 .74-.94v-8a3 3 0 0 0 -3-3zm-17-1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h-8zm-10 4a1 1 0 0 1 1-1h26a1 1 0 0 1 1 1v7.23l-6.12 1.63a10 10 0 0 0 -15.76 0l-6.12-1.63zm2 19a1 1 0 0 1 -1-1v-8.43l4 1.06a9.91 9.91 0 0 0 -.16 8.37zm12 4a8 8 0 1 1 8-8 8 8 0 0 1 -8 8zm13-5a1 1 0 0 1 -1 1h-2.84a9.91 9.91 0 0 0 -.16-8.37l4-1.06z M16 19h2a1 1 0 0 0 0-2h-1a1 1 0 0 0 -2 0v.18a3 3 0 0 0 1 5.82 1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h1a1 1 0 0 0 2 0v-.18a3 3 0 0 0 -1-5.82 1 1 0 0 1 0-2z" fill="currentColor"/>
                 </svg>
                 <span>Вывод</span>
+            </a>
+            <a class="nav-item" data-page="analytics">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" fill="currentColor"/>
+                </svg>
+                <span>Аналитика</span>
             </a>
         </div>
 
@@ -1311,54 +1419,80 @@
             container.appendChild(friendsDiv);
         }
 
-        // Обновление вывода средств
+        // Обновление вывода средств (новый дизайн)
         function updateWithdrawPage() {
             const container = document.getElementById('withdrawContent');
             container.innerHTML = '';
 
+            // Карта
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card-container';
+            cardDiv.style.animationDelay = '0.05s';
+            cardDiv.innerHTML = `
+                <div class="gradient-card">
+                    <div class="card-logo">ХАЙП</div>
+                    <div class="card-number">•••• •••• •••• 3377</div>
+                    <div class="card-details">
+                        <span>01/29</span>
+                        <span>Тимофей</span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(cardDiv);
+
+            // Баланс (серый блок)
             const balanceBlock = document.createElement('div');
-            balanceBlock.className = 'withdraw-balance-block';
-            balanceBlock.style.animationDelay = '0.05s';
+            balanceBlock.className = 'balance-block';
+            balanceBlock.style.animationDelay = '0.1s';
             balanceBlock.innerHTML = `
-                <div class="withdraw-balance-label">Твой баланс</div>
-                <div class="withdraw-balance-amount">${balance} ₽</div>
+                <span class="balance-label">Твой баланс</span>
+                <span class="balance-amount">${balance} ₽</span>
             `;
             container.appendChild(balanceBlock);
 
+            // Форма вывода (оставим как есть, но можно стилизовать)
             const formDiv = document.createElement('div');
             formDiv.className = 'withdraw-form';
             formDiv.innerHTML = `
-                <div class="withdraw-field" style="animation-delay:0.1s">
+                <div class="withdraw-field" style="animation-delay:0.15s">
                     <input type="number" placeholder="Сумма (мин. 50 ₽)" id="withdrawAmount">
                 </div>
-                <div class="withdraw-field" style="animation-delay:0.15s">
+                <div class="withdraw-field" style="animation-delay:0.2s">
                     <input type="text" placeholder="Номер карты или кошелька" id="withdrawCard">
                 </div>
-                <button class="withdraw-btn" style="animation-delay:0.2s" id="withdrawSubmit">Вывести</button>
+                <button class="withdraw-btn" style="animation-delay:0.25s" id="withdrawSubmit">Вывести</button>
             `;
             container.appendChild(formDiv);
 
+            // История выплат (Recent Transfers)
             const historyDiv = document.createElement('div');
             historyDiv.innerHTML = `
-                <div class="history-title">История выплат</div>
-                <div class="withdraw-history-list">
-                    <div class="history-item">
-                        <div class="history-avatar"></div>
-                        <div class="history-info">
-                            <div class="history-date"></div>
-                            <div class="history-amount"></div>
+                <div class="history-title">Recent Transfers</div>
+                <div class="recent-transfers">
+                    <div class="transfer-item">
+                        <div class="transfer-icon">🍔</div>
+                        <div class="transfer-info">
+                            <div class="transfer-name">Bill Food</div>
+                            <div class="transfer-date">12 мая 2025</div>
                         </div>
-                        <div class="history-status"></div>
+                        <div class="transfer-amount">-26.81 ₽</div>
                     </div>
-                    <div class="history-item">
-                        <div class="history-avatar"></div>
-                        <div class="history-info">
-                            <div class="history-date"></div>
-                            <div class="history-amount"></div>
+                    <div class="transfer-item">
+                        <div class="transfer-icon">🎬</div>
+                        <div class="transfer-info">
+                            <div class="transfer-name">Movie</div>
+                            <div class="transfer-date">5 мая 2025</div>
                         </div>
-                        <div class="history-status"></div>
+                        <div class="transfer-amount">-16.24 ₽</div>
                     </div>
-                    <div style="text-align:center; margin-top:12px; color:#b3b3b3;">История выплат пуста</div>
+                    <div class="transfer-item">
+                        <div class="transfer-icon">🚗</div>
+                        <div class="transfer-info">
+                            <div class="transfer-name">Uber</div>
+                            <div class="transfer-date">28 апреля 2025</div>
+                        </div>
+                        <div class="transfer-amount">-0.00 ₽</div>
+                    </div>
                 </div>
             `;
             container.appendChild(historyDiv);
@@ -1366,6 +1500,113 @@
             document.getElementById('withdrawSubmit')?.addEventListener('click', () => {
                 alert('Вывод средств временно недоступен в бета-версии');
             });
+        }
+
+        // Обновление аналитики (новая страница)
+        function updateAnalyticsPage() {
+            const container = document.getElementById('analyticsContent');
+            container.innerHTML = '';
+
+            // Переключатели периодов
+            const periodDiv = document.createElement('div');
+            periodDiv.className = 'analytics-period';
+            periodDiv.style.animationDelay = '0.05s';
+            periodDiv.innerHTML = `
+                <button class="period-btn active">Day</button>
+                <button class="period-btn">Week</button>
+                <button class="period-btn">Month</button>
+            `;
+            container.appendChild(periodDiv);
+
+            // Общая статистика
+            const totalDiv = document.createElement('div');
+            totalDiv.className = 'analytics-total';
+            totalDiv.style.animationDelay = '0.1s';
+            totalDiv.innerHTML = `
+                <div class="total-label">Total Balance</div>
+                <div class="total-value">${balance} ₽</div>
+                <div class="total-change">+4,560.50 (12.5%)</div>
+            `;
+            container.appendChild(totalDiv);
+
+            // График (имитация)
+            const chartDiv = document.createElement('div');
+            chartDiv.className = 'chart-container';
+            chartDiv.style.animationDelay = '0.15s';
+            chartDiv.innerHTML = `
+                <div class="stats-row">
+                    <span>Income</span>
+                    <span>8,567 ₽</span>
+                </div>
+                <div class="stats-row">
+                    <span>Expense</span>
+                    <span>2,331 ₽</span>
+                </div>
+                <div class="chart-bars">
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div class="bar" style="height: 70px;"></div>
+                        <div class="bar-label">Пн</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div class="bar" style="height: 90px;"></div>
+                        <div class="bar-label">Вт</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div class="bar" style="height: 50px;"></div>
+                        <div class="bar-label">Ср</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div class="bar" style="height: 110px;"></div>
+                        <div class="bar-label">Чт</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div class="bar" style="height: 80px;"></div>
+                        <div class="bar-label">Пт</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div class="bar" style="height: 60px;"></div>
+                        <div class="bar-label">Сб</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div class="bar" style="height: 40px;"></div>
+                        <div class="bar-label">Вс</div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(chartDiv);
+
+            // Последние операции (можно скопировать из истории)
+            const recentDiv = document.createElement('div');
+            recentDiv.innerHTML = `
+                <div class="history-title">Recent Activity</div>
+                <div class="recent-transfers">
+                    <div class="transfer-item">
+                        <div class="transfer-icon">🍔</div>
+                        <div class="transfer-info">
+                            <div class="transfer-name">Bill Food</div>
+                            <div class="transfer-date">12 мая 2025</div>
+                        </div>
+                        <div class="transfer-amount negative">-26.81 ₽</div>
+                    </div>
+                    <div class="transfer-item">
+                        <div class="transfer-icon">🎬</div>
+                        <div class="transfer-info">
+                            <div class="transfer-name">Movie</div>
+                            <div class="transfer-date">5 мая 2025</div>
+                        </div>
+                        <div class="transfer-amount negative">-16.24 ₽</div>
+                    </div>
+                    <div class="transfer-item">
+                        <div class="transfer-icon">🚗</div>
+                        <div class="transfer-info">
+                            <div class="transfer-name">Uber</div>
+                            <div class="transfer-date">28 апреля 2025</div>
+                        </div>
+                        <div class="transfer-amount negative">-0.00 ₽</div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(recentDiv);
         }
 
         // Игра
@@ -1479,7 +1720,8 @@
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
             referrals: document.getElementById('referrals-page'),
-            withdraw: document.getElementById('withdraw-page')
+            withdraw: document.getElementById('withdraw-page'),
+            analytics: document.getElementById('analytics-page')
         };
 
         const navItems = document.querySelectorAll('.nav-item');
@@ -1500,6 +1742,7 @@
                 else if (page === 'referrals') updateReferralsPage();
                 else if (page === 'withdraw') updateWithdrawPage();
                 else if (page === 'tasks') updateTasksPage();
+                else if (page === 'analytics') updateAnalyticsPage();
             });
         });
 
@@ -1512,6 +1755,7 @@
         updateProfilePage();
         updateReferralsPage();
         updateWithdrawPage();
+        // analytics не обновляем при старте, она не активна
     </script>
 </body>
 </html>
