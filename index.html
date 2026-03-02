@@ -199,9 +199,11 @@
             display: block;
         }
 
-        /* Новая анимация: появление сверху вниз, плавная */
-        @keyframes slideFromTop {
-            0% { opacity: 0; transform: translateY(-30px); }
+        /* Анимация с перелётом (overshoot) */
+        @keyframes bounceDown {
+            0% { opacity: 0; transform: translateY(-50px); }
+            60% { opacity: 1; transform: translateY(10px); }  /* ниже конечной позиции */
+            80% { transform: translateY(-3px); }              /* небольшой отскок вверх */
             100% { opacity: 1; transform: translateY(0); }
         }
         .page.active-page .main-page,
@@ -209,7 +211,7 @@
         .page.active-page .analytics-page,
         .page.active-page .referral-page,
         .page.active-page .withdraw-page {
-            animation: slideFromTop 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+            animation: bounceDown 0.9s cubic-bezier(0.3, 1.2, 0.4, 1) forwards;
         }
 
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
@@ -345,7 +347,7 @@
             padding: 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px; /* увеличен отступ */
             transition: 0.2s;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
@@ -385,7 +387,7 @@
             color: #4ade80;
             text-shadow: 0 0 5px rgba(74,222,128,0.5);
             white-space: nowrap;
-            margin-left: 8px;
+            margin-left: 12px; /* дополнительный отступ */
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -553,7 +555,7 @@
             box-shadow: 0 0 30px rgba(29,185,84,0.3);
             display: flex;
             flex-direction: column;
-            max-width: 340px; /* сужена */
+            max-width: 300px; /* уже, как на фото */
             margin-left: auto;
             margin-right: auto;
         }
@@ -769,14 +771,14 @@
         }
         .modal-header {
             position: absolute;
-            top: 15px; /* выровнено с заголовком */
+            top: 15px;
             right: 15px;
         }
         .modal-close {
             background: none;
             border: none;
             font-size: 28px;
-            color: white; /* белый крестик */
+            color: white;
             cursor: pointer;
             width: 40px;
             height: 40px;
@@ -844,7 +846,7 @@
         .game-box {
             width: 70px;
             height: 70px;
-            background: rgba(29,185,84,0.6); /* ярче */
+            background: rgba(29,185,84,0.6);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -1323,7 +1325,7 @@
         function resetGameModal() {
             gameBoxes.forEach(box => {
                 box.classList.remove('disabled');
-                box.style.background = 'rgba(29,185,84,0.6)'; // ярче
+                box.style.background = 'rgba(29,185,84,0.6)';
                 box.innerText = '?';
                 box.style.pointerEvents = 'auto';
             });
@@ -1347,7 +1349,7 @@
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
                 this.innerText = currentWin + ' ₽';
-                this.style.background = '#0A5C2A'; // ещё ярче
+                this.style.background = '#0A5C2A';
                 gameBoxes.forEach(b => b.classList.add('disabled'));
                 gameMessage.innerHTML = '<span>Поздравляем!</span><span class="game-reward">+ ' + currentWin + ' ₽</span>';
                 claimBtn.style.display = 'block';
@@ -1455,7 +1457,7 @@
                 if (content) {
                     content.style.animation = 'none';
                     content.offsetHeight;
-                    content.style.animation = 'slideFromTop 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) forwards';
+                    content.style.animation = 'bounceDown 0.9s cubic-bezier(0.3, 1.2, 0.4, 1) forwards';
                 }
             }
         }
