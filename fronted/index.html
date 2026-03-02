@@ -206,10 +206,10 @@
         }
         .animate-stagger {
             opacity: 0; /* начальное состояние */
-            animation: fadeInUp 0.5s ease forwards;
+            animation: fadeInUp 0.9s ease-out forwards;
         }
 
-        /* Задержки для элементов главной */
+        /* Задержки для главной страницы (индексы по порядку) */
         .main-page .top-bar { animation-delay: 0s; }
         .main-page .total-balance { animation-delay: 0.1s; }
         .main-page .action-buttons { animation-delay: 0.2s; }
@@ -219,7 +219,32 @@
         .main-page .task-card:nth-child(2) { animation-delay: 0.6s; }
         .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
 
-        /* Аналогично для других страниц (можно добавить позже) */
+        /* Задержки для профиля */
+        .profile-page .profile-header { animation-delay: 0s; }
+        .profile-page .stat-item:nth-child(1) { animation-delay: 0.1s; }
+        .profile-page .stat-item:nth-child(2) { animation-delay: 0.2s; }
+        .profile-page .stat-item:nth-child(3) { animation-delay: 0.3s; }
+        .profile-page .stat-item:nth-child(4) { animation-delay: 0.4s; }
+
+        /* Задержки для рефералов */
+        .referral-page .referral-link-block { animation-delay: 0s; }
+        .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .referral-page .referral-stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .referral-page .friends-list { animation-delay: 0.3s; }
+
+        /* Задержки для вывода */
+        .withdraw-page .card-glow { animation-delay: 0s; }
+        .withdraw-page .balance-block { animation-delay: 0.1s; }
+        .withdraw-page .withdraw-field:nth-child(3) { animation-delay: 0.2s; }
+        .withdraw-page .withdraw-field:nth-child(4) { animation-delay: 0.3s; }
+        .withdraw-page #withdrawSubmit { animation-delay: 0.4s; }
+        .withdraw-page .recent-transfers { animation-delay: 0.5s; }
+
+        /* Задержки для аналитики */
+        .analytics-page .period-tabs { animation-delay: 0s; }
+        .analytics-page .analytics-total:nth-child(2) { animation-delay: 0.1s; }
+        .analytics-page .analytics-total:nth-child(3) { animation-delay: 0.2s; }
+        .analytics-page .recent-transfers { animation-delay: 0.3s; }
 
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
         .main-page {
@@ -394,7 +419,7 @@
             color: #4ade80;
             text-shadow: 0 0 5px rgba(74,222,128,0.5);
             white-space: nowrap;
-            margin-left: 12px;
+            margin-left: 8px; /* дополнительный отступ */
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -555,14 +580,16 @@
         .card-glow {
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 20px;
-            padding: 30px 20px 70px 20px;
+            padding: 30px 20px 40px 20px; /* уменьшен нижний отступ */
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 0 30px rgba(29,185,84,0.3);
             display: flex;
             flex-direction: column;
-            /* убрано ограничение ширины */
+            max-width: 320px; /* карта уже */
+            margin-left: auto;
+            margin-right: auto;
         }
         .card-glow::before {
             content: '';
@@ -782,7 +809,7 @@
             background: none;
             border: none;
             font-size: 28px;
-            color: white;
+            color: white; /* белый крестик */
             cursor: pointer;
             width: 40px;
             height: 40px;
@@ -932,7 +959,7 @@
             <!-- Профиль -->
             <div id="profile-page" class="page">
                 <div class="profile-page">
-                    <div class="profile-header">
+                    <div class="profile-header animate-stagger">
                         <div class="profile-avatar" id="profileAvatar">Т</div>
                         <div class="profile-name" id="profileName">Тимофей</div>
                     </div>
@@ -943,7 +970,7 @@
             <!-- Аналитика -->
             <div id="analytics-page" class="page">
                 <div class="analytics-page">
-                    <div class="period-tabs">
+                    <div class="period-tabs animate-stagger">
                         <span class="period-tab active">День</span>
                         <span class="period-tab">Неделя</span>
                         <span class="period-tab">Месяц</span>
@@ -1147,18 +1174,14 @@
             return total;
         }
 
-        // Функция для запуска анимации на странице
+        // Функция для запуска анимации на странице (сбрасываем и запускаем)
         function animatePage(pageElement) {
-            const animatedElements = pageElement.querySelectorAll('.animate-stagger, .task-card');
+            const animatedElements = pageElement.querySelectorAll('.animate-stagger');
             animatedElements.forEach(el => {
                 el.style.animation = 'none';
                 el.offsetHeight; // форсированный reflow
-                // Убираем задержки для task-card (они уже заданы в CSS)
-                if (el.classList.contains('task-card')) {
-                    el.style.animation = 'fadeInUp 0.5s ease forwards';
-                } else {
-                    el.style.animation = 'fadeInUp 0.5s ease forwards';
-                }
+                // Восстанавливаем анимацию, задержки уже в CSS
+                el.style.animation = '';
             });
         }
 
@@ -1301,11 +1324,6 @@
             const container = document.getElementById('analyticsContent');
             if (!container) return;
             container.innerHTML = `
-                <div class="period-tabs animate-stagger">
-                    <span class="period-tab active">День</span>
-                    <span class="period-tab">Неделя</span>
-                    <span class="period-tab">Месяц</span>
-                </div>
                 <div class="analytics-total animate-stagger">
                     <div class="balance-label">Общий доход</div>
                     <div class="balance-value" style="font-size:36px;">—</div>
