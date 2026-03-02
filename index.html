@@ -46,7 +46,7 @@
             100% { background-position: 0% 0%; }
         }
 
-        /* Слой бликов (усиленный) */
+        /* Слой бликов */
         .glare-layer {
             position: fixed;
             top: 0;
@@ -148,10 +148,12 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }
 
-        /* Блик на кнопках и карточках */
+        /* Блик на кнопках и карточках (без белых обрезков) */
         .glass-button, .action-btn, .task-card, .ref-link-field button, .modal button, #withdrawSubmit {
             position: relative;
             overflow: hidden;
+            outline: none;
+            border: 1px solid rgba(255,255,255,0.15);
         }
         .glass-button::after, .action-btn::after, .task-card::after, .ref-link-field button::after, .modal button::after, #withdrawSubmit::after {
             content: '';
@@ -213,8 +215,8 @@
         .page.active-page .analytics-page,
         .page.active-page .referral-page,
         .page.active-page .withdraw-page {
-            animation: fadeSlideUp 0.7s cubic-bezier(0.2, 0.9, 0.3, 1), 
-                       slideFromLeft 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+            animation: fadeSlideUp 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards, 
+                       slideFromLeft 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
         }
 
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
@@ -546,7 +548,7 @@
         .card-glow {
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 20px;
-            padding: 30px 20px 70px 20px; /* увеличен нижний отступ */
+            padding: 30px 20px 80px 20px; /* текст внизу */
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
@@ -563,13 +565,13 @@
             pointer-events: none;
         }
         .card-logo {
-            font-size: 32px; /* увеличен */
+            font-size: 32px;
             font-weight: 800;
             margin-bottom: 30px;
             color: white;
         }
         .card-number {
-            font-size: 24px;
+            font-size: 26px;
             letter-spacing: 2px;
             margin-bottom: 20px;
             font-weight: 700;
@@ -577,7 +579,7 @@
         .card-details {
             display: flex;
             justify-content: space-between;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
         }
         .balance-block {
@@ -1025,7 +1027,6 @@
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
-        // Имя для карты и профиля
         const displayName = firstName;
         document.getElementById('avatarLetter').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
