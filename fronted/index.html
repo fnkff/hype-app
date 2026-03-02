@@ -46,6 +46,28 @@
             100% { background-position: 0% 0%; }
         }
 
+        /* Слой бликов (движется синхронно с фоном) */
+        .glare-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.25) 0%, transparent 60%);
+            background-size: 200% 200%;
+            animation: glareMove 18s ease infinite;
+            pointer-events: none;
+            z-index: -1;
+            mix-blend-mode: overlay;
+        }
+        @keyframes glareMove {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 50% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 50% 50%; }
+            100% { background-position: 0% 0%; }
+        }
+
         /* Splash screen */
         .splash {
             position: fixed;
@@ -96,7 +118,7 @@
             z-index: 1;
         }
 
-        /* ===== ОСНОВНЫЕ СТИЛИ С ЭФФЕКТОМ СТЕКЛА (ПО РЕФЕРЕНСУ) ===== */
+        /* ===== ОСНОВНЫЕ СТИЛИ С ЭФФЕКТОМ СТЕКЛА ===== */
         .glass-card {
             background: rgba(0, 0, 0, 0.65);
             backdrop-filter: blur(34px);
@@ -173,11 +195,9 @@
         .logo {
             font-size: 36px;
             font-weight: 800;
-            background: linear-gradient(135deg, #1DB954, #0A5C2A);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(29,185,84,0.5));
+            color: white; /* базовый цвет */
+            mix-blend-mode: difference; /* адаптация к фону */
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
         .avatar {
             width: 50px;
@@ -247,9 +267,6 @@
         }
 
         .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin: 25px 0 15px;
         }
         .section-title h3 {
@@ -258,10 +275,23 @@
             color: #fff;
             text-shadow: 0 0 5px rgba(29,185,84,0.5);
         }
-        .section-title a {
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            text-decoration: none;
+
+        /* Табы (фильтры) теперь над списком заданий */
+        .filters-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .tab {
+            color: rgba(255,255,255,0.7);
+            font-size: 16px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            cursor: default;
+        }
+        .tab.active {
+            color: white;
+            border-bottom-color: #1DB954;
         }
 
         .tasks-grid {
@@ -314,26 +344,6 @@
             font-weight: 700;
             color: #4ade80;
             text-shadow: 0 0 5px rgba(74,222,128,0.5);
-        }
-
-        .favorites-section {
-            margin-top: 30px;
-        }
-        .favorites-tabs {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .tab {
-            color: rgba(255,255,255,0.7);
-            font-size: 16px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid transparent;
-            cursor: default;
-        }
-        .tab.active {
-            color: white;
-            border-bottom-color: #1DB954;
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -630,7 +640,7 @@
             fill: currentColor;
         }
 
-        /* Модалки */
+        /* Модалки с уменьшенным размытием */
         .modal {
             position: fixed;
             top: 0;
@@ -638,7 +648,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(34px);
+            backdrop-filter: blur(12px); /* уменьшено с 34 до 12 */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -653,7 +663,7 @@
         }
         .modal-content {
             background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(34px);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 30px;
             width: 90%;
@@ -674,7 +684,8 @@
     </style>
 </head>
 <body>
-    <div class="animated-bg"></div> <!-- Анимированный градиентный фон (чёрный->зелёный) -->
+    <div class="animated-bg"></div> <!-- Анимированный градиентный фон -->
+    <div class="glare-layer"></div> <!-- Слой бликов -->
 
     <div class="splash" id="splash">
         <div class="splash-logo">ХАЙП</div>
@@ -705,24 +716,22 @@
                         <div class="action-btn" onclick="alert('Помощь и поддержка')">Помощь</div>
                     </div>
 
-                    <!-- Раздел "Мои задания" -->
+                    <!-- Заголовок "Задания" (было "Мои задания") -->
                     <div class="section-title">
-                        <h3>Мои задания</h3>
-                        <a href="#">Все</a>
-                    </div>
-                    <div class="tasks-grid" id="tasksContainer">
-                        <!-- будут вставлены задания через js -->
+                        <h3>Задания</h3>
                     </div>
 
-                    <!-- Раздел "Избранное / Топ / Новые / Лидеры" -->
-                    <div class="favorites-section">
-                        <div class="favorites-tabs">
-                            <span class="tab active">Избранное</span>
-                            <span class="tab">Топ</span>
-                            <span class="tab">Новые</span>
-                            <span class="tab">Лидеры</span>
-                        </div>
-                        <!-- заглушка -->
+                    <!-- Табы (фильтры) теперь под заголовком -->
+                    <div class="filters-tabs">
+                        <span class="tab active">Избранное</span>
+                        <span class="tab">Топ</span>
+                        <span class="tab">Новые</span>
+                        <span class="tab">Лидеры</span>
+                    </div>
+
+                    <!-- Список заданий -->
+                    <div class="tasks-grid" id="tasksContainer">
+                        <!-- будут вставлены задания через js -->
                     </div>
                 </div>
             </div>
@@ -1008,7 +1017,7 @@
             `;
         }
 
-        // Обновление рефералов (с уменьшенным полем ввода)
+        // Обновление рефералов
         function updateReferralsPage() {
             const container = document.getElementById('referralsContent');
             if (!container) return;
@@ -1039,7 +1048,7 @@
             `;
         }
 
-        // Обновление вывода (карта удлинена)
+        // Обновление вывода
         function updateWithdrawPage() {
             const container = document.getElementById('withdrawContent');
             if (!container) return;
