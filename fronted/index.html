@@ -6,7 +6,7 @@
     <title>ХАЙП — главная</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -46,19 +46,33 @@
             100% { background-position: 0% 0%; }
         }
 
-        /* Слой бликов (движется синхронно с фоном) */
+        /* Слой бликов (усиленный) */
         .glare-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.25) 0%, transparent 60%);
+            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.4) 0%, transparent 50%);
             background-size: 200% 200%;
             animation: glareMove 18s ease infinite;
             pointer-events: none;
             z-index: -1;
             mix-blend-mode: overlay;
+        }
+        /* Второй слой бликов для большей интенсивности */
+        .glare-layer2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 60%, rgba(255,255,255,0.3) 0%, transparent 60%);
+            background-size: 200% 200%;
+            animation: glareMove2 22s ease infinite;
+            pointer-events: none;
+            z-index: -1;
+            mix-blend-mode: soft-light;
         }
         @keyframes glareMove {
             0% { background-position: 0% 0%; }
@@ -66,6 +80,13 @@
             50% { background-position: 100% 100%; }
             75% { background-position: 50% 50%; }
             100% { background-position: 0% 0%; }
+        }
+        @keyframes glareMove2 {
+            0% { background-position: 100% 100%; }
+            25% { background-position: 50% 50%; }
+            50% { background-position: 0% 0%; }
+            75% { background-position: 50% 50%; }
+            100% { background-position: 100% 100%; }
         }
 
         /* Splash screen */
@@ -85,7 +106,7 @@
         }
         .splash-logo {
             font-size: 64px;
-            font-weight: 700;
+            font-weight: 800;
             background: linear-gradient(135deg, #1DB954, #0A5C2A, #1DB954, #0A5C2A);
             -webkit-background-clip: text;
             background-clip: text;
@@ -135,7 +156,9 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 40px;
             color: white;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 14px 24px;
             transition: all 0.2s;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -195,9 +218,15 @@
         .logo {
             font-size: 36px;
             font-weight: 800;
-            color: white; /* базовый цвет */
-            mix-blend-mode: difference; /* адаптация к фону */
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            color: white;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(29,185,84,0.5);
+            animation: logoGlow 6s ease-in-out infinite;
+            position: relative;
+        }
+        @keyframes logoGlow {
+            0% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(29,185,84,0.5); }
+            50% { text-shadow: 0 0 40px rgba(255,255,255,1), 0 0 80px rgba(29,185,84,0.8); }
+            100% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(29,185,84,0.5); }
         }
         .avatar {
             width: 50px;
@@ -208,7 +237,7 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            font-weight: 600;
+            font-weight: 700;
             color: white;
             box-shadow: 0 0 15px rgba(29,185,84,0.5);
         }
@@ -237,6 +266,7 @@
         .balance-change {
             color: #4ade80;
             font-size: 16px;
+            font-weight: 600;
             margin-top: 4px;
         }
 
@@ -254,8 +284,8 @@
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 30px;
             color: white;
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 700;
+            font-size: 18px;
             text-align: center;
             transition: 0.2s;
             cursor: pointer;
@@ -270,13 +300,13 @@
             margin: 25px 0 15px;
         }
         .section-title h3 {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 24px;
+            font-weight: 700;
             color: #fff;
             text-shadow: 0 0 5px rgba(29,185,84,0.5);
         }
 
-        /* Табы (фильтры) теперь над списком заданий */
+        /* Табы (фильтры) */
         .filters-tabs {
             display: flex;
             gap: 15px;
@@ -285,6 +315,7 @@
         .tab {
             color: rgba(255,255,255,0.7);
             font-size: 16px;
+            font-weight: 600;
             padding-bottom: 5px;
             border-bottom: 2px solid transparent;
             cursor: default;
@@ -331,12 +362,13 @@
         }
         .task-info h4 {
             font-size: 18px;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 4px;
             color: white;
         }
         .task-info p {
             font-size: 14px;
+            font-weight: 500;
             color: rgba(255,255,255,0.7);
         }
         .task-price {
@@ -365,7 +397,7 @@
             align-items: center;
             justify-content: center;
             font-size: 36px;
-            font-weight: 600;
+            font-weight: 700;
             color: white;
             box-shadow: 0 0 20px rgba(29,185,84,0.5);
         }
@@ -394,6 +426,7 @@
             font-size: 14px;
             color: rgba(255,255,255,0.7);
             margin-bottom: 4px;
+            font-weight: 500;
         }
         .stat-number {
             font-size: 28px;
@@ -425,6 +458,11 @@
             padding: 20px;
             margin-bottom: 20px;
         }
+        .referral-link-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+        }
         .ref-link-field {
             display: flex;
             gap: 10px;
@@ -437,7 +475,8 @@
             border-radius: 40px;
             padding: 14px;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 500;
             outline: none;
         }
         .ref-link-field button {
@@ -445,11 +484,16 @@
             backdrop-filter: blur(34px);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 40px;
-            padding: 14px 24px;
+            padding: 14px 28px;
             color: white;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 18px;
             cursor: pointer;
             white-space: nowrap;
+            transition: 0.2s;
+        }
+        .ref-link-field button:active {
+            transform: scale(0.97);
         }
         .referral-stats {
             display: flex;
@@ -492,7 +536,7 @@
         .card-glow {
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 20px;
-            padding: 20px 20px 40px 20px;
+            padding: 30px 20px 60px 20px; /* ещё больше удлинено */
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
@@ -511,13 +555,20 @@
         .card-logo {
             font-size: 24px;
             font-weight: 800;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             color: white;
         }
         .card-number {
-            font-size: 18px;
+            font-size: 20px;
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 500;
         }
         .balance-block {
             background: rgba(0,0,0,0.65);
@@ -543,6 +594,7 @@
             border: none;
             color: white;
             font-size: 18px;
+            font-weight: 500;
             outline: none;
         }
         .withdraw-field input::placeholder {
@@ -569,6 +621,7 @@
             padding: 10px;
             border-radius: 30px;
             color: rgba(255,255,255,0.7);
+            font-weight: 600;
             cursor: default;
         }
         .period-tab.active {
@@ -598,7 +651,7 @@
             opacity: 0.5;
         }
 
-        /* ===== НИЖНЯЯ НАВИГАЦИЯ (СТЕКЛО) ===== */
+        /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
         .nav {
             position: fixed;
             bottom: 0;
@@ -617,6 +670,7 @@
             color: rgba(255,255,255,0.5);
             text-decoration: none;
             font-size: 12px;
+            font-weight: 600;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -648,7 +702,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(12px); /* уменьшено с 34 до 12 */
+            backdrop-filter: blur(12px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -668,7 +722,7 @@
             border-radius: 30px;
             width: 90%;
             max-width: 400px;
-            padding: 20px;
+            padding: 25px;
         }
         .modal-header {
             display: flex;
@@ -681,11 +735,48 @@
             color: rgba(255,255,255,0.6);
             cursor: pointer;
         }
+        .modal h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .modal p {
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+        }
+        .modal input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 40px;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 10px 0;
+        }
+        .modal button {
+            width: 100%;
+            padding: 16px;
+            background: rgba(29,185,84,0.4);
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal button:active {
+            transform: scale(0.97);
+        }
     </style>
 </head>
 <body>
-    <div class="animated-bg"></div> <!-- Анимированный градиентный фон -->
-    <div class="glare-layer"></div> <!-- Слой бликов -->
+    <div class="animated-bg"></div>
+    <div class="glare-layer"></div>
+    <div class="glare-layer2"></div>
 
     <div class="splash" id="splash">
         <div class="splash-logo">ХАЙП</div>
@@ -696,32 +787,27 @@
             <!-- Главная страница -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
-                    <!-- Верхняя панель с логотипом -->
                     <div class="top-bar">
                         <div class="logo">ХАЙП</div>
                         <div class="avatar" id="avatarLetter">Т</div>
                     </div>
 
-                    <!-- Баланс -->
                     <div class="total-balance">
                         <div class="balance-label">Общий баланс</div>
                         <div class="balance-value" id="mainBalance">0 ₽</div>
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
 
-                    <!-- Кнопки: История, Бонусы, Помощь -->
                     <div class="action-buttons">
                         <div class="action-btn" onclick="alert('История операций')">История</div>
                         <div class="action-btn" onclick="alert('Ежедневные бонусы')">Бонусы</div>
                         <div class="action-btn" onclick="alert('Помощь и поддержка')">Помощь</div>
                     </div>
 
-                    <!-- Заголовок "Задания" (было "Мои задания") -->
                     <div class="section-title">
                         <h3>Задания</h3>
                     </div>
 
-                    <!-- Табы (фильтры) теперь под заголовком -->
                     <div class="filters-tabs">
                         <span class="tab active">Избранное</span>
                         <span class="tab">Топ</span>
@@ -729,10 +815,7 @@
                         <span class="tab">Лидеры</span>
                     </div>
 
-                    <!-- Список заданий -->
-                    <div class="tasks-grid" id="tasksContainer">
-                        <!-- будут вставлены задания через js -->
-                    </div>
+                    <div class="tasks-grid" id="tasksContainer"></div>
                 </div>
             </div>
 
@@ -808,16 +891,16 @@
             </a>
         </div>
 
-        <!-- Модальные окна (игра, подписка, реферал) -->
+        <!-- Модальные окна -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header">
                     <button class="modal-close" id="closeRef">&times;</button>
                 </div>
                 <h3>Пригласи друга</h3>
-                <p style="margin: 10px 0; color: rgba(255,255,255,0.7);">Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
-                <input class="ref-link" id="refLink" readonly style="width:100%; padding:12px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-radius:40px; color:white; margin:10px 0;">
-                <button class="copy-btn" id="copyBtn" style="width:100%; padding:14px; background:rgba(29,185,84,0.4); border:none; border-radius:40px; color:white; font-weight:600;">Копировать ссылку</button>
+                <p>Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
+                <input class="ref-link" id="refLink" readonly>
+                <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
             </div>
         </div>
 
@@ -827,10 +910,10 @@
                     <button class="modal-close" id="closeSub">&times;</button>
                 </div>
                 <h3>Подпишись на канал</h3>
-                <p style="margin:10px 0;">Подпишись на @HYPE_JOB1 и нажми проверку</p>
-                <button class="channel-btn" id="channelBtn" style="width:100%; padding:14px; background:rgba(29,185,84,0.4); border:none; border-radius:40px; color:white; font-weight:600; margin-bottom:10px;">Перейти в канал</button>
-                <button class="check-btn" id="checkBtn" style="width:100%; padding:14px; background:rgba(29,185,84,0.4); border:none; border-radius:40px; color:white; font-weight:600;">Проверить подписку</button>
-                <div class="result" id="checkResult" style="margin-top:10px; text-align:center;"></div>
+                <p>Подпишись на @HYPE_JOB1 и нажми проверку</p>
+                <button class="channel-btn" id="channelBtn">Перейти в канал</button>
+                <button class="check-btn" id="checkBtn">Проверить подписку</button>
+                <div class="result" id="checkResult"></div>
             </div>
         </div>
 
@@ -840,15 +923,15 @@
                     <button class="modal-close" id="closeGame">&times;</button>
                 </div>
                 <h3>Мини-игра</h3>
-                <p style="margin:10px 0;">Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
+                <p>Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
                 <div class="game-boxes" style="display:flex; justify-content:space-around; margin:20px 0;">
                     <div class="game-box" data-box="1" style="width:70px; height:70px; background:rgba(29,185,84,0.3); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:28px; cursor:pointer;">?</div>
                     <div class="game-box" data-box="2" style="width:70px; height:70px; background:rgba(29,185,84,0.3); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:28px; cursor:pointer;">?</div>
                     <div class="game-box" data-box="3" style="width:70px; height:70px; background:rgba(29,185,84,0.3); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:28px; cursor:pointer;">?</div>
                 </div>
-                <div class="game-message" id="gameMessage" style="text-align:center;">Нажми на коробку</div>
-                <div class="game-reward" id="gameReward" style="text-align:center; font-size:24px; color:#4ade80;"></div>
-                <button class="claim-btn" id="claimBtn" style="display:none; width:100%; padding:14px; background:rgba(29,185,84,0.4); border:none; border-radius:40px; color:white; font-weight:600; margin-top:15px;">Забрать</button>
+                <div class="game-message" id="gameMessage">Нажми на коробку</div>
+                <div class="game-reward" id="gameReward"></div>
+                <button class="claim-btn" id="claimBtn" style="display:none;">Забрать</button>
             </div>
         </div>
     </div>
@@ -868,6 +951,7 @@
         if (tg) tg.expand();
         const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
         const userName = tg?.initDataUnsafe?.user?.first_name || 'Тимофей';
+        const userUsername = tg?.initDataUnsafe?.user?.username ? '@' + tg.initDataUnsafe.user.username : userName;
         document.getElementById('avatarLetter').innerText = userName.charAt(0).toUpperCase();
         document.getElementById('profileAvatar').innerText = userName.charAt(0).toUpperCase();
         document.getElementById('profileName').innerText = userName;
@@ -1048,17 +1132,17 @@
             `;
         }
 
-        // Обновление вывода
+        // Обновление вывода (карта с новыми данными)
         function updateWithdrawPage() {
             const container = document.getElementById('withdrawContent');
             if (!container) return;
             container.innerHTML = `
                 <div class="card-glow">
                     <div class="card-logo">ХАЙП</div>
-                    <div class="card-number">•••• •••• •••• 3377</div>
-                    <div style="display:flex; justify-content:space-between;">
+                    <div class="card-number">2200 0000 0000 0000</div>
+                    <div class="card-details">
                         <span>01/29</span>
-                        <span>${userName}</span>
+                        <span>${userUsername}</span>
                     </div>
                 </div>
                 <div class="balance-block">
@@ -1071,7 +1155,7 @@
                 <div class="withdraw-field">
                     <input type="text" placeholder="Номер карты или кошелька" id="withdrawCard">
                 </div>
-                <button class="glass-button" style="width:100%; padding:16px; font-size:18px; margin-top:10px;" onclick="alert('Вывод временно недоступен')">Вывести</button>
+                <button class="glass-button" style="width:100%; margin-top:10px;" onclick="alert('Вывод временно недоступен')">Вывести</button>
                 <div style="margin-top:25px;">
                     <h4 style="margin-bottom:15px;">Недавние операции</h4>
                     <div class="recent-transfers" style="background:rgba(0,0,0,0.65); backdrop-filter:blur(34px); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:16px;">
@@ -1250,7 +1334,6 @@
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
-                // Обновляем контент
                 if (page === 'profile') updateProfilePage();
                 else if (page === 'referrals') updateReferralsPage();
                 else if (page === 'withdraw') updateWithdrawPage();
