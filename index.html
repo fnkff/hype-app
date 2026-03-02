@@ -199,20 +199,27 @@
             display: block;
         }
 
-        /* Анимация с перелётом (overshoot) */
-        @keyframes bounceDown {
-            0% { opacity: 0; transform: translateY(-50px); }
-            60% { opacity: 1; transform: translateY(10px); }  /* ниже конечной позиции */
-            80% { transform: translateY(-3px); }              /* небольшой отскок вверх */
+        /* Анимация для отдельных элементов (stagger) */
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
-        .page.active-page .main-page,
-        .page.active-page .profile-page,
-        .page.active-page .analytics-page,
-        .page.active-page .referral-page,
-        .page.active-page .withdraw-page {
-            animation: bounceDown 0.9s cubic-bezier(0.3, 1.2, 0.4, 1) forwards;
+        .animate-stagger {
+            opacity: 0; /* начальное состояние */
+            animation: fadeInUp 0.5s ease forwards;
         }
+
+        /* Задержки для элементов главной */
+        .main-page .top-bar { animation-delay: 0s; }
+        .main-page .total-balance { animation-delay: 0.1s; }
+        .main-page .action-buttons { animation-delay: 0.2s; }
+        .main-page .section-title { animation-delay: 0.3s; }
+        .main-page .filters-tabs { animation-delay: 0.4s; }
+        .main-page .task-card:nth-child(1) { animation-delay: 0.5s; }
+        .main-page .task-card:nth-child(2) { animation-delay: 0.6s; }
+        .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
+
+        /* Аналогично для других страниц (можно добавить позже) */
 
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
         .main-page {
@@ -347,7 +354,7 @@
             padding: 16px;
             display: flex;
             align-items: center;
-            gap: 16px; /* увеличен отступ */
+            gap: 16px;
             transition: 0.2s;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
@@ -387,7 +394,7 @@
             color: #4ade80;
             text-shadow: 0 0 5px rgba(74,222,128,0.5);
             white-space: nowrap;
-            margin-left: 12px; /* дополнительный отступ */
+            margin-left: 12px;
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -555,9 +562,7 @@
             box-shadow: 0 0 30px rgba(29,185,84,0.3);
             display: flex;
             flex-direction: column;
-            max-width: 300px; /* уже, как на фото */
-            margin-left: auto;
-            margin-right: auto;
+            /* убрано ограничение ширины */
         }
         .card-glow::before {
             content: '';
@@ -621,7 +626,6 @@
         .withdraw-field input::placeholder {
             color: rgba(255,255,255,0.4);
         }
-        /* Кнопка вывода в едином стиле */
         #withdrawSubmit {
             background: rgba(29,185,84,0.4);
             backdrop-filter: blur(34px);
@@ -837,7 +841,7 @@
             font-weight: 500;
         }
 
-        /* Игра (яркие кнопки) */
+        /* Игра */
         .game-boxes {
             display: flex;
             justify-content: space-around;
@@ -893,28 +897,28 @@
             <!-- Главная страница -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
-                    <div class="top-bar">
+                    <div class="top-bar animate-stagger">
                         <div class="logo">ХАЙП</div>
                         <div class="avatar" id="avatarLetter">Т</div>
                     </div>
 
-                    <div class="total-balance">
+                    <div class="total-balance animate-stagger">
                         <div class="balance-label">Общий баланс</div>
                         <div class="balance-value" id="mainBalance">0 ₽</div>
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
 
-                    <div class="action-buttons">
+                    <div class="action-buttons animate-stagger">
                         <div class="action-btn" onclick="alert('История операций')">История</div>
                         <div class="action-btn" onclick="alert('Ежедневные бонусы')">Бонусы</div>
                         <div class="action-btn" onclick="alert('Помощь и поддержка')">Помощь</div>
                     </div>
 
-                    <div class="section-title">
+                    <div class="section-title animate-stagger">
                         <h3>Задания</h3>
                     </div>
 
-                    <div class="filters-tabs">
+                    <div class="filters-tabs animate-stagger">
                         <span class="tab active">Избранное</span>
                         <span class="tab">Топ</span>
                         <span class="tab">Новые</span>
@@ -1143,7 +1147,22 @@
             return total;
         }
 
-        // Обновление списка заданий
+        // Функция для запуска анимации на странице
+        function animatePage(pageElement) {
+            const animatedElements = pageElement.querySelectorAll('.animate-stagger, .task-card');
+            animatedElements.forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; // форсированный reflow
+                // Убираем задержки для task-card (они уже заданы в CSS)
+                if (el.classList.contains('task-card')) {
+                    el.style.animation = 'fadeInUp 0.5s ease forwards';
+                } else {
+                    el.style.animation = 'fadeInUp 0.5s ease forwards';
+                }
+            });
+        }
+
+        // Обновление списка заданий с добавлением класса animate-stagger
         function updateTasksGrid() {
             const container = document.getElementById('tasksContainer');
             if (!container) return;
@@ -1155,7 +1174,7 @@
             ];
             allTasks.forEach((t, index) => {
                 const card = document.createElement('div');
-                card.className = 'task-card';
+                card.className = 'task-card animate-stagger';
                 card.innerHTML = `
                     <div class="task-icon"></div>
                     <div class="task-info">
@@ -1189,20 +1208,20 @@
             const level = getLevel(rating);
             const progress = getProgressToNextLevel(rating);
             container.innerHTML = `
-                <div class="stat-item">
+                <div class="stat-item animate-stagger">
                     <div class="stat-label">ID</div>
                     <div class="stat-number">${userId}</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item animate-stagger">
                     <div class="stat-label">Рейтинг</div>
                     <div class="stat-number">Уровень ${level}</div>
                     <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item animate-stagger">
                     <div class="stat-label">Баланс</div>
                     <div class="stat-number">${balance} ₽</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item animate-stagger">
                     <div class="stat-label">Выполнено сегодня</div>
                     <div class="stat-number">${todayCount}</div>
                 </div>
@@ -1214,7 +1233,7 @@
             const container = document.getElementById('referralsContent');
             if (!container) return;
             container.innerHTML = `
-                <div class="referral-link-block">
+                <div class="referral-link-block animate-stagger">
                     <div class="referral-link-label">Твоя реферальная ссылка</div>
                     <div class="ref-link-field">
                         <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField" style="width:55%;">
@@ -1222,16 +1241,16 @@
                     </div>
                 </div>
                 <div class="referral-stats">
-                    <div class="referral-stat-card">
+                    <div class="referral-stat-card animate-stagger">
                         <div class="stat-label">Приглашено</div>
                         <div class="stat-number">0</div>
                     </div>
-                    <div class="referral-stat-card">
+                    <div class="referral-stat-card animate-stagger">
                         <div class="stat-label">Заработано</div>
                         <div class="stat-number">0 ₽</div>
                     </div>
                 </div>
-                <div class="friends-list">
+                <div class="friends-list animate-stagger">
                     <h4 style="margin-bottom:15px;">Недавно приглашённые</h4>
                     <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                     <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
@@ -1245,7 +1264,7 @@
             const container = document.getElementById('withdrawContent');
             if (!container) return;
             container.innerHTML = `
-                <div class="card-glow">
+                <div class="card-glow animate-stagger">
                     <div class="card-logo">ХАЙП</div>
                     <div class="card-number">2200 0000 0000 0000</div>
                     <div class="card-details">
@@ -1253,20 +1272,20 @@
                         <span>${displayName}</span>
                     </div>
                 </div>
-                <div class="balance-block">
+                <div class="balance-block animate-stagger">
                     <span class="balance-label">Твой баланс</span>
                     <span class="balance-number">${balance} ₽</span>
                 </div>
-                <div class="withdraw-field">
+                <div class="withdraw-field animate-stagger">
                     <input type="number" placeholder="Сумма (мин. 50 ₽)" id="withdrawAmount">
                 </div>
-                <div class="withdraw-field">
+                <div class="withdraw-field animate-stagger">
                     <input type="text" placeholder="Номер карты или кошелька" id="withdrawCard">
                 </div>
-                <button id="withdrawSubmit">Вывести</button>
+                <button id="withdrawSubmit" class="animate-stagger">Вывести</button>
                 <div style="margin-top:25px;">
                     <h4 style="margin-bottom:15px;">Недавние операции</h4>
-                    <div class="recent-transfers" style="background:rgba(0,0,0,0.65); backdrop-filter:blur(34px); border:none; border-radius:20px; padding:16px;">
+                    <div class="recent-transfers animate-stagger" style="background:rgba(0,0,0,0.65); backdrop-filter:blur(34px); border:none; border-radius:20px; padding:16px;">
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
@@ -1282,11 +1301,16 @@
             const container = document.getElementById('analyticsContent');
             if (!container) return;
             container.innerHTML = `
-                <div class="analytics-total">
+                <div class="period-tabs animate-stagger">
+                    <span class="period-tab active">День</span>
+                    <span class="period-tab">Неделя</span>
+                    <span class="period-tab">Месяц</span>
+                </div>
+                <div class="analytics-total animate-stagger">
                     <div class="balance-label">Общий доход</div>
                     <div class="balance-value" style="font-size:36px;">—</div>
                 </div>
-                <div class="analytics-total">
+                <div class="analytics-total animate-stagger">
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
                         <span>Доход</span>
                         <span>—</span>
@@ -1303,7 +1327,7 @@
                 </div>
                 <div style="margin-top:25px;">
                     <h4 style="margin-bottom:15px;">Последние операции</h4>
-                    <div class="recent-transfers" style="background:rgba(0,0,0,0.65); backdrop-filter:blur(34px); border:none; border-radius:20px; padding:16px;">
+                    <div class="recent-transfers animate-stagger" style="background:rgba(0,0,0,0.65); backdrop-filter:blur(34px); border:none; border-radius:20px; padding:16px;">
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
@@ -1446,21 +1470,11 @@
                 else if (page === 'referrals') updateReferralsPage();
                 else if (page === 'withdraw') updateWithdrawPage();
                 else if (page === 'analytics') updateAnalyticsPage();
+
+                // Запускаем анимацию для новой страницы
+                animatePage(targetPage);
             });
         });
-
-        // Принудительный запуск анимации для активной страницы при загрузке
-        function restartAnimation() {
-            const activePage = document.querySelector('.page.active-page');
-            if (activePage) {
-                const content = activePage.querySelector('.main-page, .profile-page, .analytics-page, .referral-page, .withdraw-page');
-                if (content) {
-                    content.style.animation = 'none';
-                    content.offsetHeight;
-                    content.style.animation = 'bounceDown 0.9s cubic-bezier(0.3, 1.2, 0.4, 1) forwards';
-                }
-            }
-        }
 
         // Инициализация
         updateTasksGrid();
@@ -1469,7 +1483,9 @@
         updateWithdrawPage();
         updateAnalyticsPage();
         updateStreak();
-        restartAnimation();
+
+        // Запуск анимации для главной страницы
+        animatePage(document.getElementById('tasks-page'));
     </script>
 </body>
 </html>
