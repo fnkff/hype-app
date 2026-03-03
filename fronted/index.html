@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -53,7 +53,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.3) 0%, transparent 50%);
+            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.2) 0%, transparent 50%);
             background-size: 200% 200%;
             animation: glareMove 18s ease infinite;
             pointer-events: none;
@@ -66,7 +66,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 70% 60%, rgba(29,185,84,0.2) 0%, transparent 60%);
+            background: radial-gradient(circle at 70% 60%, rgba(29,185,84,0.15) 0%, transparent 60%);
             background-size: 200% 200%;
             animation: glareMove2 22s ease infinite;
             pointer-events: none;
@@ -138,7 +138,7 @@
             z-index: 1;
         }
 
-        /* ===== ФИКСИРОВАННАЯ ШАПКА (ПЛОТНАЯ) ===== */
+        /* ===== ФИКСИРОВАННАЯ ШАПКА (полупрозрачная) ===== */
         .fixed-header {
             position: fixed;
             top: 0;
@@ -149,8 +149,10 @@
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            background: rgba(0, 0, 0, 0.9); /* плотный фон, без градиента */
-            border-bottom: 1px solid rgba(255,255,255,0.1); /* легкая граница вместо полосы */
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             pointer-events: none;
         }
         .fixed-header .logo {
@@ -186,7 +188,7 @@
             flex: 1;
             min-height: 0;
             overflow-y: auto;
-            margin-top: 80px; /* точно под шапку */
+            margin-top: 80px;
             margin-bottom: 80px;
             scrollbar-width: thin;
             scrollbar-color: #1DB954 #000000;
@@ -243,6 +245,7 @@
         .referral-page .friends-list { animation-delay: 0.3s; }
 
         /* Задержки для вывода */
+        .withdraw-page .card-glow { animation-delay: 0s; }
         .withdraw-page .balance-block { animation-delay: 0.1s; }
         .withdraw-page .withdraw-field:nth-of-type(1) { animation-delay: 0.2s; }
         .withdraw-page .withdraw-field:nth-of-type(2) { animation-delay: 0.3s; }
@@ -255,21 +258,23 @@
         .analytics-page .analytics-total:nth-of-type(2) { animation-delay: 0.2s; }
         .analytics-page .recent-transfers { animation-delay: 0.3s; }
 
-        /* ===== ПЛОТНЫЙ ИНТЕРФЕЙС ===== */
-        /* Убираем backdrop-filter, увеличиваем непрозрачность фона */
-        .glass-card, .action-btn, .task-card, .stat-item, .referral-link-block, 
+        /* ===== ПРОЗРАЧНЫЙ ИНТЕРФЕЙС ===== */
+        .total-balance, .action-btn, .task-card, .stat-item, .referral-link-block, 
         .referral-stat-card, .friends-list, .balance-block, .withdraw-field, 
         .period-tabs, .analytics-total, .recent-transfers, .modal-content {
-            background: rgba(20, 20, 20, 0.95); /* почти непрозрачный, тёмно-серый */
-            border: 1px solid rgba(255,255,255,0.1); /* лёгкая граница для контраста */
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 24px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-            /* backdrop-filter убран */
         }
 
-        /* Для кнопок и карточек заданий сохраняем прежние оттенки */
-        .action-btn, .task-card, .withdraw-field, #withdrawSubmit {
-            background: rgba(30, 30, 30, 0.95);
+        /* Кнопки и поля ввода чуть плотнее для читаемости */
+        .action-btn, .withdraw-field, #withdrawSubmit {
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
         .action-btn:hover {
             background: rgba(29,185,84,0.3);
@@ -284,9 +289,6 @@
         }
 
         .total-balance {
-            background: rgba(20,20,20,0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
             padding: 15px;
             margin-bottom: 25px;
         }
@@ -317,8 +319,6 @@
         .action-btn {
             flex: 1;
             padding: 14px;
-            background: rgba(30,30,30,0.95);
-            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 30px;
             color: white;
             font-weight: 700;
@@ -347,6 +347,10 @@
             display: flex;
             gap: 15px;
             margin-bottom: 15px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            backdrop-filter: none;
         }
         .tab {
             color: rgba(255,255,255,0.7);
@@ -367,16 +371,12 @@
             gap: 12px;
         }
         .task-card {
-            background: rgba(30, 30, 30, 0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
             padding: 16px;
             display: flex;
             align-items: center;
             gap: 16px;
             transition: 0.2s;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
         .task-card:active {
             background: rgba(29,185,84,0.2);
@@ -452,9 +452,6 @@
             gap: 15px;
         }
         .stat-item {
-            background: rgba(20,20,20,0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
             padding: 16px;
         }
         .stat-label {
@@ -485,9 +482,6 @@
             padding: 0 20px 20px 20px;
         }
         .referral-link-block {
-            background: rgba(20,20,20,0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
         }
@@ -515,6 +509,8 @@
         }
         .ref-link-field button {
             background: rgba(29,185,84,0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 40px;
             padding: 14px 28px;
@@ -535,15 +531,9 @@
         }
         .referral-stat-card {
             flex: 1;
-            background: rgba(20,20,20,0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
             padding: 16px;
         }
         .friends-list {
-            background: rgba(20,20,20,0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
             padding: 16px;
         }
         .friend-item {
@@ -597,18 +587,12 @@
             color: white;
         }
         .balance-block {
-            background: rgba(20,20,20,0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
             padding: 16px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
         }
         .withdraw-field {
-            background: rgba(30,30,30,0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
             padding: 16px;
             margin-bottom: 15px;
         }
@@ -626,6 +610,8 @@
         }
         #withdrawSubmit {
             background: rgba(29,185,84,0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 40px;
             padding: 16px;
@@ -649,7 +635,9 @@
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
-            background: rgba(20,20,20,0.95);
+            background: rgba(20,20,20,0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 40px;
             padding: 5px;
@@ -668,9 +656,6 @@
             color: white;
         }
         .analytics-total {
-            background: rgba(20,20,20,0.95);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
         }
@@ -695,7 +680,9 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-around;
@@ -730,7 +717,7 @@
             fill: currentColor;
         }
 
-        /* Модалки с плавной анимацией */
+        /* Модалки */
         .modal {
             position: fixed;
             top: 0;
@@ -753,6 +740,8 @@
         }
         .modal-content {
             background: rgba(20,20,20,0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 30px;
             width: 90%;
@@ -816,6 +805,8 @@
             width: 100%;
             padding: 16px;
             background: rgba(29,185,84,0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 40px;
             color: white;
@@ -888,7 +879,7 @@
     </div>
 
     <div class="app-content" id="appContent">
-        <!-- Фиксированная шапка (плотная) -->
+        <!-- Фиксированная шапка -->
         <div class="fixed-header">
             <div class="logo">ХАЙП</div>
             <div class="avatar" id="headerAvatar">Т</div>
@@ -1271,7 +1262,7 @@
         }
 
         function updateWithdrawPage() {
-            // уже статично
+            // контент уже в HTML
         }
 
         function updateAnalyticsPage() {
