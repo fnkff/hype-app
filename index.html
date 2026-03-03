@@ -888,10 +888,93 @@
             font-weight: bold;
             color: #008000;
         }
+
+        /* ===== АНИМАЦИЯ ОГОНЬКА ===== */
+        .streak-animation-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .streak-animation-overlay.active {
+            opacity: 1;
+        }
+        .fire-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,140,0,0.6) 0%, rgba(255,0,0,0.3) 40%, transparent 70%);
+            filter: blur(40px);
+            animation: firePulse 1.5s ease-out infinite alternate;
+        }
+        .fire-effect2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 60%, rgba(255,200,0,0.5) 0%, transparent 60%);
+            filter: blur(50px);
+            animation: fireMove 2s ease-in-out infinite alternate;
+        }
+        @keyframes firePulse {
+            0% { opacity: 0.6; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        @keyframes fireMove {
+            0% { transform: translate(-10%, -10%) scale(1); }
+            100% { transform: translate(10%, 10%) scale(1.3); }
+        }
+        .streak-number-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+        }
+        .old-streak, .new-streak {
+            position: absolute;
+            font-size: 80px;
+            font-weight: 900;
+            color: #ff8c00;
+            text-shadow: 0 0 30px #ff8c00, 0 0 60px #ff4500;
+            transition: all 0.5s ease;
+        }
+        .old-streak {
+            animation: fadeOutUp 0.5s forwards;
+        }
+        .new-streak {
+            animation: fadeInUp 0.5s forwards;
+        }
+        @keyframes fadeOutUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(50px) scale(0.5); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
     </style>
 </head>
 <body>
     <div class="animated-bg"></div>
+
+    <!-- Оверлей для анимации огонька -->
+    <div class="streak-animation-overlay" id="streakAnimationOverlay">
+        <div class="fire-effect"></div>
+        <div class="fire-effect2"></div>
+        <div class="streak-number-container" id="streakNumberContainer">
+            <div class="old-streak" id="oldStreak"></div>
+            <div class="new-streak" id="newStreak"></div>
+        </div>
+    </div>
 
     <div class="splash" id="splash">
         <div class="splash-logo">ХАЙП</div>
@@ -1058,7 +1141,7 @@
     </div>
 
     <script>
-        // Логика скролла для шапки
+        // Логика скролла для шапки (порог появления 100px)
         const fixedHeader = document.getElementById('fixedHeader');
         const pagesContainer = document.getElementById('pagesContainer');
         let lastScrollTop = 0;
@@ -1068,8 +1151,8 @@
             if (scrollTop > lastScrollTop && scrollTop > 20) {
                 // скроллим вниз – скрываем шапку
                 fixedHeader.classList.add('hidden');
-            } else if (scrollTop < 200) {
-                // скроллим вверх и мы близко к верху – показываем шапку
+            } else if (scrollTop < 100) {
+                // скроллим вверх и мы близко к верху – показываем шапку (порог изменён на 100)
                 fixedHeader.classList.remove('hidden');
             }
             lastScrollTop = scrollTop;
@@ -1122,10 +1205,23 @@
             localStorage.setItem('lastStreakDate', today);
             return streak;
         }
-        function updateStreakDisplay() {
+        function updateStreakDisplay(animate = false, oldValue = null) {
             const streak = getStreak();
             document.getElementById('streakCount').innerText = streak;
             renderWeekdays(streak);
+            
+            if (animate && oldValue !== null && oldValue < streak) {
+                // Запускаем анимацию огонька
+                const overlay = document.getElementById('streakAnimationOverlay');
+                const oldEl = document.getElementById('oldStreak');
+                const newEl = document.getElementById('newStreak');
+                oldEl.innerText = oldValue;
+                newEl.innerText = streak;
+                overlay.classList.add('active');
+                setTimeout(() => {
+                    overlay.classList.remove('active');
+                }, 1500);
+            }
         }
 
         function renderWeekdays(streak) {
@@ -1182,8 +1278,8 @@
             if (id === 2) {
                 return !localStorage.getItem('subscription_done');
             } else if (id === 3) {
-                let key = id + '_' + new Date().toDateString();
-                return !counts[key] || counts[key] < 1;
+                // Лимит на мини-игру временно отключён для тестирования анимации
+                return true;
             } else {
                 let key = id + '_' + new Date().toDateString();
                 return !counts[key] || counts[key] < 3;
@@ -1416,11 +1512,8 @@
             box.addEventListener('click', function(e) {
                 if (this.classList.contains('disabled')) return;
                 const id = 3;
-                if (!canDo(id)) {
-                    alert('Лимит на сегодня');
-                    gameModal.classList.remove('show');
-                    return;
-                }
+                // Лимит отключён, поэтому canDo(id) всегда true
+                const oldStreak = getStreak();
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
                 this.innerText = currentWin + ' ₽';
@@ -1434,13 +1527,15 @@
         claimBtn.onclick = () => {
             if (currentWin === 0) return;
             const id = 3;
+            const oldStreak = getStreak();
             balance += currentWin;
             saveBalance();
             updateStreak();
             addRating(10);
             addCount(3);
             updateTasksGrid();
-            updateStreakDisplay();
+            const newStreak = getStreak();
+            updateStreakDisplay(newStreak > oldStreak, oldStreak);
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
         };
@@ -1477,11 +1572,13 @@
             const success = true;
 
             if (success) {
+                const oldStreak = getStreak();
                 balance += 20;
                 saveBalance();
                 updateStreak();
                 addRating(10);
-                updateStreakDisplay();
+                const newStreak = getStreak();
+                updateStreakDisplay(newStreak > oldStreak, oldStreak);
                 localStorage.setItem('subscription_done', 'true');
                 checkResult.style.color = '#00b300';
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
