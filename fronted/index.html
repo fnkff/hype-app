@@ -408,17 +408,20 @@
         .task-card:active {
             background: rgba(0,128,0,0.2);
         }
+        /* Контейнер для иконки задания (SVG) */
         .task-icon {
-            width: auto;
-            height: auto;
-            background: transparent;
-            border-radius: 0;
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            flex-shrink: 0;
-            margin-right: 4px;
+        }
+        .task-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: #008000;
+            filter: drop-shadow(0 0 5px rgba(0,128,0,0.5));
         }
         .task-info {
             flex: 1;
@@ -718,7 +721,7 @@
             opacity: 0.5;
         }
 
-        /* ===== НИЖНЯЯ НАВИГАЦИЯ (исправлено) ===== */
+        /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
         .nav {
             position: fixed;
             bottom: 0;
@@ -983,7 +986,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация (исправленная) -->
+        <!-- Нижняя навигация -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24">
@@ -1017,7 +1020,7 @@
             </a>
         </div>
 
-        <!-- Модальные окна (без изменений) -->
+        <!-- Модальные окна -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1056,7 +1059,7 @@
     </div>
 
     <script>
-        // Логика скролла для шапки (без изменения отступа)
+        // Логика скролла для шапки
         const fixedHeader = document.getElementById('fixedHeader');
         const pagesContainer = document.getElementById('pagesContainer');
         let lastScrollTop = 0;
@@ -1204,10 +1207,15 @@
             });
         }
 
+        // Функции для получения иконок заданий (SVG)
         function getTaskIcon(name) {
-            if (name.includes('друга')) return '👥';
-            if (name.includes('канал')) return '📢';
-            return '🎮';
+            if (name.includes('друга')) {
+                return `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
+            }
+            if (name.includes('канал')) {
+                return `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/></svg>`;
+            }
+            return `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`;
         }
 
         function updateTasksGrid() {
@@ -1215,15 +1223,15 @@
             if (!container) return;
             container.innerHTML = '';
             const allTasks = [
-                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку другу', price: 30, icon: '👥' },
-                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20, icon: '📢' },
-                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20', icon: '🎮' }
+                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку другу', price: 30 },
+                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
+                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' }
             ];
             allTasks.forEach((t, index) => {
                 const card = document.createElement('div');
                 card.className = 'task-card animate-stagger';
                 card.innerHTML = `
-                    <div class="task-icon">${t.icon}</div>
+                    <div class="task-icon">${getTaskIcon(t.name)}</div>
                     <div class="task-info">
                         <h4>${t.name}</h4>
                         <p>${t.desc}</p>
