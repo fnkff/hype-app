@@ -615,7 +615,6 @@
             pointer-events: none;
             z-index: 1;
         }
-        /* Дополнительный блик для 3D */
         .card-glow::after {
             content: '';
             position: absolute;
@@ -1365,6 +1364,11 @@
             const container = document.getElementById('analyticsContent');
             if (!container) return;
             container.innerHTML = `
+                <div class="period-tabs animate-stagger">
+                    <span class="period-tab active">День</span>
+                    <span class="period-tab">Неделя</span>
+                    <span class="period-tab">Месяц</span>
+                </div>
                 <div class="analytics-total animate-stagger">
                     <div class="balance-label">Общий доход</div>
                     <div class="balance-value" style="font-size:36px;">—</div>
