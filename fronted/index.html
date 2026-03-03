@@ -138,7 +138,7 @@
             z-index: 1;
         }
 
-        /* ===== ФИКСИРОВАННАЯ ШАПКА (ПРОЗРАЧНАЯ) ===== */
+        /* ===== ФИКСИРОВАННАЯ ШАПКА (ПРОЗРАЧНАЯ, БЕЗ ПОЛОСЫ) ===== */
         .fixed-header {
             position: fixed;
             top: 0;
@@ -153,7 +153,7 @@
             pointer-events: none;
         }
         .fixed-header .logo {
-            font-size: 40px; /* крупнее */
+            font-size: 40px;
             font-weight: 800;
             color: white;
             text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(29,185,84,0.5);
@@ -166,7 +166,7 @@
             100% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(29,185,84,0.5); }
         }
         .fixed-header .avatar {
-            width: 56px; /* чуть крупнее */
+            width: 56px;
             height: 56px;
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 50%;
@@ -185,7 +185,7 @@
             flex: 1;
             min-height: 0;
             overflow-y: auto;
-            margin-top: 90px; /* чуть больше места под шапку */
+            margin-top: 90px;
             margin-bottom: 80px;
             scrollbar-width: thin;
             scrollbar-color: #1DB954 #000000;
@@ -254,7 +254,7 @@
         .analytics-page .analytics-total:nth-of-type(2) { animation-delay: 0.2s; }
         .analytics-page .recent-transfers { animation-delay: 0.3s; }
 
-        /* ===== ПРОЗРАЧНЫЙ ИНТЕРФЕЙС С КРУПНЫМ ТЕКСТОМ ===== */
+        /* ===== ПРОЗРАЧНЫЙ ИНТЕРФЕЙС ===== */
         .glass-card, .action-btn, .task-card, .stat-item, .referral-link-block, 
         .referral-stat-card, .friends-list, .balance-block, .withdraw-field, 
         .period-tabs, .analytics-total, .recent-transfers, .modal-content {
@@ -276,76 +276,6 @@
         }
         .task-card:active {
             background: rgba(29,185,84,0.2);
-        }
-
-        /* Увеличиваем и утолщаем текст */
-        body, button, input, .tab, .stat-label, .friend-status, .game-message {
-            font-weight: 600;
-        }
-        .balance-value {
-            font-size: 48px;
-            font-weight: 800;
-        }
-        .balance-label, .stat-label, .referral-link-label, .tab {
-            font-size: 16px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-        .balance-change {
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .action-btn {
-            font-size: 20px;
-            font-weight: 700;
-            padding: 16px;
-        }
-        .section-title h3 {
-            font-size: 26px;
-            font-weight: 800;
-        }
-        .task-info h4 {
-            font-size: 20px;
-            font-weight: 700;
-        }
-        .task-info p {
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .task-price {
-            font-size: 22px;
-            font-weight: 800;
-        }
-        .stat-number {
-            font-size: 32px;
-            font-weight: 800;
-        }
-        .referral-stat-value {
-            font-size: 32px;
-            font-weight: 800;
-        }
-        .friend-name, .friend-status, .transfer-name, .transfer-date {
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .game-box {
-            font-size: 32px;
-            font-weight: 700;
-        }
-        .game-message {
-            font-size: 20px;
-        }
-        .game-reward {
-            font-size: 26px;
-            font-weight: 800;
-        }
-        .modal h3 {
-            font-size: 26px;
-            font-weight: 800;
-        }
-        .modal p, .modal input, .modal button {
-            font-size: 18px;
-            font-weight: 600;
         }
 
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
@@ -382,6 +312,7 @@
             margin-top: 4px;
         }
 
+        /* Кнопки "История", "Бонусы", "Помощь" — уменьшены */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -389,7 +320,7 @@
         }
         .action-btn {
             flex: 1;
-            padding: 16px;
+            padding: 12px; /* было 16px */
             background: rgba(30,30,30,0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -397,7 +328,7 @@
             border-radius: 30px;
             color: white;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 18px; /* было 20px */
             text-align: center;
             transition: 0.2s;
             cursor: pointer;
@@ -493,7 +424,7 @@
             margin-left: 8px;
         }
 
-        /* ===== ПРОФИЛЬ ===== */
+        /* ===== ПРОФИЛЬ (сокращён для ответа, но функционал сохранён) ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
         }
@@ -559,7 +490,7 @@
             width: 0%;
         }
 
-        /* ===== РЕФЕРАЛЫ ===== */
+        /* ===== РЕФЕРАЛЫ (сокращён) ===== */
         .referral-page {
             padding: 0 20px 20px 20px;
         }
@@ -998,7 +929,7 @@
     </div>
 
     <div class="app-content" id="appContent">
-        <!-- Фиксированная шапка (полностью прозрачная) -->
+        <!-- Фиксированная шапка (полностью прозрачная, без полосы) -->
         <div class="fixed-header">
             <div class="logo">ХАЙП</div>
             <div class="avatar" id="headerAvatar">Т</div>
