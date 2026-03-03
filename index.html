@@ -149,7 +149,7 @@
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            background: transparent; /* полностью прозрачный фон */
+            background: transparent;
             pointer-events: none;
         }
         .fixed-header .logo {
@@ -220,6 +220,7 @@
         }
 
         /* Задержки для главной страницы */
+        .main-page .streak-block { animation-delay: 0.05s; }
         .main-page .total-balance { animation-delay: 0.1s; }
         .main-page .action-buttons { animation-delay: 0.2s; }
         .main-page .section-title { animation-delay: 0.3s; }
@@ -242,6 +243,7 @@
         .referral-page .friends-list { animation-delay: 0.3s; }
 
         /* Задержки для вывода */
+        .withdraw-page .card-glow { animation-delay: 0s; }
         .withdraw-page .balance-block { animation-delay: 0.1s; }
         .withdraw-page .withdraw-field:nth-of-type(1) { animation-delay: 0.2s; }
         .withdraw-page .withdraw-field:nth-of-type(2) { animation-delay: 0.3s; }
@@ -257,7 +259,7 @@
         /* ===== ПРОЗРАЧНЫЙ ИНТЕРФЕЙС ===== */
         .glass-card, .action-btn, .task-card, .stat-item, .referral-link-block, 
         .referral-stat-card, .friends-list, .balance-block, .withdraw-field, 
-        .period-tabs, .analytics-total, .recent-transfers, .modal-content {
+        .period-tabs, .analytics-total, .recent-transfers, .modal-content, .streak-block {
             background: rgba(20, 20, 20, 0.75);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -276,6 +278,60 @@
         }
         .task-card:active {
             background: rgba(29,185,84,0.2);
+        }
+
+        /* ===== СТИЛЬ ДЛЯ STREAK ===== */
+        .streak-block {
+            margin-bottom: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .streak-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .streak-icon {
+            font-size: 32px;
+            filter: drop-shadow(0 0 8px #ff8c00);
+        }
+        .streak-count {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ff8c00;
+        }
+        .streak-label {
+            font-size: 16px;
+            color: rgba(255,255,255,0.7);
+            margin-left: auto;
+        }
+        .weekdays {
+            display: flex;
+            justify-content: space-between;
+        }
+        .weekday {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .weekday span {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 600;
+        }
+        .weekday .day-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: background 0.2s;
+        }
+        .weekday.active .day-indicator {
+            background: #1DB954;
+            box-shadow: 0 0 10px #1DB954;
         }
 
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
@@ -312,7 +368,6 @@
             margin-top: 4px;
         }
 
-        /* Кнопки "История", "Бонусы", "Помощь" — уменьшены */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -320,7 +375,7 @@
         }
         .action-btn {
             flex: 1;
-            padding: 12px; /* было 16px */
+            padding: 12px;
             background: rgba(30,30,30,0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -328,7 +383,7 @@
             border-radius: 30px;
             color: white;
             font-weight: 700;
-            font-size: 18px; /* было 20px */
+            font-size: 18px;
             text-align: center;
             transition: 0.2s;
             cursor: pointer;
@@ -389,16 +444,18 @@
         .task-card:active {
             background: rgba(29,185,84,0.2);
         }
+        /* Иконка задания (вместо зелёного квадрата) */
         .task-icon {
-            width: 56px;
-            height: 56px;
-            background: rgba(29,185,84,0.3);
-            border-radius: 16px;
+            width: auto;
+            height: auto;
+            background: transparent;
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0;
+            font-size: 32px;
             flex-shrink: 0;
+            margin-right: 4px; /* чтобы немного не доходило до текста */
         }
         .task-info {
             flex: 1;
@@ -424,7 +481,7 @@
             margin-left: 8px;
         }
 
-        /* ===== ПРОФИЛЬ (сокращён для ответа, но функционал сохранён) ===== */
+        /* ===== ПРОФИЛЬ ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
         }
@@ -490,7 +547,7 @@
             width: 0%;
         }
 
-        /* ===== РЕФЕРАЛЫ (сокращён) ===== */
+        /* ===== РЕФЕРАЛЫ ===== */
         .referral-page {
             padding: 0 20px 20px 20px;
         }
@@ -601,7 +658,7 @@
             color: white;
         }
         .card-number {
-            font-size: 24px;
+            font-size: 20px; /* уменьшено с 24px */
             letter-spacing: 2px;
             margin-bottom: 15px;
             font-weight: 700;
@@ -929,7 +986,7 @@
     </div>
 
     <div class="app-content" id="appContent">
-        <!-- Фиксированная шапка (полностью прозрачная, без полосы) -->
+        <!-- Фиксированная шапка (прозрачная) -->
         <div class="fixed-header">
             <div class="logo">ХАЙП</div>
             <div class="avatar" id="headerAvatar">Т</div>
@@ -949,6 +1006,16 @@
                         <div class="action-btn" onclick="alert('История операций')">История</div>
                         <div class="action-btn" onclick="alert('Ежедневные бонусы')">Бонусы</div>
                         <div class="action-btn" onclick="alert('Помощь и поддержка')">Помощь</div>
+                    </div>
+
+                    <!-- Блок Streak -->
+                    <div class="streak-block animate-stagger" id="streakBlock">
+                        <div class="streak-header">
+                            <span class="streak-icon">🔥</span>
+                            <span class="streak-count" id="streakCount">0</span>
+                            <span class="streak-label">дней подряд</span>
+                        </div>
+                        <div class="weekdays" id="weekdaysContainer"></div>
                     </div>
 
                     <div class="section-title animate-stagger">
@@ -1156,6 +1223,36 @@
             localStorage.setItem('lastStreakDate', today);
             return streak;
         }
+        function updateStreakDisplay() {
+            const streak = getStreak();
+            document.getElementById('streakCount').innerText = streak;
+            renderWeekdays(streak);
+        }
+
+        // Функция для отображения дней недели
+        function renderWeekdays(streak) {
+            const container = document.getElementById('weekdaysContainer');
+            if (!container) return;
+            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            const today = new Date().getDay(); // 0 - вс, 1 - пн, ... 6 - сб
+            // Приведём к формату: понедельник - 0, воскресенье - 6
+            let dayIndex = today === 0 ? 6 : today - 1; // теперь 0 = пн, 6 = вс
+            
+            let html = '';
+            for (let i = 0; i < 7; i++) {
+                // Активны дни, которые находятся в пределах streak назад от сегодня
+                // Например, если streak = 3, то активны сегодня, вчера, позавчера
+                const daysAgo = (dayIndex - i + 7) % 7; // сколько дней назад от сегодня
+                const active = daysAgo < streak;
+                html += `
+                    <div class="weekday ${active ? 'active' : ''}">
+                        <span>${days[i]}</span>
+                        <div class="day-indicator"></div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
 
         function getRating() {
             return parseInt(localStorage.getItem('rating')) || 0;
@@ -1222,15 +1319,15 @@
             if (!container) return;
             container.innerHTML = '';
             const allTasks = [
-                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку другу', price: 30 },
-                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
-                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' }
+                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку другу', price: 30, icon: '👥' },
+                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20, icon: '📢' },
+                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20', icon: '🎮' }
             ];
             allTasks.forEach((t, index) => {
                 const card = document.createElement('div');
                 card.className = 'task-card animate-stagger';
                 card.innerHTML = `
-                    <div class="task-icon"></div>
+                    <div class="task-icon">${t.icon}</div>
                     <div class="task-info">
                         <h4>${t.name}</h4>
                         <p>${t.desc}</p>
@@ -1407,6 +1504,7 @@
             addRating(10);
             addCount(3);
             updateTasksGrid();
+            updateStreakDisplay(); // обновим отображение streak
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
         };
@@ -1448,6 +1546,7 @@
                 saveBalance();
                 updateStreak();
                 addRating(10);
+                updateStreakDisplay();
                 localStorage.setItem('subscription_done', 'true');
                 checkResult.style.color = '#4ade80';
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
@@ -1499,6 +1598,7 @@
         updateWithdrawPage();
         updateAnalyticsPage();
         updateStreak();
+        updateStreakDisplay();
 
         animatePage(document.getElementById('tasks-page'));
     </script>
