@@ -17,7 +17,7 @@
         }
 
         body {
-            background: #0a0a0f;
+            background: #252222;
             color: #ffffff;
             display: flex;
             flex-direction: column;
@@ -26,15 +26,24 @@
             padding: 0;
         }
 
-        /* Статичный градиентный фон (крипто-стиль) */
-        .static-bg {
+        /* Анимированный градиентный фон (тёмные оттенки) */
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 40%, #1a1a2f, #16213e, #0f0f1f, #0a0a0f);
+            background: radial-gradient(circle at 40% 50%, #252222, #1a1a1a, #008000, #252222 80%);
+            background-size: 300% 300%;
+            animation: bgPulse 18s ease infinite;
             z-index: -2;
+        }
+        @keyframes bgPulse {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 50% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 50% 50%; }
+            100% { background-position: 0% 0%; }
         }
 
         /* Splash screen */
@@ -44,7 +53,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #0a0a0f;
+            background: #252222;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -55,12 +64,12 @@
         .splash-logo {
             font-size: 64px;
             font-weight: 800;
-            background: linear-gradient(135deg, #6c5ce7, #a463f5, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300, #008000);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 400% 400%;
-            animation: scaleIn 0.5s ease;
+            animation: scaleIn 0.5s ease, gradientShift 6s ease infinite;
         }
 
         @keyframes scaleIn {
@@ -70,6 +79,11 @@
         @keyframes fadeOut {
             0% { opacity: 1; visibility: visible; }
             100% { opacity: 0; visibility: hidden; }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .app-content {
@@ -103,7 +117,7 @@
         .fixed-header .logo {
             font-size: 40px;
             font-weight: 800;
-            background: linear-gradient(135deg, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -118,7 +132,7 @@
         .fixed-header .avatar {
             width: 56px;
             height: 56px;
-            background: linear-gradient(135deg, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -126,7 +140,7 @@
             font-size: 28px;
             font-weight: 700;
             color: white;
-            box-shadow: 0 0 15px rgba(108,92,231,0.5);
+            box-shadow: 0 0 15px rgba(0,128,0,0.5);
         }
         .settings-icon {
             width: 28px;
@@ -138,7 +152,7 @@
             width: 100%;
             height: 100%;
             fill: rgba(255,255,255,0.8);
-            filter: drop-shadow(0 0 5px rgba(108,92,231,0.5));
+            filter: drop-shadow(0 0 5px rgba(0,128,0,0.5));
         }
         .settings-icon:hover svg {
             fill: white;
@@ -150,20 +164,24 @@
             flex: 1;
             min-height: 0;
             overflow-y: auto;
-            margin-top: 90px;
+            transition: margin-top 0.3s ease;
+            margin-top: 90px; /* начальный отступ */
             margin-bottom: 80px;
             scrollbar-width: thin;
-            scrollbar-color: #6c5ce7 #1a1a2f;
+            scrollbar-color: #008000 #2a2a2a;
             -webkit-overflow-scrolling: touch;
+        }
+        .pages-container.no-header-margin {
+            margin-top: 0; /* когда шапка скрыта */
         }
         .pages-container::-webkit-scrollbar {
             width: 4px;
         }
         .pages-container::-webkit-scrollbar-track {
-            background: #1a1a2f;
+            background: #2a2a2a;
         }
         .pages-container::-webkit-scrollbar-thumb {
-            background: #6c5ce7;
+            background: #008000;
             border-radius: 2px;
         }
 
@@ -224,22 +242,22 @@
         .glass-card, .action-btn, .task-card, .stat-item, .referral-link-block, 
         .referral-stat-card, .friends-list, .balance-block, .withdraw-field, 
         .period-tabs, .analytics-total, .recent-transfers, .modal-content, .streak-block {
-            background: rgba(26, 26, 47, 0.8);
+            background: rgba(37, 34, 34, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(108, 92, 231, 0.2);
+            border: 1px solid rgba(0, 128, 0, 0.3);
             border-radius: 24px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
         }
 
         .action-btn, .task-card, .withdraw-field, #withdrawSubmit {
-            background: rgba(26, 26, 47, 0.9);
+            background: rgba(37, 34, 34, 0.9);
         }
         .action-btn:hover {
-            background: rgba(108,92,231,0.3);
+            background: rgba(0,128,0,0.3);
         }
         .task-card:active {
-            background: rgba(108,92,231,0.2);
+            background: rgba(0,128,0,0.2);
         }
 
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
@@ -248,8 +266,8 @@
         }
 
         .total-balance {
-            background: rgba(26,26,47,0.8);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.85);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 20px;
             padding: 15px;
             margin-bottom: 25px;
@@ -265,10 +283,10 @@
             font-weight: 800;
             margin-top: 4px;
             color: #fff;
-            text-shadow: 0 0 10px rgba(108,92,231,0.5);
+            text-shadow: 0 0 10px rgba(0,128,0,0.5);
         }
         .balance-change {
-            color: #a463f5;
+            color: #00b300;
             font-size: 18px;
             font-weight: 700;
             margin-top: 4px;
@@ -282,8 +300,8 @@
         .action-btn {
             flex: 1;
             padding: 12px;
-            background: rgba(26,26,47,0.9);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.9);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 30px;
             color: white;
             font-weight: 700;
@@ -294,7 +312,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         .action-btn:active {
-            background: rgba(108,92,231,0.25);
+            background: rgba(0,128,0,0.25);
             transform: scale(0.97);
         }
 
@@ -311,12 +329,12 @@
         }
         .streak-icon {
             font-size: 32px;
-            filter: drop-shadow(0 0 8px #a463f5);
+            filter: drop-shadow(0 0 8px #008000);
         }
         .streak-count {
             font-size: 28px;
             font-weight: 800;
-            color: #a463f5;
+            color: #008000;
         }
         .streak-label {
             font-size: 16px;
@@ -346,8 +364,8 @@
             transition: background 0.2s;
         }
         .weekday.active .day-indicator {
-            background: #6c5ce7;
-            box-shadow: 0 0 10px #6c5ce7;
+            background: #008000;
+            box-shadow: 0 0 10px #008000;
         }
 
         .section-title {
@@ -357,7 +375,7 @@
             font-size: 26px;
             font-weight: 800;
             color: #fff;
-            text-shadow: 0 0 5px rgba(108,92,231,0.5);
+            text-shadow: 0 0 5px rgba(0,128,0,0.5);
         }
 
         .filters-tabs {
@@ -375,7 +393,7 @@
         }
         .tab.active {
             color: white;
-            border-bottom-color: #6c5ce7;
+            border-bottom-color: #008000;
         }
 
         .tasks-grid {
@@ -384,8 +402,8 @@
             gap: 12px;
         }
         .task-card {
-            background: rgba(26,26,47,0.9);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.9);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 20px;
             padding: 18px;
             display: flex;
@@ -396,7 +414,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
         .task-card:active {
-            background: rgba(108,92,231,0.2);
+            background: rgba(0,128,0,0.2);
         }
         .task-icon {
             width: auto;
@@ -428,8 +446,8 @@
         .task-price {
             font-size: 22px;
             font-weight: 800;
-            color: #a463f5;
-            text-shadow: 0 0 5px rgba(164,99,245,0.5);
+            color: #008000;
+            text-shadow: 0 0 5px rgba(0,128,0,0.5);
             white-space: nowrap;
             margin-left: 8px;
         }
@@ -447,7 +465,7 @@
         .profile-avatar {
             width: 90px;
             height: 90px;
-            background: linear-gradient(135deg, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -455,12 +473,12 @@
             font-size: 40px;
             font-weight: 700;
             color: white;
-            box-shadow: 0 0 20px rgba(108,92,231,0.5);
+            box-shadow: 0 0 20px rgba(0,128,0,0.5);
         }
         .profile-name {
             font-size: 32px;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff, #a463f5);
+            background: linear-gradient(135deg, #fff, #008000);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -471,8 +489,8 @@
             gap: 15px;
         }
         .stat-item {
-            background: rgba(26,26,47,0.8);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.85);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 20px;
             padding: 18px;
         }
@@ -495,7 +513,7 @@
         }
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #6c5ce7, #a463f5);
+            background: linear-gradient(90deg, #008000, #00b300);
             width: 0%;
         }
 
@@ -504,8 +522,8 @@
             padding: 0 20px 20px 20px;
         }
         .referral-link-block {
-            background: rgba(26,26,47,0.8);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.85);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
@@ -523,7 +541,7 @@
         .ref-link-field input {
             width: 55%;
             background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(108,92,231,0.2);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 40px;
             padding: 16px;
             color: white;
@@ -533,7 +551,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
         .ref-link-field button {
-            background: linear-gradient(135deg, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300);
             border: none;
             border-radius: 40px;
             padding: 16px 30px;
@@ -554,8 +572,8 @@
         }
         .referral-stat-card {
             flex: 1;
-            background: rgba(26,26,47,0.8);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.85);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 20px;
             padding: 18px;
         }
@@ -564,8 +582,8 @@
             font-weight: 800;
         }
         .friends-list {
-            background: rgba(26,26,47,0.8);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.85);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 20px;
             padding: 18px;
         }
@@ -588,10 +606,10 @@
             padding: 0 20px 20px 20px;
         }
         .card-glow {
-            background: linear-gradient(135deg, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300);
             border-radius: 20px;
             padding: 30px 20px 20px 20px;
-            box-shadow: 0 0 30px rgba(108,92,231,0.3);
+            box-shadow: 0 0 30px rgba(0,128,0,0.3);
             width: 95%;
             margin: 0 auto 20px auto;
         }
@@ -616,8 +634,8 @@
             color: white;
         }
         .balance-block {
-            background: rgba(26,26,47,0.8);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.85);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 20px;
             padding: 18px;
             margin-bottom: 20px;
@@ -629,8 +647,8 @@
             font-weight: 800;
         }
         .withdraw-field {
-            background: rgba(26,26,47,0.9);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.9);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 20px;
             padding: 18px;
             margin-bottom: 15px;
@@ -645,7 +663,7 @@
             outline: none;
         }
         #withdrawSubmit {
-            background: linear-gradient(135deg, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300);
             border: none;
             border-radius: 40px;
             padding: 18px;
@@ -668,8 +686,8 @@
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
-            background: rgba(26,26,47,0.8);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.85);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 40px;
             padding: 5px;
         }
@@ -684,12 +702,12 @@
             cursor: default;
         }
         .period-tab.active {
-            background: linear-gradient(135deg, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300);
             color: white;
         }
         .analytics-total {
-            background: rgba(26,26,47,0.8);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.85);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
@@ -703,7 +721,7 @@
         }
         .chart-bar {
             width: 20px;
-            background: linear-gradient(to top, #6c5ce7, #a463f5);
+            background: linear-gradient(to top, #008000, #00b300);
             border-radius: 10px 10px 0 0;
             height: 0;
             opacity: 0.5;
@@ -715,9 +733,9 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 10, 15, 0.9);
+            background: rgba(37, 34, 34, 0.9);
             backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(108,92,231,0.2);
+            border-top: 1px solid rgba(0,128,0,0.3);
             display: flex;
             justify-content: center;
             gap: 25px;
@@ -741,7 +759,7 @@
             color: white;
         }
         .nav-item.active svg path {
-            fill: #6c5ce7;
+            fill: #008000;
         }
         .nav-item svg {
             width: 24px;
@@ -773,8 +791,8 @@
             visibility: visible;
         }
         .modal-content {
-            background: rgba(26,26,47,0.95);
-            border: 1px solid rgba(108,92,231,0.2);
+            background: rgba(37,34,34,0.95);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 30px;
             width: 90%;
             max-width: 400px;
@@ -812,7 +830,7 @@
             width: 100%;
             padding: 14px;
             background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(108,92,231,0.2);
+            border: 1px solid rgba(0,128,0,0.3);
             border-radius: 40px;
             color: white;
             font-size: 16px;
@@ -820,7 +838,7 @@
         }
         .modal button {
             width: 100%;
-            background: linear-gradient(135deg, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300);
             border: none;
             border-radius: 40px;
             padding: 16px;
@@ -847,7 +865,7 @@
         .game-box {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #6c5ce7, #a463f5);
+            background: linear-gradient(135deg, #008000, #00b300);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -876,12 +894,12 @@
         .game-reward {
             font-size: 24px;
             font-weight: bold;
-            color: #a463f5;
+            color: #008000;
         }
     </style>
 </head>
 <body>
-    <div class="static-bg"></div>
+    <div class="animated-bg"></div>
 
     <div class="splash" id="splash">
         <div class="splash-logo">ХАЙП</div>
@@ -1048,17 +1066,21 @@
     </div>
 
     <script>
-        // Логика скролла для шапки
+        // Логика скролла для шапки и отступа
         const fixedHeader = document.getElementById('fixedHeader');
-        let lastScrollTop = 0;
         const pagesContainer = document.getElementById('pagesContainer');
-        
+        let lastScrollTop = 0;
+
         function handleScroll() {
             const scrollTop = pagesContainer.scrollTop;
             if (scrollTop > lastScrollTop && scrollTop > 20) {
+                // скроллим вниз
                 fixedHeader.classList.add('hidden');
+                pagesContainer.classList.add('no-header-margin');
             } else {
+                // скроллим вверх
                 fixedHeader.classList.remove('hidden');
+                pagesContainer.classList.remove('no-header-margin');
             }
             lastScrollTop = scrollTop;
         }
@@ -1408,7 +1430,7 @@
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
                 this.innerText = currentWin + ' ₽';
-                this.style.background = '#0A5C2A';
+                this.style.background = '#006400';
                 gameBoxes.forEach(b => b.classList.add('disabled'));
                 gameMessage.innerHTML = '<span>Поздравляем!</span><span class="game-reward">+ ' + currentWin + ' ₽</span>';
                 claimBtn.style.display = 'block';
@@ -1467,7 +1489,7 @@
                 addRating(10);
                 updateStreakDisplay();
                 localStorage.setItem('subscription_done', 'true');
-                checkResult.style.color = '#4ade80';
+                checkResult.style.color = '#00b300';
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
                 updateTasksGrid();
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
