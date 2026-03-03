@@ -64,12 +64,9 @@
         .splash-logo {
             font-size: 64px;
             font-weight: 800;
-            background: linear-gradient(135deg, #008000, #00b300, #008000);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 400% 400%;
-            animation: scaleIn 0.5s ease, gradientShift 6s ease infinite;
+            color: white;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,128,0,0.5);
+            animation: scaleIn 0.5s ease, logoGlow 3s ease-in-out infinite;
         }
 
         @keyframes scaleIn {
@@ -80,10 +77,10 @@
             0% { opacity: 1; visibility: visible; }
             100% { opacity: 0; visibility: hidden; }
         }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes logoGlow {
+            0% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,128,0,0.5); }
+            50% { text-shadow: 0 0 40px rgba(255,255,255,1), 0 0 80px rgba(0,128,0,0.8); }
+            100% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,128,0,0.5); }
         }
 
         .app-content {
@@ -117,10 +114,9 @@
         .fixed-header .logo {
             font-size: 40px;
             font-weight: 800;
-            background: linear-gradient(135deg, #008000, #00b300);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: white;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,128,0,0.5);
+            animation: logoGlow 3s ease-in-out infinite;
             pointer-events: auto;
         }
         .header-right {
@@ -164,15 +160,11 @@
             flex: 1;
             min-height: 0;
             overflow-y: auto;
-            transition: margin-top 0.3s ease;
-            margin-top: 90px; /* начальный отступ */
+            padding-top: 90px; /* отступ под шапку */
             margin-bottom: 80px;
             scrollbar-width: thin;
             scrollbar-color: #008000 #2a2a2a;
             -webkit-overflow-scrolling: touch;
-        }
-        .pages-container.no-header-margin {
-            margin-top: 0; /* когда шапка скрыта */
         }
         .pages-container::-webkit-scrollbar {
             width: 4px;
@@ -478,10 +470,9 @@
         .profile-name {
             font-size: 32px;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff, #008000);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: white;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(0,128,0,0.5);
+            animation: logoGlow 3s ease-in-out infinite;
         }
         .profile-stats {
             display: flex;
@@ -727,7 +718,7 @@
             opacity: 0.5;
         }
 
-        /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
+        /* ===== НИЖНЯЯ НАВИГАЦИЯ (исправлено) ===== */
         .nav {
             position: fixed;
             bottom: 0;
@@ -737,15 +728,14 @@
             backdrop-filter: blur(10px);
             border-top: 1px solid rgba(0,128,0,0.3);
             display: flex;
-            justify-content: center;
-            gap: 25px;
-            padding: 10px 20px 20px;
+            justify-content: space-around;
+            padding: 8px 10px 16px;
             z-index: 100;
         }
         .nav-item {
             color: rgba(255,255,255,0.5);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             display: flex;
             flex-direction: column;
@@ -753,7 +743,7 @@
             gap: 4px;
             cursor: pointer;
             transition: all 0.2s;
-            width: 70px;
+            flex: 0 1 auto;
         }
         .nav-item.active {
             color: white;
@@ -993,7 +983,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
+        <!-- Нижняя навигация (исправленная) -->
         <div class="nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24">
@@ -1027,7 +1017,7 @@
             </a>
         </div>
 
-        <!-- Модальные окна -->
+        <!-- Модальные окна (без изменений) -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1066,7 +1056,7 @@
     </div>
 
     <script>
-        // Логика скролла для шапки и отступа
+        // Логика скролла для шапки (без изменения отступа)
         const fixedHeader = document.getElementById('fixedHeader');
         const pagesContainer = document.getElementById('pagesContainer');
         let lastScrollTop = 0;
@@ -1074,13 +1064,9 @@
         function handleScroll() {
             const scrollTop = pagesContainer.scrollTop;
             if (scrollTop > lastScrollTop && scrollTop > 20) {
-                // скроллим вниз
                 fixedHeader.classList.add('hidden');
-                pagesContainer.classList.add('no-header-margin');
             } else {
-                // скроллим вверх
                 fixedHeader.classList.remove('hidden');
-                pagesContainer.classList.remove('no-header-margin');
             }
             lastScrollTop = scrollTop;
         }
