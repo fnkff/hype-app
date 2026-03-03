@@ -235,8 +235,8 @@
         /* Задержки для вывода */
         .withdraw-page .card-3d { animation-delay: 0s; }
         .withdraw-page .balance-block { animation-delay: 0.1s; }
-        .withdraw-page .withdraw-field:nth-child(3) { animation-delay: 0.2s; }
-        .withdraw-page .withdraw-field:nth-child(4) { animation-delay: 0.3s; }
+        .withdraw-page .withdraw-field:nth-child(1) { animation-delay: 0.2s; } /* после баланса */
+        .withdraw-page .withdraw-field:nth-child(2) { animation-delay: 0.3s; }
         .withdraw-page #withdrawSubmit { animation-delay: 0.4s; }
         .withdraw-page .recent-transfers { animation-delay: 0.5s; }
 
@@ -573,21 +573,19 @@
             border-radius: 50%;
         }
 
-        /* ===== 3D КАРТА ===== */
-        .card-3d-container {
-            perspective: 1200px;
-            margin-bottom: 20px;
+        /* ===== ВЫВОД ===== */
+        .withdraw-page {
+            padding: 20px;
         }
         .card-3d {
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 20px;
             padding: 30px 20px 20px 20px;
-            transform-style: preserve-3d;
-            animation: cardRotate 6s ease-in-out infinite;
             box-shadow: 0 0 30px rgba(29,185,84,0.3);
             width: 95%;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto 20px auto;
+            transform-style: preserve-3d;
+            animation: cardRotate 6s ease-in-out infinite;
         }
         @keyframes cardRotate {
             0% { transform: rotateY(0deg); }
@@ -619,7 +617,6 @@
             font-weight: 600;
             color: white;
         }
-
         .balance-block {
             background: rgba(0,0,0,0.65);
             backdrop-filter: blur(34px);
@@ -655,6 +652,7 @@
         #withdrawSubmit {
             background: rgba(29,185,84,0.4);
             backdrop-filter: blur(34px);
+            -webkit-backdrop-filter: blur(34px);
             border: none;
             border-radius: 40px;
             padding: 16px;
@@ -1278,14 +1276,12 @@
             const container = document.getElementById('withdrawContent');
             if (!container) return;
             container.innerHTML = `
-                <div class="card-3d-container">
-                    <div class="card-3d animate-stagger">
-                        <div class="card-logo">ХАЙП</div>
-                        <div class="card-number">2200 0000 0000 0000</div>
-                        <div class="card-details">
-                            <span>01/29</span>
-                            <span>${displayName}</span>
-                        </div>
+                <div class="card-3d animate-stagger">
+                    <div class="card-logo">ХАЙП</div>
+                    <div class="card-number">2200 0000 0000 0000</div>
+                    <div class="card-details">
+                        <span>01/29</span>
+                        <span>${displayName}</span>
                     </div>
                 </div>
                 <div class="balance-block animate-stagger">
