@@ -46,7 +46,7 @@
             100% { background-position: 0% 0%; }
         }
 
-        /* Слой бликов (только фоновые) */
+        /* Слой бликов */
         .glare-layer {
             position: fixed;
             top: 0;
@@ -148,7 +148,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }
 
-        /* Кнопки без видимых границ */
+        /* Кнопки */
         .glass-button, .action-btn, .task-card, .ref-link-field button, .modal button, #withdrawSubmit {
             border: none;
             outline: none;
@@ -205,11 +205,11 @@
             100% { opacity: 1; transform: translateY(0); }
         }
         .animate-stagger {
-            opacity: 0; /* начальное состояние */
-            animation: fadeInUp 0.7s ease-out forwards; /* ускорено до 0.7s */
+            opacity: 0;
+            animation: fadeInUp 0.7s ease-out forwards;
         }
 
-        /* Задержки для главной страницы (индексы по порядку) */
+        /* Задержки для главной страницы */
         .main-page .top-bar { animation-delay: 0s; }
         .main-page .total-balance { animation-delay: 0.1s; }
         .main-page .action-buttons { animation-delay: 0.2s; }
@@ -577,19 +577,32 @@
         .withdraw-page {
             padding: 20px;
         }
+        .card-container {
+            perspective: 1200px;
+            margin-bottom: 20px;
+        }
         .card-glow {
             background: linear-gradient(135deg, #1DB954, #0A5C2A);
             border-radius: 20px;
             padding: 30px 20px 40px 20px;
-            margin-bottom: 20px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 0 30px rgba(29,185,84,0.3);
             display: flex;
             flex-direction: column;
-            max-width: 320px;
+            width: 95%;
             margin-left: auto;
             margin-right: auto;
+            transform-style: preserve-3d;
+            animation: card3D 8s ease-in-out infinite;
+            transform-origin: center;
+        }
+        @keyframes card3D {
+            0% { transform: rotateY(0deg) rotateX(0deg) scale(1); }
+            25% { transform: rotateY(5deg) rotateX(2deg) scale(1.02); }
+            50% { transform: rotateY(0deg) rotateX(0deg) scale(1); }
+            75% { transform: rotateY(-5deg) rotateX(-2deg) scale(1.02); }
+            100% { transform: rotateY(0deg) rotateX(0deg) scale(1); }
         }
         .card-glow::before {
             content: '';
@@ -600,12 +613,36 @@
             height: 100%;
             background: repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 10px, transparent 10px, transparent 20px);
             pointer-events: none;
+            z-index: 1;
+        }
+        /* Дополнительный блик для 3D */
+        .card-glow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
+            pointer-events: none;
+            z-index: 2;
+            mix-blend-mode: overlay;
+            animation: glareCard 8s ease-in-out infinite;
+        }
+        @keyframes glareCard {
+            0% { opacity: 0.3; transform: translateX(-10%) translateY(-10%); }
+            25% { opacity: 0.6; transform: translateX(5%) translateY(5%); }
+            50% { opacity: 0.3; transform: translateX(0%) translateY(0%); }
+            75% { opacity: 0.6; transform: translateX(-5%) translateY(-5%); }
+            100% { opacity: 0.3; transform: translateX(-10%) translateY(-10%); }
         }
         .card-logo {
             font-size: 32px;
             font-weight: 800;
             margin-bottom: 30px;
             color: white;
+            position: relative;
+            z-index: 3;
         }
         .card-number {
             font-size: 22px;
@@ -616,16 +653,21 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 5px;
+            position: relative;
+            z-index: 3;
         }
         .card-details {
             display: flex;
             justify-content: space-between;
             font-size: 18px;
             font-weight: 600;
+            position: relative;
+            z-index: 3;
         }
         .balance-block {
             background: rgba(0,0,0,0.65);
             backdrop-filter: blur(34px);
+            -webkit-backdrop-filter: blur(34px);
             border: none;
             border-radius: 20px;
             padding: 16px;
@@ -636,6 +678,7 @@
         .withdraw-field {
             background: rgba(0,0,0,0.65);
             backdrop-filter: blur(34px);
+            -webkit-backdrop-filter: blur(34px);
             border: none;
             border-radius: 20px;
             padding: 16px;
@@ -859,7 +902,6 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        /* Отступ между кнопками в модалке */
         .modal button:first-of-type {
             margin-bottom: 12px;
         }
@@ -1178,18 +1220,15 @@
             return total;
         }
 
-        // Функция для запуска анимации на странице (сбрасываем и запускаем)
         function animatePage(pageElement) {
             const animatedElements = pageElement.querySelectorAll('.animate-stagger');
             animatedElements.forEach(el => {
                 el.style.animation = 'none';
-                el.offsetHeight; // форсированный reflow
-                // Восстанавливаем анимацию, задержки уже в CSS
+                el.offsetHeight;
                 el.style.animation = '';
             });
         }
 
-        // Обновление списка заданий с добавлением класса animate-stagger
         function updateTasksGrid() {
             const container = document.getElementById('tasksContainer');
             if (!container) return;
@@ -1226,7 +1265,6 @@
             });
         }
 
-        // Обновление профиля
         function updateProfilePage() {
             const container = document.getElementById('profileStats');
             if (!container) return;
@@ -1255,7 +1293,6 @@
             `;
         }
 
-        // Обновление рефералов
         function updateReferralsPage() {
             const container = document.getElementById('referralsContent');
             if (!container) return;
@@ -1286,17 +1323,18 @@
             `;
         }
 
-        // Обновление вывода (карта с именем)
         function updateWithdrawPage() {
             const container = document.getElementById('withdrawContent');
             if (!container) return;
             container.innerHTML = `
-                <div class="card-glow animate-stagger">
-                    <div class="card-logo">ХАЙП</div>
-                    <div class="card-number">2200 0000 0000 0000</div>
-                    <div class="card-details">
-                        <span>01/29</span>
-                        <span>${displayName}</span>
+                <div class="card-container">
+                    <div class="card-glow animate-stagger">
+                        <div class="card-logo">ХАЙП</div>
+                        <div class="card-number">2200 0000 0000 0000</div>
+                        <div class="card-details">
+                            <span>01/29</span>
+                            <span>${displayName}</span>
+                        </div>
                     </div>
                 </div>
                 <div class="balance-block animate-stagger">
@@ -1323,7 +1361,6 @@
             document.getElementById('withdrawSubmit').addEventListener('click', () => alert('Вывод временно недоступен'));
         }
 
-        // Обновление аналитики
         function updateAnalyticsPage() {
             const container = document.getElementById('analyticsContent');
             if (!container) return;
@@ -1466,7 +1503,6 @@
             }
         };
 
-        // Навигация
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -1493,7 +1529,6 @@
                 else if (page === 'withdraw') updateWithdrawPage();
                 else if (page === 'analytics') updateAnalyticsPage();
 
-                // Запускаем анимацию для новой страницы
                 animatePage(targetPage);
             });
         });
@@ -1506,7 +1541,6 @@
         updateAnalyticsPage();
         updateStreak();
 
-        // Запуск анимации для главной страницы
         animatePage(document.getElementById('tasks-page'));
     </script>
 </body>
