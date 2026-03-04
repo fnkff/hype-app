@@ -100,9 +100,10 @@
             padding: 20px;
             box-shadow: var(--glow);
             border: none;
+            margin-bottom: 30px; /* увеличен отступ до огоньков */
         }
 
-        /* Виджет огоньков теперь как баланс */
+        /* Виджет огоньков как баланс */
         .streak-block {
             background: linear-gradient(
                 135deg,
@@ -127,6 +128,16 @@
             color: white !important;
         }
 
+        /* Анимация огонька (вспышка) */
+        @keyframes streakPulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--accent)); }
+            50% { transform: scale(1.3); filter: drop-shadow(0 0 20px var(--accent)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--accent)); }
+        }
+        .streak-icon.pulse {
+            animation: streakPulse 0.5s ease;
+        }
+
         /* Кнопки */
         button {
             border: none;
@@ -137,7 +148,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Все основные кнопки теперь с белым текстом */
+        /* Все основные кнопки с белым текстом */
         .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
@@ -153,23 +164,27 @@
             transform: scale(0.96);
         }
 
-        /* Кнопки в модалках на всю ширину и с отступами */
+        /* Кнопки в модалках на всю ширину, с отступами и чуть крупнее */
         .modal-content button {
             width: 100%;
             margin-bottom: 12px;
+            padding: 14px 20px;
+            font-size: 18px;
         }
 
         .modal-content button:last-child {
             margin-bottom: 0;
         }
 
-        /* Крестик в модалках без фона и меньше */
+        /* Крестик в модалках — без фона, свечения, меньше */
         .modal-close {
             background: transparent !important;
             color: white;
             font-size: 24px;
             border: none;
-            box-shadow: none;
+            box-shadow: none !important;
+            filter: none !important;
+            text-shadow: none !important;
             padding: 0;
             width: auto !important;
             height: auto;
@@ -207,7 +222,7 @@
             font-size: 14px;
         }
 
-        /* Аватар теперь белый текст */
+        /* Аватар с белым текстом */
         .avatar, .profile-avatar {
             width: 70px;
             height: 70px;
@@ -500,9 +515,8 @@
             margin-top: 4px;
         }
 
-        /* Блок кнопок удалён, поэтому соответствующие стили можно удалить, но оставим на будущее */
         .action-buttons {
-            display: none; /* скрываем, если вдруг остался в HTML */
+            display: none; /* скрываем старые кнопки */
         }
 
         .streak-header {
@@ -573,7 +587,7 @@
         .tasks-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px; /* уменьшено расстояние между заданиями */
         }
 
         .task-card {
@@ -581,6 +595,7 @@
             align-items: center;
             gap: 16px;
             cursor: pointer;
+            margin-bottom: 0; /* убрали лишний margin, используем gap */
         }
         .task-icon svg {
             width: 32px;
@@ -632,7 +647,7 @@
         .profile-stats {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px; /* уменьшено, но остался отступ */
         }
         .stat-number {
             font-size: 32px;
@@ -779,7 +794,7 @@
         }
         .period-tab.active {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: white; /* белый текст */
+            color: white;
         }
         .chart-placeholder {
             display: flex;
@@ -1002,7 +1017,7 @@
                     <!-- Блок Streak (теперь как баланс) -->
                     <div class="streak-block animate-stagger" id="streakBlock">
                         <div class="streak-header">
-                            <span class="streak-icon">🔥</span>
+                            <span class="streak-icon" id="streakIcon">🔥</span>
                             <span class="streak-count" id="streakCount">0</span>
                             <span class="streak-label">дней подряд</span>
                         </div>
@@ -1130,7 +1145,7 @@
     </div>
 
     <script>
-        // Логика скролла для шапки (порог появления 100px)
+        // Логика скролла для шапки
         const fixedHeader = document.getElementById('fixedHeader');
         const pagesContainer = document.getElementById('pagesContainer');
         let lastScrollTop = 0;
@@ -1198,7 +1213,7 @@
             renderWeekdays(streak);
             
             if (animate && oldValue !== null && oldValue < streak) {
-                // Запускаем улучшенную анимацию
+                // Анимация с изменением числа
                 const overlay = document.getElementById('streakAnimationOverlay');
                 const oldEl = document.getElementById('oldStreak');
                 const newEl = document.getElementById('newStreak');
@@ -1209,6 +1224,15 @@
                     overlay.classList.remove('active');
                 }, 1500);
             }
+        }
+
+        // Функция для анимации иконки огонька (вспышка)
+        function animateStreakIcon() {
+            const icon = document.getElementById('streakIcon');
+            icon.classList.add('pulse');
+            setTimeout(() => {
+                icon.classList.remove('pulse');
+            }, 500);
         }
 
         function renderWeekdays(streak) {
@@ -1265,7 +1289,7 @@
             if (id === 2) {
                 return !localStorage.getItem('subscription_done');
             } else if (id === 3) {
-                return true;
+                return true; // мини-игра без ограничений
             } else {
                 let key = id + '_' + new Date().toDateString();
                 return !counts[key] || counts[key] < 3;
@@ -1519,6 +1543,8 @@
             updateTasksGrid();
             // Запускаем анимацию, если streak увеличился
             updateStreakDisplay(newStreak > oldStreak, oldStreak);
+            // В любом случае пульсируем иконку огонька
+            animateStreakIcon();
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
         };
@@ -1565,6 +1591,7 @@
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
                 updateTasksGrid();
                 updateStreakDisplay(newStreak > oldStreak, oldStreak);
+                animateStreakIcon(); // пульс иконки
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                 setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
             } else {
