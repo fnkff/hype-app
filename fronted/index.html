@@ -66,9 +66,9 @@
         /* CARDS & TASK UI               */
         /* ============================= */
 
-        /* Все карточки теперь выглядят как .card из нового дизайна */
+        /* Все карточки */
         .glass-card, .task-card, .stat-item, .referral-link-block, .friends-list,
-        .balance-block, .withdraw-field, .analytics-total, .recent-transfers, .streak-block {
+        .balance-block, .withdraw-field, .analytics-total, .recent-transfers {
             background: linear-gradient(
                 145deg,
                 rgba(255,255,255,0.02),
@@ -84,12 +84,12 @@
 
         .glass-card:hover, .task-card:hover, .stat-item:hover, .referral-link-block:hover,
         .friends-list:hover, .balance-block:hover, .withdraw-field:hover,
-        .analytics-total:hover, .recent-transfers:hover, .streak-block:hover {
+        .analytics-total:hover, .recent-transfers:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* Баланс карточка (отдельный блок) */
+        /* Баланс карточка */
         .total-balance {
             background: linear-gradient(
                 135deg,
@@ -102,6 +102,31 @@
             border: none;
         }
 
+        /* Виджет огоньков теперь как баланс */
+        .streak-block {
+            background: linear-gradient(
+                135deg,
+                rgba(93,214,44,0.15),
+                rgba(0,0,0,0.2)
+            );
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--glow);
+            border: none;
+            color: white;
+        }
+
+        .streak-count {
+            color: white !important;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .streak-label {
+            color: white !important;
+        }
+
         /* Кнопки */
         button {
             border: none;
@@ -112,7 +137,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Общий стиль для всех основных кнопок (теперь белый текст) */
+        /* Все основные кнопки теперь с белым текстом */
         .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
@@ -128,13 +153,35 @@
             transform: scale(0.96);
         }
 
-        /* Увеличенные кнопки на главной */
-        .action-btn {
-            padding: 16px;
-            font-size: 20px;
+        /* Кнопки в модалках на всю ширину и с отступами */
+        .modal-content button {
+            width: 100%;
+            margin-bottom: 12px;
         }
 
-        /* Кнопка вывода теперь как карта */
+        .modal-content button:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Крестик в модалках без фона и меньше */
+        .modal-close {
+            background: transparent !important;
+            color: white;
+            font-size: 24px;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            width: auto !important;
+            height: auto;
+            margin-bottom: 0 !important;
+        }
+        .modal-close:hover {
+            transform: none;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        /* Кнопка вывода как карта */
         #withdrawSubmit {
             width: 95%;
             margin: 20px auto;
@@ -160,7 +207,7 @@
             font-size: 14px;
         }
 
-        /* Аватар */
+        /* Аватар теперь белый текст */
         .avatar, .profile-avatar {
             width: 70px;
             height: 70px;
@@ -171,32 +218,14 @@
             justify-content: center;
             font-size: 26px;
             font-weight: 700;
-            color: #000;
+            color: white;
             box-shadow: var(--glow);
         }
 
-        /* В шапке аватар чуть меньше */
         .fixed-header .avatar {
             width: 56px;
             height: 56px;
             font-size: 28px;
-        }
-
-        /* Крестик в модалках — без фона, меньше */
-        .modal-close {
-            background: transparent !important;
-            color: white;
-            font-size: 24px;
-            border: none;
-            box-shadow: none;
-            padding: 0;
-            width: auto;
-            height: auto;
-        }
-        .modal-close:hover {
-            transform: none;
-            box-shadow: none;
-            background: transparent;
         }
 
         /* ============================= */
@@ -257,7 +286,7 @@
             fill: currentColor;
         }
 
-        /* Мини-игра коробки */
+        /* Мини-игра коробки — уменьшен текст */
         .game-box {
             background: var(--bg-card);
             border-radius: 20px;
@@ -271,7 +300,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 20px;
             font-weight: 700;
         }
 
@@ -280,7 +309,7 @@
             box-shadow: var(--glow);
         }
 
-        /* Анимация появления (оставляем старую, но можно использовать fadeUp) */
+        /* Анимация появления */
         @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -291,9 +320,8 @@
             animation: fadeInUp 0.7s ease-out forwards;
         }
 
-        /* Задержки для страниц (без изменений) */
+        /* Задержки для страниц */
         .main-page .total-balance { animation-delay: 0.1s; }
-        .main-page .action-buttons { animation-delay: 0.2s; }
         .main-page .streak-block { animation-delay: 0.05s; }
         .main-page .section-title { animation-delay: 0.3s; }
         .main-page .filters-tabs { animation-delay: 0.4s; }
@@ -323,7 +351,7 @@
         .analytics-page .analytics-total:nth-of-type(2) { animation-delay: 0.2s; }
         .analytics-page .recent-transfers { animation-delay: 0.3s; }
 
-        /* ===== ОСТАЛЬНЫЕ СТИЛИ (без изменений) ===== */
+        /* ===== ОСТАЛЬНЫЕ СТИЛИ ===== */
         body {
             display: flex;
             flex-direction: column;
@@ -472,10 +500,9 @@
             margin-top: 4px;
         }
 
+        /* Блок кнопок удалён, поэтому соответствующие стили можно удалить, но оставим на будущее */
         .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
+            display: none; /* скрываем, если вдруг остался в HTML */
         }
 
         .streak-header {
@@ -487,16 +514,6 @@
         .streak-icon {
             font-size: 32px;
             filter: drop-shadow(0 0 8px var(--accent));
-        }
-        .streak-count {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--accent);
-        }
-        .streak-label {
-            font-size: 16px;
-            color: var(--text-muted);
-            margin-left: auto;
         }
         .weekdays {
             display: flex;
@@ -510,7 +527,7 @@
         }
         .weekday span {
             font-size: 14px;
-            color: var(--text-muted);
+            color: rgba(255,255,255,0.5);
             font-weight: 600;
         }
         .weekday .day-indicator {
@@ -762,7 +779,7 @@
         }
         .period-tab.active {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: #000;
+            color: white; /* белый текст */
         }
         .chart-placeholder {
             display: flex;
@@ -869,7 +886,7 @@
             color: var(--accent);
         }
 
-        /* Анимация огонька (без изменений) */
+        /* Улучшенная анимация огонька (Duolingo style) */
         .streak-animation-overlay {
             position: fixed;
             top: 0;
@@ -880,9 +897,9 @@
             align-items: center;
             justify-content: center;
             pointer-events: none;
-            z-index: 200;
+            z-index: 9999;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.5s ease;
         }
         .streak-animation-overlay.active {
             opacity: 1;
@@ -916,12 +933,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 200px;
-            height: 200px;
+            width: 300px;
+            height: 300px;
         }
         .old-streak, .new-streak {
             position: absolute;
-            font-size: 80px;
+            font-size: 100px;
             font-weight: 900;
             color: #ff8c00;
             text-shadow: 0 0 30px #ff8c00, 0 0 60px #ff4500;
@@ -936,6 +953,10 @@
         @keyframes fadeOutUp {
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(50px) scale(0.5); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
     </style>
 </head>
@@ -969,7 +990,7 @@
         </div>
 
         <div class="pages-container" id="pagesContainer">
-            <!-- Главная страница -->
+            <!-- Главная страница (без трёх кнопок) -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
                     <div class="total-balance animate-stagger">
@@ -978,13 +999,7 @@
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
 
-                    <div class="action-buttons animate-stagger">
-                        <div class="action-btn" onclick="alert('История операций')">История</div>
-                        <div class="action-btn" onclick="alert('Ежедневные бонусы')">Бонусы</div>
-                        <div class="action-btn" onclick="alert('Помощь и поддержка')">Помощь</div>
-                    </div>
-
-                    <!-- Блок Streak -->
+                    <!-- Блок Streak (теперь как баланс) -->
                     <div class="streak-block animate-stagger" id="streakBlock">
                         <div class="streak-header">
                             <span class="streak-icon">🔥</span>
@@ -1042,7 +1057,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация (обновлена) -->
+        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24">
@@ -1076,7 +1091,7 @@
             </a>
         </div>
 
-        <!-- Модальные окна (без изменений) -->
+        <!-- Модальные окна -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1183,6 +1198,7 @@
             renderWeekdays(streak);
             
             if (animate && oldValue !== null && oldValue < streak) {
+                // Запускаем улучшенную анимацию
                 const overlay = document.getElementById('streakAnimationOverlay');
                 const oldEl = document.getElementById('oldStreak');
                 const newEl = document.getElementById('newStreak');
@@ -1481,8 +1497,7 @@
         gameBoxes.forEach(box => {
             box.addEventListener('click', function(e) {
                 if (this.classList.contains('disabled')) return;
-                const id = 3;
-                const oldStreak = getStreak();
+                const oldStreak = getStreak(); // запоминаем до возможного увеличения
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
                 this.innerText = currentWin + ' ₽';
@@ -1495,15 +1510,14 @@
 
         claimBtn.onclick = () => {
             if (currentWin === 0) return;
-            const id = 3;
             const oldStreak = getStreak();
             balance += currentWin;
             saveBalance();
-            updateStreak();
+            const newStreak = updateStreak(); // увеличиваем streak, если сегодня ещё не было
             addRating(10);
             addCount(3);
             updateTasksGrid();
-            const newStreak = getStreak();
+            // Запускаем анимацию, если streak увеличился
             updateStreakDisplay(newStreak > oldStreak, oldStreak);
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
@@ -1544,14 +1558,13 @@
                 const oldStreak = getStreak();
                 balance += 20;
                 saveBalance();
-                updateStreak();
+                const newStreak = updateStreak();
                 addRating(10);
-                const newStreak = getStreak();
-                updateStreakDisplay(newStreak > oldStreak, oldStreak);
                 localStorage.setItem('subscription_done', 'true');
                 checkResult.style.color = '#00b300';
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
                 updateTasksGrid();
+                updateStreakDisplay(newStreak > oldStreak, oldStreak);
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                 setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
             } else {
