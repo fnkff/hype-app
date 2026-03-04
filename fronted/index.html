@@ -100,7 +100,7 @@
             padding: 20px;
             box-shadow: var(--glow);
             border: none;
-            margin-bottom: 30px; /* увеличен отступ до огоньков */
+            margin-bottom: 30px;
         }
 
         /* Виджет огоньков как баланс */
@@ -164,7 +164,7 @@
             transform: scale(0.96);
         }
 
-        /* Кнопки в модалках на всю ширину, с отступами и чуть крупнее */
+        /* Кнопки в модалках на всю ширину, с отступами */
         .modal-content button {
             width: 100%;
             margin-bottom: 12px;
@@ -301,7 +301,7 @@
             fill: currentColor;
         }
 
-        /* Мини-игра коробки — уменьшен текст */
+        /* Мини-игра коробки */
         .game-box {
             background: var(--bg-card);
             border-radius: 20px;
@@ -516,7 +516,7 @@
         }
 
         .action-buttons {
-            display: none; /* скрываем старые кнопки */
+            display: none;
         }
 
         .streak-header {
@@ -587,7 +587,7 @@
         .tasks-grid {
             display: flex;
             flex-direction: column;
-            gap: 8px; /* уменьшено расстояние между заданиями */
+            gap: 12px; /* увеличено с 8px до 12px */
         }
 
         .task-card {
@@ -595,7 +595,7 @@
             align-items: center;
             gap: 16px;
             cursor: pointer;
-            margin-bottom: 0; /* убрали лишний margin, используем gap */
+            margin-bottom: 0;
         }
         .task-icon svg {
             width: 32px;
@@ -647,7 +647,7 @@
         .profile-stats {
             display: flex;
             flex-direction: column;
-            gap: 10px; /* уменьшено, но остался отступ */
+            gap: 10px;
         }
         .stat-number {
             font-size: 32px;
@@ -681,7 +681,8 @@
             margin-top: 10px;
         }
         .ref-link-field input {
-            width: 55%;
+            flex: 1; /* занимает всё доступное место */
+            min-width: 0; /* позволяет сжиматься */
             background: rgba(0,0,0,0.5);
             border: 1px solid rgba(93,214,44,0.3);
             border-radius: 40px;
@@ -691,6 +692,11 @@
             font-weight: 600;
             outline: none;
             box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .ref-link-field button {
+            flex: 0 0 auto; /* не растягивается */
+            min-width: 140px; /* кнопка стала длиннее */
+            white-space: nowrap;
         }
         .referral-stats {
             display: flex;
@@ -1005,7 +1011,7 @@
         </div>
 
         <div class="pages-container" id="pagesContainer">
-            <!-- Главная страница (без трёх кнопок) -->
+            <!-- Главная страница -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
                     <div class="total-balance animate-stagger">
@@ -1014,7 +1020,7 @@
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
 
-                    <!-- Блок Streak (теперь как баланс) -->
+                    <!-- Блок Streak -->
                     <div class="streak-block animate-stagger" id="streakBlock">
                         <div class="streak-header">
                             <span class="streak-icon" id="streakIcon">🔥</span>
@@ -1213,7 +1219,7 @@
             renderWeekdays(streak);
             
             if (animate && oldValue !== null && oldValue < streak) {
-                // Анимация с изменением числа
+                // Анимация смены числа
                 const overlay = document.getElementById('streakAnimationOverlay');
                 const oldEl = document.getElementById('oldStreak');
                 const newEl = document.getElementById('newStreak');
@@ -1289,7 +1295,7 @@
             if (id === 2) {
                 return !localStorage.getItem('subscription_done');
             } else if (id === 3) {
-                return true; // мини-игра без ограничений
+                return true;
             } else {
                 let key = id + '_' + new Date().toDateString();
                 return !counts[key] || counts[key] < 3;
@@ -1395,7 +1401,7 @@
                 <div class="referral-link-block animate-stagger">
                     <div class="referral-link-label">Твоя реферальная ссылка</div>
                     <div class="ref-link-field">
-                        <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField" style="width:55%;">
+                        <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField">
                         <button class="copy-ref-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
                     </div>
                 </div>
@@ -1521,7 +1527,7 @@
         gameBoxes.forEach(box => {
             box.addEventListener('click', function(e) {
                 if (this.classList.contains('disabled')) return;
-                const oldStreak = getStreak(); // запоминаем до возможного увеличения
+                const oldStreak = getStreak();
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
                 this.innerText = currentWin + ' ₽';
@@ -1537,14 +1543,12 @@
             const oldStreak = getStreak();
             balance += currentWin;
             saveBalance();
-            const newStreak = updateStreak(); // увеличиваем streak, если сегодня ещё не было
+            const newStreak = updateStreak();
             addRating(10);
             addCount(3);
             updateTasksGrid();
-            // Запускаем анимацию, если streak увеличился
             updateStreakDisplay(newStreak > oldStreak, oldStreak);
-            // В любом случае пульсируем иконку огонька
-            animateStreakIcon();
+            animateStreakIcon(); // всегда пульсируем иконку
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
         };
@@ -1591,7 +1595,7 @@
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
                 updateTasksGrid();
                 updateStreakDisplay(newStreak > oldStreak, oldStreak);
-                animateStreakIcon(); // пульс иконки
+                animateStreakIcon();
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                 setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
             } else {
