@@ -112,19 +112,35 @@
             transition: all 0.3s ease;
         }
 
-        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button {
+        /* Общий стиль для всех основных кнопок (теперь белый текст) */
+        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: #000;
+            color: white;
             box-shadow: 0 4px 15px rgba(93,214,44,0.3);
         }
 
-        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover {
+        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover {
             transform: translateY(-2px);
             box-shadow: var(--glow);
         }
 
-        .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active {
+        .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active, .copy-ref-btn:active {
             transform: scale(0.96);
+        }
+
+        /* Увеличенные кнопки на главной */
+        .action-btn {
+            padding: 16px;
+            font-size: 20px;
+        }
+
+        /* Кнопка вывода теперь как карта */
+        #withdrawSubmit {
+            width: 95%;
+            margin: 20px auto;
+            display: block;
+            padding: 18px;
+            font-size: 20px;
         }
 
         /* Выполнено (если потребуется) */
@@ -164,6 +180,23 @@
             width: 56px;
             height: 56px;
             font-size: 28px;
+        }
+
+        /* Крестик в модалках — без фона, меньше */
+        .modal-close {
+            background: transparent !important;
+            color: white;
+            font-size: 24px;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            width: auto;
+            height: auto;
+        }
+        .modal-close:hover {
+            transform: none;
+            box-shadow: none;
+            background: transparent;
         }
 
         /* ============================= */
@@ -786,13 +819,6 @@
             top: 15px;
             right: 15px;
         }
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 28px;
-            color: white;
-            cursor: pointer;
-        }
         .modal h3 {
             font-size: 24px;
             font-weight: 700;
@@ -1330,7 +1356,7 @@
                     <div class="referral-link-label">Твоя реферальная ссылка</div>
                     <div class="ref-link-field">
                         <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField" style="width:55%;">
-                        <button onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
+                        <button class="copy-ref-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
                     </div>
                 </div>
                 <div class="referral-stats">
