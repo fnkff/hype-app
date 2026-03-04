@@ -747,7 +747,7 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
-        /* Блок друзей (без иконки) */
+        /* Блок друзей (без эмодзи) */
         .profile-friends {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -879,8 +879,13 @@
         .withdraw-page {
             padding: 0 20px 20px 20px;
         }
+        /* Карта теперь как виджеты баланса */
         .card-glow {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            background: linear-gradient(
+                135deg,
+                rgba(93,214,44,0.15),
+                rgba(0,0,0,0.2)
+            );
             border-radius: 20px;
             padding: 30px 20px 20px 20px;
             box-shadow: var(--glow);
