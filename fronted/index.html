@@ -128,7 +128,7 @@
             color: white !important;
         }
 
-        /* Анимация огонька (вспышка) */
+        /* Анимация огонька (вспышка) — только на время пульсации */
         @keyframes streakPulse {
             0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--accent)); }
             50% { transform: scale(1.3); filter: drop-shadow(0 0 20px var(--accent)); }
@@ -136,6 +136,25 @@
         }
         .streak-icon.pulse {
             animation: streakPulse 0.5s ease;
+        }
+
+        /* Иконка огонька с обычным свечением */
+        .streak-icon {
+            font-size: 32px;
+            filter: drop-shadow(0 0 8px var(--accent));
+        }
+
+        /* Иконки заданий — слабое свечение (как было) */
+        .task-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--accent);
+            filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
+        }
+
+        /* Шестерёнка — слабое свечение (как было) */
+        .settings-icon svg {
+            filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
 
         /* Кнопки */
@@ -466,7 +485,6 @@
             width: 100%;
             height: 100%;
             fill: rgba(255,255,255,0.8);
-            filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
         .settings-icon:hover svg {
             fill: white;
@@ -526,10 +544,6 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 12px;
-        }
-        .streak-icon {
-            font-size: 32px;
-            filter: drop-shadow(0 0 8px var(--accent));
         }
         .weekdays {
             display: flex;
@@ -733,7 +747,7 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
-        /* Блок друзей */
+        /* Блок друзей (без иконки) */
         .profile-friends {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -749,9 +763,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-        }
-        .friends-icon {
-            font-size: 24px;
         }
         .friends-text {
             font-weight: 600;
@@ -1198,7 +1209,7 @@
                     <!-- Календарь недели -->
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
 
-                    <!-- Блок друзей (количество рефералов) -->
+                    <!-- Блок друзей (без эмодзи) -->
                     <div class="profile-friends animate-stagger" id="profileFriends"></div>
 
                     <!-- Мотивирующее сообщение -->
@@ -1579,10 +1590,9 @@
             datesHtml += '</div>';
             calendarEl.innerHTML = datesHtml;
 
-            // Блок друзей
+            // Блок друзей (без эмодзи)
             document.getElementById('profileFriends').innerHTML = `
                 <div class="friends-left">
-                    <span class="friends-icon">👥</span>
                     <span class="friends-text">Друзья</span>
                 </div>
                 <span class="friends-count">${referrals}</span>
