@@ -89,13 +89,9 @@
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* Баланс карточка */
+        /* Баланс карточка (светло-зелёный градиент) */
         .total-balance {
-            background: linear-gradient(
-                135deg,
-                rgba(93,214,44,0.15),
-                rgba(0,0,0,0.2)
-            );
+            background: linear-gradient(135deg, rgba(93,214,44,0.25), rgba(93,214,44,0.1));
             border-radius: 24px;
             padding: 20px;
             box-shadow: var(--glow);
@@ -103,13 +99,9 @@
             margin-bottom: 30px;
         }
 
-        /* Виджет огоньков как баланс */
+        /* Виджет огоньков (светло-зелёный градиент) */
         .streak-block {
-            background: linear-gradient(
-                135deg,
-                rgba(93,214,44,0.15),
-                rgba(0,0,0,0.2)
-            );
+            background: linear-gradient(135deg, rgba(93,214,44,0.25), rgba(93,214,44,0.1));
             border-radius: 24px;
             padding: 16px;
             margin-bottom: 16px;
@@ -128,7 +120,7 @@
             color: white !important;
         }
 
-        /* Анимация огонька (вспышка) — только на время пульсации */
+        /* Анимация огонька (вспышка) */
         @keyframes streakPulse {
             0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--accent)); }
             50% { transform: scale(1.3); filter: drop-shadow(0 0 20px var(--accent)); }
@@ -144,7 +136,7 @@
             filter: drop-shadow(0 0 8px var(--accent));
         }
 
-        /* Иконки заданий — слабое свечение (как было) */
+        /* Иконки заданий — слабое свечение */
         .task-icon svg {
             width: 32px;
             height: 32px;
@@ -152,7 +144,7 @@
             filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
 
-        /* Шестерёнка — слабое свечение (как было) */
+        /* Шестерёнка — слабое свечение */
         .settings-icon svg {
             filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
@@ -879,13 +871,9 @@
         .withdraw-page {
             padding: 0 20px 20px 20px;
         }
-        /* Карта теперь как виджеты баланса */
+        /* Карта теперь как виджеты баланса (светло-зелёный градиент) */
         .card-glow {
-            background: linear-gradient(
-                135deg,
-                rgba(93,214,44,0.15),
-                rgba(0,0,0,0.2)
-            );
+            background: linear-gradient(135deg, rgba(93,214,44,0.25), rgba(93,214,44,0.1));
             border-radius: 20px;
             padding: 30px 20px 20px 20px;
             box-shadow: var(--glow);
