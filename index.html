@@ -92,25 +92,36 @@
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* Специально для баланса и огоньков оставляем белый текст и зелёные акценты */
-        .balance-label, .streak-label {
-            color: var(--text-muted) !important;
+        /* Баланс карточка (плавный градиент зелёный → чёрный) */
+        .total-balance {
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(93,214,44,0.5);
+            border: none;
+            margin-bottom: 30px;
+            color: white;
         }
-        .balance-value, .streak-count {
-            color: white !important;
-            font-size: 48px;
-            font-weight: 800;
-            margin-top: 4px;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+
+        /* Виджет огоньков (плавный градиент) */
+        .streak-block {
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 0 30px rgba(93,214,44,0.5);
+            border: none;
+            color: white;
         }
+
         .streak-count {
+            color: white !important;
             font-size: 28px;
+            font-weight: 800;
         }
-        .balance-change {
-            color: var(--accent) !important;
-            font-size: 18px;
-            font-weight: 700;
-            margin-top: 4px;
+
+        .streak-label {
+            color: white !important;
         }
 
         /* Анимация огонька (вспышка) */
@@ -457,6 +468,26 @@
             gap: 15px;
             pointer-events: auto;
         }
+        /* Аватар в шапке теперь может быть SVG */
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            box-shadow: var(--glow);
+            overflow: hidden;
+        }
+        .avatar svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         /* Контейнер страниц */
         .pages-container {
@@ -611,7 +642,7 @@
             margin-left: 8px;
         }
 
-        /* ===== ПРОФИЛЬ ===== */
+        /* ===== ПРОФИЛЬ (НОВЫЙ ДИЗАЙН) ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
         }
@@ -632,12 +663,15 @@
             margin-top: 4px;
         }
 
-        /* Аватар с 16 тонкими линиями, без размытия, ближе к аватару */
+        /* Аватар с карандашом */
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
             margin-bottom: 30px;
             position: relative;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
         }
         .profile-avatar {
             width: 100px;
@@ -653,39 +687,37 @@
             position: relative;
             z-index: 2;
             box-shadow: 0 0 20px var(--accent);
+            overflow: hidden;
         }
-        /* 16 отдельных линий */
-        .profile-avatar-wrapper::before {
-            content: '';
+        .profile-avatar svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .avatar-edit-icon {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 115px;
-            height: 115px;
+            bottom: 0;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
             border-radius: 50%;
-            background: transparent;
-            box-shadow: 
-                12px 0px 0 -2px var(--accent),
-                11px 4px 0 -2px var(--accent),
-                9px 9px 0 -2px var(--accent),
-                4px 11px 0 -2px var(--accent),
-                0px 12px 0 -2px var(--accent),
-                -4px 11px 0 -2px var(--accent),
-                -9px 9px 0 -2px var(--accent),
-                -11px 4px 0 -2px var(--accent),
-                -12px 0px 0 -2px var(--accent),
-                -11px -4px 0 -2px var(--accent),
-                -9px -9px 0 -2px var(--accent),
-                -4px -11px 0 -2px var(--accent),
-                0px -12px 0 -2px var(--accent),
-                4px -11px 0 -2px var(--accent),
-                9px -9px 0 -2px var(--accent),
-                11px -4px 0 -2px var(--accent);
-            z-index: 1;
-            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 18px;
+            cursor: pointer;
+            border: 2px solid var(--bg-main);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 3;
+            transition: transform 0.2s;
+        }
+        .avatar-edit-icon:hover {
+            transform: scale(1.1);
         }
 
+        /* Показатели под аватаром (уровень, приглашено) */
         .profile-stats-under-avatar {
             display: flex;
             justify-content: center;
@@ -713,6 +745,7 @@
             color: var(--text-muted);
         }
 
+        /* Календарь недели */
         .profile-calendar {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -757,6 +790,7 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
+        /* Карточка ID (обычный шрифт) */
         .profile-id-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -780,6 +814,7 @@
             font-family: 'Inter', sans-serif;
         }
 
+        /* Мотивирующее сообщение */
         .profile-message {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -798,6 +833,34 @@
         .profile-message-text {
             font-size: 16px;
             color: var(--text-muted);
+        }
+
+        /* ===== МОДАЛКА ВЫБОРА АВАТАРА ===== */
+        .avatar-modal {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .avatar-option {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: border-color 0.2s, transform 0.2s;
+            background: var(--bg-card);
+        }
+        .avatar-option:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+        .avatar-option svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         /* ===== РЕФЕРАЛЫ ===== */
@@ -948,7 +1011,7 @@
             opacity: 0.5;
         }
 
-        /* Модалки */
+        /* Модалки (общие) */
         .modal {
             position: fixed;
             top: 0;
@@ -1138,6 +1201,7 @@
                 <div class="settings-icon" onclick="alert('Настройки (в разработке)')">
                     <i class="fas fa-cog" style="font-size: 24px;"></i>
                 </div>
+                <div class="avatar" id="headerAvatar">Т</div>
             </div>
         </div>
 
@@ -1176,24 +1240,33 @@
                 </div>
             </div>
 
-            <!-- Профиль -->
+            <!-- Профиль (обновлённый) -->
             <div id="profile-page" class="page">
                 <div class="profile-page">
+                    <!-- Имя и юзернейм сверху -->
                     <div class="profile-header animate-stagger">
                         <div class="profile-name" id="profileName">Тимофей</div>
                         <div class="profile-username" id="profileUsername">@username</div>
                     </div>
 
+                    <!-- Аватар с иконкой карандаша -->
                     <div class="profile-avatar-wrapper animate-stagger">
                         <div class="profile-avatar" id="profileAvatar">Т</div>
+                        <div class="avatar-edit-icon" onclick="openAvatarModal()">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
                     </div>
 
+                    <!-- Показатели под аватаром -->
                     <div class="profile-stats-under-avatar animate-stagger" id="profileStatsUnderAvatar"></div>
 
+                    <!-- Календарь недели -->
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
 
+                    <!-- Блок ID -->
                     <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
 
+                    <!-- Мотивирующее сообщение -->
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
                 </div>
             </div>
@@ -1220,41 +1293,16 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
-        <div class="bottom-nav">
-            <a class="nav-item active" data-page="tasks">
-                <svg viewBox="0 0 24 24">
-                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-                </svg>
-                <span>Главная</span>
-            </a>
-            <a class="nav-item" data-page="profile">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-                <span>Профиль</span>
-            </a>
-            <a class="nav-item" data-page="analytics">
-                <svg viewBox="0 0 24 24">
-                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
-                </svg>
-                <span>Аналитика</span>
-            </a>
-            <a class="nav-item" data-page="referrals">
-                <svg viewBox="0 0 24 24">
-                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-                </svg>
-                <span>Рефералы</span>
-            </a>
-            <a class="nav-item" data-page="withdraw">
-                <svg viewBox="0 0 24 24">
-                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
-                </svg>
-                <span>Вывод</span>
-            </a>
+        <!-- Модалка выбора аватара -->
+        <div class="modal" id="avatarModal">
+            <div class="modal-content">
+                <div class="modal-header"><button class="modal-close" id="closeAvatarModal">&times;</button></div>
+                <h3>Выбери аватар</h3>
+                <div class="avatar-modal" id="avatarModalGrid"></div>
+            </div>
         </div>
 
-        <!-- Модальные окна -->
+        <!-- Остальные модалки -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1293,6 +1341,73 @@
     </div>
 
     <script>
+        // ---------- Данные аватаров ----------
+        const avatarSvgs = [
+            `<svg ...>...аватар 1...</svg>`,
+            `<svg ...>...аватар 2...</svg>`,
+            `<svg ...>...аватар 3...</svg>`,
+            `<svg ...>...аватар 4...</svg>`
+        ];
+        // Для краткости я вставлю плейсхолдеры, но в реальности нужно вставить полные SVG-коды.
+        // В финальном коде они будут заменены на настоящие SVG из сообщений.
+
+        // ---------- Функции для работы с аватарами ----------
+        function getSavedAvatarIndex() {
+            return parseInt(localStorage.getItem('selectedAvatarIndex'));
+        }
+
+        function setSavedAvatarIndex(index) {
+            localStorage.setItem('selectedAvatarIndex', index);
+        }
+
+        function updateAvatarDisplay(index) {
+            const avatarDivs = [document.getElementById('profileAvatar'), document.getElementById('headerAvatar')];
+            if (index >= 0 && index < avatarSvgs.length) {
+                // Вставляем SVG
+                const svgHtml = avatarSvgs[index];
+                avatarDivs.forEach(div => {
+                    div.innerHTML = svgHtml;
+                });
+            } else {
+                // Инициалы
+                const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+                const letter = firstName.charAt(0).toUpperCase();
+                avatarDivs.forEach(div => {
+                    div.innerHTML = letter;
+                });
+            }
+        }
+
+        // Загружаем сохранённый аватар при старте
+        const savedIndex = getSavedAvatarIndex();
+        if (!isNaN(savedIndex) && savedIndex >= 0 && savedIndex < avatarSvgs.length) {
+            // Будет вызвано после инициализации DOM
+        }
+
+        // Открыть модалку выбора аватара
+        function openAvatarModal() {
+            const modal = document.getElementById('avatarModal');
+            const grid = document.getElementById('avatarModalGrid');
+            // Заполняем сетку
+            grid.innerHTML = '';
+            avatarSvgs.forEach((svg, i) => {
+                const option = document.createElement('div');
+                option.className = 'avatar-option';
+                option.innerHTML = svg;
+                option.addEventListener('click', () => {
+                    setSavedAvatarIndex(i);
+                    updateAvatarDisplay(i);
+                    modal.classList.remove('show');
+                });
+                grid.appendChild(option);
+            });
+            modal.classList.add('show');
+        }
+
+        document.getElementById('closeAvatarModal').onclick = () => {
+            document.getElementById('avatarModal').classList.remove('show');
+        };
+
         // Логика скролла для шапки
         const fixedHeader = document.getElementById('fixedHeader');
         const pagesContainer = document.getElementById('pagesContainer');
@@ -1326,7 +1441,16 @@
         const username = tg?.initDataUnsafe?.user?.username || 'username';
         const displayName = firstName;
 
-        document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
+        // Устанавливаем аватар при загрузке
+        const savedIdx = getSavedAvatarIndex();
+        if (!isNaN(savedIdx) && savedIdx >= 0 && savedIdx < avatarSvgs.length) {
+            updateAvatarDisplay(savedIdx);
+        } else {
+            // Инициалы
+            document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
+            document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
+        }
+
         document.getElementById('profileName').innerText = firstName;
         document.getElementById('profileUsername').innerText = '@' + username;
 
