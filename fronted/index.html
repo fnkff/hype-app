@@ -90,9 +90,9 @@
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* Баланс карточка (градиент слева направо: зелёный -> чёрный) */
+        /* Баланс карточка (плавный градиент зелёный → чёрный) */
         .total-balance {
-            background: linear-gradient(90deg, var(--accent), #000);
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
             border-radius: 24px;
             padding: 20px;
             box-shadow: 0 0 30px rgba(93,214,44,0.5);
@@ -101,9 +101,9 @@
             color: white;
         }
 
-        /* Виджет огоньков (такой же градиент) */
+        /* Виджет огоньков (плавный градиент) */
         .streak-block {
-            background: linear-gradient(90deg, var(--accent), #000);
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
             border-radius: 24px;
             padding: 16px;
             margin-bottom: 16px;
@@ -250,7 +250,7 @@
         }
 
         /* ============================= */
-        /* GLASS NAVIGATION (обновлённая) */
+        /* NAVIGATION (возвращаем старые SVG, увеличенная, с анимацией) */
         /* ============================= */
 
         .bottom-nav {
@@ -259,12 +259,12 @@
             left: 50%;
             transform: translateX(-50%);
             width: 92%;
-            padding: 6px 10px;
+            padding: 12px 0; /* увеличен */
             display: flex;
             justify-content: space-around;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            border-radius: 40px;
+            border-radius: 40px; /* больше радиус */
             border: 1px solid rgba(255,255,255,0.05);
             box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             z-index: 100;
@@ -273,7 +273,7 @@
         .bottom-nav .nav-item {
             flex: 1;
             text-align: center;
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-muted);
             position: relative;
             cursor: pointer;
@@ -281,26 +281,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
-            padding: 8px 0;
-            border-radius: 30px;
-            transition: all 0.2s;
+            gap: 4px;
+            transition: transform 0.1s ease; /* для анимации нажатия */
+        }
+
+        .bottom-nav .nav-item:active {
+            transform: scale(0.9); /* анимация при нажатии */
         }
 
         .bottom-nav .nav-item.active {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: white;
-            box-shadow: 0 4px 15px rgba(93,214,44,0.3);
+            color: var(--accent);
+        }
+
+        .bottom-nav .nav-item.active::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 10px;
+            box-shadow: var(--glow);
         }
 
         .bottom-nav .nav-item svg {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             fill: currentColor;
-        }
-
-        .bottom-nav .nav-item.active svg {
-            fill: white;
         }
 
         /* Мини-игра коробки */
@@ -326,7 +335,7 @@
             box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
 
-        /* Анимация появления */
+        /* Анимация появления страниц (ускорена) */
         @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -334,10 +343,10 @@
 
         .animate-stagger {
             opacity: 0;
-            animation: fadeInUp 0.7s ease-out forwards;
+            animation: fadeInUp 0.4s ease-out forwards; /* было 0.7s */
         }
 
-        /* Задержки для страниц */
+        /* Задержки для страниц (оставляем как есть) */
         .main-page .total-balance { animation-delay: 0.1s; }
         .main-page .streak-block { animation-delay: 0.05s; }
         .main-page .section-title { animation-delay: 0.3s; }
@@ -633,11 +642,12 @@
             margin-top: 4px;
         }
 
-        /* Аватар с неоновой обводкой по центру */
+        /* Аватар с 6 неоновыми обрывистыми линиями */
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
         }
         .profile-avatar {
             width: 100px;
@@ -651,19 +661,32 @@
             font-weight: 700;
             color: white;
             position: relative;
-            box-shadow: 0 0 0 4px rgba(93,214,44,0.3), 0 0 20px var(--accent);
+            z-index: 2;
+            box-shadow: 0 0 20px var(--accent);
         }
-        .profile-avatar::after {
+        /* 6 линий вокруг аватара */
+        .profile-avatar-wrapper::before {
             content: '';
             position: absolute;
-            top: -6px;
-            left: -6px;
-            right: -6px;
-            bottom: -6px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            border: 2px solid var(--accent);
-            opacity: 0.6;
-            filter: blur(4px);
+            background: transparent;
+            box-shadow: 
+                0 0 0 2px var(--accent),
+                10px -10px 0 -2px var(--accent),
+                -10px 10px 0 -2px var(--accent),
+                12px 8px 0 -2px var(--accent),
+                -12px -8px 0 -2px var(--accent),
+                8px 12px 0 -2px var(--accent),
+                -8px -12px 0 -2px var(--accent);
+            filter: blur(3px);
+            opacity: 0.8;
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* Показатели под аватаром (уровень, приглашено) */
@@ -739,7 +762,7 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
-        /* Карточка ID */
+        /* Карточка ID (обычный шрифт) */
         .profile-id-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -760,7 +783,7 @@
             font-size: 18px;
             font-weight: 700;
             color: white;
-            font-family: monospace;
+            font-family: 'Inter', sans-serif; /* обычный шрифт */
         }
 
         /* Мотивирующее сообщение */
@@ -853,7 +876,7 @@
         }
         /* Карта с градиентом как у виджетов */
         .card-glow {
-            background: linear-gradient(90deg, var(--accent), #000);
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
             border-radius: 20px;
             padding: 30px 20px 20px 20px;
             box-shadow: 0 0 30px rgba(93,214,44,0.5);
@@ -1214,7 +1237,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация (обновлённая) -->
+        <!-- Нижняя навигация (старые SVG, увеличенная, с анимацией) -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24">
@@ -1323,9 +1346,6 @@
         document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileName').innerText = firstName;
         document.getElementById('profileUsername').innerText = '@' + username;
-
-        // Для шапки тоже нужен аватар, но мы его заменили на иконки, поэтому удалим старый код.
-        // Но для совместимости оставим, но скроем в CSS? Лучше не трогать.
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
