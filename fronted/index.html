@@ -67,9 +67,10 @@
         /* CARDS & TASK UI               */
         /* ============================= */
 
-        /* Все карточки */
+        /* Все карточки (включая виджеты теперь) */
         .glass-card, .task-card, .stat-item, .referral-link-block, .friends-list,
-        .balance-block, .withdraw-field, .analytics-total, .recent-transfers {
+        .balance-block, .withdraw-field, .analytics-total, .recent-transfers,
+        .total-balance, .streak-block, .card-glow {
             background: linear-gradient(
                 145deg,
                 rgba(255,255,255,0.02),
@@ -85,41 +86,31 @@
 
         .glass-card:hover, .task-card:hover, .stat-item:hover, .referral-link-block:hover,
         .friends-list:hover, .balance-block:hover, .withdraw-field:hover,
-        .analytics-total:hover, .recent-transfers:hover {
+        .analytics-total:hover, .recent-transfers:hover,
+        .total-balance:hover, .streak-block:hover, .card-glow:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* Баланс карточка (плавный градиент зелёный → чёрный) */
-        .total-balance {
-            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 0 30px rgba(93,214,44,0.5);
-            border: none;
-            margin-bottom: 30px;
-            color: white;
+        /* Специально для баланса и огоньков оставляем белый текст и зелёные акценты */
+        .balance-label, .streak-label {
+            color: var(--text-muted) !important;
         }
-
-        /* Виджет огоньков (плавный градиент) */
-        .streak-block {
-            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
-            border-radius: 24px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 0 30px rgba(93,214,44,0.5);
-            border: none;
-            color: white;
-        }
-
-        .streak-count {
+        .balance-value, .streak-count {
             color: white !important;
-            font-size: 28px;
+            font-size: 48px;
             font-weight: 800;
+            margin-top: 4px;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-
-        .streak-label {
-            color: white !important;
+        .streak-count {
+            font-size: 28px;
+        }
+        .balance-change {
+            color: var(--accent) !important;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 4px;
         }
 
         /* Анимация огонька (вспышка) */
@@ -620,12 +611,11 @@
             margin-left: 8px;
         }
 
-        /* ===== ПРОФИЛЬ (НОВЫЙ ДИЗАЙН) ===== */
+        /* ===== ПРОФИЛЬ ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
         }
 
-        /* Шапка профиля: имя и юзернейм по центру */
         .profile-header {
             text-align: center;
             margin-bottom: 20px;
@@ -642,7 +632,7 @@
             margin-top: 4px;
         }
 
-        /* Аватар с 16 обрывистыми линиями, ближе к аватару, без размытия */
+        /* Аватар с 16 тонкими линиями, без размытия, ближе к аватару */
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
@@ -664,7 +654,7 @@
             z-index: 2;
             box-shadow: 0 0 20px var(--accent);
         }
-        /* 16 линий вокруг аватара */
+        /* 16 отдельных линий */
         .profile-avatar-wrapper::before {
             content: '';
             position: absolute;
@@ -676,27 +666,26 @@
             border-radius: 50%;
             background: transparent;
             box-shadow: 
-                11px 0px 0 -2px var(--accent),
-                10px 4px 0 -2px var(--accent),
-                8px 8px 0 -2px var(--accent),
-                4px 10px 0 -2px var(--accent),
-                0px 11px 0 -2px var(--accent),
-                -4px 10px 0 -2px var(--accent),
-                -8px 8px 0 -2px var(--accent),
-                -10px 4px 0 -2px var(--accent),
-                -11px 0px 0 -2px var(--accent),
-                -10px -4px 0 -2px var(--accent),
-                -8px -8px 0 -2px var(--accent),
-                -4px -10px 0 -2px var(--accent),
-                0px -11px 0 -2px var(--accent),
-                4px -10px 0 -2px var(--accent),
-                8px -8px 0 -2px var(--accent),
-                10px -4px 0 -2px var(--accent);
+                12px 0px 0 -2px var(--accent),
+                11px 4px 0 -2px var(--accent),
+                9px 9px 0 -2px var(--accent),
+                4px 11px 0 -2px var(--accent),
+                0px 12px 0 -2px var(--accent),
+                -4px 11px 0 -2px var(--accent),
+                -9px 9px 0 -2px var(--accent),
+                -11px 4px 0 -2px var(--accent),
+                -12px 0px 0 -2px var(--accent),
+                -11px -4px 0 -2px var(--accent),
+                -9px -9px 0 -2px var(--accent),
+                -4px -11px 0 -2px var(--accent),
+                0px -12px 0 -2px var(--accent),
+                4px -11px 0 -2px var(--accent),
+                9px -9px 0 -2px var(--accent),
+                11px -4px 0 -2px var(--accent);
             z-index: 1;
             pointer-events: none;
         }
 
-        /* Показатели под аватаром (уровень, приглашено) */
         .profile-stats-under-avatar {
             display: flex;
             justify-content: center;
@@ -724,7 +713,6 @@
             color: var(--text-muted);
         }
 
-        /* Календарь недели */
         .profile-calendar {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -769,7 +757,6 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
-        /* Карточка ID (обычный шрифт) */
         .profile-id-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -793,7 +780,6 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* Мотивирующее сообщение */
         .profile-message {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -881,12 +867,8 @@
         .withdraw-page {
             padding: 0 20px 20px 20px;
         }
-        /* Карта с градиентом как у виджетов */
         .card-glow {
-            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
-            border-radius: 20px;
             padding: 30px 20px 20px 20px;
-            box-shadow: 0 0 30px rgba(93,214,44,0.5);
             width: 95%;
             margin: 0 auto 20px auto;
         }
@@ -1194,30 +1176,24 @@
                 </div>
             </div>
 
-            <!-- Профиль (обновлённый) -->
+            <!-- Профиль -->
             <div id="profile-page" class="page">
                 <div class="profile-page">
-                    <!-- Имя и юзернейм сверху -->
                     <div class="profile-header animate-stagger">
                         <div class="profile-name" id="profileName">Тимофей</div>
                         <div class="profile-username" id="profileUsername">@username</div>
                     </div>
 
-                    <!-- Аватар по центру с обрывистыми линиями -->
                     <div class="profile-avatar-wrapper animate-stagger">
                         <div class="profile-avatar" id="profileAvatar">Т</div>
                     </div>
 
-                    <!-- Показатели под аватаром -->
                     <div class="profile-stats-under-avatar animate-stagger" id="profileStatsUnderAvatar"></div>
 
-                    <!-- Календарь недели -->
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
 
-                    <!-- Блок ID -->
                     <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
 
-                    <!-- Мотивирующее сообщение -->
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
                 </div>
             </div>
@@ -1244,7 +1220,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация (старые SVG, увеличенная, с анимацией) -->
+        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24">
@@ -1278,7 +1254,7 @@
             </a>
         </div>
 
-        <!-- Модальные окна (без изменений) -->
+        <!-- Модальные окна -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1445,7 +1421,6 @@
             return progress;
         }
 
-        // Получаем количество рефералов (пока из localStorage, но будет из БД)
         function getReferralsCount() {
             return parseInt(localStorage.getItem('referralsCount')) || 0;
         }
@@ -1536,14 +1511,12 @@
             });
         }
 
-        // Обновление профиля
         function updateProfilePage() {
             const rating = getRating();
             const level = getLevel(rating);
             const streak = getStreak();
             const referrals = getReferralsCount();
 
-            // Показатели под аватаром
             const underAvatar = document.getElementById('profileStatsUnderAvatar');
             underAvatar.innerHTML = `
                 <div class="stat-under-item">
@@ -1558,11 +1531,10 @@
                 </div>
             `;
 
-            // Календарь недели
             const calendarEl = document.getElementById('profileCalendar');
             const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
             const today = new Date();
-            const currentDay = today.getDay(); // 0 = вс, 1 = пн, ...
+            const currentDay = today.getDay();
             const monday = new Date(today);
             monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
             let datesHtml = '<div class="calendar-weekdays">';
@@ -1584,13 +1556,11 @@
             datesHtml += '</div>';
             calendarEl.innerHTML = datesHtml;
 
-            // Блок ID
             document.getElementById('profileIdCard').innerHTML = `
                 <span class="id-label">ID</span>
                 <span class="id-value">${userId}</span>
             `;
 
-            // Мотивирующее сообщение
             const messageEl = document.getElementById('profileMessage');
             messageEl.innerHTML = `
                 <div class="profile-message-title">Keep it up!</div>
