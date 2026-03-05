@@ -67,10 +67,10 @@
         /* CARDS & TASK UI               */
         /* ============================= */
 
-        /* Все карточки (включая виджеты теперь) */
+        /* Все карточки (включая виджеты) — серый фон */
         .glass-card, .task-card, .stat-item, .referral-link-block, .friends-list,
         .balance-block, .withdraw-field, .analytics-total, .recent-transfers,
-        .total-balance, .streak-block, .card-glow {
+        .total-balance, .streak-block, .employer-card {
             background: linear-gradient(
                 145deg,
                 rgba(255,255,255,0.02),
@@ -87,30 +87,18 @@
         .glass-card:hover, .task-card:hover, .stat-item:hover, .referral-link-block:hover,
         .friends-list:hover, .balance-block:hover, .withdraw-field:hover,
         .analytics-total:hover, .recent-transfers:hover,
-        .total-balance:hover, .streak-block:hover, .card-glow:hover {
+        .total-balance:hover, .streak-block:hover, .employer-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* Баланс карточка (плавный градиент зелёный → чёрный) */
+        /* Баланс карточка — дополнительный отступ */
         .total-balance {
-            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 0 30px rgba(93,214,44,0.5);
-            border: none;
             margin-bottom: 30px;
-            color: white;
         }
 
-        /* Виджет огоньков (плавный градиент) */
+        /* Виджет огоньков */
         .streak-block {
-            background: linear-gradient(90deg, var(--accent), var(--accent-dark), #000);
-            border-radius: 24px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 0 30px rgba(93,214,44,0.5);
-            border: none;
             color: white;
         }
 
@@ -148,23 +136,26 @@
             filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
 
-        /* Шестерёнка и колокольчик — серые, с эффектом при наведении */
-        .settings-icon, .notification-icon {
+        /* Шестерёнка, колокольчик и переключатель ролей — серые, с эффектом при наведении */
+        .settings-icon, .notification-icon, .role-switch {
             width: 28px;
             height: 28px;
             cursor: pointer;
             transition: transform 0.2s, filter 0.2s;
             color: rgba(255,255,255,0.7);
         }
-        .settings-icon svg, .notification-icon svg {
+        .settings-icon svg, .notification-icon svg, .role-switch svg {
             width: 100%;
             height: 100%;
             fill: currentColor;
         }
-        .settings-icon:hover, .notification-icon:hover {
+        .settings-icon:hover, .notification-icon:hover, .role-switch:hover {
             color: white;
             transform: rotate(10deg);
             filter: drop-shadow(0 0 8px var(--accent));
+        }
+        .role-switch.active {
+            color: var(--accent);
         }
 
         /* Кнопки */
@@ -178,18 +169,18 @@
         }
 
         /* Все основные кнопки с белым текстом */
-        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn {
+        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .employer-create-btn {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
             box-shadow: 0 4px 15px rgba(93,214,44,0.3);
         }
 
-        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover {
+        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
 
-        .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active, .copy-ref-btn:active {
+        .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active, .copy-ref-btn:active, .employer-create-btn:active {
             transform: scale(0.96);
         }
 
@@ -252,7 +243,7 @@
         }
 
         /* ============================= */
-        /* NAVIGATION (увеличенная, с анимацией) */
+        /* GLASS NAVIGATION (увеличенная, с анимацией) */
         /* ============================= */
 
         .bottom-nav {
@@ -348,7 +339,7 @@
             animation: fadeInUp 0.4s ease-out forwards;
         }
 
-        /* Задержки для страниц */
+        /* Задержки для страниц (оставляем как есть) */
         .main-page .total-balance { animation-delay: 0.1s; }
         .main-page .streak-block { animation-delay: 0.05s; }
         .main-page .section-title { animation-delay: 0.3s; }
@@ -468,7 +459,7 @@
             gap: 15px;
             pointer-events: auto;
         }
-        /* Аватар в шапке теперь может быть SVG */
+        /* Аватар в шапке */
         .avatar {
             width: 56px;
             height: 56px;
@@ -487,6 +478,22 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* Переключатель ролей */
+        .role-switch {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transition: background 0.2s;
+        }
+        .role-switch.active {
+            background: var(--accent);
+            color: #000;
         }
 
         /* Контейнер страниц */
@@ -508,6 +515,19 @@
             display: block;
         }
 
+        /* Анимация смены роли */
+        .role-content {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .role-content.fade-out {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        .role-content.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
         .main-page {
             padding: 0 20px 20px 20px;
@@ -516,22 +536,21 @@
         .balance-label {
             font-size: 16px;
             font-weight: 600;
-            color: rgba(255,255,255,0.8);
+            color: var(--text-muted);
             letter-spacing: 0.5px;
         }
         .balance-value {
             font-size: 48px;
             font-weight: 800;
             margin-top: 4px;
-            color: white;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(93,214,44,0.5);
         }
         .balance-change {
-            color: white;
+            color: var(--accent);
             font-size: 18px;
             font-weight: 700;
             margin-top: 4px;
-            opacity: 0.9;
         }
 
         .action-buttons {
@@ -567,8 +586,8 @@
             transition: background 0.2s;
         }
         .weekday.active .day-indicator {
-            background: white;
-            box-shadow: 0 0 10px white;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
         }
 
         .section-title {
@@ -642,7 +661,38 @@
             margin-left: 8px;
         }
 
-        /* ===== ПРОФИЛЬ (НОВЫЙ ДИЗАЙН) ===== */
+        /* Интерфейс заказчика */
+        .employer-create-field {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(93,214,44,0.3);
+            border-radius: 40px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        .employer-create-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            border-radius: 40px;
+            margin-bottom: 20px;
+        }
+        .employer-order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .employer-order-status {
+            font-size: 14px;
+            color: var(--accent);
+        }
+
+        /* ===== ПРОФИЛЬ ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
         }
@@ -663,7 +713,7 @@
             margin-top: 4px;
         }
 
-        /* Аватар с карандашом */
+        /* Аватар (без карандаша пока) */
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
@@ -694,30 +744,8 @@
             height: 100%;
             object-fit: cover;
         }
-        .avatar-edit-icon {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 32px;
-            height: 32px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            font-size: 18px;
-            cursor: pointer;
-            border: 2px solid var(--bg-main);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            z-index: 3;
-            transition: transform 0.2s;
-        }
-        .avatar-edit-icon:hover {
-            transform: scale(1.1);
-        }
 
-        /* Показатели под аватаром (уровень, приглашено) */
+        /* Показатели под аватаром */
         .profile-stats-under-avatar {
             display: flex;
             justify-content: center;
@@ -790,7 +818,7 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
-        /* Карточка ID (обычный шрифт) */
+        /* Карточка ID */
         .profile-id-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -833,34 +861,6 @@
         .profile-message-text {
             font-size: 16px;
             color: var(--text-muted);
-        }
-
-        /* ===== МОДАЛКА ВЫБОРА АВАТАРА ===== */
-        .avatar-modal {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .avatar-option {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            overflow: hidden;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: border-color 0.2s, transform 0.2s;
-            background: var(--bg-card);
-        }
-        .avatar-option:hover {
-            transform: scale(1.05);
-            border-color: var(--accent);
-        }
-        .avatar-option svg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         /* ===== РЕФЕРАЛЫ ===== */
@@ -931,7 +931,10 @@
             padding: 0 20px 20px 20px;
         }
         .card-glow {
+            background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
+            border-radius: 20px;
             padding: 30px 20px 20px 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
             width: 95%;
             margin: 0 auto 20px auto;
         }
@@ -1195,11 +1198,15 @@
         <div class="fixed-header" id="fixedHeader">
             <div class="logo">ХАЙП</div>
             <div class="header-right">
+                <!-- Переключатель ролей -->
+                <div class="role-switch" id="roleSwitch" onclick="toggleRole()">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
                 <div class="notification-icon" onclick="alert('Уведомления (в разработке)')">
-                    <i class="fas fa-bell" style="font-size: 24px;"></i>
+                    <i class="fas fa-bell"></i>
                 </div>
                 <div class="settings-icon" onclick="alert('Настройки (в разработке)')">
-                    <i class="fas fa-cog" style="font-size: 24px;"></i>
+                    <i class="fas fa-cog"></i>
                 </div>
                 <div class="avatar" id="headerAvatar">Т</div>
             </div>
@@ -1226,48 +1233,36 @@
                     </div>
 
                     <div class="section-title animate-stagger">
-                        <h3>Задания</h3>
+                        <h3 id="mainSectionTitle">Задания</h3>
                     </div>
 
-                    <div class="filters-tabs animate-stagger">
-                        <span class="tab active">Избранное</span>
-                        <span class="tab">Топ</span>
-                        <span class="tab">Новые</span>
-                        <span class="tab">Лидеры</span>
-                    </div>
-
-                    <div class="tasks-grid" id="tasksContainer"></div>
+                    <!-- Контент, зависящий от роли -->
+                    <div id="roleContent" class="role-content"></div>
                 </div>
             </div>
 
-            <!-- Профиль (обновлённый) -->
+            <!-- Профиль -->
             <div id="profile-page" class="page">
                 <div class="profile-page">
-                    <!-- Имя и юзернейм сверху -->
                     <div class="profile-header animate-stagger">
                         <div class="profile-name" id="profileName">Тимофей</div>
                         <div class="profile-username" id="profileUsername">@username</div>
                     </div>
 
-                    <!-- Аватар с иконкой карандаша -->
                     <div class="profile-avatar-wrapper animate-stagger">
                         <div class="profile-avatar" id="profileAvatar">Т</div>
-                        <div class="avatar-edit-icon" onclick="openAvatarModal()">
-                            <i class="fas fa-pencil-alt"></i>
-                        </div>
                     </div>
 
-                    <!-- Показатели под аватаром -->
                     <div class="profile-stats-under-avatar animate-stagger" id="profileStatsUnderAvatar"></div>
 
-                    <!-- Календарь недели -->
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
 
-                    <!-- Блок ID -->
                     <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
 
-                    <!-- Мотивирующее сообщение -->
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
+
+                    <!-- Дополнительный блок для заказчика в профиле -->
+                    <div id="profileRoleExtra" class="animate-stagger"></div>
                 </div>
             </div>
 
@@ -1293,16 +1288,41 @@
             </div>
         </div>
 
-        <!-- Модалка выбора аватара -->
-        <div class="modal" id="avatarModal">
-            <div class="modal-content">
-                <div class="modal-header"><button class="modal-close" id="closeAvatarModal">&times;</button></div>
-                <h3>Выбери аватар</h3>
-                <div class="avatar-modal" id="avatarModalGrid"></div>
-            </div>
+        <!-- Нижняя навигация -->
+        <div class="bottom-nav">
+            <a class="nav-item active" data-page="tasks">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+                <span>Главная</span>
+            </a>
+            <a class="nav-item" data-page="profile">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                <span>Профиль</span>
+            </a>
+            <a class="nav-item" data-page="analytics">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+                </svg>
+                <span>Аналитика</span>
+            </a>
+            <a class="nav-item" data-page="referrals">
+                <svg viewBox="0 0 24 24">
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                </svg>
+                <span>Рефералы</span>
+            </a>
+            <a class="nav-item" data-page="withdraw">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                </svg>
+                <span>Вывод</span>
+            </a>
         </div>
 
-        <!-- Остальные модалки -->
+        <!-- Модалки -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1341,72 +1361,136 @@
     </div>
 
     <script>
-        // ---------- Данные аватаров ----------
-        const avatarSvgs = [
-            `<svg ...>...аватар 1...</svg>`,
-            `<svg ...>...аватар 2...</svg>`,
-            `<svg ...>...аватар 3...</svg>`,
-            `<svg ...>...аватар 4...</svg>`
-        ];
-        // Для краткости я вставлю плейсхолдеры, но в реальности нужно вставить полные SVG-коды.
-        // В финальном коде они будут заменены на настоящие SVG из сообщений.
+        // ---------- Роль ----------
+        let currentRole = 'worker'; // 'worker' или 'employer'
 
-        // ---------- Функции для работы с аватарами ----------
-        function getSavedAvatarIndex() {
-            return parseInt(localStorage.getItem('selectedAvatarIndex'));
+        function toggleRole() {
+            // Анимация исчезновения
+            const roleContent = document.getElementById('roleContent');
+            roleContent.classList.add('fade-out');
+
+            setTimeout(() => {
+                // Переключаем роль
+                currentRole = currentRole === 'worker' ? 'employer' : 'worker';
+                updateRoleUI();
+                // Анимация появления
+                roleContent.classList.remove('fade-out');
+                roleContent.classList.add('fade-in');
+                setTimeout(() => roleContent.classList.remove('fade-in'), 300);
+            }, 150);
+
+            // Обновляем иконку переключателя (активная роль)
+            const roleSwitch = document.getElementById('roleSwitch');
+            roleSwitch.classList.toggle('active', currentRole === 'employer');
         }
 
-        function setSavedAvatarIndex(index) {
-            localStorage.setItem('selectedAvatarIndex', index);
-        }
+        function updateRoleUI() {
+            const roleContent = document.getElementById('roleContent');
+            const sectionTitle = document.getElementById('mainSectionTitle');
+            const profileExtra = document.getElementById('profileRoleExtra');
 
-        function updateAvatarDisplay(index) {
-            const avatarDivs = [document.getElementById('profileAvatar'), document.getElementById('headerAvatar')];
-            if (index >= 0 && index < avatarSvgs.length) {
-                // Вставляем SVG
-                const svgHtml = avatarSvgs[index];
-                avatarDivs.forEach(div => {
-                    div.innerHTML = svgHtml;
-                });
+            if (currentRole === 'worker') {
+                sectionTitle.innerText = 'Задания';
+                roleContent.innerHTML = getWorkerTasksHTML();
+                profileExtra.innerHTML = ''; // убираем доп. блок в профиле
             } else {
-                // Инициалы
-                const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
-                const letter = firstName.charAt(0).toUpperCase();
-                avatarDivs.forEach(div => {
-                    div.innerHTML = letter;
-                });
+                sectionTitle.innerText = 'Мои задания';
+                roleContent.innerHTML = getEmployerHTML();
+                profileExtra.innerHTML = getEmployerProfileExtra();
+            }
+
+            // Если мы на странице профиля, нужно обновить и его
+            if (document.getElementById('profile-page').classList.contains('active-page')) {
+                updateProfilePage(); // обновляем основную информацию
+                // profileExtra уже заполнен выше
             }
         }
 
-        // Загружаем сохранённый аватар при старте
-        const savedIndex = getSavedAvatarIndex();
-        if (!isNaN(savedIndex) && savedIndex >= 0 && savedIndex < avatarSvgs.length) {
-            // Будет вызвано после инициализации DOM
-        }
+        function getWorkerTasksHTML() {
+            const allTasks = [
+                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку другу', price: 30 },
+                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
+                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' }
+            ];
+            let html = '<div class="filters-tabs animate-stagger">' +
+                '<span class="tab active">Избранное</span>' +
+                '<span class="tab">Топ</span>' +
+                '<span class="tab">Новые</span>' +
+                '<span class="tab">Лидеры</span>' +
+                '</div><div class="tasks-grid" id="tasksContainer">';
 
-        // Открыть модалку выбора аватара
-        function openAvatarModal() {
-            const modal = document.getElementById('avatarModal');
-            const grid = document.getElementById('avatarModalGrid');
-            // Заполняем сетку
-            grid.innerHTML = '';
-            avatarSvgs.forEach((svg, i) => {
-                const option = document.createElement('div');
-                option.className = 'avatar-option';
-                option.innerHTML = svg;
-                option.addEventListener('click', () => {
-                    setSavedAvatarIndex(i);
-                    updateAvatarDisplay(i);
-                    modal.classList.remove('show');
-                });
-                grid.appendChild(option);
+            allTasks.forEach(t => {
+                html += `<div class="task-card" onclick="handleTaskClick(${t.id})">
+                    <div class="task-icon">${getTaskIcon(t.name)}</div>
+                    <div class="task-info">
+                        <h4>${t.name}</h4>
+                        <p>${t.desc}</p>
+                    </div>
+                    <div class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
+                </div>`;
             });
-            modal.classList.add('show');
+            html += '</div>';
+            return html;
         }
 
-        document.getElementById('closeAvatarModal').onclick = () => {
-            document.getElementById('avatarModal').classList.remove('show');
-        };
+        function getEmployerHTML() {
+            return `
+                <div class="employer-card">
+                    <h4 style="margin-bottom:15px;">Создать новое задание</h4>
+                    <input class="employer-create-field" type="text" placeholder="Название задания">
+                    <input class="employer-create-field" type="number" placeholder="Цена (₽)">
+                    <button class="employer-create-btn" onclick="alert('Задание создано (демо)')">Опубликовать</button>
+                </div>
+                <div class="employer-card">
+                    <h4 style="margin-bottom:15px;">Мои активные задания</h4>
+                    <div class="employer-order-item">
+                        <span>Подпишись на канал</span>
+                        <span class="employer-order-status">20 ₽ • 5 выполнений</span>
+                    </div>
+                    <div class="employer-order-item">
+                        <span>Пригласи друга</span>
+                        <span class="employer-order-status">30 ₽ • 2 выполнения</span>
+                    </div>
+                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">Скоро здесь появится статистика</div>
+                </div>
+            `;
+        }
+
+        function getEmployerProfileExtra() {
+            return `
+                <div class="profile-id-card">
+                    <span class="id-label">Статус</span>
+                    <span class="id-value">Заказчик</span>
+                </div>
+                <div class="profile-id-card">
+                    <span class="id-label">Активных заданий</span>
+                    <span class="id-value">2</span>
+                </div>
+            `;
+        }
+
+        function handleTaskClick(id) {
+            if (id === 1) {
+                let link = 'https://t.me/your_bot?start=ref_' + userId;
+                document.getElementById('refLink').value = link;
+                document.getElementById('refModal').classList.add('show');
+            } else if (id === 2) {
+                document.getElementById('subModal').classList.add('show');
+            } else if (id === 3) {
+                resetGameModal();
+                document.getElementById('gameModal').classList.add('show');
+            }
+        }
+
+        function getTaskIcon(name) {
+            if (name.includes('друга')) {
+                return `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
+            }
+            if (name.includes('канал')) {
+                return `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/></svg>`;
+            }
+            return `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`;
+        }
 
         // Логика скролла для шапки
         const fixedHeader = document.getElementById('fixedHeader');
@@ -1441,16 +1525,8 @@
         const username = tg?.initDataUnsafe?.user?.username || 'username';
         const displayName = firstName;
 
-        // Устанавливаем аватар при загрузке
-        const savedIdx = getSavedAvatarIndex();
-        if (!isNaN(savedIdx) && savedIdx >= 0 && savedIdx < avatarSvgs.length) {
-            updateAvatarDisplay(savedIdx);
-        } else {
-            // Инициалы
-            document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
-            document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
-        }
-
+        document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
+        document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileName').innerText = firstName;
         document.getElementById('profileUsername').innerText = '@' + username;
 
@@ -1589,52 +1665,7 @@
             });
         }
 
-        function getTaskIcon(name) {
-            if (name.includes('друга')) {
-                return `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
-            }
-            if (name.includes('канал')) {
-                return `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/></svg>`;
-            }
-            return `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`;
-        }
-
-        function updateTasksGrid() {
-            const container = document.getElementById('tasksContainer');
-            if (!container) return;
-            container.innerHTML = '';
-            const allTasks = [
-                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку другу', price: 30 },
-                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
-                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' }
-            ];
-            allTasks.forEach((t, index) => {
-                const card = document.createElement('div');
-                card.className = 'task-card animate-stagger';
-                card.innerHTML = `
-                    <div class="task-icon">${getTaskIcon(t.name)}</div>
-                    <div class="task-info">
-                        <h4>${t.name}</h4>
-                        <p>${t.desc}</p>
-                    </div>
-                    <div class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
-                `;
-                card.onclick = () => {
-                    if (t.id === 1) {
-                        let link = 'https://t.me/your_bot?start=ref_' + userId;
-                        document.getElementById('refLink').value = link;
-                        document.getElementById('refModal').classList.add('show');
-                    } else if (t.id === 2) {
-                        document.getElementById('subModal').classList.add('show');
-                    } else if (t.id === 3) {
-                        resetGameModal();
-                        document.getElementById('gameModal').classList.add('show');
-                    }
-                };
-                container.appendChild(card);
-            });
-        }
-
+        // Обновление профиля
         function updateProfilePage() {
             const rating = getRating();
             const level = getLevel(rating);
@@ -1844,7 +1875,6 @@
             const newStreak = updateStreak();
             addRating(10);
             addCount(3);
-            updateTasksGrid();
             updateStreakDisplay(newStreak > oldStreak, oldStreak);
             animateStreakIcon();
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
@@ -1891,7 +1921,6 @@
                 localStorage.setItem('subscription_done', 'true');
                 checkResult.style.color = '#00b300';
                 checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
-                updateTasksGrid();
                 updateStreakDisplay(newStreak > oldStreak, oldStreak);
                 animateStreakIcon();
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
@@ -1935,7 +1964,8 @@
         });
 
         // Инициализация
-        updateTasksGrid();
+        // Заполняем роль при старте
+        updateRoleUI();
         updateProfilePage();
         updateReferralsPage();
         updateWithdrawPage();
