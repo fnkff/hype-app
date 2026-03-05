@@ -250,7 +250,7 @@
         }
 
         /* ============================= */
-        /* NAVIGATION (возвращаем старые SVG, увеличенная, с анимацией) */
+        /* NAVIGATION (увеличенная, с анимацией) */
         /* ============================= */
 
         .bottom-nav {
@@ -259,12 +259,12 @@
             left: 50%;
             transform: translateX(-50%);
             width: 92%;
-            padding: 12px 0; /* увеличен */
+            padding: 12px 0;
             display: flex;
             justify-content: space-around;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            border-radius: 40px; /* больше радиус */
+            border-radius: 40px;
             border: 1px solid rgba(255,255,255,0.05);
             box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             z-index: 100;
@@ -282,11 +282,11 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            transition: transform 0.1s ease; /* для анимации нажатия */
+            transition: transform 0.1s ease;
         }
 
         .bottom-nav .nav-item:active {
-            transform: scale(0.9); /* анимация при нажатии */
+            transform: scale(0.9);
         }
 
         .bottom-nav .nav-item.active {
@@ -343,10 +343,10 @@
 
         .animate-stagger {
             opacity: 0;
-            animation: fadeInUp 0.4s ease-out forwards; /* было 0.7s */
+            animation: fadeInUp 0.4s ease-out forwards;
         }
 
-        /* Задержки для страниц (оставляем как есть) */
+        /* Задержки для страниц */
         .main-page .total-balance { animation-delay: 0.1s; }
         .main-page .streak-block { animation-delay: 0.05s; }
         .main-page .section-title { animation-delay: 0.3s; }
@@ -642,7 +642,7 @@
             margin-top: 4px;
         }
 
-        /* Аватар с 6 неоновыми обрывистыми линиями */
+        /* Аватар с 16 обрывистыми линиями, ближе к аватару, без размытия */
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
@@ -664,27 +664,34 @@
             z-index: 2;
             box-shadow: 0 0 20px var(--accent);
         }
-        /* 6 линий вокруг аватара */
+        /* 16 линий вокруг аватара */
         .profile-avatar-wrapper::before {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 130px;
-            height: 130px;
+            width: 115px;
+            height: 115px;
             border-radius: 50%;
             background: transparent;
             box-shadow: 
-                0 0 0 2px var(--accent),
-                10px -10px 0 -2px var(--accent),
-                -10px 10px 0 -2px var(--accent),
-                12px 8px 0 -2px var(--accent),
-                -12px -8px 0 -2px var(--accent),
-                8px 12px 0 -2px var(--accent),
-                -8px -12px 0 -2px var(--accent);
-            filter: blur(3px);
-            opacity: 0.8;
+                11px 0px 0 -2px var(--accent),
+                10px 4px 0 -2px var(--accent),
+                8px 8px 0 -2px var(--accent),
+                4px 10px 0 -2px var(--accent),
+                0px 11px 0 -2px var(--accent),
+                -4px 10px 0 -2px var(--accent),
+                -8px 8px 0 -2px var(--accent),
+                -10px 4px 0 -2px var(--accent),
+                -11px 0px 0 -2px var(--accent),
+                -10px -4px 0 -2px var(--accent),
+                -8px -8px 0 -2px var(--accent),
+                -4px -10px 0 -2px var(--accent),
+                0px -11px 0 -2px var(--accent),
+                4px -10px 0 -2px var(--accent),
+                8px -8px 0 -2px var(--accent),
+                10px -4px 0 -2px var(--accent);
             z-index: 1;
             pointer-events: none;
         }
@@ -783,7 +790,7 @@
             font-size: 18px;
             font-weight: 700;
             color: white;
-            font-family: 'Inter', sans-serif; /* обычный шрифт */
+            font-family: 'Inter', sans-serif;
         }
 
         /* Мотивирующее сообщение */
@@ -1196,7 +1203,7 @@
                         <div class="profile-username" id="profileUsername">@username</div>
                     </div>
 
-                    <!-- Аватар по центру с неоновой обводкой -->
+                    <!-- Аватар по центру с обрывистыми линиями -->
                     <div class="profile-avatar-wrapper animate-stagger">
                         <div class="profile-avatar" id="profileAvatar">Т</div>
                     </div>
