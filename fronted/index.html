@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         /* ============================= */
@@ -89,24 +90,24 @@
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* Баланс карточка (яркий градиент как у кнопок) */
+        /* Баланс карточка (градиент слева направо: зелёный -> чёрный) */
         .total-balance {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            background: linear-gradient(90deg, var(--accent), #000);
             border-radius: 24px;
             padding: 20px;
-            box-shadow: var(--glow);
+            box-shadow: 0 0 30px rgba(93,214,44,0.5);
             border: none;
             margin-bottom: 30px;
             color: white;
         }
 
-        /* Виджет огоньков (яркий градиент как у кнопок) */
+        /* Виджет огоньков (такой же градиент) */
         .streak-block {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            background: linear-gradient(90deg, var(--accent), #000);
             border-radius: 24px;
             padding: 16px;
             margin-bottom: 16px;
-            box-shadow: var(--glow);
+            box-shadow: 0 0 30px rgba(93,214,44,0.5);
             border: none;
             color: white;
         }
@@ -145,9 +146,23 @@
             filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
 
-        /* Шестерёнка — слабое свечение */
-        .settings-icon svg {
-            filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
+        /* Шестерёнка и колокольчик — серые, с эффектом при наведении */
+        .settings-icon, .notification-icon {
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+            color: rgba(255,255,255,0.7);
+        }
+        .settings-icon svg, .notification-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+        .settings-icon:hover, .notification-icon:hover {
+            color: white;
+            transform: rotate(10deg);
+            filter: drop-shadow(0 0 8px var(--accent));
         }
 
         /* Кнопки */
@@ -169,7 +184,7 @@
 
         .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--glow);
+            box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
 
         .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active, .copy-ref-btn:active {
@@ -234,29 +249,8 @@
             font-size: 14px;
         }
 
-        /* Аватар с белым текстом */
-        .avatar, .profile-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            font-weight: 700;
-            color: white;
-            box-shadow: var(--glow);
-        }
-
-        .fixed-header .avatar {
-            width: 56px;
-            height: 56px;
-            font-size: 28px;
-        }
-
         /* ============================= */
-        /* GLASS NAVIGATION              */
+        /* GLASS NAVIGATION (обновлённая) */
         /* ============================= */
 
         .bottom-nav {
@@ -265,12 +259,12 @@
             left: 50%;
             transform: translateX(-50%);
             width: 92%;
-            padding: 10px 0;
+            padding: 6px 10px;
             display: flex;
             justify-content: space-around;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            border-radius: 30px;
+            border-radius: 40px;
             border: 1px solid rgba(255,255,255,0.05);
             box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             z-index: 100;
@@ -279,7 +273,7 @@
         .bottom-nav .nav-item {
             flex: 1;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
             position: relative;
             cursor: pointer;
@@ -287,30 +281,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
+            padding: 8px 0;
+            border-radius: 30px;
+            transition: all 0.2s;
         }
 
         .bottom-nav .nav-item.active {
-            color: var(--accent);
-        }
-
-        .bottom-nav .nav-item.active::before {
-            content: "";
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 28px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 10px;
-            box-shadow: var(--glow);
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(93,214,44,0.3);
         }
 
         .bottom-nav .nav-item svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             fill: currentColor;
+        }
+
+        .bottom-nav .nav-item.active svg {
+            fill: white;
         }
 
         /* Мини-игра коробки */
@@ -333,7 +323,7 @@
 
         .game-box:hover {
             transform: translateY(-4px);
-            box-shadow: var(--glow);
+            box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
 
         /* Анимация появления */
@@ -357,10 +347,11 @@
         .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
 
         .profile-page .profile-header { animation-delay: 0s; }
-        .profile-page .profile-stats-row { animation-delay: 0.1s; }
-        .profile-page .profile-calendar { animation-delay: 0.2s; }
-        .profile-page .profile-id-card { animation-delay: 0.3s; }
-        .profile-page .profile-message { animation-delay: 0.4s; }
+        .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
+        .profile-page .profile-stats-under-avatar { animation-delay: 0.2s; }
+        .profile-page .profile-calendar { animation-delay: 0.3s; }
+        .profile-page .profile-id-card { animation-delay: 0.4s; }
+        .profile-page .profile-message { animation-delay: 0.5s; }
 
         .referral-page .referral-link-block { animation-delay: 0s; }
         .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.1s; }
@@ -465,21 +456,6 @@
             align-items: center;
             gap: 15px;
             pointer-events: auto;
-        }
-        .settings-icon {
-            width: 28px;
-            height: 28px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .settings-icon svg {
-            width: 100%;
-            height: 100%;
-            fill: rgba(255,255,255,0.8);
-        }
-        .settings-icon:hover svg {
-            fill: white;
-            transform: rotate(30deg);
         }
 
         /* Контейнер страниц */
@@ -635,25 +611,15 @@
             margin-left: 8px;
         }
 
-        /* ===== ПРОФИЛЬ (ОБНОВЛЁННЫЙ) ===== */
+        /* ===== ПРОФИЛЬ (НОВЫЙ ДИЗАЙН) ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
         }
 
-        /* Шапка профиля */
+        /* Шапка профиля: имя и юзернейм по центру */
         .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            font-size: 32px;
-        }
-        .profile-name-block {
-            flex: 1;
+            text-align: center;
+            margin-bottom: 20px;
         }
         .profile-name {
             font-size: 28px;
@@ -667,34 +633,68 @@
             margin-top: 4px;
         }
 
-        /* Три показателя в ряд */
-        .profile-stats-row {
+        /* Аватар с неоновой обводкой по центру */
+        .profile-avatar-wrapper {
             display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
+            justify-content: center;
+            margin-bottom: 20px;
         }
-        .profile-stat-card {
-            flex: 1;
-            background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
-            border-radius: 20px;
-            padding: 16px 8px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.03);
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            box-shadow: 0 0 0 4px rgba(93,214,44,0.3), 0 0 20px var(--accent);
         }
-        .profile-stat-value {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--accent);
-            line-height: 1.2;
-        }
-        .profile-stat-label {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-top: 4px;
+        .profile-avatar::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            opacity: 0.6;
+            filter: blur(4px);
         }
 
-        /* Календарь недели (как на референсе) */
+        /* Показатели под аватаром (уровень, приглашено) */
+        .profile-stats-under-avatar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+        .stat-under-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .stat-under-icon {
+            font-size: 24px;
+            color: var(--accent);
+            filter: drop-shadow(0 0 8px var(--accent));
+        }
+        .stat-under-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+        }
+        .stat-under-label {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Календарь недели */
         .profile-calendar {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -739,7 +739,7 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
-        /* Карточка ID (вместо блока друзей) */
+        /* Карточка ID */
         .profile-id-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -851,12 +851,12 @@
         .withdraw-page {
             padding: 0 20px 20px 20px;
         }
-        /* Карта теперь как виджеты баланса (яркий градиент) */
+        /* Карта с градиентом как у виджетов */
         .card-glow {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            background: linear-gradient(90deg, var(--accent), #000);
             border-radius: 20px;
             padding: 30px 20px 20px 20px;
-            box-shadow: var(--glow);
+            box-shadow: 0 0 30px rgba(93,214,44,0.5);
             width: 95%;
             margin: 0 auto 20px auto;
         }
@@ -1120,12 +1120,12 @@
         <div class="fixed-header" id="fixedHeader">
             <div class="logo">ХАЙП</div>
             <div class="header-right">
-                <div class="settings-icon" onclick="alert('Настройки (в разработке)')">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.06-0.7-1.66-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.44,0.17-0.48,0.41L9.08,5.33c-0.6,0.24-1.16,0.56-1.66,0.94L5.03,5.31c-0.22-0.07-0.47,0-0.59,0.22l-1.92,3.32 c-0.12,0.22-0.07,0.47,0.12,0.61l2.03,1.58c-0.05,0.3-0.07,0.62-0.07,0.94c0,0.32,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.06,0.7,1.66,0.94l0.88,2.52 c0.04,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.48-0.41l0.88-2.52c0.6-0.24,1.16-0.56,1.66-0.94l2.39,0.96 c0.22,0.07,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
-                    </svg>
+                <div class="notification-icon" onclick="alert('Уведомления (в разработке)')">
+                    <i class="fas fa-bell" style="font-size: 24px;"></i>
                 </div>
-                <div class="avatar" id="headerAvatar">Т</div>
+                <div class="settings-icon" onclick="alert('Настройки (в разработке)')">
+                    <i class="fas fa-cog" style="font-size: 24px;"></i>
+                </div>
             </div>
         </div>
 
@@ -1167,22 +1167,24 @@
             <!-- Профиль (обновлённый) -->
             <div id="profile-page" class="page">
                 <div class="profile-page">
-                    <!-- Шапка профиля -->
+                    <!-- Имя и юзернейм сверху -->
                     <div class="profile-header animate-stagger">
-                        <div class="profile-avatar" id="profileAvatar">Т</div>
-                        <div class="profile-name-block">
-                            <div class="profile-name" id="profileName">Тимофей</div>
-                            <div class="profile-username" id="profileUsername">@username</div>
-                        </div>
+                        <div class="profile-name" id="profileName">Тимофей</div>
+                        <div class="profile-username" id="profileUsername">@username</div>
                     </div>
 
-                    <!-- Три показателя -->
-                    <div class="profile-stats-row animate-stagger" id="profileStatsRow"></div>
+                    <!-- Аватар по центру с неоновой обводкой -->
+                    <div class="profile-avatar-wrapper animate-stagger">
+                        <div class="profile-avatar" id="profileAvatar">Т</div>
+                    </div>
+
+                    <!-- Показатели под аватаром -->
+                    <div class="profile-stats-under-avatar animate-stagger" id="profileStatsUnderAvatar"></div>
 
                     <!-- Календарь недели -->
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
 
-                    <!-- Блок ID (вместо друзей) -->
+                    <!-- Блок ID -->
                     <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
 
                     <!-- Мотивирующее сообщение -->
@@ -1212,7 +1214,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
+        <!-- Нижняя навигация (обновлённая) -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24">
@@ -1246,7 +1248,7 @@
             </a>
         </div>
 
-        <!-- Модальные окна -->
+        <!-- Модальные окна (без изменений) -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1318,10 +1320,12 @@
         const username = tg?.initDataUnsafe?.user?.username || 'username';
         const displayName = firstName;
 
-        document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileName').innerText = firstName;
         document.getElementById('profileUsername').innerText = '@' + username;
+
+        // Для шапки тоже нужен аватар, но мы его заменили на иконки, поэтому удалим старый код.
+        // Но для совместимости оставим, но скроем в CSS? Лучше не трогать.
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
@@ -1512,20 +1516,18 @@
             const streak = getStreak();
             const referrals = getReferralsCount();
 
-            // Три показателя
-            const statsRow = document.getElementById('profileStatsRow');
-            statsRow.innerHTML = `
-                <div class="profile-stat-card">
-                    <div class="profile-stat-value">${level}</div>
-                    <div class="profile-stat-label">Уровень</div>
+            // Показатели под аватаром
+            const underAvatar = document.getElementById('profileStatsUnderAvatar');
+            underAvatar.innerHTML = `
+                <div class="stat-under-item">
+                    <i class="fas fa-chart-line stat-under-icon"></i>
+                    <span class="stat-under-value">${level}</span>
+                    <span class="stat-under-label">Уровень</span>
                 </div>
-                <div class="profile-stat-card">
-                    <div class="profile-stat-value">${streak}</div>
-                    <div class="profile-stat-label">Дней подряд</div>
-                </div>
-                <div class="profile-stat-card">
-                    <div class="profile-stat-value">${referrals}</div>
-                    <div class="profile-stat-label">Приглашено</div>
+                <div class="stat-under-item">
+                    <i class="fas fa-users stat-under-icon"></i>
+                    <span class="stat-under-value">${referrals}</span>
+                    <span class="stat-under-label">Приглашено</span>
                 </div>
             `;
 
@@ -1583,7 +1585,7 @@
                 <div class="referral-stats">
                     <div class="referral-stat-card animate-stagger">
                         <div class="stat-label">Приглашено</div>
-                        <div class="stat-number">0</div>
+                        <div class="stat-number">${getReferralsCount()}</div>
                     </div>
                     <div class="referral-stat-card animate-stagger">
                         <div class="stat-label">Заработано</div>
