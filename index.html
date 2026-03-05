@@ -89,19 +89,20 @@
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* Баланс карточка (светло-зелёный фон, белый текст) */
+        /* Баланс карточка (яркий градиент как у кнопок) */
         .total-balance {
-            background: linear-gradient(135deg, rgba(93,214,44,0.25), rgba(93,214,44,0.1));
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             border-radius: 24px;
             padding: 20px;
             box-shadow: var(--glow);
             border: none;
             margin-bottom: 30px;
+            color: white;
         }
 
-        /* Виджет огоньков (светло-зелёный фон, белый текст) */
+        /* Виджет огоньков (яркий градиент как у кнопок) */
         .streak-block {
-            background: linear-gradient(135deg, rgba(93,214,44,0.25), rgba(93,214,44,0.1));
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             border-radius: 24px;
             padding: 16px;
             margin-bottom: 16px;
@@ -160,18 +161,18 @@
         }
 
         /* Все основные кнопки с белым текстом */
-        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .profile-bonus-btn {
+        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
             box-shadow: 0 4px 15px rgba(93,214,44,0.3);
         }
 
-        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .profile-bonus-btn:hover {
+        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover {
             transform: translateY(-2px);
             box-shadow: var(--glow);
         }
 
-        .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active, .copy-ref-btn:active, .profile-bonus-btn:active {
+        .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active, .copy-ref-btn:active {
             transform: scale(0.96);
         }
 
@@ -358,10 +359,8 @@
         .profile-page .profile-header { animation-delay: 0s; }
         .profile-page .profile-stats-row { animation-delay: 0.1s; }
         .profile-page .profile-calendar { animation-delay: 0.2s; }
-        .profile-page .profile-friends { animation-delay: 0.3s; }
+        .profile-page .profile-id-card { animation-delay: 0.3s; }
         .profile-page .profile-message { animation-delay: 0.4s; }
-        .profile-page .profile-bonus-btn { animation-delay: 0.5s; }
-        .profile-page .profile-id { animation-delay: 0.6s; }
 
         .referral-page .referral-link-block { animation-delay: 0s; }
         .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.1s; }
@@ -510,21 +509,22 @@
         .balance-label {
             font-size: 16px;
             font-weight: 600;
-            color: var(--text-muted);
+            color: rgba(255,255,255,0.8);
             letter-spacing: 0.5px;
         }
         .balance-value {
             font-size: 48px;
             font-weight: 800;
             margin-top: 4px;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(93,214,44,0.5);
+            color: white;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
         .balance-change {
-            color: var(--accent-dark); /* теперь тёмно-зелёный */
+            color: white;
             font-size: 18px;
             font-weight: 700;
             margin-top: 4px;
+            opacity: 0.9;
         }
 
         .action-buttons {
@@ -549,19 +549,19 @@
         }
         .weekday span {
             font-size: 14px;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.7);
             font-weight: 600;
         }
         .weekday .day-indicator {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.3);
             transition: background 0.2s;
         }
         .weekday.active .day-indicator {
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
+            background: white;
+            box-shadow: 0 0 10px white;
         }
 
         .section-title {
@@ -635,7 +635,7 @@
             margin-left: 8px;
         }
 
-        /* ===== ПРОФИЛЬ (НОВЫЙ СТИЛЬ) ===== */
+        /* ===== ПРОФИЛЬ (ОБНОВЛЁННЫЙ) ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
         }
@@ -739,8 +739,8 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
-        /* Блок друзей (без эмодзи) */
-        .profile-friends {
+        /* Карточка ID (вместо блока друзей) */
+        .profile-id-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
             padding: 20px;
@@ -751,19 +751,16 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.03);
         }
-        .friends-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .friends-text {
+        .id-label {
+            font-size: 16px;
             font-weight: 600;
-            color: white;
+            color: var(--text-muted);
         }
-        .friends-count {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--accent);
+        .id-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            font-family: monospace;
         }
 
         /* Мотивирующее сообщение */
@@ -785,23 +782,6 @@
         .profile-message-text {
             font-size: 16px;
             color: var(--text-muted);
-        }
-
-        /* Кнопка бонуса */
-        .profile-bonus-btn {
-            width: 100%;
-            padding: 18px;
-            font-size: 18px;
-            border-radius: 40px;
-            margin-bottom: 20px;
-        }
-
-        /* ID пользователя */
-        .profile-id {
-            font-size: 14px;
-            color: var(--text-muted);
-            text-align: center;
-            opacity: 0.7;
         }
 
         /* ===== РЕФЕРАЛЫ ===== */
@@ -871,9 +851,9 @@
         .withdraw-page {
             padding: 0 20px 20px 20px;
         }
-        /* Карта теперь как виджеты баланса (светло-зелёный фон, белый текст) */
+        /* Карта теперь как виджеты баланса (яркий градиент) */
         .card-glow {
-            background: linear-gradient(135deg, rgba(93,214,44,0.25), rgba(93,214,44,0.1));
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             border-radius: 20px;
             padding: 30px 20px 20px 20px;
             box-shadow: var(--glow);
@@ -1202,17 +1182,11 @@
                     <!-- Календарь недели -->
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
 
-                    <!-- Блок друзей (без эмодзи) -->
-                    <div class="profile-friends animate-stagger" id="profileFriends"></div>
+                    <!-- Блок ID (вместо друзей) -->
+                    <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
 
                     <!-- Мотивирующее сообщение -->
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
-
-                    <!-- Кнопка бонуса -->
-                    <button class="profile-bonus-btn animate-stagger" onclick="alert('Ежедневный бонус скоро появится!')">Ежедневный бонус</button>
-
-                    <!-- ID пользователя -->
-                    <div class="profile-id animate-stagger" id="profileId"></div>
                 </div>
             </div>
 
@@ -1531,7 +1505,7 @@
             });
         }
 
-        // Обновление профиля в новом стиле
+        // Обновление профиля
         function updateProfilePage() {
             const rating = getRating();
             const level = getLevel(rating);
@@ -1560,7 +1534,6 @@
             const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
             const today = new Date();
             const currentDay = today.getDay(); // 0 = вс, 1 = пн, ...
-            // Найдём понедельник этой недели
             const monday = new Date(today);
             monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
             let datesHtml = '<div class="calendar-weekdays">';
@@ -1570,7 +1543,6 @@
                 const date = new Date(monday);
                 date.setDate(monday.getDate() + i);
                 const dateNumber = date.getDate();
-                // Проверяем, активен ли этот день (в streak)
                 const dayDiff = Math.floor((today - date) / (1000 * 60 * 60 * 24));
                 const active = dayDiff >= 0 && dayDiff < streak;
                 datesHtml += `
@@ -1583,12 +1555,10 @@
             datesHtml += '</div>';
             calendarEl.innerHTML = datesHtml;
 
-            // Блок друзей (без эмодзи)
-            document.getElementById('profileFriends').innerHTML = `
-                <div class="friends-left">
-                    <span class="friends-text">Друзья</span>
-                </div>
-                <span class="friends-count">${referrals}</span>
+            // Блок ID
+            document.getElementById('profileIdCard').innerHTML = `
+                <span class="id-label">ID</span>
+                <span class="id-value">${userId}</span>
             `;
 
             // Мотивирующее сообщение
@@ -1597,9 +1567,6 @@
                 <div class="profile-message-title">Keep it up!</div>
                 <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
             `;
-
-            // ID пользователя
-            document.getElementById('profileId').innerText = `ID: ${userId}`;
         }
 
         function updateReferralsPage() {
