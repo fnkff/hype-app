@@ -331,7 +331,7 @@
             box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
 
-        /* Анимация появления страниц (ускорена) */
+        /* Анимация появления страниц — сверху вниз с шагом 0.1s */
         @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -342,39 +342,44 @@
             animation: fadeInUp 0.4s ease-out forwards;
         }
 
-        /* Задержки для страниц — плавное появление элементов */
+        /* Задержки для главной */
         .main-page .total-balance { animation-delay: 0.1s; }
-        .main-page .streak-block { animation-delay: 0.15s; }
-        .main-page .section-title { animation-delay: 0.2s; }
-        .main-page .filters-tabs { animation-delay: 0.25s; }
-        .main-page .task-card:nth-child(1) { animation-delay: 0.3s; }
-        .main-page .task-card:nth-child(2) { animation-delay: 0.35s; }
-        .main-page .task-card:nth-child(3) { animation-delay: 0.4s; }
-        .main-page .employer-card { animation-delay: 0.2s; } /* для интерфейса заказчика */
+        .main-page .streak-block { animation-delay: 0.2s; }
+        .main-page .section-title { animation-delay: 0.3s; }
+        .main-page .filters-tabs { animation-delay: 0.4s; }
+        .main-page .task-card:nth-child(1),
+        .main-page .employer-card:nth-child(1) { animation-delay: 0.5s; }
+        .main-page .task-card:nth-child(2),
+        .main-page .employer-card:nth-child(2) { animation-delay: 0.6s; }
+        .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
 
+        /* Задержки для профиля */
         .profile-page .profile-header { animation-delay: 0.1s; }
-        .profile-page .profile-avatar-wrapper { animation-delay: 0.15s; }
-        .profile-page .profile-stats-under-avatar { animation-delay: 0.2s; }
-        .profile-page .profile-calendar { animation-delay: 0.25s; }
-        .profile-page .profile-id-card { animation-delay: 0.3s; }
-        .profile-page .profile-message { animation-delay: 0.35s; }
-        .profile-page .profile-id-card.extra { animation-delay: 0.4s; } /* для доп. блоков */
+        .profile-page .profile-avatar-wrapper { animation-delay: 0.2s; }
+        .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
+        .profile-page .profile-calendar { animation-delay: 0.4s; }
+        .profile-page .profile-id-card { animation-delay: 0.5s; }
+        .profile-page .profile-message { animation-delay: 0.6s; }
+        .profile-page .profile-id-card.extra { animation-delay: 0.7s; }
 
+        /* Задержки для рефералов */
         .referral-page .referral-link-block { animation-delay: 0.1s; }
-        .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.15s; }
-        .referral-page .referral-stat-card:nth-child(2) { animation-delay: 0.2s; }
-        .referral-page .friends-list { animation-delay: 0.25s; }
+        .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.2s; }
+        .referral-page .referral-stat-card:nth-child(2) { animation-delay: 0.3s; }
+        .referral-page .friends-list { animation-delay: 0.4s; }
 
+        /* Задержки для вывода */
         .withdraw-page .balance-block { animation-delay: 0.1s; }
-        .withdraw-page .withdraw-field:nth-of-type(1) { animation-delay: 0.15s; }
-        .withdraw-page .withdraw-field:nth-of-type(2) { animation-delay: 0.2s; }
-        .withdraw-page #withdrawSubmit { animation-delay: 0.25s; }
-        .withdraw-page .recent-transfers { animation-delay: 0.3s; }
+        .withdraw-page .withdraw-field:nth-of-type(1) { animation-delay: 0.2s; }
+        .withdraw-page .withdraw-field:nth-of-type(2) { animation-delay: 0.3s; }
+        .withdraw-page #withdrawSubmit { animation-delay: 0.4s; }
+        .withdraw-page .recent-transfers { animation-delay: 0.5s; }
 
+        /* Задержки для аналитики */
         .analytics-page .period-tabs { animation-delay: 0.1s; }
-        .analytics-page .analytics-total:nth-of-type(1) { animation-delay: 0.15s; }
-        .analytics-page .analytics-total:nth-of-type(2) { animation-delay: 0.2s; }
-        .analytics-page .recent-transfers { animation-delay: 0.25s; }
+        .analytics-page .analytics-total:nth-of-type(1) { animation-delay: 0.2s; }
+        .analytics-page .analytics-total:nth-of-type(2) { animation-delay: 0.3s; }
+        .analytics-page .recent-transfers { animation-delay: 0.4s; }
 
         /* ===== ОСТАЛЬНЫЕ СТИЛИ ===== */
         body {
@@ -432,7 +437,7 @@
             z-index: 1;
         }
 
-        /* Фиксированная шапка */
+        /* Фиксированная шапка (без анимации) */
         .fixed-header {
             position: fixed;
             top: 0;
@@ -461,7 +466,7 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             pointer-events: auto;
         }
         /* Аватар в шапке */
@@ -478,12 +483,30 @@
             color: white;
             box-shadow: var(--glow);
             overflow: hidden;
-            margin-left: 4px;
+            position: relative;
+            z-index: 2;
         }
         .avatar svg {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* Кнопка уведомлений наезжает на аватар */
+        .notification-icon {
+            position: relative;
+            z-index: 3;
+            margin-right: -12px; /* чтобы наехать на аватар */
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .notification-icon i {
+            font-size: 20px;
         }
 
         /* Переключатель ролей */
@@ -515,15 +538,15 @@
             display: block;
         }
 
-        /* Анимация смены роли */
-        .role-content {
+        /* Анимация смены контента (для роли и аналитики) */
+        .fade-content {
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .role-content.fade-out {
+        .fade-content.fade-out {
             opacity: 0;
             transform: translateY(-10px);
         }
-        .role-content.fade-in {
+        .fade-content.fade-in {
             opacity: 1;
             transform: translateY(0);
         }
@@ -611,11 +634,15 @@
             font-weight: 600;
             padding-bottom: 5px;
             border-bottom: 2px solid transparent;
-            cursor: default;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
         }
         .tab.active {
             color: white;
             border-bottom-color: var(--accent);
+        }
+        .tab:hover {
+            color: white;
         }
 
         .tasks-grid {
@@ -985,11 +1012,15 @@
             color: var(--text-muted);
             font-weight: 600;
             font-size: 16px;
-            cursor: default;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
         }
         .period-tab.active {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
+        }
+        .period-tab:hover {
+            background: rgba(255,255,255,0.1);
         }
         .chart-placeholder {
             display: flex;
@@ -1180,7 +1211,12 @@
                 font-size: 24px;
             }
             .header-right {
-                gap: 5px;
+                gap: 2px;
+            }
+            .notification-icon {
+                width: 32px;
+                height: 32px;
+                margin-right: -8px;
             }
             .balance-value {
                 font-size: 40px;
@@ -1228,11 +1264,11 @@
                 <div class="role-switch" id="roleSwitch" onclick="toggleRole()">
                     <i class="fas fa-exchange-alt"></i>
                 </div>
-                <div class="notification-icon" onclick="alert('Уведомления (в разработке)')">
-                    <i class="fas fa-bell"></i>
-                </div>
                 <div class="settings-icon" onclick="alert('Настройки (в разработке)')">
                     <i class="fas fa-cog"></i>
+                </div>
+                <div class="notification-icon" onclick="alert('Уведомления (в разработке)')">
+                    <i class="fas fa-bell"></i>
                 </div>
                 <div class="avatar" id="headerAvatar">Т</div>
             </div>
@@ -1262,6 +1298,14 @@
                         <h3 id="mainSectionTitle">Задания</h3>
                     </div>
 
+                    <!-- Фильтры (кликабельные) -->
+                    <div class="filters-tabs animate-stagger" id="mainFilters">
+                        <span class="tab active" data-filter="favorites">Избранное</span>
+                        <span class="tab" data-filter="top">Топ</span>
+                        <span class="tab" data-filter="new">Новые</span>
+                        <span class="tab" data-filter="leaders">Лидеры</span>
+                    </div>
+
                     <!-- Контент, зависящий от роли -->
                     <div id="roleContent" class="role-content"></div>
                 </div>
@@ -1285,17 +1329,25 @@
 
                     <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
 
-                    <div class="profile-message animate-stagger" id="profileMessage"></div>
+                    <!-- Статус (роль) -->
+                    <div class="profile-id-card extra animate-stagger" id="profileRoleCard">
+                        <span class="id-label">Статус</span>
+                        <span class="id-value" id="profileRoleValue">Исполнитель</span>
+                    </div>
 
-                    <!-- Дополнительный блок для заказчика в профиле -->
-                    <div id="profileRoleExtra" class="animate-stagger"></div>
+                    <div class="profile-message animate-stagger" id="profileMessage"></div>
                 </div>
             </div>
 
             <!-- Аналитика -->
             <div id="analytics-page" class="page">
                 <div class="analytics-page">
-                    <div id="analyticsContent"></div>
+                    <div class="period-tabs animate-stagger" id="analyticsTabs">
+                        <span class="period-tab active" data-period="day">День</span>
+                        <span class="period-tab" data-period="week">Неделя</span>
+                        <span class="period-tab" data-period="month">Месяц</span>
+                    </div>
+                    <div id="analyticsContent" class="fade-content"></div>
                 </div>
             </div>
 
@@ -1397,6 +1449,10 @@
             setTimeout(() => {
                 currentRole = currentRole === 'worker' ? 'employer' : 'worker';
                 updateRoleUI();
+                // Обновляем статус в профиле, если он открыт
+                if (document.getElementById('profile-page').classList.contains('active-page')) {
+                    updateProfilePage();
+                }
                 roleContent.classList.remove('fade-out');
                 roleContent.classList.add('fade-in');
                 setTimeout(() => roleContent.classList.remove('fade-in'), 300);
@@ -1409,21 +1465,25 @@
         function updateRoleUI() {
             const roleContent = document.getElementById('roleContent');
             const sectionTitle = document.getElementById('mainSectionTitle');
-            const profileExtra = document.getElementById('profileRoleExtra');
+            const profileRoleValue = document.getElementById('profileRoleValue');
 
             if (currentRole === 'worker') {
                 sectionTitle.innerText = 'Задания';
                 roleContent.innerHTML = getWorkerTasksHTML();
-                profileExtra.innerHTML = '';
+                profileRoleValue.innerText = 'Исполнитель';
             } else {
                 sectionTitle.innerText = 'Мои задания';
                 roleContent.innerHTML = getEmployerHTML();
-                profileExtra.innerHTML = getEmployerProfileExtra();
+                profileRoleValue.innerText = 'Заказчик';
             }
 
-            if (document.getElementById('profile-page').classList.contains('active-page')) {
-                updateProfilePage();
-            }
+            // Перезапускаем анимацию для новых элементов
+            const newElements = roleContent.querySelectorAll('.animate-stagger');
+            newElements.forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight;
+                el.style.animation = '';
+            });
         }
 
         function getWorkerTasksHTML() {
@@ -1432,15 +1492,9 @@
                 { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
                 { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' }
             ];
-            let html = '<div class="filters-tabs animate-stagger">' +
-                '<span class="tab active">Избранное</span>' +
-                '<span class="tab">Топ</span>' +
-                '<span class="tab">Новые</span>' +
-                '<span class="tab">Лидеры</span>' +
-                '</div><div class="tasks-grid" id="tasksContainer">';
-
+            let html = '<div class="tasks-grid">';
             allTasks.forEach(t => {
-                html += `<div class="task-card" onclick="handleTaskClick(${t.id})">
+                html += `<div class="task-card animate-stagger" onclick="handleTaskClick(${t.id})">
                     <div class="task-icon">${getTaskIcon(t.name)}</div>
                     <div class="task-info">
                         <h4>${t.name}</h4>
@@ -1476,19 +1530,6 @@
             `;
         }
 
-        function getEmployerProfileExtra() {
-            return `
-                <div class="profile-id-card extra">
-                    <span class="id-label">Статус</span>
-                    <span class="id-value">Заказчик</span>
-                </div>
-                <div class="profile-id-card extra">
-                    <span class="id-label">Активных заданий</span>
-                    <span class="id-value">2</span>
-                </div>
-            `;
-        }
-
         function handleTaskClick(id) {
             if (id === 1) {
                 let link = 'https://t.me/your_bot?start=ref_' + userId;
@@ -1510,6 +1551,73 @@
                 return `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/></svg>`;
             }
             return `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`;
+        }
+
+        // ---------- Табы на главной ----------
+        document.getElementById('mainFilters').addEventListener('click', (e) => {
+            const tab = e.target.closest('.tab');
+            if (!tab) return;
+            const tabs = document.querySelectorAll('#mainFilters .tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            // Здесь можно добавить логику фильтрации
+        });
+
+        // ---------- Аналитика с переключением периодов ----------
+        function initAnalyticsTabs() {
+            const tabs = document.querySelectorAll('#analyticsTabs .period-tab');
+            const content = document.getElementById('analyticsContent');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    if (tab.classList.contains('active')) return;
+                    // Анимация исчезновения
+                    content.classList.add('fade-out');
+                    setTimeout(() => {
+                        // Меняем активный таб
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        // Обновляем содержимое (пока одинаковое)
+                        content.innerHTML = getAnalyticsContent();
+                        // Анимация появления
+                        content.classList.remove('fade-out');
+                        content.classList.add('fade-in');
+                        setTimeout(() => content.classList.remove('fade-in'), 300);
+                    }, 150);
+                });
+            });
+        }
+
+        function getAnalyticsContent() {
+            return `
+                <div class="analytics-total animate-stagger">
+                    <div class="balance-label">Общий доход</div>
+                    <div class="balance-number" style="font-size:36px;">—</div>
+                </div>
+                <div class="analytics-total animate-stagger">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span>Доход</span>
+                        <span>—</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                        <span>Расход</span>
+                        <span>—</span>
+                    </div>
+                    <div class="chart-placeholder">
+                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
+                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
+                    </div>
+                    <div style="text-align:center; color:var(--text-muted); margin-top:10px;">Статистика скоро появится</div>
+                </div>
+                <div style="margin-top:25px;">
+                    <h4 style="margin-bottom:15px;">Последние операции</h4>
+                    <div class="recent-transfers animate-stagger">
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">Здесь появится статистика</div>
+                    </div>
+                </div>
+            `;
         }
 
         // Логика скролла для шапки
@@ -1741,6 +1849,9 @@
                 <div class="profile-message-title">Keep it up!</div>
                 <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
             `;
+
+            // Статус уже обновлён в updateRoleUI, но обновим на всякий случай
+            document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'Исполнитель' : 'Заказчик';
         }
 
         function updateReferralsPage() {
@@ -1812,41 +1923,7 @@
         function updateAnalyticsPage() {
             const container = document.getElementById('analyticsContent');
             if (!container) return;
-            container.innerHTML = `
-                <div class="period-tabs animate-stagger">
-                    <span class="period-tab active">День</span>
-                    <span class="period-tab">Неделя</span>
-                    <span class="period-tab">Месяц</span>
-                </div>
-                <div class="analytics-total animate-stagger">
-                    <div class="balance-label">Общий доход</div>
-                    <div class="balance-number" style="font-size:36px;">—</div>
-                </div>
-                <div class="analytics-total animate-stagger">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                        <span>Доход</span>
-                        <span>—</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-                        <span>Расход</span>
-                        <span>—</span>
-                    </div>
-                    <div class="chart-placeholder">
-                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
-                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
-                    </div>
-                    <div style="text-align:center; color:var(--text-muted); margin-top:10px;">Статистика скоро появится</div>
-                </div>
-                <div style="margin-top:25px;">
-                    <h4 style="margin-bottom:15px;">Последние операции</h4>
-                    <div class="recent-transfers animate-stagger">
-                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">Здесь появится статистика</div>
-                    </div>
-                </div>
-            `;
+            container.innerHTML = getAnalyticsContent();
         }
 
         // Модалка игры
@@ -1991,6 +2068,7 @@
         updateAnalyticsPage();
         updateStreak();
         updateStreakDisplay();
+        initAnalyticsTabs();
 
         animatePage(document.getElementById('tasks-page'));
     </script>
