@@ -136,17 +136,20 @@
             filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
 
-        /* Шестерёнка, колокольчик и переключатель ролей — серые, с эффектом при наведении */
+        /* Шестерёнка, колокольчик и переключатель ролей */
         .settings-icon, .notification-icon, .role-switch {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             cursor: pointer;
             transition: transform 0.2s, filter 0.2s;
             color: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .settings-icon svg, .notification-icon svg, .role-switch svg {
-            width: 100%;
-            height: 100%;
+            width: 24px;
+            height: 24px;
             fill: currentColor;
         }
         .settings-icon:hover, .notification-icon:hover, .role-switch:hover {
@@ -339,37 +342,39 @@
             animation: fadeInUp 0.4s ease-out forwards;
         }
 
-        /* Задержки для страниц (оставляем как есть) */
+        /* Задержки для страниц — плавное появление элементов */
         .main-page .total-balance { animation-delay: 0.1s; }
-        .main-page .streak-block { animation-delay: 0.05s; }
-        .main-page .section-title { animation-delay: 0.3s; }
-        .main-page .filters-tabs { animation-delay: 0.4s; }
-        .main-page .task-card:nth-child(1) { animation-delay: 0.5s; }
-        .main-page .task-card:nth-child(2) { animation-delay: 0.6s; }
-        .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
+        .main-page .streak-block { animation-delay: 0.15s; }
+        .main-page .section-title { animation-delay: 0.2s; }
+        .main-page .filters-tabs { animation-delay: 0.25s; }
+        .main-page .task-card:nth-child(1) { animation-delay: 0.3s; }
+        .main-page .task-card:nth-child(2) { animation-delay: 0.35s; }
+        .main-page .task-card:nth-child(3) { animation-delay: 0.4s; }
+        .main-page .employer-card { animation-delay: 0.2s; } /* для интерфейса заказчика */
 
-        .profile-page .profile-header { animation-delay: 0s; }
-        .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
+        .profile-page .profile-header { animation-delay: 0.1s; }
+        .profile-page .profile-avatar-wrapper { animation-delay: 0.15s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.2s; }
-        .profile-page .profile-calendar { animation-delay: 0.3s; }
-        .profile-page .profile-id-card { animation-delay: 0.4s; }
-        .profile-page .profile-message { animation-delay: 0.5s; }
+        .profile-page .profile-calendar { animation-delay: 0.25s; }
+        .profile-page .profile-id-card { animation-delay: 0.3s; }
+        .profile-page .profile-message { animation-delay: 0.35s; }
+        .profile-page .profile-id-card.extra { animation-delay: 0.4s; } /* для доп. блоков */
 
-        .referral-page .referral-link-block { animation-delay: 0s; }
-        .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .referral-page .referral-link-block { animation-delay: 0.1s; }
+        .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.15s; }
         .referral-page .referral-stat-card:nth-child(2) { animation-delay: 0.2s; }
-        .referral-page .friends-list { animation-delay: 0.3s; }
+        .referral-page .friends-list { animation-delay: 0.25s; }
 
         .withdraw-page .balance-block { animation-delay: 0.1s; }
-        .withdraw-page .withdraw-field:nth-of-type(1) { animation-delay: 0.2s; }
-        .withdraw-page .withdraw-field:nth-of-type(2) { animation-delay: 0.3s; }
-        .withdraw-page #withdrawSubmit { animation-delay: 0.4s; }
-        .withdraw-page .recent-transfers { animation-delay: 0.5s; }
+        .withdraw-page .withdraw-field:nth-of-type(1) { animation-delay: 0.15s; }
+        .withdraw-page .withdraw-field:nth-of-type(2) { animation-delay: 0.2s; }
+        .withdraw-page #withdrawSubmit { animation-delay: 0.25s; }
+        .withdraw-page .recent-transfers { animation-delay: 0.3s; }
 
-        .analytics-page .period-tabs { animation-delay: 0s; }
-        .analytics-page .analytics-total:nth-of-type(1) { animation-delay: 0.1s; }
+        .analytics-page .period-tabs { animation-delay: 0.1s; }
+        .analytics-page .analytics-total:nth-of-type(1) { animation-delay: 0.15s; }
         .analytics-page .analytics-total:nth-of-type(2) { animation-delay: 0.2s; }
-        .analytics-page .recent-transfers { animation-delay: 0.3s; }
+        .analytics-page .recent-transfers { animation-delay: 0.25s; }
 
         /* ===== ОСТАЛЬНЫЕ СТИЛИ ===== */
         body {
@@ -456,7 +461,7 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
             pointer-events: auto;
         }
         /* Аватар в шапке */
@@ -473,6 +478,7 @@
             color: white;
             box-shadow: var(--glow);
             overflow: hidden;
+            margin-left: 4px;
         }
         .avatar svg {
             width: 100%;
@@ -482,14 +488,8 @@
 
         /* Переключатель ролей */
         .role-switch {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
             background: rgba(255,255,255,0.1);
-            transition: background 0.2s;
+            border-radius: 50%;
         }
         .role-switch.active {
             background: var(--accent);
@@ -713,15 +713,10 @@
             margin-top: 4px;
         }
 
-        /* Аватар (без карандаша пока) */
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
             margin-bottom: 30px;
-            position: relative;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
         }
         .profile-avatar {
             width: 100px;
@@ -734,8 +729,6 @@
             font-size: 40px;
             font-weight: 700;
             color: white;
-            position: relative;
-            z-index: 2;
             box-shadow: 0 0 20px var(--accent);
             overflow: hidden;
         }
@@ -745,7 +738,6 @@
             object-fit: cover;
         }
 
-        /* Показатели под аватаром */
         .profile-stats-under-avatar {
             display: flex;
             justify-content: center;
@@ -773,7 +765,6 @@
             color: var(--text-muted);
         }
 
-        /* Календарь недели */
         .profile-calendar {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -818,7 +809,6 @@
             box-shadow: 0 0 10px var(--accent);
         }
 
-        /* Карточка ID */
         .profile-id-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -842,7 +832,6 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* Мотивирующее сообщение */
         .profile-message {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -894,6 +883,8 @@
             flex: 0 0 auto;
             min-width: 140px;
             white-space: nowrap;
+            font-size: 18px;
+            padding: 14px 18px;
         }
         .referral-stats {
             display: flex;
@@ -931,12 +922,13 @@
             padding: 0 20px 20px 20px;
         }
         .card-glow {
-            background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             border-radius: 20px;
             padding: 30px 20px 20px 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 0 30px rgba(93,214,44,0.5);
             width: 95%;
             margin: 0 auto 20px auto;
+            border: none;
         }
         .card-logo {
             font-size: 32px;
@@ -1176,6 +1168,40 @@
             0% { opacity: 0; transform: translateY(50px) scale(0.5); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
+
+        /* Адаптивность для маленьких экранов */
+        @media (max-width: 360px) {
+            .fixed-header .logo {
+                font-size: 32px;
+            }
+            .avatar {
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+            }
+            .header-right {
+                gap: 5px;
+            }
+            .balance-value {
+                font-size: 40px;
+            }
+            .task-card {
+                gap: 12px;
+            }
+            .task-info h4 {
+                font-size: 18px;
+            }
+            .task-price {
+                font-size: 20px;
+            }
+            .bottom-nav .nav-item {
+                font-size: 10px;
+            }
+            .bottom-nav .nav-item svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1365,21 +1391,17 @@
         let currentRole = 'worker'; // 'worker' или 'employer'
 
         function toggleRole() {
-            // Анимация исчезновения
             const roleContent = document.getElementById('roleContent');
             roleContent.classList.add('fade-out');
 
             setTimeout(() => {
-                // Переключаем роль
                 currentRole = currentRole === 'worker' ? 'employer' : 'worker';
                 updateRoleUI();
-                // Анимация появления
                 roleContent.classList.remove('fade-out');
                 roleContent.classList.add('fade-in');
                 setTimeout(() => roleContent.classList.remove('fade-in'), 300);
             }, 150);
 
-            // Обновляем иконку переключателя (активная роль)
             const roleSwitch = document.getElementById('roleSwitch');
             roleSwitch.classList.toggle('active', currentRole === 'employer');
         }
@@ -1392,17 +1414,15 @@
             if (currentRole === 'worker') {
                 sectionTitle.innerText = 'Задания';
                 roleContent.innerHTML = getWorkerTasksHTML();
-                profileExtra.innerHTML = ''; // убираем доп. блок в профиле
+                profileExtra.innerHTML = '';
             } else {
                 sectionTitle.innerText = 'Мои задания';
                 roleContent.innerHTML = getEmployerHTML();
                 profileExtra.innerHTML = getEmployerProfileExtra();
             }
 
-            // Если мы на странице профиля, нужно обновить и его
             if (document.getElementById('profile-page').classList.contains('active-page')) {
-                updateProfilePage(); // обновляем основную информацию
-                // profileExtra уже заполнен выше
+                updateProfilePage();
             }
         }
 
@@ -1435,13 +1455,13 @@
 
         function getEmployerHTML() {
             return `
-                <div class="employer-card">
+                <div class="employer-card animate-stagger">
                     <h4 style="margin-bottom:15px;">Создать новое задание</h4>
                     <input class="employer-create-field" type="text" placeholder="Название задания">
                     <input class="employer-create-field" type="number" placeholder="Цена (₽)">
                     <button class="employer-create-btn" onclick="alert('Задание создано (демо)')">Опубликовать</button>
                 </div>
-                <div class="employer-card">
+                <div class="employer-card animate-stagger">
                     <h4 style="margin-bottom:15px;">Мои активные задания</h4>
                     <div class="employer-order-item">
                         <span>Подпишись на канал</span>
@@ -1458,11 +1478,11 @@
 
         function getEmployerProfileExtra() {
             return `
-                <div class="profile-id-card">
+                <div class="profile-id-card extra">
                     <span class="id-label">Статус</span>
                     <span class="id-value">Заказчик</span>
                 </div>
-                <div class="profile-id-card">
+                <div class="profile-id-card extra">
                     <span class="id-label">Активных заданий</span>
                     <span class="id-value">2</span>
                 </div>
@@ -1964,7 +1984,6 @@
         });
 
         // Инициализация
-        // Заполняем роль при старте
         updateRoleUI();
         updateProfilePage();
         updateReferralsPage();
