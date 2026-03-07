@@ -20,7 +20,7 @@
             --accent-dark: #337418;
             --text-main: #F8F8F8;
             --text-muted: #9A9A9A;
-            --glass-bg: rgba(32,32,32,0.55);
+            --glass-bg: rgba(32,32,32,0.75);
             --glow: 0 0 25px rgba(93,214,44,0.35);
         }
 
@@ -70,7 +70,7 @@
         /* Все карточки (включая виджеты) — серый фон */
         .glass-card, .task-card, .stat-item, .referral-link-block, .friends-list,
         .balance-block, .withdraw-field, .analytics-total, .recent-transfers,
-        .total-balance, .streak-block, .employer-card {
+        .total-balance, .streak-block, .employer-card, .profile-role-card {
             background: linear-gradient(
                 145deg,
                 rgba(255,255,255,0.02),
@@ -136,10 +136,10 @@
             filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
 
-        /* Шестерёнка, колокольчик и переключатель ролей */
-        .settings-icon, .notification-icon, .role-switch {
-            width: 32px;
-            height: 32px;
+        /* Шестерёнка, колокольчик */
+        .settings-icon, .notification-icon {
+            width: 36px;
+            height: 36px;
             cursor: pointer;
             transition: transform 0.2s, filter 0.2s;
             color: rgba(255,255,255,0.7);
@@ -147,18 +147,13 @@
             align-items: center;
             justify-content: center;
         }
-        .settings-icon svg, .notification-icon svg, .role-switch svg {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
+        .settings-icon i, .notification-icon i {
+            font-size: 24px;
         }
-        .settings-icon:hover, .notification-icon:hover, .role-switch:hover {
+        .settings-icon:hover, .notification-icon:hover {
             color: white;
             transform: rotate(10deg);
             filter: drop-shadow(0 0 8px var(--accent));
-        }
-        .role-switch.active {
-            color: var(--accent);
         }
 
         /* Кнопки */
@@ -246,16 +241,16 @@
         }
 
         /* ============================= */
-        /* GLASS NAVIGATION (увеличенная, с анимацией) */
+        /* BOTTOM NAVIGATION (Telegram style) */
         /* ============================= */
 
         .bottom-nav {
             position: fixed;
-            bottom: 10px;
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
             width: 92%;
-            padding: 12px 0;
+            padding: 10px 0;
             display: flex;
             justify-content: space-around;
             background: var(--glass-bg);
@@ -360,7 +355,7 @@
         .profile-page .profile-calendar { animation-delay: 0.4s; }
         .profile-page .profile-id-card { animation-delay: 0.5s; }
         .profile-page .profile-message { animation-delay: 0.6s; }
-        .profile-page .profile-id-card.extra { animation-delay: 0.7s; }
+        .profile-page .profile-role-card { animation-delay: 0.7s; }
 
         /* Задержки для рефералов */
         .referral-page .referral-link-block { animation-delay: 0.1s; }
@@ -485,38 +480,12 @@
             overflow: hidden;
             position: relative;
             z-index: 2;
+            margin-left: 4px;
         }
         .avatar svg {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        /* Кнопка уведомлений наезжает на аватар */
-        .notification-icon {
-            position: relative;
-            z-index: 3;
-            margin-right: -12px; /* чтобы наехать на аватар */
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .notification-icon i {
-            font-size: 20px;
-        }
-
-        /* Переключатель ролей */
-        .role-switch {
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-        }
-        .role-switch.active {
-            background: var(--accent);
-            color: #000;
         }
 
         /* Контейнер страниц */
@@ -525,7 +494,7 @@
             min-height: 0;
             overflow-y: auto;
             padding-top: 90px;
-            margin-bottom: 90px;
+            padding-bottom: 100px; /* чтобы контент не уходил под панель */
             scrollbar-width: thin;
             scrollbar-color: var(--accent) transparent;
             -webkit-overflow-scrolling: touch;
@@ -725,8 +694,12 @@
         }
 
         .profile-header {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
             margin-bottom: 20px;
+            position: relative;
         }
         .profile-name {
             font-size: 28px;
@@ -739,11 +712,33 @@
             color: var(--text-muted);
             margin-top: 4px;
         }
+        .profile-role-switch {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            color: rgba(255,255,255,0.7);
+            font-size: 20px;
+        }
+        .profile-role-switch:hover {
+            background: var(--accent);
+            color: #000;
+            transform: scale(1.1);
+        }
+        .profile-role-switch.active {
+            background: var(--accent);
+            color: #000;
+        }
 
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px; /* увеличен отступ, чтобы свечение не перекрывалось */
         }
         .profile-avatar {
             width: 100px;
@@ -758,6 +753,7 @@
             color: white;
             box-shadow: 0 0 20px var(--accent);
             overflow: hidden;
+            z-index: 5;
         }
         .profile-avatar svg {
             width: 100%;
@@ -770,6 +766,7 @@
             justify-content: center;
             gap: 30px;
             margin-bottom: 25px;
+            z-index: 1;
         }
         .stat-under-item {
             display: flex;
@@ -877,6 +874,36 @@
         .profile-message-text {
             font-size: 16px;
             color: var(--text-muted);
+        }
+
+        /* Карточка роли (переключатель в профиле) */
+        .profile-role-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .profile-role-card:hover {
+            background: rgba(93,214,44,0.1);
+        }
+        .role-card-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .role-icon {
+            font-size: 24px;
+            color: var(--accent);
+        }
+        .role-text {
+            font-weight: 600;
+            color: white;
+        }
+        .role-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
         }
 
         /* ===== РЕФЕРАЛЫ ===== */
@@ -1213,11 +1240,6 @@
             .header-right {
                 gap: 2px;
             }
-            .notification-icon {
-                width: 32px;
-                height: 32px;
-                margin-right: -8px;
-            }
             .balance-value {
                 font-size: 40px;
             }
@@ -1260,15 +1282,11 @@
         <div class="fixed-header" id="fixedHeader">
             <div class="logo">ХАЙП</div>
             <div class="header-right">
-                <!-- Переключатель ролей -->
-                <div class="role-switch" id="roleSwitch" onclick="toggleRole()">
-                    <i class="fas fa-exchange-alt"></i>
+                <div class="notification-icon" onclick="alert('Уведомления (в разработке)')">
+                    <i class="fas fa-bell"></i>
                 </div>
                 <div class="settings-icon" onclick="alert('Настройки (в разработке)')">
                     <i class="fas fa-cog"></i>
-                </div>
-                <div class="notification-icon" onclick="alert('Уведомления (в разработке)')">
-                    <i class="fas fa-bell"></i>
                 </div>
                 <div class="avatar" id="headerAvatar">Т</div>
             </div>
@@ -1317,6 +1335,9 @@
                     <div class="profile-header animate-stagger">
                         <div class="profile-name" id="profileName">Тимофей</div>
                         <div class="profile-username" id="profileUsername">@username</div>
+                        <div class="profile-role-switch" id="profileRoleSwitch" onclick="toggleRole()">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
                     </div>
 
                     <div class="profile-avatar-wrapper animate-stagger">
@@ -1329,10 +1350,13 @@
 
                     <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
 
-                    <!-- Статус (роль) -->
-                    <div class="profile-id-card extra animate-stagger" id="profileRoleCard">
-                        <span class="id-label">Статус</span>
-                        <span class="id-value" id="profileRoleValue">Исполнитель</span>
+                    <!-- Карточка роли (переключатель) -->
+                    <div class="profile-role-card animate-stagger" onclick="toggleRole()">
+                        <div class="role-card-left">
+                            <i class="fas fa-exchange-alt role-icon"></i>
+                            <span class="role-text">Роль</span>
+                        </div>
+                        <span class="role-value" id="profileRoleValue">Исполнитель</span>
                     </div>
 
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
@@ -1366,7 +1390,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
+        <!-- Нижняя навигация (Telegram style) -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24">
@@ -1444,37 +1468,41 @@
 
         function toggleRole() {
             const roleContent = document.getElementById('roleContent');
-            roleContent.classList.add('fade-out');
+            if (roleContent) {
+                roleContent.classList.add('fade-out');
+            }
 
             setTimeout(() => {
                 currentRole = currentRole === 'worker' ? 'employer' : 'worker';
                 updateRoleUI();
-                // Обновляем статус в профиле, если он открыт
-                if (document.getElementById('profile-page').classList.contains('active-page')) {
-                    updateProfilePage();
+                // Обновляем статус в профиле
+                const profileRoleValue = document.getElementById('profileRoleValue');
+                if (profileRoleValue) {
+                    profileRoleValue.innerText = currentRole === 'worker' ? 'Исполнитель' : 'Заказчик';
                 }
-                roleContent.classList.remove('fade-out');
-                roleContent.classList.add('fade-in');
-                setTimeout(() => roleContent.classList.remove('fade-in'), 300);
+                // Обновляем иконку переключателя в профиле
+                const profileRoleSwitch = document.getElementById('profileRoleSwitch');
+                if (profileRoleSwitch) {
+                    profileRoleSwitch.classList.toggle('active', currentRole === 'employer');
+                }
+                if (roleContent) {
+                    roleContent.classList.remove('fade-out');
+                    roleContent.classList.add('fade-in');
+                    setTimeout(() => roleContent.classList.remove('fade-in'), 300);
+                }
             }, 150);
-
-            const roleSwitch = document.getElementById('roleSwitch');
-            roleSwitch.classList.toggle('active', currentRole === 'employer');
         }
 
         function updateRoleUI() {
             const roleContent = document.getElementById('roleContent');
             const sectionTitle = document.getElementById('mainSectionTitle');
-            const profileRoleValue = document.getElementById('profileRoleValue');
 
             if (currentRole === 'worker') {
                 sectionTitle.innerText = 'Задания';
                 roleContent.innerHTML = getWorkerTasksHTML();
-                profileRoleValue.innerText = 'Исполнитель';
             } else {
                 sectionTitle.innerText = 'Мои задания';
                 roleContent.innerHTML = getEmployerHTML();
-                profileRoleValue.innerText = 'Заказчик';
             }
 
             // Перезапускаем анимацию для новых элементов
@@ -1554,7 +1582,7 @@
         }
 
         // ---------- Табы на главной ----------
-        document.getElementById('mainFilters').addEventListener('click', (e) => {
+        document.getElementById('mainFilters')?.addEventListener('click', (e) => {
             const tab = e.target.closest('.tab');
             if (!tab) return;
             const tabs = document.querySelectorAll('#mainFilters .tab');
@@ -1850,7 +1878,7 @@
                 <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
             `;
 
-            // Статус уже обновлён в updateRoleUI, но обновим на всякий случай
+            // Статус уже обновлён в toggleRole, но обновим на всякий случай
             document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'Исполнитель' : 'Заказчик';
         }
 
