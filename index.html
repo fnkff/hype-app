@@ -44,6 +44,12 @@
                 radial-gradient(circle at 20% 0%, rgba(93,214,44,0.08), transparent 40%),
                 radial-gradient(circle at 80% 100%, rgba(93,214,44,0.05), transparent 50%),
                 var(--bg-main);
+            text-transform: lowercase;
+        }
+
+        /* Логотип оставляем заглавным */
+        .fixed-header .logo {
+            text-transform: none;
         }
 
         /* Скролл */
@@ -112,6 +118,19 @@
             color: white !important;
         }
 
+        /* Анимация огонька (мерцание) */
+        @keyframes flicker {
+            0% { opacity: 1; transform: scale(1); text-shadow: 0 0 5px var(--accent); }
+            50% { opacity: 0.8; transform: scale(1.1); text-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent); }
+            100% { opacity: 1; transform: scale(1); text-shadow: 0 0 5px var(--accent); }
+        }
+        .streak-icon {
+            font-size: 32px;
+            color: var(--accent);
+            animation: flicker 2s infinite;
+            display: inline-block;
+        }
+
         /* Анимация огонька (вспышка) */
         @keyframes streakPulse {
             0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--accent)); }
@@ -120,12 +139,6 @@
         }
         .streak-icon.pulse {
             animation: streakPulse 0.5s ease;
-        }
-
-        /* Иконка огонька с обычным свечением */
-        .streak-icon {
-            font-size: 32px;
-            filter: drop-shadow(0 0 8px var(--accent));
         }
 
         /* Иконки заданий — слабое свечение */
@@ -349,8 +362,8 @@
         .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
 
         /* Задержки для профиля */
-        .profile-page .profile-header { animation-delay: 0.1s; }
-        .profile-page .profile-avatar-wrapper { animation-delay: 0.2s; }
+        .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
+        .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
         .profile-page .profile-calendar { animation-delay: 0.4s; }
         .profile-page .profile-id-card { animation-delay: 0.5s; }
@@ -494,7 +507,7 @@
             min-height: 0;
             overflow-y: auto;
             padding-top: 90px;
-            padding-bottom: 100px; /* чтобы контент не уходил под панель */
+            padding-bottom: 100px;
             scrollbar-width: thin;
             scrollbar-color: var(--accent) transparent;
             -webkit-overflow-scrolling: touch;
@@ -688,57 +701,15 @@
             color: var(--accent);
         }
 
-        /* ===== ПРОФИЛЬ ===== */
+        /* ===== ПРОФИЛЬ (обновлённый) ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-        .profile-name {
-            font-size: 28px;
-            font-weight: 800;
-            color: white;
-            line-height: 1.2;
-        }
-        .profile-username {
-            font-size: 16px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-        .profile-role-switch {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
-            color: rgba(255,255,255,0.7);
-            font-size: 20px;
-        }
-        .profile-role-switch:hover {
-            background: var(--accent);
-            color: #000;
-            transform: scale(1.1);
-        }
-        .profile-role-switch.active {
-            background: var(--accent);
-            color: #000;
         }
 
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 40px; /* увеличен отступ, чтобы свечение не перекрывалось */
+            margin-bottom: 20px;
         }
         .profile-avatar {
             width: 100px;
@@ -761,12 +732,55 @@
             object-fit: cover;
         }
 
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .profile-name {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+        }
+        .profile-username {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+        .profile-role-switch {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            color: rgba(255,255,255,0.7);
+            font-size: 20px;
+            margin-top: 8px;
+        }
+        .profile-role-switch:hover {
+            background: var(--accent);
+            color: #000;
+            transform: scale(1.1);
+        }
+        .profile-role-switch.active {
+            background: var(--accent);
+            color: #000;
+        }
+
         .profile-stats-under-avatar {
             display: flex;
             justify-content: center;
             gap: 30px;
             margin-bottom: 25px;
-            z-index: 1;
+            position: relative;
+            z-index: 10;
         }
         .stat-under-item {
             display: flex;
@@ -1168,9 +1182,11 @@
             z-index: 9999;
             opacity: 0;
             transition: opacity 0.5s ease;
+            transform: scale(0.8);
         }
         .streak-animation-overlay.active {
             opacity: 1;
+            transform: scale(1);
         }
         .fire-effect {
             position: absolute;
@@ -1297,7 +1313,7 @@
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
                     <div class="total-balance animate-stagger">
-                        <div class="balance-label">Общий баланс</div>
+                        <div class="balance-label">общий баланс</div>
                         <div class="balance-value" id="mainBalance">0 ₽</div>
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
@@ -1305,7 +1321,7 @@
                     <!-- Блок Streak -->
                     <div class="streak-block animate-stagger" id="streakBlock">
                         <div class="streak-header">
-                            <span class="streak-icon" id="streakIcon">🔥</span>
+                            <span class="streak-icon" id="streakIcon"><i class="fas fa-fire"></i></span>
                             <span class="streak-count" id="streakCount">0</span>
                             <span class="streak-label">дней подряд</span>
                         </div>
@@ -1313,15 +1329,15 @@
                     </div>
 
                     <div class="section-title animate-stagger">
-                        <h3 id="mainSectionTitle">Задания</h3>
+                        <h3 id="mainSectionTitle">задания</h3>
                     </div>
 
                     <!-- Фильтры (кликабельные) -->
                     <div class="filters-tabs animate-stagger" id="mainFilters">
-                        <span class="tab active" data-filter="favorites">Избранное</span>
-                        <span class="tab" data-filter="top">Топ</span>
-                        <span class="tab" data-filter="new">Новые</span>
-                        <span class="tab" data-filter="leaders">Лидеры</span>
+                        <span class="tab active" data-filter="favorites">избранное</span>
+                        <span class="tab" data-filter="top">топ</span>
+                        <span class="tab" data-filter="new">новые</span>
+                        <span class="tab" data-filter="leaders">лидеры</span>
                     </div>
 
                     <!-- Контент, зависящий от роли -->
@@ -1329,19 +1345,21 @@
                 </div>
             </div>
 
-            <!-- Профиль -->
+            <!-- Профиль (обновлённый) -->
             <div id="profile-page" class="page">
                 <div class="profile-page">
+                    <!-- Аватар -->
+                    <div class="profile-avatar-wrapper animate-stagger">
+                        <div class="profile-avatar" id="profileAvatar">Т</div>
+                    </div>
+
+                    <!-- Имя и юзернейм под аватаром -->
                     <div class="profile-header animate-stagger">
-                        <div class="profile-name" id="profileName">Тимофей</div>
+                        <div class="profile-name" id="profileName">тимофей</div>
                         <div class="profile-username" id="profileUsername">@username</div>
                         <div class="profile-role-switch" id="profileRoleSwitch" onclick="toggleRole()">
                             <i class="fas fa-exchange-alt"></i>
                         </div>
-                    </div>
-
-                    <div class="profile-avatar-wrapper animate-stagger">
-                        <div class="profile-avatar" id="profileAvatar">Т</div>
                     </div>
 
                     <div class="profile-stats-under-avatar animate-stagger" id="profileStatsUnderAvatar"></div>
@@ -1354,9 +1372,9 @@
                     <div class="profile-role-card animate-stagger" onclick="toggleRole()">
                         <div class="role-card-left">
                             <i class="fas fa-exchange-alt role-icon"></i>
-                            <span class="role-text">Роль</span>
+                            <span class="role-text">роль</span>
                         </div>
-                        <span class="role-value" id="profileRoleValue">Исполнитель</span>
+                        <span class="role-value" id="profileRoleValue">исполнитель</span>
                     </div>
 
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
@@ -1367,9 +1385,9 @@
             <div id="analytics-page" class="page">
                 <div class="analytics-page">
                     <div class="period-tabs animate-stagger" id="analyticsTabs">
-                        <span class="period-tab active" data-period="day">День</span>
-                        <span class="period-tab" data-period="week">Неделя</span>
-                        <span class="period-tab" data-period="month">Месяц</span>
+                        <span class="period-tab active" data-period="day">день</span>
+                        <span class="period-tab" data-period="week">неделя</span>
+                        <span class="period-tab" data-period="month">месяц</span>
                     </div>
                     <div id="analyticsContent" class="fade-content"></div>
                 </div>
@@ -1396,31 +1414,31 @@
                 <svg viewBox="0 0 24 24">
                     <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                 </svg>
-                <span>Главная</span>
+                <span>главная</span>
             </a>
             <a class="nav-item" data-page="profile">
                 <svg viewBox="0 0 24 24">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
-                <span>Профиль</span>
+                <span>профиль</span>
             </a>
             <a class="nav-item" data-page="analytics">
                 <svg viewBox="0 0 24 24">
                     <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
                 </svg>
-                <span>Аналитика</span>
+                <span>аналитика</span>
             </a>
             <a class="nav-item" data-page="referrals">
                 <svg viewBox="0 0 24 24">
                     <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
                 </svg>
-                <span>Рефералы</span>
+                <span>рефералы</span>
             </a>
             <a class="nav-item" data-page="withdraw">
                 <svg viewBox="0 0 24 24">
                     <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
                 </svg>
-                <span>Вывод</span>
+                <span>вывод</span>
             </a>
         </div>
 
@@ -1428,20 +1446,20 @@
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
-                <h3>Пригласи друга</h3>
-                <p>Пригласи друга в Хайп. Когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
+                <h3>пригласи друга</h3>
+                <p>пригласи друга в хайп. когда он зарегистрируется и выполнит первое задание, ты получишь бонус 30 ₽.</p>
                 <input class="ref-link" id="refLink" readonly>
-                <button class="copy-btn" id="copyBtn">Копировать ссылку</button>
+                <button class="copy-btn" id="copyBtn">копировать ссылку</button>
             </div>
         </div>
 
         <div class="modal" id="subModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
-                <h3>Подпишись на канал</h3>
-                <p>Подпишись на @HYPE_JOB1 и нажми проверку</p>
-                <button class="channel-btn" id="channelBtn">Перейти в канал</button>
-                <button class="check-btn" id="checkBtn">Проверить подписку</button>
+                <h3>подпишись на канал</h3>
+                <p>подпишись на @hype_job1 и нажми проверку</p>
+                <button class="channel-btn" id="channelBtn">перейти в канал</button>
+                <button class="check-btn" id="checkBtn">проверить подписку</button>
                 <div class="result" id="checkResult"></div>
             </div>
         </div>
@@ -1449,15 +1467,15 @@
         <div class="modal" id="gameModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeGame">&times;</button></div>
-                <h3>Мини-игра</h3>
-                <p>Выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
+                <h3>мини-игра</h3>
+                <p>выбери одну из коробок и выиграй 5, 10 или 20 ₽!</p>
                 <div class="game-boxes">
                     <div class="game-box" data-box="1">?</div>
                     <div class="game-box" data-box="2">?</div>
                     <div class="game-box" data-box="3">?</div>
                 </div>
-                <div class="game-message" id="gameMessage"><span>Нажми на коробку</span><span class="game-reward" id="gameReward"></span></div>
-                <button class="claim-btn" id="claimBtn" style="display:none;">Забрать</button>
+                <div class="game-message" id="gameMessage"><span>нажми на коробку</span><span class="game-reward" id="gameReward"></span></div>
+                <button class="claim-btn" id="claimBtn" style="display:none;">забрать</button>
             </div>
         </div>
     </div>
@@ -1478,7 +1496,7 @@
                 // Обновляем статус в профиле
                 const profileRoleValue = document.getElementById('profileRoleValue');
                 if (profileRoleValue) {
-                    profileRoleValue.innerText = currentRole === 'worker' ? 'Исполнитель' : 'Заказчик';
+                    profileRoleValue.innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
                 }
                 // Обновляем иконку переключателя в профиле
                 const profileRoleSwitch = document.getElementById('profileRoleSwitch');
@@ -1498,10 +1516,10 @@
             const sectionTitle = document.getElementById('mainSectionTitle');
 
             if (currentRole === 'worker') {
-                sectionTitle.innerText = 'Задания';
+                sectionTitle.innerText = 'задания';
                 roleContent.innerHTML = getWorkerTasksHTML();
             } else {
-                sectionTitle.innerText = 'Мои задания';
+                sectionTitle.innerText = 'мои задания';
                 roleContent.innerHTML = getEmployerHTML();
             }
 
@@ -1516,9 +1534,9 @@
 
         function getWorkerTasksHTML() {
             const allTasks = [
-                { id: 1, name: 'Пригласи друга', desc: 'Отправь ссылку другу', price: 30 },
-                { id: 2, name: 'Подпишись на канал', desc: '@HYPE_JOB1', price: 20 },
-                { id: 3, name: 'Мини-игра', desc: 'Выиграй до 20 ₽', price: '5-20' }
+                { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу', price: 30 },
+                { id: 2, name: 'подпишись на канал', desc: '@hype_job1', price: 20 },
+                { id: 3, name: 'мини-игра', desc: 'выиграй до 20 ₽', price: '5-20' }
             ];
             let html = '<div class="tasks-grid">';
             allTasks.forEach(t => {
@@ -1538,22 +1556,22 @@
         function getEmployerHTML() {
             return `
                 <div class="employer-card animate-stagger">
-                    <h4 style="margin-bottom:15px;">Создать новое задание</h4>
-                    <input class="employer-create-field" type="text" placeholder="Название задания">
-                    <input class="employer-create-field" type="number" placeholder="Цена (₽)">
-                    <button class="employer-create-btn" onclick="alert('Задание создано (демо)')">Опубликовать</button>
+                    <h4 style="margin-bottom:15px;">создать новое задание</h4>
+                    <input class="employer-create-field" type="text" placeholder="название задания">
+                    <input class="employer-create-field" type="number" placeholder="цена (₽)">
+                    <button class="employer-create-btn" onclick="alert('задание создано (демо)')">опубликовать</button>
                 </div>
                 <div class="employer-card animate-stagger">
-                    <h4 style="margin-bottom:15px;">Мои активные задания</h4>
+                    <h4 style="margin-bottom:15px;">мои активные задания</h4>
                     <div class="employer-order-item">
-                        <span>Подпишись на канал</span>
+                        <span>подпишись на канал</span>
                         <span class="employer-order-status">20 ₽ • 5 выполнений</span>
                     </div>
                     <div class="employer-order-item">
-                        <span>Пригласи друга</span>
+                        <span>пригласи друга</span>
                         <span class="employer-order-status">30 ₽ • 2 выполнения</span>
                     </div>
-                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">Скоро здесь появится статистика</div>
+                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">скоро здесь появится статистика</div>
                 </div>
             `;
         }
@@ -1618,31 +1636,31 @@
         function getAnalyticsContent() {
             return `
                 <div class="analytics-total animate-stagger">
-                    <div class="balance-label">Общий доход</div>
+                    <div class="balance-label">общий доход</div>
                     <div class="balance-number" style="font-size:36px;">—</div>
                 </div>
                 <div class="analytics-total animate-stagger">
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                        <span>Доход</span>
+                        <span>доход</span>
                         <span>—</span>
                     </div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-                        <span>Расход</span>
+                        <span>расход</span>
                         <span>—</span>
                     </div>
                     <div class="chart-placeholder">
                         <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
                         <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
                     </div>
-                    <div style="text-align:center; color:var(--text-muted); margin-top:10px;">Статистика скоро появится</div>
+                    <div style="text-align:center; color:var(--text-muted); margin-top:10px;">статистика скоро появится</div>
                 </div>
                 <div style="margin-top:25px;">
-                    <h4 style="margin-bottom:15px;">Последние операции</h4>
+                    <h4 style="margin-bottom:15px;">последние операции</h4>
                     <div class="recent-transfers animate-stagger">
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">Здесь появится статистика</div>
+                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появится статистика</div>
                     </div>
                 </div>
             `;
@@ -1683,8 +1701,8 @@
 
         document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
-        document.getElementById('profileName').innerText = firstName;
-        document.getElementById('profileUsername').innerText = '@' + username;
+        document.getElementById('profileName').innerText = firstName.toLowerCase();
+        document.getElementById('profileUsername').innerText = '@' + username.toLowerCase();
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
@@ -1741,7 +1759,7 @@
         function renderWeekdays(streak) {
             const container = document.getElementById('weekdaysContainer');
             if (!container) return;
-            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            const days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
             const today = new Date().getDay();
             let dayIndex = today === 0 ? 6 : today - 1;
             let html = '';
@@ -1833,17 +1851,17 @@
                 <div class="stat-under-item">
                     <i class="fas fa-chart-line stat-under-icon"></i>
                     <span class="stat-under-value">${level}</span>
-                    <span class="stat-under-label">Уровень</span>
+                    <span class="stat-under-label">уровень</span>
                 </div>
                 <div class="stat-under-item">
                     <i class="fas fa-users stat-under-icon"></i>
                     <span class="stat-under-value">${referrals}</span>
-                    <span class="stat-under-label">Приглашено</span>
+                    <span class="stat-under-label">приглашено</span>
                 </div>
             `;
 
             const calendarEl = document.getElementById('profileCalendar');
-            const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
             const today = new Date();
             const currentDay = today.getDay();
             const monday = new Date(today);
@@ -1868,18 +1886,18 @@
             calendarEl.innerHTML = datesHtml;
 
             document.getElementById('profileIdCard').innerHTML = `
-                <span class="id-label">ID</span>
+                <span class="id-label">id</span>
                 <span class="id-value">${userId}</span>
             `;
 
             const messageEl = document.getElementById('profileMessage');
             messageEl.innerHTML = `
-                <div class="profile-message-title">Keep it up!</div>
+                <div class="profile-message-title">keep it up!</div>
                 <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
             `;
 
             // Статус уже обновлён в toggleRole, но обновим на всякий случай
-            document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'Исполнитель' : 'Заказчик';
+            document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
         }
 
         function updateReferralsPage() {
@@ -1887,27 +1905,27 @@
             if (!container) return;
             container.innerHTML = `
                 <div class="referral-link-block animate-stagger">
-                    <div class="referral-link-label">Твоя реферальная ссылка</div>
+                    <div class="referral-link-label">твоя реферальная ссылка</div>
                     <div class="ref-link-field">
                         <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField">
-                        <button class="copy-ref-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">Копировать</button>
+                        <button class="copy-ref-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">копировать</button>
                     </div>
                 </div>
                 <div class="referral-stats">
                     <div class="referral-stat-card animate-stagger">
-                        <div class="stat-label">Приглашено</div>
+                        <div class="stat-label">приглашено</div>
                         <div class="stat-number">${getReferralsCount()}</div>
                     </div>
                     <div class="referral-stat-card animate-stagger">
-                        <div class="stat-label">Заработано</div>
+                        <div class="stat-label">заработано</div>
                         <div class="stat-number">0 ₽</div>
                     </div>
                 </div>
                 <div class="friends-list animate-stagger">
-                    <h4 style="margin-bottom:15px;">Недавно приглашённые</h4>
+                    <h4 style="margin-bottom:15px;">недавно приглашённые</h4>
                     <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                     <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">Приглашай друзей, чтобы список заполнился</div>
+                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">приглашай друзей, чтобы список заполнился</div>
                 </div>
             `;
         }
@@ -1917,7 +1935,7 @@
             if (!container) return;
             container.innerHTML = `
                 <div class="card-glow animate-stagger">
-                    <div class="card-logo">ХАЙП</div>
+                    <div class="card-logo">хайп</div>
                     <div class="card-number">2200 0000 0000 0000</div>
                     <div class="card-details">
                         <span>01/29</span>
@@ -1925,27 +1943,27 @@
                     </div>
                 </div>
                 <div class="balance-block animate-stagger">
-                    <span class="balance-label">Твой баланс</span>
+                    <span class="balance-label">твой баланс</span>
                     <span class="balance-number">${balance} ₽</span>
                 </div>
                 <div class="withdraw-field animate-stagger">
-                    <input type="number" placeholder="Сумма (мин. 50 ₽)" id="withdrawAmount">
+                    <input type="number" placeholder="сумма (мин. 50 ₽)" id="withdrawAmount">
                 </div>
                 <div class="withdraw-field animate-stagger">
-                    <input type="text" placeholder="Номер карты или кошелька" id="withdrawCard">
+                    <input type="text" placeholder="номер карты или кошелька" id="withdrawCard">
                 </div>
-                <button id="withdrawSubmit" class="animate-stagger">Вывести</button>
+                <button id="withdrawSubmit" class="animate-stagger">вывести</button>
                 <div style="margin-top:25px;">
-                    <h4 style="margin-bottom:15px;">Недавние операции</h4>
+                    <h4 style="margin-bottom:15px;">недавние операции</h4>
                     <div class="recent-transfers animate-stagger">
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
                         <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">Здесь появятся последние операции</div>
+                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появятся последние операции</div>
                     </div>
                 </div>
             `;
-            document.getElementById('withdrawSubmit').addEventListener('click', () => alert('Вывод временно недоступен'));
+            document.getElementById('withdrawSubmit').addEventListener('click', () => alert('вывод временно недоступен'));
         }
 
         function updateAnalyticsPage() {
@@ -1970,7 +1988,7 @@
                 box.innerText = '?';
                 box.style.pointerEvents = 'auto';
             });
-            gameMessage.innerHTML = '<span>Нажми на коробку</span><span class="game-reward" id="gameReward"></span>';
+            gameMessage.innerHTML = '<span>нажми на коробку</span><span class="game-reward" id="gameReward"></span>';
             gameReward.innerText = '';
             claimBtn.style.display = 'none';
             currentWin = 0;
@@ -1987,7 +2005,7 @@
                 this.innerText = currentWin + ' ₽';
                 this.style.background = '#2a5c1a';
                 gameBoxes.forEach(b => b.classList.add('disabled'));
-                gameMessage.innerHTML = '<span>Поздравляем!</span><span class="game-reward">+ ' + currentWin + ' ₽</span>';
+                gameMessage.innerHTML = '<span>поздравляем!</span><span class="game-reward">+ ' + currentWin + ' ₽</span>';
                 claimBtn.style.display = 'block';
             });
         });
@@ -2027,11 +2045,11 @@
         checkBtn.onclick = async () => {
             if (!canDo(2)) {
                 checkResult.style.color = 'red';
-                checkResult.innerText = 'Задание уже выполнено';
+                checkResult.innerText = 'задание уже выполнено';
                 return;
             }
             checkBtn.disabled = true;
-            checkBtn.innerText = 'Проверка...';
+            checkBtn.innerText = 'проверка...';
             checkResult.innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
@@ -2045,16 +2063,16 @@
                 addRating(10);
                 localStorage.setItem('subscription_done', 'true');
                 checkResult.style.color = '#00b300';
-                checkResult.innerText = '✅ Подписка подтверждена! +20 ₽';
+                checkResult.innerText = '✅ подписка подтверждена! +20 ₽';
                 updateStreakDisplay(newStreak > oldStreak, oldStreak);
                 animateStreakIcon();
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                 setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
             } else {
                 checkResult.style.color = 'red';
-                checkResult.innerText = '❌ Не подписан. Попробуйте снова.';
+                checkResult.innerText = '❌ не подписан. попробуйте снова.';
                 checkBtn.disabled = false;
-                checkBtn.innerText = 'Проверить подписку';
+                checkBtn.innerText = 'проверить подписку';
             }
         };
 
