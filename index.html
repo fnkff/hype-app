@@ -495,8 +495,8 @@
             position: relative;
             z-index: 2;
             margin-left: 4px;
-            text-align: center;
             line-height: 1;
+            text-align: center;
         }
         .avatar svg {
             width: 100%;
@@ -948,13 +948,6 @@
         .progress-percent {
             text-align: center;
             margin-top: 5px;
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-        .level-names {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
             font-size: 14px;
             color: var(--text-muted);
         }
@@ -1660,7 +1653,7 @@
             const xpNextLevel = getTotalXPForLevel(level + 1);
             const needed = xpNextLevel - xpCurrentLevel;
             const have = xp - xpCurrentLevel;
-            return Math.min(100, Math.round((have / needed) * 100));
+            return needed > 0 ? Math.min(100, Math.round((have / needed) * 100)) : 0;
         }
 
         // ---------- Работа с опытом ----------
@@ -1710,6 +1703,7 @@
                 roleContent.innerHTML = getEmployerHTML();
             }
 
+            // Перезапускаем анимацию для новых элементов
             const newElements = roleContent.querySelectorAll('.animate-stagger');
             newElements.forEach(el => {
                 el.style.animation = 'none';
@@ -1792,6 +1786,7 @@
             const tabs = document.querySelectorAll('#mainFilters .tab');
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
+            // Здесь можно добавить логику фильтрации
         });
 
         // ---------- Аналитика с переключением периодов ----------
@@ -1953,7 +1948,7 @@
 
         document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
-        document.getElementById('profileName').innerText = firstName; // оставляем как есть
+        document.getElementById('profileName').innerText = firstName; // оставляем как есть (с большой буквы)
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
@@ -2251,23 +2246,25 @@
             const newStreak = updateStreak();
             addRating(10); // старая система рейтинга пока оставлена для совместимости
             addCount(3);
-            updateTasksGrid(); // обновим список заданий (хотя они статичны)
+            updateRoleUI(); // обновляем задания (хотя они статичны, но для единообразия)
             updateStreakDisplay(newStreak > oldStreak, oldStreak);
             animateStreakIcon();
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
         };
 
-        // В задании "подпишись на канал" тоже добавим опыт
-        checkBtn.onclick = async function() {
+        // В задании "подпишись на канал" добавим опыт
+        // Переопределим обработчик checkBtn
+        document.getElementById('checkBtn').onclick = async function() {
             if (!canDo(2)) {
-                checkResult.style.color = 'red';
-                checkResult.innerText = 'задание уже выполнено';
+                document.getElementById('checkResult').style.color = 'red';
+                document.getElementById('checkResult').innerText = 'задание уже выполнено';
                 return;
             }
+            const checkBtn = this;
             checkBtn.disabled = true;
             checkBtn.innerText = 'проверка...';
-            checkResult.innerText = '';
+            document.getElementById('checkResult').innerText = '';
 
             await new Promise(r => setTimeout(r, 1500));
             const success = true;
@@ -2280,15 +2277,15 @@
                 const newStreak = updateStreak();
                 addRating(10);
                 localStorage.setItem('subscription_done', 'true');
-                checkResult.style.color = '#00b300';
-                checkResult.innerText = '✅ подписка подтверждена! +20 ₽';
+                document.getElementById('checkResult').style.color = '#00b300';
+                document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
                 updateStreakDisplay(newStreak > oldStreak, oldStreak);
                 animateStreakIcon();
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                 setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
             } else {
-                checkResult.style.color = 'red';
-                checkResult.innerText = '❌ не подписан. попробуйте снова.';
+                document.getElementById('checkResult').style.color = 'red';
+                document.getElementById('checkResult').innerText = '❌ не подписан. попробуйте снова.';
                 checkBtn.disabled = false;
                 checkBtn.innerText = 'проверить подписку';
             }
@@ -2307,12 +2304,7 @@
         };
 
         const closeSub = document.getElementById('closeSub');
-        const checkBtn = document.getElementById('checkBtn');
-        const checkResult = document.getElementById('checkResult');
-
         closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
-
-        // Обработчик checkBtn уже переопределён выше, но оставим его здесь для порядка
 
         const pages = {
             tasks: document.getElementById('tasks-page'),
@@ -2356,10 +2348,8 @@
 
         animatePage(document.getElementById('tasks-page'));
 
-        // Функция updateTasksGrid оставлена для совместимости, но мы не используем её для отрисовки
-        function updateTasksGrid() {
-            // ничего не делаем, так как список формируется в getWorkerTasksHTML
-        }
+        // Функция updateTasksGrid больше не нужна, но оставим заглушку
+        function updateTasksGrid() {}
     </script>
 </body>
 </html>
