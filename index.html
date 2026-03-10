@@ -1274,15 +1274,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 300px;
-            height: 300px;
+            width: 400px; /* чуть больше */
+            height: 400px;
             z-index: 2;
         }
 
         .old-streak, .new-streak,
         .old-level, .new-level {
             position: absolute;
-            font-size: 120px;
+            font-size: 140px; /* увеличен */
             font-weight: 900;
             color: white;
             text-shadow: 0 0 30px var(--accent), 0 0 60px var(--accent-dark);
@@ -1290,20 +1290,20 @@
         }
 
         .old-streak, .old-level {
-            animation: fadeOutUp 1s forwards;
+            animation: fadeOutUp 1.2s forwards; /* чуть длиннее */
         }
         .new-streak, .new-level {
-            animation: fadeInUp 1s forwards;
+            animation: fadeInUp 1.2s forwards;
         }
 
         .level-up-title {
-            font-size: 36px;
+            font-size: 40px; /* увеличен */
             font-weight: 700;
             color: white;
             text-shadow: 0 0 20px var(--accent);
             margin-top: 20px;
             opacity: 0;
-            animation: fadeInUp 1s ease 0.4s forwards;
+            animation: fadeInUp 1.2s ease 0.4s forwards;
             z-index: 2;
         }
 
@@ -1710,7 +1710,7 @@
             overlay.classList.add('active');
             setTimeout(() => {
                 overlay.classList.remove('active');
-            }, 3500); // дольше
+            }, 3500);
         }
 
         // ---------- Роль ----------
@@ -2034,7 +2034,7 @@
                 overlay.classList.add('active');
                 setTimeout(() => {
                     overlay.classList.remove('active');
-                }, 3500); // дольше
+                }, 3500);
             }
         }
 
