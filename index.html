@@ -495,6 +495,8 @@
             position: relative;
             z-index: 2;
             margin-left: 4px;
+            text-align: center;
+            line-height: 1;
         }
         .avatar svg {
             width: 100%;
@@ -710,7 +712,7 @@
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 15px; /* уменьшено */
+            margin-bottom: 15px;
         }
         .profile-avatar {
             width: 100px;
@@ -726,6 +728,8 @@
             box-shadow: 0 0 20px var(--accent);
             overflow: hidden;
             z-index: 5;
+            line-height: 1;
+            text-align: center;
         }
         .profile-avatar svg {
             width: 100%;
@@ -735,18 +739,18 @@
 
         .profile-header {
             text-align: center;
-            margin-bottom: 15px; /* уменьшено */
+            margin-bottom: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px; /* уменьшено */
+            gap: 4px;
         }
         .profile-name {
             font-size: 28px;
             font-weight: 800;
             color: white;
             line-height: 1.2;
-            text-transform: none; /* оставляем как есть */
+            text-transform: none;
         }
         .profile-title {
             font-size: 16px;
@@ -952,6 +956,7 @@
             justify-content: space-between;
             margin-top: 10px;
             font-size: 14px;
+            color: var(--text-muted);
         }
 
         /* ===== МОДАЛКА ДРУЗЕЙ ===== */
@@ -1559,7 +1564,7 @@
     </div>
 
     <script>
-        // ---------- Звания по уровням ----------
+        // ---------- Звания по уровням (до 50) ----------
         const titles = [
             "пуська",
             "нубяра",
@@ -1570,7 +1575,47 @@
             "хайпожор",
             "босс",
             "император",
-            "бог хайпа"
+            "бог хайпа",
+            "киберпанк",
+            "флексер",
+            "краш",
+            "рофлан",
+            "чилл",
+            "вайб",
+            "форсер",
+            "топчик",
+            "король",
+            "легендарный",
+            "эпик",
+            "мифический",
+            "ачивка",
+            "скилловый",
+            "профи",
+            "мастер",
+            "гуру",
+            "сенсей",
+            "мэтр",
+            "ас",
+            "джедай",
+            "повелитель",
+            "властелин",
+            "титан",
+            "олимп",
+            "бессмертный",
+            "непобедимый",
+            "ультра",
+            "мега",
+            "гига",
+            "тера",
+            "пета",
+            "экза",
+            "зетта",
+            "йотта",
+            "ронни",
+            "коул",
+            "дрейк",
+            "йе",
+            "хайп"
         ];
 
         function getTitle(level) {
@@ -1581,8 +1626,56 @@
             }
         }
 
+        // ---------- Система опыта и уровней ----------
+        const BASE_XP = 10; // опыт для 1->2
+
+        // Рассчитываем общий опыт, необходимый для достижения уровня (сумма порогов от 1 до level-1)
+        function getTotalXPForLevel(level) {
+            if (level <= 1) return 0;
+            let total = 0;
+            for (let i = 1; i < level; i++) {
+                total += Math.round(BASE_XP * Math.pow(1.5, i - 1));
+            }
+            return total;
+        }
+
+        // По общему опыту определяем уровень
+        function getLevelByXP(xp) {
+            let level = 1;
+            while (true) {
+                let xpForNext = getTotalXPForLevel(level + 1);
+                if (xp >= xpForNext) {
+                    level++;
+                } else {
+                    break;
+                }
+            }
+            return level;
+        }
+
+        // Прогресс до следующего уровня (в процентах)
+        function getProgressToNextLevel(xp) {
+            const level = getLevelByXP(xp);
+            const xpCurrentLevel = getTotalXPForLevel(level);
+            const xpNextLevel = getTotalXPForLevel(level + 1);
+            const needed = xpNextLevel - xpCurrentLevel;
+            const have = xp - xpCurrentLevel;
+            return Math.min(100, Math.round((have / needed) * 100));
+        }
+
+        // ---------- Работа с опытом ----------
+        function getXP() {
+            return parseInt(localStorage.getItem('xp')) || 0;
+        }
+
+        function addXP(amount) {
+            let xp = getXP() + amount;
+            localStorage.setItem('xp', xp);
+            return xp;
+        }
+
         // ---------- Роль ----------
-        let currentRole = 'worker'; // 'worker' или 'employer'
+        let currentRole = 'worker';
 
         function toggleRole() {
             const roleContent = document.getElementById('roleContent');
@@ -1593,7 +1686,6 @@
             setTimeout(() => {
                 currentRole = currentRole === 'worker' ? 'employer' : 'worker';
                 updateRoleUI();
-                // Обновляем статус в профиле
                 const profileRoleValue = document.getElementById('profileRoleValue');
                 if (profileRoleValue) {
                     profileRoleValue.innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
@@ -1618,7 +1710,6 @@
                 roleContent.innerHTML = getEmployerHTML();
             }
 
-            // Перезапускаем анимацию для новых элементов
             const newElements = roleContent.querySelectorAll('.animate-stagger');
             newElements.forEach(el => {
                 el.style.animation = 'none';
@@ -1701,7 +1792,6 @@
             const tabs = document.querySelectorAll('#mainFilters .tab');
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            // Здесь можно добавить логику фильтрации
         });
 
         // ---------- Аналитика с переключением периодов ----------
@@ -1711,15 +1801,11 @@
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     if (tab.classList.contains('active')) return;
-                    // Анимация исчезновения
                     content.classList.add('fade-out');
                     setTimeout(() => {
-                        // Меняем активный таб
                         tabs.forEach(t => t.classList.remove('active'));
                         tab.classList.add('active');
-                        // Обновляем содержимое (пока одинаковое)
                         content.innerHTML = getAnalyticsContent();
-                        // Анимация появления
                         content.classList.remove('fade-out');
                         content.classList.add('fade-in');
                         setTimeout(() => content.classList.remove('fade-in'), 300);
@@ -1763,10 +1849,10 @@
 
         // ---------- Модалка прогресса уровня ----------
         function openLevelModal() {
-            const rating = getRating();
-            const level = getLevel(rating);
+            const xp = getXP();
+            const level = getLevelByXP(xp);
             const nextLevel = level + 1;
-            const progress = getProgressToNextLevel(rating);
+            const progress = getProgressToNextLevel(xp);
             const currentTitle = getTitle(level);
             const nextTitle = getTitle(nextLevel);
 
@@ -1782,16 +1868,12 @@
                         <div class="progress-bar-bg">
                             <div class="progress-bar-fill" style="width: ${progress}%;"></div>
                         </div>
-                        <div class="progress-percent">${Math.round(progress)}%</div>
+                        <div class="progress-percent">${progress}%</div>
                     </div>
                     <div class="level-box">
                         <div class="level-number">${nextLevel}</div>
                         <div class="level-title">${nextTitle}</div>
                     </div>
-                </div>
-                <div class="level-names">
-                    <span>текущий: ${currentTitle}</span>
-                    <span>следующий: ${nextTitle}</span>
                 </div>
             `;
             modal.classList.add('show');
@@ -1805,7 +1887,6 @@
         function openFriendsModal() {
             const modal = document.getElementById('friendsModal');
             const content = document.getElementById('friendsModalContent');
-            // Демо-данные
             content.innerHTML = `
                 <div class="friend-item-modal">
                     <div class="friend-avatar-modal"></div>
@@ -1872,7 +1953,7 @@
 
         document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
-        document.getElementById('profileName').innerText = firstName; // оставляем как есть (с большой буквы)
+        document.getElementById('profileName').innerText = firstName; // оставляем как есть
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
@@ -1954,16 +2035,6 @@
             localStorage.setItem('rating', rating);
             return rating;
         }
-        function getLevel(rating) {
-            return Math.floor(rating / 100) + 1;
-        }
-        function getProgressToNextLevel(rating) {
-            const level = getLevel(rating);
-            const currentLevelStart = (level - 1) * 100;
-            let progress = ((rating - currentLevelStart) / 100) * 100;
-            progress = Math.min(100, Math.max(0, progress));
-            return progress;
-        }
 
         function getReferralsCount() {
             return parseInt(localStorage.getItem('referralsCount')) || 0;
@@ -2011,8 +2082,8 @@
 
         // Обновление профиля
         function updateProfilePage() {
-            const rating = getRating();
-            const level = getLevel(rating);
+            const xp = getXP();
+            const level = getLevelByXP(xp);
             const streak = getStreak();
             const referrals = getReferralsCount();
             const title = getTitle(level);
@@ -2057,7 +2128,7 @@
                 <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
             `;
 
-            // Статус уже обновлён в toggleRole
+            document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
         }
 
         function updateReferralsPage() {
@@ -2175,13 +2246,52 @@
             const oldStreak = getStreak();
             balance += currentWin;
             saveBalance();
+            // Добавляем опыт за мини-игру
+            addXP(2);
             const newStreak = updateStreak();
-            addRating(10);
+            addRating(10); // старая система рейтинга пока оставлена для совместимости
             addCount(3);
+            updateTasksGrid(); // обновим список заданий (хотя они статичны)
             updateStreakDisplay(newStreak > oldStreak, oldStreak);
             animateStreakIcon();
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
+        };
+
+        // В задании "подпишись на канал" тоже добавим опыт
+        checkBtn.onclick = async function() {
+            if (!canDo(2)) {
+                checkResult.style.color = 'red';
+                checkResult.innerText = 'задание уже выполнено';
+                return;
+            }
+            checkBtn.disabled = true;
+            checkBtn.innerText = 'проверка...';
+            checkResult.innerText = '';
+
+            await new Promise(r => setTimeout(r, 1500));
+            const success = true;
+
+            if (success) {
+                const oldStreak = getStreak();
+                balance += 20;
+                saveBalance();
+                addXP(5);
+                const newStreak = updateStreak();
+                addRating(10);
+                localStorage.setItem('subscription_done', 'true');
+                checkResult.style.color = '#00b300';
+                checkResult.innerText = '✅ подписка подтверждена! +20 ₽';
+                updateStreakDisplay(newStreak > oldStreak, oldStreak);
+                animateStreakIcon();
+                if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
+                setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
+            } else {
+                checkResult.style.color = 'red';
+                checkResult.innerText = '❌ не подписан. попробуйте снова.';
+                checkBtn.disabled = false;
+                checkBtn.innerText = 'проверить подписку';
+            }
         };
 
         document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
@@ -2202,39 +2312,7 @@
 
         closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
 
-        checkBtn.onclick = async () => {
-            if (!canDo(2)) {
-                checkResult.style.color = 'red';
-                checkResult.innerText = 'задание уже выполнено';
-                return;
-            }
-            checkBtn.disabled = true;
-            checkBtn.innerText = 'проверка...';
-            checkResult.innerText = '';
-
-            await new Promise(r => setTimeout(r, 1500));
-            const success = true;
-
-            if (success) {
-                const oldStreak = getStreak();
-                balance += 20;
-                saveBalance();
-                const newStreak = updateStreak();
-                addRating(10);
-                localStorage.setItem('subscription_done', 'true');
-                checkResult.style.color = '#00b300';
-                checkResult.innerText = '✅ подписка подтверждена! +20 ₽';
-                updateStreakDisplay(newStreak > oldStreak, oldStreak);
-                animateStreakIcon();
-                if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
-                setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
-            } else {
-                checkResult.style.color = 'red';
-                checkResult.innerText = '❌ не подписан. попробуйте снова.';
-                checkBtn.disabled = false;
-                checkBtn.innerText = 'проверить подписку';
-            }
-        };
+        // Обработчик checkBtn уже переопределён выше, но оставим его здесь для порядка
 
         const pages = {
             tasks: document.getElementById('tasks-page'),
@@ -2277,6 +2355,11 @@
         initAnalyticsTabs();
 
         animatePage(document.getElementById('tasks-page'));
+
+        // Функция updateTasksGrid оставлена для совместимости, но мы не используем её для отрисовки
+        function updateTasksGrid() {
+            // ничего не делаем, так как список формируется в getWorkerTasksHTML
+        }
     </script>
 </body>
 </html>
