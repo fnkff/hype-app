@@ -1283,6 +1283,61 @@
         .new-streak {
             animation: fadeInUp 0.5s forwards;
         }
+
+        /* Анимация повышения уровня */
+        .level-up-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            transform: scale(0.8);
+        }
+        .level-up-overlay.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .level-number-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 300px;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        .old-level, .new-level {
+            position: absolute;
+            font-size: 100px;
+            font-weight: 900;
+            color: #ff8c00;
+            text-shadow: 0 0 30px #ff8c00, 0 0 60px #ff4500;
+            transition: all 0.5s ease;
+        }
+        .old-level {
+            animation: fadeOutUp 0.5s forwards;
+        }
+        .new-level {
+            animation: fadeInUp 0.5s forwards;
+        }
+        .level-up-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 20px var(--accent);
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease 0.3s forwards;
+        }
+
         @keyframes fadeOutUp {
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
@@ -1336,6 +1391,17 @@
             <div class="old-streak" id="oldStreak"></div>
             <div class="new-streak" id="newStreak"></div>
         </div>
+    </div>
+
+    <!-- Оверлей для анимации повышения уровня -->
+    <div class="level-up-overlay" id="levelUpOverlay">
+        <div class="fire-effect"></div>
+        <div class="fire-effect2"></div>
+        <div class="level-number-container" id="levelNumberContainer">
+            <div class="old-level" id="oldLevel"></div>
+            <div class="new-level" id="newLevel"></div>
+        </div>
+        <div class="level-up-title" id="levelUpTitle"></div>
     </div>
 
     <div class="splash" id="splash">
@@ -1665,6 +1731,21 @@
             let xp = getXP() + amount;
             localStorage.setItem('xp', xp);
             return xp;
+        }
+
+        // ---------- Анимация повышения уровня ----------
+        function showLevelUpAnimation(oldLevel, newLevel) {
+            const overlay = document.getElementById('levelUpOverlay');
+            const oldEl = document.getElementById('oldLevel');
+            const newEl = document.getElementById('newLevel');
+            const titleEl = document.getElementById('levelUpTitle');
+            oldEl.innerText = oldLevel;
+            newEl.innerText = newLevel;
+            titleEl.innerText = getTitle(newLevel);
+            overlay.classList.add('active');
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 2000);
         }
 
         // ---------- Роль ----------
@@ -2225,7 +2306,6 @@
         gameBoxes.forEach(box => {
             box.addEventListener('click', function(e) {
                 if (this.classList.contains('disabled')) return;
-                const oldStreak = getStreak();
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
                 this.innerText = currentWin + ' ₽';
@@ -2238,23 +2318,26 @@
 
         claimBtn.onclick = () => {
             if (currentWin === 0) return;
+            const oldLevel = getLevelByXP(getXP());
             const oldStreak = getStreak();
             balance += currentWin;
             saveBalance();
-            // Добавляем опыт за мини-игру
             addXP(2);
+            const newLevel = getLevelByXP(getXP());
             const newStreak = updateStreak();
-            addRating(10); // старая система рейтинга пока оставлена для совместимости
+            addRating(10);
             addCount(3);
-            updateRoleUI(); // обновляем задания (хотя они статичны, но для единообразия)
+            updateRoleUI();
             updateStreakDisplay(newStreak > oldStreak, oldStreak);
             animateStreakIcon();
+            if (newLevel > oldLevel) {
+                showLevelUpAnimation(oldLevel, newLevel);
+            }
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
         };
 
-        // В задании "подпишись на канал" добавим опыт
-        // Переопределим обработчик checkBtn
+        // В задании "подпишись на канал" добавим опыт и проверку уровня
         document.getElementById('checkBtn').onclick = async function() {
             if (!canDo(2)) {
                 document.getElementById('checkResult').style.color = 'red';
@@ -2270,10 +2353,12 @@
             const success = true;
 
             if (success) {
+                const oldLevel = getLevelByXP(getXP());
                 const oldStreak = getStreak();
                 balance += 20;
                 saveBalance();
                 addXP(5);
+                const newLevel = getLevelByXP(getXP());
                 const newStreak = updateStreak();
                 addRating(10);
                 localStorage.setItem('subscription_done', 'true');
@@ -2281,6 +2366,9 @@
                 document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
                 updateStreakDisplay(newStreak > oldStreak, oldStreak);
                 animateStreakIcon();
+                if (newLevel > oldLevel) {
+                    showLevelUpAnimation(oldLevel, newLevel);
+                }
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                 setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
             } else {
