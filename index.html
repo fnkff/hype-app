@@ -11,7 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         /* ============================= */
-        /* ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ         */
+        /* HYPE 2.0 – GLOBAL FOUNDATION  */
         /* ============================= */
         :root {
             --bg-main: #0F0F0F;
@@ -47,11 +47,13 @@
             text-transform: lowercase;
         }
 
+        /* Логотип оставляем заглавным */
         .fixed-header .logo,
         .splash-logo {
             text-transform: none;
         }
 
+        /* Скролл */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -63,17 +65,24 @@
             border-radius: 10px;
         }
 
+        /* Плавность */
         button, .card, .nav-item {
             transition: all 0.3s ease;
         }
 
         /* ============================= */
-        /* КАРТОЧКИ                      */
+        /* CARDS & TASK UI               */
         /* ============================= */
+
+        /* Все карточки (включая виджеты) — серый фон */
         .glass-card, .task-card, .stat-item, .referral-link-block, .friends-list,
         .balance-block, .withdraw-field, .analytics-total, .recent-transfers,
-        .total-balance, .streak-block, .employer-card, .profile-role-card, .admin-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
+        .total-balance, .streak-block, .employer-card, .profile-role-card {
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,0.02),
+                rgba(0,0,0,0.15)
+            ), var(--bg-card);
             border-radius: 24px;
             padding: 16px;
             margin-bottom: 16px;
@@ -85,15 +94,17 @@
         .glass-card:hover, .task-card:hover, .stat-item:hover, .referral-link-block:hover,
         .friends-list:hover, .balance-block:hover, .withdraw-field:hover,
         .analytics-total:hover, .recent-transfers:hover,
-        .total-balance:hover, .streak-block:hover, .employer-card:hover, .admin-card:hover {
+        .total-balance:hover, .streak-block:hover, .employer-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
+        /* Баланс карточка — дополнительный отступ */
         .total-balance {
             margin-bottom: 30px;
         }
 
+        /* Виджет огоньков */
         .streak-block {
             color: white;
         }
@@ -108,7 +119,7 @@
             color: white !important;
         }
 
-        /* Анимация огонька */
+        /* Анимация огонька (мерцание) */
         @keyframes flicker {
             0% { opacity: 1; transform: scale(1); text-shadow: 0 0 5px var(--accent); }
             50% { opacity: 0.8; transform: scale(1.1); text-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent); }
@@ -121,6 +132,7 @@
             display: inline-block;
         }
 
+        /* Анимация огонька (вспышка) */
         @keyframes streakPulse {
             0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--accent)); }
             50% { transform: scale(1.3); filter: drop-shadow(0 0 20px var(--accent)); }
@@ -130,6 +142,7 @@
             animation: streakPulse 0.5s ease;
         }
 
+        /* Иконки заданий — слабое свечение */
         .task-icon svg {
             width: 32px;
             height: 32px;
@@ -137,6 +150,7 @@
             filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
 
+        /* Шестерёнка, колокольчик */
         .settings-icon, .notification-icon {
             width: 36px;
             height: 36px;
@@ -156,6 +170,7 @@
             filter: drop-shadow(0 0 8px var(--accent));
         }
 
+        /* Кнопки */
         button {
             border: none;
             border-radius: 18px;
@@ -165,21 +180,23 @@
             transition: all 0.3s ease;
         }
 
-        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .employer-create-btn, .admin-btn {
+        /* Все основные кнопки с белым текстом */
+        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .employer-create-btn {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
             box-shadow: 0 4px 15px rgba(93,214,44,0.3);
         }
 
-        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover, .admin-btn:hover {
+        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
 
-        .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active, .copy-ref-btn:active, .employer-create-btn:active, .admin-btn:active {
+        .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active, .copy-ref-btn:active, .employer-create-btn:active {
             transform: scale(0.96);
         }
 
+        /* Кнопки в модалках на всю ширину, с отступами */
         .modal-content button {
             width: 100%;
             margin-bottom: 12px;
@@ -191,6 +208,7 @@
             margin-bottom: 0;
         }
 
+        /* Крестик в модалках — без фона, свечения, меньше */
         .modal-close {
             background: transparent !important;
             color: white;
@@ -210,6 +228,7 @@
             background: transparent;
         }
 
+        /* Кнопка вывода как карта */
         #withdrawSubmit {
             width: 95%;
             margin: 20px auto;
@@ -218,12 +237,14 @@
             font-size: 20px;
         }
 
+        /* Выполнено (если потребуется) */
         .btn-done {
             background: transparent;
             border: 1px solid var(--accent);
             color: var(--accent);
         }
 
+        /* Бейдж награды */
         .reward-badge {
             background: rgba(93,214,44,0.15);
             color: var(--accent);
@@ -234,8 +255,9 @@
         }
 
         /* ============================= */
-        /* НИЖНЯЯ НАВИГАЦИЯ               */
+        /* BOTTOM NAVIGATION (Telegram style) */
         /* ============================= */
+
         .bottom-nav {
             position: fixed;
             bottom: 16px;
@@ -295,6 +317,7 @@
             fill: currentColor;
         }
 
+        /* Мини-игра коробки */
         .game-box {
             background: var(--bg-card);
             border-radius: 20px;
@@ -317,9 +340,7 @@
             box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
 
-        /* ============================= */
-        /* АНИМАЦИЯ ПОЯВЛЕНИЯ             */
-        /* ============================= */
+        /* Анимация появления страниц — сверху вниз с шагом 0.1s */
         @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -330,13 +351,18 @@
             animation: fadeInUp 0.4s ease-out forwards;
         }
 
+        /* Задержки для главной */
         .main-page .total-balance { animation-delay: 0.1s; }
         .main-page .streak-block { animation-delay: 0.2s; }
         .main-page .section-title { animation-delay: 0.3s; }
         .main-page .filters-tabs { animation-delay: 0.4s; }
-        .main-page .task-card:nth-child(1) { animation-delay: 0.5s; }
-        .main-page .task-card:nth-child(2) { animation-delay: 0.6s; }
+        .main-page .task-card:nth-child(1),
+        .main-page .employer-card:nth-child(1) { animation-delay: 0.5s; }
+        .main-page .task-card:nth-child(2),
+        .main-page .employer-card:nth-child(2) { animation-delay: 0.6s; }
         .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
+
+        /* Задержки для профиля */
         .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
         .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
@@ -344,27 +370,27 @@
         .profile-page .profile-id-card { animation-delay: 0.5s; }
         .profile-page .profile-message { animation-delay: 0.6s; }
         .profile-page .profile-role-card { animation-delay: 0.7s; }
-        .profile-page .admin-card { animation-delay: 0.8s; }
 
+        /* Задержки для рефералов */
         .referral-page .referral-link-block { animation-delay: 0.1s; }
         .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.2s; }
         .referral-page .referral-stat-card:nth-child(2) { animation-delay: 0.3s; }
         .referral-page .friends-list { animation-delay: 0.4s; }
 
+        /* Задержки для вывода */
         .withdraw-page .balance-block { animation-delay: 0.1s; }
         .withdraw-page .withdraw-field:nth-of-type(1) { animation-delay: 0.2s; }
         .withdraw-page .withdraw-field:nth-of-type(2) { animation-delay: 0.3s; }
         .withdraw-page #withdrawSubmit { animation-delay: 0.4s; }
         .withdraw-page .recent-transfers { animation-delay: 0.5s; }
 
+        /* Задержки для аналитики */
         .analytics-page .period-tabs { animation-delay: 0.1s; }
         .analytics-page .analytics-total:nth-of-type(1) { animation-delay: 0.2s; }
         .analytics-page .analytics-total:nth-of-type(2) { animation-delay: 0.3s; }
         .analytics-page .recent-transfers { animation-delay: 0.4s; }
 
-        /* ============================= */
-        /* ОСНОВНАЯ СТРУКТУРА             */
-        /* ============================= */
+        /* ===== ОСТАЛЬНЫЕ СТИЛИ ===== */
         body {
             display: flex;
             flex-direction: column;
@@ -373,6 +399,7 @@
             padding: 0;
         }
 
+        /* Splash screen */
         .splash {
             position: fixed;
             top: 0;
@@ -419,6 +446,7 @@
             z-index: 1;
         }
 
+        /* Фиксированная шапка (без анимации) */
         .fixed-header {
             position: fixed;
             top: 0;
@@ -450,7 +478,7 @@
             gap: 4px;
             pointer-events: auto;
         }
-
+        /* Аватар в шапке */
         .avatar {
             width: 56px;
             height: 56px;
@@ -464,6 +492,8 @@
             color: white;
             box-shadow: var(--glow);
             overflow: hidden;
+            position: relative;
+            z-index: 2;
             margin-left: 4px;
             line-height: 1;
             text-align: center;
@@ -474,6 +504,7 @@
             object-fit: cover;
         }
 
+        /* Контейнер страниц */
         .pages-container {
             flex: 1;
             min-height: 0;
@@ -492,6 +523,7 @@
             display: block;
         }
 
+        /* Анимация смены контента (для роли и аналитики) */
         .fade-content {
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
@@ -504,7 +536,7 @@
             transform: translateY(0);
         }
 
-        /* ===== ГЛАВНАЯ ===== */
+        /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
         .main-page {
             padding: 0 20px 20px 20px;
         }
@@ -527,6 +559,10 @@
             font-size: 18px;
             font-weight: 700;
             margin-top: 4px;
+        }
+
+        .action-buttons {
+            display: none;
         }
 
         .streak-header {
@@ -590,6 +626,9 @@
             color: white;
             border-bottom-color: var(--accent);
         }
+        .tab:hover {
+            color: white;
+        }
 
         .tasks-grid {
             display: flex;
@@ -603,6 +642,12 @@
             gap: 16px;
             cursor: pointer;
             margin-bottom: 0;
+        }
+        .task-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--accent);
+            filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
         .task-info {
             flex: 1;
@@ -628,6 +673,7 @@
             margin-left: 8px;
         }
 
+        /* Интерфейс заказчика */
         .employer-create-field {
             width: 100%;
             padding: 14px;
@@ -658,7 +704,7 @@
             color: var(--accent);
         }
 
-        /* ===== ПРОФИЛЬ ===== */
+        /* ===== ПРОФИЛЬ (обновлённый) ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
         }
@@ -833,6 +879,7 @@
             color: var(--text-muted);
         }
 
+        /* Карточка роли (переключатель) */
         .profile-role-card {
             display: flex;
             align-items: center;
@@ -862,85 +909,7 @@
             color: var(--accent);
         }
 
-        .admin-card {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .admin-card:hover {
-            background: rgba(93,214,44,0.1);
-        }
-        .admin-card i {
-            margin-right: 8px;
-            font-size: 20px;
-            color: var(--accent);
-        }
-
-        /* ===== МОДАЛКИ ===== */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s;
-            z-index: 1000;
-        }
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background: var(--bg-card);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 30px;
-            width: 90%;
-            max-width: 400px;
-            padding: 25px;
-            position: relative;
-            transform: scale(0.9);
-            transition: transform 0.3s;
-        }
-        .modal.show .modal-content {
-            transform: scale(1);
-        }
-        .modal-header {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-        }
-        .modal h3 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .modal p {
-            font-size: 16px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-        .modal input {
-            width: 100%;
-            padding: 14px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(93,214,44,0.3);
-            border-radius: 40px;
-            color: white;
-            font-size: 16px;
-            margin-bottom: 15px;
-            outline: none;
-        }
-
+        /* ===== МОДАЛКА ПРОГРЕССА УРОВНЯ ===== */
         .level-progress {
             display: flex;
             align-items: center;
@@ -983,6 +952,7 @@
             color: var(--text-muted);
         }
 
+        /* ===== МОДАЛКА ДРУЗЕЙ ===== */
         .friend-item-modal {
             display: flex;
             align-items: center;
@@ -1010,58 +980,6 @@
         .friend-level-value {
             color: var(--accent);
             font-weight: 600;
-        }
-
-        .admin-stat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .admin-stat-item {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 15px;
-            text-align: center;
-        }
-        .admin-stat-value {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--accent);
-        }
-        .admin-stat-label {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-top: 5px;
-        }
-
-        .admin-user-list {
-            margin: 15px 0;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .admin-user-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .admin-user-id {
-            font-family: monospace;
-            font-size: 14px;
-        }
-        .admin-user-badge {
-            background: var(--accent);
-            color: #000;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-        .admin-owner-badge {
-            background: rgba(255,255,255,0.2);
-            color: var(--text-muted);
         }
 
         /* ===== РЕФЕРАЛЫ ===== */
@@ -1114,19 +1032,6 @@
         .referral-stat-value {
             font-size: 32px;
             font-weight: 800;
-        }
-        .friend-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .friend-avatar {
-            width: 48px;
-            height: 48px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
         }
 
         /* ===== ВЫВОД ===== */
@@ -1222,6 +1127,72 @@
             opacity: 0.5;
         }
 
+        /* Модалки (общие) */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+            z-index: 1000;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 30px;
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+        .modal-header {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        .modal h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .modal p {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .modal input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(93,214,44,0.3);
+            border-radius: 40px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .result {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
         .game-boxes {
             display: flex;
             justify-content: space-around;
@@ -1246,8 +1217,9 @@
             color: var(--accent);
         }
 
-        /* ===== АНИМАЦИИ ОГОНЬКА И УРОВНЯ ===== */
-        .streak-animation-overlay, .level-up-overlay {
+        /* ===== УЛУЧШЕННЫЕ АНИМАЦИИ (зелёные, длинные, яркие) ===== */
+        .streak-animation-overlay,
+        .level-up-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -1262,12 +1234,14 @@
             opacity: 0;
             transition: opacity 0.8s ease, transform 0.8s ease;
             transform: scale(0.8);
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.9); /* плотный чёрный фон */
         }
-        .streak-animation-overlay.active, .level-up-overlay.active {
+        .streak-animation-overlay.active,
+        .level-up-overlay.active {
             opacity: 1;
             transform: scale(1);
         }
+
         .fire-effect {
             position: absolute;
             width: 100%;
@@ -1284,6 +1258,7 @@
             filter: blur(50px);
             animation: fireMove 4s ease-in-out infinite alternate;
         }
+
         @keyframes firePulse {
             0% { opacity: 0.7; transform: scale(1); }
             100% { opacity: 1; transform: scale(1.2); }
@@ -1292,31 +1267,37 @@
             0% { transform: translate(-10%, -10%) scale(1); }
             100% { transform: translate(10%, 10%) scale(1.3); }
         }
-        .streak-number-container, .level-number-container {
+
+        .streak-number-container,
+        .level-number-container {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 400px;
+            width: 400px; /* чуть больше */
             height: 400px;
             z-index: 2;
         }
-        .old-streak, .new-streak, .old-level, .new-level {
+
+        .old-streak, .new-streak,
+        .old-level, .new-level {
             position: absolute;
-            font-size: 140px;
+            font-size: 140px; /* увеличен */
             font-weight: 900;
             color: white;
             text-shadow: 0 0 30px var(--accent), 0 0 60px var(--accent-dark);
             transition: all 0.5s ease;
         }
+
         .old-streak, .old-level {
-            animation: fadeOutUp 1.2s forwards;
+            animation: fadeOutUp 1.2s forwards; /* чуть длиннее */
         }
         .new-streak, .new-level {
             animation: fadeInUp 1.2s forwards;
         }
+
         .level-up-title {
-            font-size: 40px;
+            font-size: 40px; /* увеличен */
             font-weight: 700;
             color: white;
             text-shadow: 0 0 20px var(--accent);
@@ -1325,6 +1306,7 @@
             animation: fadeInUp 1.2s ease 0.4s forwards;
             z-index: 2;
         }
+
         @keyframes fadeOutUp {
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
@@ -1334,21 +1316,43 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        /* Адаптивность для маленьких экранов */
         @media (max-width: 360px) {
-            .fixed-header .logo { font-size: 32px; }
-            .avatar { width: 48px; height: 48px; font-size: 24px; }
-            .header-right { gap: 2px; }
-            .balance-value { font-size: 40px; }
-            .task-card { gap: 12px; }
-            .task-info h4 { font-size: 18px; }
-            .task-price { font-size: 20px; }
-            .bottom-nav .nav-item { font-size: 10px; }
-            .bottom-nav .nav-item svg { width: 20px; height: 20px; }
+            .fixed-header .logo {
+                font-size: 32px;
+            }
+            .avatar {
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+            }
+            .header-right {
+                gap: 2px;
+            }
+            .balance-value {
+                font-size: 40px;
+            }
+            .task-card {
+                gap: 12px;
+            }
+            .task-info h4 {
+                font-size: 18px;
+            }
+            .task-price {
+                font-size: 20px;
+            }
+            .bottom-nav .nav-item {
+                font-size: 10px;
+            }
+            .bottom-nav .nav-item svg {
+                width: 20px;
+                height: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Анимация огонька -->
+    <!-- Оверлей для анимации огонька -->
     <div class="streak-animation-overlay" id="streakAnimationOverlay">
         <div class="fire-effect"></div>
         <div class="fire-effect2"></div>
@@ -1358,7 +1362,7 @@
         </div>
     </div>
 
-    <!-- Анимация повышения уровня -->
+    <!-- Оверлей для анимации повышения уровня -->
     <div class="level-up-overlay" id="levelUpOverlay">
         <div class="fire-effect"></div>
         <div class="fire-effect2"></div>
@@ -1374,7 +1378,7 @@
     </div>
 
     <div class="app-content" id="appContent">
-        <!-- Шапка -->
+        <!-- Фиксированная шапка -->
         <div class="fixed-header" id="fixedHeader">
             <div class="logo">ХАЙП</div>
             <div class="header-right">
@@ -1389,7 +1393,7 @@
         </div>
 
         <div class="pages-container" id="pagesContainer">
-            <!-- Главная -->
+            <!-- Главная страница -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
                     <div class="total-balance animate-stagger">
@@ -1398,6 +1402,7 @@
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
 
+                    <!-- Блок Streak -->
                     <div class="streak-block animate-stagger" id="streakBlock">
                         <div class="streak-header">
                             <span class="streak-icon" id="streakIcon"><i class="fas fa-fire"></i></span>
@@ -1411,6 +1416,7 @@
                         <h3 id="mainSectionTitle">задания</h3>
                     </div>
 
+                    <!-- Фильтры (кликабельные) -->
                     <div class="filters-tabs animate-stagger" id="mainFilters">
                         <span class="tab active" data-filter="favorites">избранное</span>
                         <span class="tab" data-filter="top">топ</span>
@@ -1418,22 +1424,26 @@
                         <span class="tab" data-filter="leaders">лидеры</span>
                     </div>
 
+                    <!-- Контент, зависящий от роли -->
                     <div id="roleContent" class="role-content"></div>
                 </div>
             </div>
 
-            <!-- Профиль -->
+            <!-- Профиль (обновлённый) -->
             <div id="profile-page" class="page">
                 <div class="profile-page">
+                    <!-- Аватар -->
                     <div class="profile-avatar-wrapper animate-stagger">
                         <div class="profile-avatar" id="profileAvatar">Т</div>
                     </div>
 
+                    <!-- Имя и звание под аватаром -->
                     <div class="profile-header animate-stagger">
                         <div class="profile-name" id="profileName">тимофей</div>
                         <div class="profile-title" id="profileTitle">пуська</div>
                     </div>
 
+                    <!-- Показатели уровня и приглашённых (кликабельные) -->
                     <div class="profile-stats-under-avatar animate-stagger">
                         <div class="stat-under-item" onclick="openLevelModal()">
                             <i class="fas fa-chart-line stat-under-icon"></i>
@@ -1448,8 +1458,10 @@
                     </div>
 
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
+
                     <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
 
+                    <!-- Карточка роли (переключатель) -->
                     <div class="profile-role-card animate-stagger" onclick="toggleRole()">
                         <div class="role-card-left">
                             <i class="fas fa-exchange-alt role-icon"></i>
@@ -1457,8 +1469,6 @@
                         </div>
                         <span class="role-value" id="profileRoleValue">исполнитель</span>
                     </div>
-
-                    <div id="adminButtonContainer" class="animate-stagger"></div>
 
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
                 </div>
@@ -1483,7 +1493,7 @@
                 </div>
             </div>
 
-            <!-- Вывод -->
+            <!-- Вывод средств -->
             <div id="withdraw-page" class="page">
                 <div class="withdraw-page">
                     <div id="withdrawContent"></div>
@@ -1491,7 +1501,7 @@
             </div>
         </div>
 
-        <!-- Модалки -->
+        <!-- Модалка прогресса уровня -->
         <div class="modal" id="levelModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeLevelModal">&times;</button></div>
@@ -1500,6 +1510,7 @@
             </div>
         </div>
 
+        <!-- Модалка друзей -->
         <div class="modal" id="friendsModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeFriendsModal">&times;</button></div>
@@ -1508,24 +1519,41 @@
             </div>
         </div>
 
-        <div class="modal" id="adminModal">
-            <div class="modal-content">
-                <div class="modal-header"><button class="modal-close" id="closeAdminModal">&times;</button></div>
-                <h3>⚙️ админ-панель</h3>
-                <div id="adminModalContent"></div>
-            </div>
+        <!-- Нижняя навигация (Telegram style) -->
+        <div class="bottom-nav">
+            <a class="nav-item active" data-page="tasks">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+                <span>главная</span>
+            </a>
+            <a class="nav-item" data-page="profile">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                <span>профиль</span>
+            </a>
+            <a class="nav-item" data-page="analytics">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+                </svg>
+                <span>аналитика</span>
+            </a>
+            <a class="nav-item" data-page="referrals">
+                <svg viewBox="0 0 24 24">
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                </svg>
+                <span>рефералы</span>
+            </a>
+            <a class="nav-item" data-page="withdraw">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                </svg>
+                <span>вывод</span>
+            </a>
         </div>
 
-        <div class="modal" id="addAdminModal">
-            <div class="modal-content">
-                <div class="modal-header"><button class="modal-close" id="closeAddAdminModal">&times;</button></div>
-                <h3>➕ добавить администратора</h3>
-                <input type="text" id="newAdminId" placeholder="telegram id пользователя">
-                <button onclick="addAdmin()">подтвердить</button>
-                <p style="color: var(--text-muted); font-size: 14px; margin-top: 10px;">* ID можно узнать в профиле</p>
-            </div>
-        </div>
-
+        <!-- Модалки -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1561,140 +1589,74 @@
                 <button class="claim-btn" id="claimBtn" style="display:none;">забрать</button>
             </div>
         </div>
-
-        <!-- Нижняя навигация -->
-        <div class="bottom-nav">
-            <a class="nav-item active" data-page="tasks">
-                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-                <span>главная</span>
-            </a>
-            <a class="nav-item" data-page="profile">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span>профиль</span>
-            </a>
-            <a class="nav-item" data-page="analytics">
-                <svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
-                <span>аналитика</span>
-            </a>
-            <a class="nav-item" data-page="referrals">
-                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-                <span>рефералы</span>
-            </a>
-            <a class="nav-item" data-page="withdraw">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-                <span>вывод</span>
-            </a>
-        </div>
     </div>
 
     <script>
-        // --------------------------------------------------------------
-        // 1. ИМИТАЦИЯ БАЗЫ ДАННЫХ (для админ-панели)
-        // --------------------------------------------------------------
-        const mockDatabase = {
-            stats: {
-                totalUsers: 1543,
-                usersOnline: 128,
-                totalTasks: 4562,
-                totalEarnings: 125000
-            },
-            admins: {
-                ownerId: 123456789, // замени на свой Telegram ID
-                adminIds: [
-                    123456789,      // ты
-                    987654321       // друг (замени на реальный)
-                ]
-            }
-        };
-
-        let tg = window.Telegram?.WebApp;
-        if (tg) tg.expand();
-        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
-        const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
-        const username = tg?.initDataUnsafe?.user?.username || 'username';
-        const displayName = firstName;
-
-        // Проверка админа
-        function isAdmin() {
-            const numericUserId = Number(userId);
-            return mockDatabase.admins.adminIds.includes(numericUserId);
-        }
-
-        function isOwner() {
-            return Number(userId) === mockDatabase.admins.ownerId;
-        }
-
-        // --------------------------------------------------------------
-        // 2. ФУНКЦИИ АДМИН-ПАНЕЛИ
-        // --------------------------------------------------------------
-        function openAdminModal() {
-            const modal = document.getElementById('adminModal');
-            const content = document.getElementById('adminModalContent');
-            const stats = mockDatabase.stats;
-
-            let adminsListHtml = '';
-            mockDatabase.admins.adminIds.forEach(id => {
-                const isOwnerId = id === mockDatabase.admins.ownerId;
-                adminsListHtml += `
-                    <div class="admin-user-item">
-                        <span class="admin-user-id">${id}</span>
-                        ${isOwnerId ? '<span class="admin-user-badge admin-owner-badge">владелец</span>' : '<span class="admin-user-badge">админ</span>'}
-                    </div>
-                `;
-            });
-
-            const addButtonHtml = isOwner() ? '<button class="admin-btn" onclick="openAddAdminModal()">➕ добавить администратора</button>' : '';
-
-            content.innerHTML = `
-                <div class="admin-stat-grid">
-                    <div class="admin-stat-item"><div class="admin-stat-value">${stats.totalUsers}</div><div class="admin-stat-label">всего пользователей</div></div>
-                    <div class="admin-stat-item"><div class="admin-stat-value">${stats.usersOnline}</div><div class="admin-stat-label">сейчас онлайн</div></div>
-                    <div class="admin-stat-item"><div class="admin-stat-value">${stats.totalTasks}</div><div class="admin-stat-label">выполнено заданий</div></div>
-                    <div class="admin-stat-item"><div class="admin-stat-value">${(stats.totalEarnings/1000).toFixed(1)}k</div><div class="admin-stat-label">заработано ₽</div></div>
-                </div>
-                <div style="margin: 20px 0;">
-                    <h4 style="margin-bottom: 10px;">👥 администраторы</h4>
-                    <div class="admin-user-list">${adminsListHtml}</div>
-                </div>
-                ${addButtonHtml}
-                <p style="text-align:center; margin-top:15px; color:var(--text-muted);">остальная статистика скоро появится</p>
-            `;
-            modal.classList.add('show');
-        }
-
-        function openAddAdminModal() {
-            document.getElementById('adminModal').classList.remove('show');
-            document.getElementById('addAdminModal').classList.add('show');
-        }
-
-        function addAdmin() {
-            const newId = parseInt(document.getElementById('newAdminId').value);
-            if (isNaN(newId)) {
-                alert('Введите корректный ID');
-                return;
-            }
-            mockDatabase.admins.adminIds.push(newId);
-            alert(`Пользователь ${newId} теперь администратор!`);
-            document.getElementById('addAdminModal').classList.remove('show');
-            updateProfilePage();
-        }
-
-        // --------------------------------------------------------------
-        // 3. СИСТЕМА УРОВНЕЙ И ЗВАНИЙ
-        // --------------------------------------------------------------
+        // ---------- Звания по уровням (до 50) ----------
         const titles = [
-            "пуська", "нубяра", "комфортик", "красавчик", "легенда", "миллионер", "хайпожор", "босс", "император", "бог хайпа",
-            "киберпанк", "флексер", "краш", "рофлан", "чилл", "вайб", "форсер", "топчик", "король", "легендарный",
-            "эпик", "мифический", "ачивка", "скилловый", "профи", "мастер", "гуру", "сенсей", "мэтр", "ас",
-            "джедай", "повелитель", "властелин", "титан", "олимп", "бессмертный", "непобедимый", "ультра", "мега", "гига",
-            "тера", "пета", "экза", "зетта", "йотта", "ронни", "коул", "дрейк", "йе", "хайп"
+            "пуська",
+            "нубяра",
+            "комфортик",
+            "красавчик",
+            "легенда",
+            "миллионер",
+            "хайпожор",
+            "босс",
+            "император",
+            "бог хайпа",
+            "киберпанк",
+            "флексер",
+            "краш",
+            "рофлан",
+            "чилл",
+            "вайб",
+            "форсер",
+            "топчик",
+            "король",
+            "легендарный",
+            "эпик",
+            "мифический",
+            "ачивка",
+            "скилловый",
+            "профи",
+            "мастер",
+            "гуру",
+            "сенсей",
+            "мэтр",
+            "ас",
+            "джедай",
+            "повелитель",
+            "властелин",
+            "титан",
+            "олимп",
+            "бессмертный",
+            "непобедимый",
+            "ультра",
+            "мега",
+            "гига",
+            "тера",
+            "пета",
+            "экза",
+            "зетта",
+            "йотта",
+            "ронни",
+            "коул",
+            "дрейк",
+            "йе",
+            "хайп"
         ];
 
         function getTitle(level) {
-            return titles[level - 1] || "бог хайпа";
+            if (level <= titles.length) {
+                return titles[level - 1];
+            } else {
+                return "бог хайпа";
+            }
         }
 
+        // ---------- Система опыта и уровней ----------
         const BASE_XP = 10;
+
         function getTotalXPForLevel(level) {
             if (level <= 1) return 0;
             let total = 0;
@@ -1706,55 +1668,79 @@
 
         function getLevelByXP(xp) {
             let level = 1;
-            while (xp >= getTotalXPForLevel(level + 1)) level++;
+            while (true) {
+                let xpForNext = getTotalXPForLevel(level + 1);
+                if (xp >= xpForNext) {
+                    level++;
+                } else {
+                    break;
+                }
+            }
             return level;
         }
 
         function getProgressToNextLevel(xp) {
             const level = getLevelByXP(xp);
-            const xpCurrent = getTotalXPForLevel(level);
-            const xpNext = getTotalXPForLevel(level + 1);
-            const needed = xpNext - xpCurrent;
-            const have = xp - xpCurrent;
+            const xpCurrentLevel = getTotalXPForLevel(level);
+            const xpNextLevel = getTotalXPForLevel(level + 1);
+            const needed = xpNextLevel - xpCurrentLevel;
+            const have = xp - xpCurrentLevel;
             return needed > 0 ? Math.min(100, Math.round((have / needed) * 100)) : 0;
         }
 
-        function getXP() { return parseInt(localStorage.getItem('xp')) || 0; }
+        function getXP() {
+            return parseInt(localStorage.getItem('xp')) || 0;
+        }
+
         function addXP(amount) {
             let xp = getXP() + amount;
             localStorage.setItem('xp', xp);
             return xp;
         }
 
+        // ---------- Анимация повышения уровня ----------
         function showLevelUpAnimation(oldLevel, newLevel) {
             const overlay = document.getElementById('levelUpOverlay');
-            document.getElementById('oldLevel').innerText = oldLevel;
-            document.getElementById('newLevel').innerText = newLevel;
-            document.getElementById('levelUpTitle').innerText = getTitle(newLevel);
+            const oldEl = document.getElementById('oldLevel');
+            const newEl = document.getElementById('newLevel');
+            const titleEl = document.getElementById('levelUpTitle');
+            oldEl.innerText = oldLevel;
+            newEl.innerText = newLevel;
+            titleEl.innerText = getTitle(newLevel);
             overlay.classList.add('active');
-            setTimeout(() => overlay.classList.remove('active'), 3500);
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 3500);
         }
 
-        // --------------------------------------------------------------
-        // 4. РОЛЬ (ИСПОЛНИТЕЛЬ / ЗАКАЗЧИК)
-        // --------------------------------------------------------------
+        // ---------- Роль ----------
         let currentRole = 'worker';
+
         function toggleRole() {
             const roleContent = document.getElementById('roleContent');
-            roleContent?.classList.add('fade-out');
+            if (roleContent) {
+                roleContent.classList.add('fade-out');
+            }
+
             setTimeout(() => {
                 currentRole = currentRole === 'worker' ? 'employer' : 'worker';
                 updateRoleUI();
-                document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
-                roleContent?.classList.remove('fade-out');
-                roleContent?.classList.add('fade-in');
-                setTimeout(() => roleContent?.classList.remove('fade-in'), 300);
+                const profileRoleValue = document.getElementById('profileRoleValue');
+                if (profileRoleValue) {
+                    profileRoleValue.innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
+                }
+                if (roleContent) {
+                    roleContent.classList.remove('fade-out');
+                    roleContent.classList.add('fade-in');
+                    setTimeout(() => roleContent.classList.remove('fade-in'), 300);
+                }
             }, 150);
         }
 
         function updateRoleUI() {
             const roleContent = document.getElementById('roleContent');
             const sectionTitle = document.getElementById('mainSectionTitle');
+
             if (currentRole === 'worker') {
                 sectionTitle.innerText = 'задания';
                 roleContent.innerHTML = getWorkerTasksHTML();
@@ -1762,7 +1748,9 @@
                 sectionTitle.innerText = 'мои задания';
                 roleContent.innerHTML = getEmployerHTML();
             }
-            roleContent.querySelectorAll('.animate-stagger').forEach(el => {
+
+            const newElements = roleContent.querySelectorAll('.animate-stagger');
+            newElements.forEach(el => {
                 el.style.animation = 'none';
                 el.offsetHeight;
                 el.style.animation = '';
@@ -1775,12 +1763,19 @@
                 { id: 2, name: 'подпишись на канал', desc: '@hype_job1', price: 20 },
                 { id: 3, name: 'мини-игра', desc: 'выиграй до 20 ₽', price: '5-20' }
             ];
-            return '<div class="tasks-grid">' + allTasks.map(t => `
-                <div class="task-card animate-stagger" onclick="handleTaskClick(${t.id})">
+            let html = '<div class="tasks-grid">';
+            allTasks.forEach(t => {
+                html += `<div class="task-card animate-stagger" onclick="handleTaskClick(${t.id})">
                     <div class="task-icon">${getTaskIcon(t.name)}</div>
-                    <div class="task-info"><h4>${t.name}</h4><p>${t.desc}</p></div>
+                    <div class="task-info">
+                        <h4>${t.name}</h4>
+                        <p>${t.desc}</p>
+                    </div>
                     <div class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
-                </div>`).join('') + '</div>';
+                </div>`;
+            });
+            html += '</div>';
+            return html;
         }
 
         function getEmployerHTML() {
@@ -1793,8 +1788,14 @@
                 </div>
                 <div class="employer-card animate-stagger">
                     <h4 style="margin-bottom:15px;">мои активные задания</h4>
-                    <div class="employer-order-item"><span>подпишись на канал</span><span class="employer-order-status">20 ₽ • 5 выполнений</span></div>
-                    <div class="employer-order-item"><span>пригласи друга</span><span class="employer-order-status">30 ₽ • 2 выполнения</span></div>
+                    <div class="employer-order-item">
+                        <span>подпишись на канал</span>
+                        <span class="employer-order-status">20 ₽ • 5 выполнений</span>
+                    </div>
+                    <div class="employer-order-item">
+                        <span>пригласи друга</span>
+                        <span class="employer-order-status">30 ₽ • 2 выполнения</span>
+                    </div>
                     <div style="text-align:center; margin-top:12px; color:var(--text-muted);">скоро здесь появится статистика</div>
                 </div>
             `;
@@ -1814,42 +1815,185 @@
         }
 
         function getTaskIcon(name) {
-            if (name.includes('друга')) return `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
-            if (name.includes('канал')) return `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/></svg>`;
+            if (name.includes('друга')) {
+                return `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
+            }
+            if (name.includes('канал')) {
+                return `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/></svg>`;
+            }
             return `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`;
         }
 
-        // --------------------------------------------------------------
-        // 5. МОДАЛКИ УРОВНЯ И ДРУЗЕЙ
-        // --------------------------------------------------------------
+        // ---------- Табы на главной ----------
+        document.getElementById('mainFilters')?.addEventListener('click', (e) => {
+            const tab = e.target.closest('.tab');
+            if (!tab) return;
+            const tabs = document.querySelectorAll('#mainFilters .tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+        });
+
+        // ---------- Аналитика с переключением периодов ----------
+        function initAnalyticsTabs() {
+            const tabs = document.querySelectorAll('#analyticsTabs .period-tab');
+            const content = document.getElementById('analyticsContent');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    if (tab.classList.contains('active')) return;
+                    content.classList.add('fade-out');
+                    setTimeout(() => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        content.innerHTML = getAnalyticsContent();
+                        content.classList.remove('fade-out');
+                        content.classList.add('fade-in');
+                        setTimeout(() => content.classList.remove('fade-in'), 300);
+                    }, 150);
+                });
+            });
+        }
+
+        function getAnalyticsContent() {
+            return `
+                <div class="analytics-total animate-stagger">
+                    <div class="balance-label">общий доход</div>
+                    <div class="balance-number" style="font-size:36px;">—</div>
+                </div>
+                <div class="analytics-total animate-stagger">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span>доход</span>
+                        <span>—</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                        <span>расход</span>
+                        <span>—</span>
+                    </div>
+                    <div class="chart-placeholder">
+                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
+                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
+                    </div>
+                    <div style="text-align:center; color:var(--text-muted); margin-top:10px;">статистика скоро появится</div>
+                </div>
+                <div style="margin-top:25px;">
+                    <h4 style="margin-bottom:15px;">последние операции</h4>
+                    <div class="recent-transfers animate-stagger">
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появится статистика</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ---------- Модалка прогресса уровня ----------
         function openLevelModal() {
             const xp = getXP();
             const level = getLevelByXP(xp);
             const nextLevel = level + 1;
             const progress = getProgressToNextLevel(xp);
-            document.getElementById('levelModalContent').innerHTML = `
+            const currentTitle = getTitle(level);
+            const nextTitle = getTitle(nextLevel);
+
+            const modal = document.getElementById('levelModal');
+            const content = document.getElementById('levelModalContent');
+            content.innerHTML = `
                 <div class="level-progress">
-                    <div class="level-box"><div class="level-number">${level}</div><div class="level-title">${getTitle(level)}</div></div>
-                    <div class="progress-container"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div><div class="progress-percent">${progress}%</div></div>
-                    <div class="level-box"><div class="level-number">${nextLevel}</div><div class="level-title">${getTitle(nextLevel)}</div></div>
+                    <div class="level-box">
+                        <div class="level-number">${level}</div>
+                        <div class="level-title">${currentTitle}</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${progress}%;"></div>
+                        </div>
+                        <div class="progress-percent">${progress}%</div>
+                    </div>
+                    <div class="level-box">
+                        <div class="level-number">${nextLevel}</div>
+                        <div class="level-title">${nextTitle}</div>
+                    </div>
                 </div>
             `;
-            document.getElementById('levelModal').classList.add('show');
+            modal.classList.add('show');
         }
 
+        document.getElementById('closeLevelModal').onclick = () => {
+            document.getElementById('levelModal').classList.remove('show');
+        };
+
+        // ---------- Модалка друзей ----------
         function openFriendsModal() {
-            document.getElementById('friendsModalContent').innerHTML = `
-                <div class="friend-item-modal"><div class="friend-avatar-modal"></div><div class="friend-info"><div class="friend-name">@антон_х</div><div class="friend-level">уровень <span class="friend-level-value">3</span> (комфортик)</div></div></div>
-                <div class="friend-item-modal"><div class="friend-avatar-modal"></div><div class="friend-info"><div class="friend-name">@света_88</div><div class="friend-level">уровень <span class="friend-level-value">2</span> (нубяра)</div></div></div>
-                <div class="friend-item-modal"><div class="friend-avatar-modal"></div><div class="friend-info"><div class="friend-name">@дима_к</div><div class="friend-level">уровень <span class="friend-level-value">5</span> (легенда)</div></div></div>
+            const modal = document.getElementById('friendsModal');
+            const content = document.getElementById('friendsModalContent');
+            content.innerHTML = `
+                <div class="friend-item-modal">
+                    <div class="friend-avatar-modal"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">@антон_х</div>
+                        <div class="friend-level">уровень <span class="friend-level-value">3</span> (комфортик)</div>
+                    </div>
+                </div>
+                <div class="friend-item-modal">
+                    <div class="friend-avatar-modal"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">@света_88</div>
+                        <div class="friend-level">уровень <span class="friend-level-value">2</span> (нубяра)</div>
+                    </div>
+                </div>
+                <div class="friend-item-modal">
+                    <div class="friend-avatar-modal"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">@дима_к</div>
+                        <div class="friend-level">уровень <span class="friend-level-value">5</span> (легенда)</div>
+                    </div>
+                </div>
                 <div style="text-align:center; margin-top:12px; color:var(--text-muted);">приглашай друзей, чтобы список заполнился</div>
             `;
-            document.getElementById('friendsModal').classList.add('show');
+            modal.classList.add('show');
         }
 
-        // --------------------------------------------------------------
-        // 6. ОБЩИЕ ФУНКЦИИ (БАЛАНС, STREAK, и т.д.)
-        // --------------------------------------------------------------
+        document.getElementById('closeFriendsModal').onclick = () => {
+            document.getElementById('friendsModal').classList.remove('show');
+        };
+
+        // Логика скролла для шапки
+        const fixedHeader = document.getElementById('fixedHeader');
+        const pagesContainer = document.getElementById('pagesContainer');
+        let lastScrollTop = 0;
+
+        function handleScroll() {
+            const scrollTop = pagesContainer.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 20) {
+                fixedHeader.classList.add('hidden');
+            } else if (scrollTop < 100) {
+                fixedHeader.classList.remove('hidden');
+            }
+            lastScrollTop = scrollTop;
+        }
+        pagesContainer.addEventListener('scroll', handleScroll);
+
+        const splash = document.getElementById('splash');
+        const appContent = document.getElementById('appContent');
+
+        splash.addEventListener('animationend', function(e) {
+            if (e.animationName === 'fadeOut') {
+                splash.remove();
+                appContent.style.opacity = '1';
+            }
+        });
+
+        let tg = window.Telegram?.WebApp;
+        if (tg) tg.expand();
+        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
+        const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+        const username = tg?.initDataUnsafe?.user?.username || 'username';
+        const displayName = firstName;
+
+        document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
+        document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
+        document.getElementById('profileName').innerText = firstName;
+
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
         function updateBalanceDisplay() {
@@ -1858,61 +2002,83 @@
         }
         updateBalanceDisplay();
 
-        function getStreak() { return parseInt(localStorage.getItem('streak')) || 0; }
-        function getLastStreakDate() { return localStorage.getItem('lastStreakDate'); }
+        function getStreak() {
+            return parseInt(localStorage.getItem('streak')) || 0;
+        }
+        function getLastStreakDate() {
+            return localStorage.getItem('lastStreakDate');
+        }
         function updateStreak() {
             const today = new Date().toDateString();
             const lastDate = getLastStreakDate();
             let streak = getStreak();
             if (lastDate === today) return streak;
             const yesterday = new Date(Date.now() - 86400000).toDateString();
-            streak = (lastDate === yesterday) ? streak + 1 : 1;
+            if (lastDate === yesterday) streak++;
+            else streak = 1;
             localStorage.setItem('streak', streak);
             localStorage.setItem('lastStreakDate', today);
             return streak;
         }
-
-        function renderWeekdays(streak) {
-            const container = document.getElementById('weekdaysContainer');
-            if (!container) return;
-            const days = ['пн','вт','ср','чт','пт','сб','вс'];
-            const today = new Date().getDay();
-            let dayIndex = today === 0 ? 6 : today - 1;
-            let html = '';
-            for (let i = 0; i < 7; i++) {
-                const active = (dayIndex - i + 7) % 7 < streak;
-                html += `<div class="weekday ${active ? 'active' : ''}"><span>${days[i]}</span><div class="day-indicator"></div></div>`;
-            }
-            container.innerHTML = html;
-        }
-
         function updateStreakDisplay(animate = false, oldValue = null) {
             const streak = getStreak();
             document.getElementById('streakCount').innerText = streak;
             renderWeekdays(streak);
+            
             if (animate && oldValue !== null && oldValue < streak) {
                 const overlay = document.getElementById('streakAnimationOverlay');
-                document.getElementById('oldStreak').innerText = oldValue;
-                document.getElementById('newStreak').innerText = streak;
+                const oldEl = document.getElementById('oldStreak');
+                const newEl = document.getElementById('newStreak');
+                oldEl.innerText = oldValue;
+                newEl.innerText = streak;
                 overlay.classList.add('active');
-                setTimeout(() => overlay.classList.remove('active'), 3500);
+                setTimeout(() => {
+                    overlay.classList.remove('active');
+                }, 3500);
             }
         }
 
         function animateStreakIcon() {
             const icon = document.getElementById('streakIcon');
             icon.classList.add('pulse');
-            setTimeout(() => icon.classList.remove('pulse'), 500);
+            setTimeout(() => {
+                icon.classList.remove('pulse');
+            }, 500);
         }
 
-        function getRating() { return parseInt(localStorage.getItem('rating')) || 0; }
+        function renderWeekdays(streak) {
+            const container = document.getElementById('weekdaysContainer');
+            if (!container) return;
+            const days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+            const today = new Date().getDay();
+            let dayIndex = today === 0 ? 6 : today - 1;
+            let html = '';
+            for (let i = 0; i < 7; i++) {
+                const daysAgo = (dayIndex - i + 7) % 7;
+                const active = daysAgo < streak;
+                html += `
+                    <div class="weekday ${active ? 'active' : ''}">
+                        <span>${days[i]}</span>
+                        <div class="day-indicator"></div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function getRating() {
+            return parseInt(localStorage.getItem('rating')) || 0;
+        }
         function addRating(points = 10) {
             let rating = getRating() + points;
             localStorage.setItem('rating', rating);
             return rating;
         }
 
-        function getReferralsCount() { return parseInt(localStorage.getItem('referralsCount')) || 0; }
+        function getReferralsCount() {
+            return parseInt(localStorage.getItem('referralsCount')) || 0;
+        }
+
         function saveBalance() {
             localStorage.setItem('balance', balance);
             updateBalanceDisplay();
@@ -1925,28 +2091,34 @@
         }
 
         function canDo(id) {
-            if (id === 2) return !localStorage.getItem('subscription_done');
-            if (id === 3) return true;
-            let key = id + '_' + new Date().toDateString();
-            return !counts[key] || counts[key] < 3;
+            if (id === 2) {
+                return !localStorage.getItem('subscription_done');
+            } else if (id === 3) {
+                return true;
+            } else {
+                let key = id + '_' + new Date().toDateString();
+                return !counts[key] || counts[key] < 3;
+            }
         }
 
         function getTodayCount() {
             const today = new Date().toDateString();
-            return Object.keys(counts).reduce((sum, key) => key.includes(today) ? sum + counts[key] : sum, 0);
+            let total = 0;
+            for (let key in counts) {
+                if (key.includes(today)) total += counts[key];
+            }
+            return total;
         }
 
         function animatePage(pageElement) {
-            pageElement.querySelectorAll('.animate-stagger').forEach(el => {
+            const animatedElements = pageElement.querySelectorAll('.animate-stagger');
+            animatedElements.forEach(el => {
                 el.style.animation = 'none';
                 el.offsetHeight;
                 el.style.animation = '';
             });
         }
 
-        // --------------------------------------------------------------
-        // 7. ОБНОВЛЕНИЕ СТРАНИЦ
-        // --------------------------------------------------------------
         function updateProfilePage() {
             const xp = getXP();
             const level = getLevelByXP(xp);
@@ -1959,39 +2131,48 @@
             document.getElementById('profileTitle').innerText = title;
 
             const calendarEl = document.getElementById('profileCalendar');
-            const days = ['пн','вт','ср','чт','пт','сб','вс'];
+            const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
             const today = new Date();
             const currentDay = today.getDay();
             const monday = new Date(today);
             monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
-            let datesHtml = '<div class="calendar-weekdays">' + days.map(d => `<span>${d}</span>`).join('') + '</div><div class="calendar-dates">';
+            let datesHtml = '<div class="calendar-weekdays">';
+            daysOfWeek.forEach(day => { datesHtml += `<span>${day}</span>`; });
+            datesHtml += '</div><div class="calendar-dates">';
             for (let i = 0; i < 7; i++) {
                 const date = new Date(monday);
                 date.setDate(monday.getDate() + i);
-                const active = Math.floor((today - date) / (1000*60*60*24)) < streak && (today - date) >= 0;
-                datesHtml += `<div class="calendar-date-item ${active ? 'active' : ''}"><span class="calendar-date-number">${date.getDate()}</span><span class="calendar-date-indicator"></span></div>`;
-            }
-            calendarEl.innerHTML = datesHtml + '</div>';
-
-            document.getElementById('profileIdCard').innerHTML = `<span class="id-label">id</span><span class="id-value">${userId}</span>`;
-            document.getElementById('profileMessage').innerHTML = `<div class="profile-message-title">keep it up!</div><div class="profile-message-text">${streak} дней подряд ты с нами!</div>`;
-            document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
-
-            const adminButtonContainer = document.getElementById('adminButtonContainer');
-            if (isAdmin()) {
-                adminButtonContainer.innerHTML = `
-                    <div class="admin-card animate-stagger" onclick="openAdminModal()">
-                        <i class="fas fa-crown"></i>
-                        <span>⚙️ админ-панель</span>
+                const dateNumber = date.getDate();
+                const dayDiff = Math.floor((today - date) / (1000 * 60 * 60 * 24));
+                const active = dayDiff >= 0 && dayDiff < streak;
+                datesHtml += `
+                    <div class="calendar-date-item ${active ? 'active' : ''}">
+                        <span class="calendar-date-number">${dateNumber}</span>
+                        <span class="calendar-date-indicator"></span>
                     </div>
                 `;
-            } else {
-                adminButtonContainer.innerHTML = '';
             }
+            datesHtml += '</div>';
+            calendarEl.innerHTML = datesHtml;
+
+            document.getElementById('profileIdCard').innerHTML = `
+                <span class="id-label">id</span>
+                <span class="id-value">${userId}</span>
+            `;
+
+            const messageEl = document.getElementById('profileMessage');
+            messageEl.innerHTML = `
+                <div class="profile-message-title">keep it up!</div>
+                <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
+            `;
+
+            document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
         }
 
         function updateReferralsPage() {
-            document.getElementById('referralsContent').innerHTML = `
+            const container = document.getElementById('referralsContent');
+            if (!container) return;
+            container.innerHTML = `
                 <div class="referral-link-block animate-stagger">
                     <div class="referral-link-label">твоя реферальная ссылка</div>
                     <div class="ref-link-field">
@@ -2000,8 +2181,14 @@
                     </div>
                 </div>
                 <div class="referral-stats">
-                    <div class="referral-stat-card animate-stagger"><div class="stat-label">приглашено</div><div class="stat-number">${getReferralsCount()}</div></div>
-                    <div class="referral-stat-card animate-stagger"><div class="stat-label">заработано</div><div class="stat-number">0 ₽</div></div>
+                    <div class="referral-stat-card animate-stagger">
+                        <div class="stat-label">приглашено</div>
+                        <div class="stat-number">${getReferralsCount()}</div>
+                    </div>
+                    <div class="referral-stat-card animate-stagger">
+                        <div class="stat-label">заработано</div>
+                        <div class="stat-number">0 ₽</div>
+                    </div>
                 </div>
                 <div class="friends-list animate-stagger">
                     <h4 style="margin-bottom:15px;">недавно приглашённые</h4>
@@ -2013,45 +2200,48 @@
         }
 
         function updateWithdrawPage() {
-            document.getElementById('withdrawContent').innerHTML = `
+            const container = document.getElementById('withdrawContent');
+            if (!container) return;
+            container.innerHTML = `
                 <div class="card-glow animate-stagger">
                     <div class="card-logo">хайп</div>
                     <div class="card-number">2200 0000 0000 0000</div>
-                    <div class="card-details"><span>01/29</span><span>${displayName}</span></div>
+                    <div class="card-details">
+                        <span>01/29</span>
+                        <span>${displayName}</span>
+                    </div>
                 </div>
-                <div class="balance-block animate-stagger"><span class="balance-label">твой баланс</span><span class="balance-number">${balance} ₽</span></div>
-                <div class="withdraw-field animate-stagger"><input type="number" placeholder="сумма (мин. 50 ₽)" id="withdrawAmount"></div>
-                <div class="withdraw-field animate-stagger"><input type="text" placeholder="номер карты или кошелька" id="withdrawCard"></div>
+                <div class="balance-block animate-stagger">
+                    <span class="balance-label">твой баланс</span>
+                    <span class="balance-number">${balance} ₽</span>
+                </div>
+                <div class="withdraw-field animate-stagger">
+                    <input type="number" placeholder="сумма (мин. 50 ₽)" id="withdrawAmount">
+                </div>
+                <div class="withdraw-field animate-stagger">
+                    <input type="text" placeholder="номер карты или кошелька" id="withdrawCard">
+                </div>
                 <button id="withdrawSubmit" class="animate-stagger">вывести</button>
                 <div style="margin-top:25px;">
                     <h4 style="margin-bottom:15px;">недавние операции</h4>
-                    <div class="recent-transfers animate-stagger">${'<div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>'.repeat(3)}</div>
-                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появятся последние операции</div>
+                    <div class="recent-transfers animate-stagger">
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появятся последние операции</div>
+                    </div>
                 </div>
             `;
             document.getElementById('withdrawSubmit').addEventListener('click', () => alert('вывод временно недоступен'));
         }
 
         function updateAnalyticsPage() {
-            document.getElementById('analyticsContent').innerHTML = `
-                <div class="analytics-total animate-stagger"><div class="balance-label">общий доход</div><div class="balance-number" style="font-size:36px;">—</div></div>
-                <div class="analytics-total animate-stagger">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>доход</span><span>—</span></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:20px;"><span>расход</span><span>—</span></div>
-                    <div class="chart-placeholder">${'<div class="chart-bar" style="height:0;"></div>'.repeat(7)}</div>
-                    <div style="text-align:center; color:var(--text-muted); margin-top:10px;">статистика скоро появится</div>
-                </div>
-                <div style="margin-top:25px;">
-                    <h4 style="margin-bottom:15px;">последние операции</h4>
-                    <div class="recent-transfers animate-stagger">${'<div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>'.repeat(3)}</div>
-                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появится статистика</div>
-                </div>
-            `;
+            const container = document.getElementById('analyticsContent');
+            if (!container) return;
+            container.innerHTML = getAnalyticsContent();
         }
 
-        // --------------------------------------------------------------
-        // 8. МИНИ-ИГРА
-        // --------------------------------------------------------------
+        // Модалка игры
         const gameModal = document.getElementById('gameModal');
         const closeGame = document.getElementById('closeGame');
         const gameBoxes = document.querySelectorAll('.game-box');
@@ -2073,8 +2263,10 @@
             currentWin = 0;
         }
 
+        closeGame.onclick = () => gameModal.classList.remove('show');
+
         gameBoxes.forEach(box => {
-            box.addEventListener('click', function() {
+            box.addEventListener('click', function(e) {
                 if (this.classList.contains('disabled')) return;
                 const rewards = [5, 10, 20];
                 currentWin = rewards[Math.floor(Math.random() * rewards.length)];
@@ -2100,25 +2292,27 @@
             updateRoleUI();
             updateStreakDisplay(newStreak > oldStreak, oldStreak);
             animateStreakIcon();
-            if (newLevel > oldLevel) showLevelUpAnimation(oldLevel, newLevel);
+            if (newLevel > oldLevel) {
+                showLevelUpAnimation(oldLevel, newLevel);
+            }
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
             gameModal.classList.remove('show');
         };
 
-        // --------------------------------------------------------------
-        // 9. ПОДПИСКА НА КАНАЛ
-        // --------------------------------------------------------------
         document.getElementById('checkBtn').onclick = async function() {
             if (!canDo(2)) {
                 document.getElementById('checkResult').style.color = 'red';
                 document.getElementById('checkResult').innerText = 'задание уже выполнено';
                 return;
             }
-            this.disabled = true;
-            this.innerText = 'проверка...';
+            const checkBtn = this;
+            checkBtn.disabled = true;
+            checkBtn.innerText = 'проверка...';
             document.getElementById('checkResult').innerText = '';
+
             await new Promise(r => setTimeout(r, 1500));
             const success = true;
+
             if (success) {
                 const oldLevel = getLevelByXP(getXP());
                 const oldStreak = getStreak();
@@ -2133,91 +2327,34 @@
                 document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
                 updateStreakDisplay(newStreak > oldStreak, oldStreak);
                 animateStreakIcon();
-                if (newLevel > oldLevel) showLevelUpAnimation(oldLevel, newLevel);
+                if (newLevel > oldLevel) {
+                    showLevelUpAnimation(oldLevel, newLevel);
+                }
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                 setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
             } else {
                 document.getElementById('checkResult').style.color = 'red';
                 document.getElementById('checkResult').innerText = '❌ не подписан. попробуйте снова.';
-                this.disabled = false;
-                this.innerText = 'проверить подписку';
+                checkBtn.disabled = false;
+                checkBtn.innerText = 'проверить подписку';
             }
         };
 
-        // --------------------------------------------------------------
-        // 10. ИНИЦИАЛИЗАЦИЯ
-        // --------------------------------------------------------------
-        document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
-        document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
-        document.getElementById('profileName').innerText = firstName;
-        document.getElementById('profileUsername').innerText = '@' + username;
-
-        // Скролл шапки
-        const fixedHeader = document.getElementById('fixedHeader');
-        const pagesContainer = document.getElementById('pagesContainer');
-        let lastScrollTop = 0;
-        pagesContainer.addEventListener('scroll', () => {
-            const scrollTop = pagesContainer.scrollTop;
-            if (scrollTop > lastScrollTop && scrollTop > 20) fixedHeader.classList.add('hidden');
-            else if (scrollTop < 100) fixedHeader.classList.remove('hidden');
-            lastScrollTop = scrollTop;
-        });
-
-        // Splash
-        document.getElementById('splash').addEventListener('animationend', function(e) {
-            if (e.animationName === 'fadeOut') {
-                this.remove();
-                document.getElementById('appContent').style.opacity = '1';
-            }
-        });
-
-        // Табы аналитики
-        function initAnalyticsTabs() {
-            const tabs = document.querySelectorAll('#analyticsTabs .period-tab');
-            const content = document.getElementById('analyticsContent');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    if (tab.classList.contains('active')) return;
-                    content.classList.add('fade-out');
-                    setTimeout(() => {
-                        tabs.forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        updateAnalyticsPage(); // просто перезагружаем контент
-                        content.classList.remove('fade-out');
-                        content.classList.add('fade-in');
-                        setTimeout(() => content.classList.remove('fade-in'), 300);
-                    }, 150);
-                });
-            });
-        }
-
-        // Табы главной
-        document.getElementById('mainFilters')?.addEventListener('click', (e) => {
-            const tab = e.target.closest('.tab');
-            if (!tab) return;
-            document.querySelectorAll('#mainFilters .tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-        });
-
-        // Закрытие модалок
-        document.getElementById('closeLevelModal').onclick = () => document.getElementById('levelModal').classList.remove('show');
-        document.getElementById('closeFriendsModal').onclick = () => document.getElementById('friendsModal').classList.remove('show');
-        document.getElementById('closeAdminModal').onclick = () => document.getElementById('adminModal').classList.remove('show');
-        document.getElementById('closeAddAdminModal').onclick = () => document.getElementById('addAdminModal').classList.remove('show');
         document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
-        document.getElementById('closeSub').onclick = () => document.getElementById('subModal').classList.remove('show');
-        document.getElementById('closeGame').onclick = () => document.getElementById('gameModal').classList.remove('show');
         document.getElementById('copyBtn').onclick = () => {
             let inp = document.getElementById('refLink');
             inp.select();
             navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
         };
+
         document.getElementById('channelBtn').onclick = () => {
             if (tg) tg.openTelegramLink('https://t.me/HYPE_JOB1');
             else window.open('https://t.me/HYPE_JOB1', '_blank');
         };
 
-        // Навигация
+        const closeSub = document.getElementById('closeSub');
+        closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
+
         const pages = {
             tasks: document.getElementById('tasks-page'),
             profile: document.getElementById('profile-page'),
@@ -2225,16 +2362,18 @@
             referrals: document.getElementById('referrals-page'),
             withdraw: document.getElementById('withdraw-page')
         };
-        document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+
+        const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+        navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const page = item.dataset.page;
                 const targetPage = pages[page];
                 const currentActive = document.querySelector('.page.active-page');
                 if (!targetPage || targetPage === currentActive) return;
-                currentActive?.classList.remove('active-page');
+                if (currentActive) currentActive.classList.remove('active-page');
                 targetPage.classList.add('active-page');
-                document.querySelectorAll('.bottom-nav .nav-item').forEach(nav => nav.classList.remove('active'));
+                navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
 
                 if (page === 'profile') updateProfilePage();
@@ -2246,7 +2385,7 @@
             });
         });
 
-        // Старт
+        // Инициализация
         updateRoleUI();
         updateProfilePage();
         updateReferralsPage();
@@ -2255,7 +2394,10 @@
         updateStreak();
         updateStreakDisplay();
         initAnalyticsTabs();
+
         animatePage(document.getElementById('tasks-page'));
+
+        function updateTasksGrid() {}
     </script>
 </body>
 </html>
