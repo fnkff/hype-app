@@ -48,7 +48,8 @@
         }
 
         /* Логотип оставляем заглавным */
-        .fixed-header .logo {
+        .fixed-header .logo,
+        .splash-logo {
             text-transform: none;
         }
 
@@ -709,7 +710,7 @@
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* уменьшено */
         }
         .profile-avatar {
             width: 100px;
@@ -734,44 +735,23 @@
 
         .profile-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 15px; /* уменьшено */
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 4px; /* уменьшено */
         }
         .profile-name {
             font-size: 28px;
             font-weight: 800;
             color: white;
             line-height: 1.2;
+            text-transform: none; /* оставляем как есть */
         }
-        .profile-username {
+        .profile-title {
             font-size: 16px;
             color: var(--text-muted);
-        }
-        .profile-role-switch {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
-            color: rgba(255,255,255,0.7);
-            font-size: 20px;
-            margin-top: 8px;
-        }
-        .profile-role-switch:hover {
-            background: var(--accent);
-            color: #000;
-            transform: scale(1.1);
-        }
-        .profile-role-switch.active {
-            background: var(--accent);
-            color: #000;
+            margin-bottom: 5px;
         }
 
         .profile-stats-under-avatar {
@@ -787,6 +767,11 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .stat-under-item:hover {
+            transform: scale(1.05);
         }
         .stat-under-icon {
             font-size: 24px;
@@ -890,7 +875,7 @@
             color: var(--text-muted);
         }
 
-        /* Карточка роли (переключатель в профиле) */
+        /* Карточка роли (переключатель) */
         .profile-role-card {
             display: flex;
             align-items: center;
@@ -918,6 +903,85 @@
             font-size: 18px;
             font-weight: 700;
             color: var(--accent);
+        }
+
+        /* ===== МОДАЛКА ПРОГРЕССА УРОВНЯ ===== */
+        .level-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .level-box {
+            text-align: center;
+        }
+        .level-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .level-title {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+        .progress-container {
+            flex: 1;
+            margin: 0 15px;
+        }
+        .progress-bar-bg {
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            width: 0%;
+            border-radius: 4px;
+        }
+        .progress-percent {
+            text-align: center;
+            margin-top: 5px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .level-names {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* ===== МОДАЛКА ДРУЗЕЙ ===== */
+        .friend-item-modal {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .friend-avatar-modal {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+        .friend-info {
+            flex: 1;
+        }
+        .friend-name {
+            font-weight: 600;
+            color: white;
+        }
+        .friend-level {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .friend-level-value {
+            color: var(--accent);
+            font-weight: 600;
         }
 
         /* ===== РЕФЕРАЛЫ ===== */
@@ -970,19 +1034,6 @@
         .referral-stat-value {
             font-size: 32px;
             font-weight: 800;
-        }
-        .friend-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .friend-avatar {
-            width: 48px;
-            height: 48px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
         }
 
         /* ===== ВЫВОД ===== */
@@ -1353,16 +1404,25 @@
                         <div class="profile-avatar" id="profileAvatar">Т</div>
                     </div>
 
-                    <!-- Имя и юзернейм под аватаром -->
+                    <!-- Имя и звание под аватаром -->
                     <div class="profile-header animate-stagger">
                         <div class="profile-name" id="profileName">тимофей</div>
-                        <div class="profile-username" id="profileUsername">@username</div>
-                        <div class="profile-role-switch" id="profileRoleSwitch" onclick="toggleRole()">
-                            <i class="fas fa-exchange-alt"></i>
-                        </div>
+                        <div class="profile-title" id="profileTitle">пуська</div>
                     </div>
 
-                    <div class="profile-stats-under-avatar animate-stagger" id="profileStatsUnderAvatar"></div>
+                    <!-- Показатели уровня и приглашённых (кликабельные) -->
+                    <div class="profile-stats-under-avatar animate-stagger">
+                        <div class="stat-under-item" onclick="openLevelModal()">
+                            <i class="fas fa-chart-line stat-under-icon"></i>
+                            <span class="stat-under-value" id="profileLevelValue">1</span>
+                            <span class="stat-under-label">уровень</span>
+                        </div>
+                        <div class="stat-under-item" onclick="openFriendsModal()">
+                            <i class="fas fa-users stat-under-icon"></i>
+                            <span class="stat-under-value" id="profileReferralsValue">0</span>
+                            <span class="stat-under-label">приглашено</span>
+                        </div>
+                    </div>
 
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
 
@@ -1405,6 +1465,24 @@
                 <div class="withdraw-page">
                     <div id="withdrawContent"></div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Модалка прогресса уровня -->
+        <div class="modal" id="levelModal">
+            <div class="modal-content">
+                <div class="modal-header"><button class="modal-close" id="closeLevelModal">&times;</button></div>
+                <h3>прогресс уровня</h3>
+                <div id="levelModalContent"></div>
+            </div>
+        </div>
+
+        <!-- Модалка друзей -->
+        <div class="modal" id="friendsModal">
+            <div class="modal-content">
+                <div class="modal-header"><button class="modal-close" id="closeFriendsModal">&times;</button></div>
+                <h3>приглашённые друзья</h3>
+                <div id="friendsModalContent"></div>
             </div>
         </div>
 
@@ -1481,6 +1559,28 @@
     </div>
 
     <script>
+        // ---------- Звания по уровням ----------
+        const titles = [
+            "пуська",
+            "нубяра",
+            "комфортик",
+            "красавчик",
+            "легенда",
+            "миллионер",
+            "хайпожор",
+            "босс",
+            "император",
+            "бог хайпа"
+        ];
+
+        function getTitle(level) {
+            if (level <= titles.length) {
+                return titles[level - 1];
+            } else {
+                return "бог хайпа";
+            }
+        }
+
         // ---------- Роль ----------
         let currentRole = 'worker'; // 'worker' или 'employer'
 
@@ -1497,11 +1597,6 @@
                 const profileRoleValue = document.getElementById('profileRoleValue');
                 if (profileRoleValue) {
                     profileRoleValue.innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
-                }
-                // Обновляем иконку переключателя в профиле
-                const profileRoleSwitch = document.getElementById('profileRoleSwitch');
-                if (profileRoleSwitch) {
-                    profileRoleSwitch.classList.toggle('active', currentRole === 'employer');
                 }
                 if (roleContent) {
                     roleContent.classList.remove('fade-out');
@@ -1666,6 +1761,82 @@
             `;
         }
 
+        // ---------- Модалка прогресса уровня ----------
+        function openLevelModal() {
+            const rating = getRating();
+            const level = getLevel(rating);
+            const nextLevel = level + 1;
+            const progress = getProgressToNextLevel(rating);
+            const currentTitle = getTitle(level);
+            const nextTitle = getTitle(nextLevel);
+
+            const modal = document.getElementById('levelModal');
+            const content = document.getElementById('levelModalContent');
+            content.innerHTML = `
+                <div class="level-progress">
+                    <div class="level-box">
+                        <div class="level-number">${level}</div>
+                        <div class="level-title">${currentTitle}</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${progress}%;"></div>
+                        </div>
+                        <div class="progress-percent">${Math.round(progress)}%</div>
+                    </div>
+                    <div class="level-box">
+                        <div class="level-number">${nextLevel}</div>
+                        <div class="level-title">${nextTitle}</div>
+                    </div>
+                </div>
+                <div class="level-names">
+                    <span>текущий: ${currentTitle}</span>
+                    <span>следующий: ${nextTitle}</span>
+                </div>
+            `;
+            modal.classList.add('show');
+        }
+
+        document.getElementById('closeLevelModal').onclick = () => {
+            document.getElementById('levelModal').classList.remove('show');
+        };
+
+        // ---------- Модалка друзей ----------
+        function openFriendsModal() {
+            const modal = document.getElementById('friendsModal');
+            const content = document.getElementById('friendsModalContent');
+            // Демо-данные
+            content.innerHTML = `
+                <div class="friend-item-modal">
+                    <div class="friend-avatar-modal"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">@антон_х</div>
+                        <div class="friend-level">уровень <span class="friend-level-value">3</span> (комфортик)</div>
+                    </div>
+                </div>
+                <div class="friend-item-modal">
+                    <div class="friend-avatar-modal"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">@света_88</div>
+                        <div class="friend-level">уровень <span class="friend-level-value">2</span> (нубяра)</div>
+                    </div>
+                </div>
+                <div class="friend-item-modal">
+                    <div class="friend-avatar-modal"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">@дима_к</div>
+                        <div class="friend-level">уровень <span class="friend-level-value">5</span> (легенда)</div>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:12px; color:var(--text-muted);">приглашай друзей, чтобы список заполнился</div>
+            `;
+            modal.classList.add('show');
+        }
+
+        document.getElementById('closeFriendsModal').onclick = () => {
+            document.getElementById('friendsModal').classList.remove('show');
+        };
+
         // Логика скролла для шапки
         const fixedHeader = document.getElementById('fixedHeader');
         const pagesContainer = document.getElementById('pagesContainer');
@@ -1701,8 +1872,7 @@
 
         document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
-        document.getElementById('profileName').innerText = firstName.toLowerCase();
-        document.getElementById('profileUsername').innerText = '@' + username.toLowerCase();
+        document.getElementById('profileName').innerText = firstName; // оставляем как есть (с большой буквы)
 
         let counts = JSON.parse(localStorage.getItem('counts')) || {};
         let balance = parseInt(localStorage.getItem('balance')) || 0;
@@ -1845,20 +2015,11 @@
             const level = getLevel(rating);
             const streak = getStreak();
             const referrals = getReferralsCount();
+            const title = getTitle(level);
 
-            const underAvatar = document.getElementById('profileStatsUnderAvatar');
-            underAvatar.innerHTML = `
-                <div class="stat-under-item">
-                    <i class="fas fa-chart-line stat-under-icon"></i>
-                    <span class="stat-under-value">${level}</span>
-                    <span class="stat-under-label">уровень</span>
-                </div>
-                <div class="stat-under-item">
-                    <i class="fas fa-users stat-under-icon"></i>
-                    <span class="stat-under-value">${referrals}</span>
-                    <span class="stat-under-label">приглашено</span>
-                </div>
-            `;
+            document.getElementById('profileLevelValue').innerText = level;
+            document.getElementById('profileReferralsValue').innerText = referrals;
+            document.getElementById('profileTitle').innerText = title;
 
             const calendarEl = document.getElementById('profileCalendar');
             const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
@@ -1896,8 +2057,7 @@
                 <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
             `;
 
-            // Статус уже обновлён в toggleRole, но обновим на всякий случай
-            document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
+            // Статус уже обновлён в toggleRole
         }
 
         function updateReferralsPage() {
