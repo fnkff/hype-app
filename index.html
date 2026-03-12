@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Supabase JS client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* ============================= */
         /* HYPE 2.0 – GLOBAL FOUNDATION  */
@@ -47,13 +49,11 @@
             text-transform: lowercase;
         }
 
-        /* Логотип оставляем заглавным */
         .fixed-header .logo,
         .splash-logo {
             text-transform: none;
         }
 
-        /* Скролл */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -65,16 +65,10 @@
             border-radius: 10px;
         }
 
-        /* Плавность */
         button, .card, .nav-item {
             transition: all 0.3s ease;
         }
 
-        /* ============================= */
-        /* CARDS & TASK UI               */
-        /* ============================= */
-
-        /* Все карточки (включая виджеты) — серый фон */
         .glass-card, .task-card, .stat-item, .referral-link-block, .friends-list,
         .balance-block, .withdraw-field, .analytics-total, .recent-transfers,
         .total-balance, .streak-block, .employer-card, .profile-role-card {
@@ -99,12 +93,10 @@
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* Баланс карточка — дополнительный отступ */
         .total-balance {
             margin-bottom: 30px;
         }
 
-        /* Виджет огоньков */
         .streak-block {
             color: white;
         }
@@ -119,7 +111,6 @@
             color: white !important;
         }
 
-        /* Анимация огонька (мерцание) */
         @keyframes flicker {
             0% { opacity: 1; transform: scale(1); text-shadow: 0 0 5px var(--accent); }
             50% { opacity: 0.8; transform: scale(1.1); text-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent); }
@@ -132,7 +123,6 @@
             display: inline-block;
         }
 
-        /* Анимация огонька (вспышка) */
         @keyframes streakPulse {
             0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--accent)); }
             50% { transform: scale(1.3); filter: drop-shadow(0 0 20px var(--accent)); }
@@ -142,7 +132,6 @@
             animation: streakPulse 0.5s ease;
         }
 
-        /* Иконки заданий — слабое свечение */
         .task-icon svg {
             width: 32px;
             height: 32px;
@@ -150,7 +139,6 @@
             filter: drop-shadow(0 0 5px rgba(93,214,44,0.5));
         }
 
-        /* Шестерёнка, колокольчик */
         .settings-icon, .notification-icon {
             width: 36px;
             height: 36px;
@@ -170,7 +158,6 @@
             filter: drop-shadow(0 0 8px var(--accent));
         }
 
-        /* Кнопки */
         button {
             border: none;
             border-radius: 18px;
@@ -180,7 +167,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Все основные кнопки с белым текстом */
         .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .employer-create-btn {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
@@ -196,7 +182,6 @@
             transform: scale(0.96);
         }
 
-        /* Кнопки в модалках на всю ширину, с отступами */
         .modal-content button {
             width: 100%;
             margin-bottom: 12px;
@@ -208,7 +193,6 @@
             margin-bottom: 0;
         }
 
-        /* Крестик в модалках — без фона, свечения, меньше */
         .modal-close {
             background: transparent !important;
             color: white;
@@ -228,7 +212,6 @@
             background: transparent;
         }
 
-        /* Кнопка вывода как карта */
         #withdrawSubmit {
             width: 95%;
             margin: 20px auto;
@@ -237,14 +220,12 @@
             font-size: 20px;
         }
 
-        /* Выполнено (если потребуется) */
         .btn-done {
             background: transparent;
             border: 1px solid var(--accent);
             color: var(--accent);
         }
 
-        /* Бейдж награды */
         .reward-badge {
             background: rgba(93,214,44,0.15);
             color: var(--accent);
@@ -255,7 +236,7 @@
         }
 
         /* ============================= */
-        /* BOTTOM NAVIGATION (Telegram style) */
+        /* BOTTOM NAVIGATION */
         /* ============================= */
 
         .bottom-nav {
@@ -317,7 +298,6 @@
             fill: currentColor;
         }
 
-        /* Мини-игра коробки */
         .game-box {
             background: var(--bg-card);
             border-radius: 20px;
@@ -340,7 +320,6 @@
             box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
 
-        /* Анимация появления страниц — сверху вниз с шагом 0.1s */
         @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -351,7 +330,6 @@
             animation: fadeInUp 0.4s ease-out forwards;
         }
 
-        /* Задержки для главной */
         .main-page .total-balance { animation-delay: 0.1s; }
         .main-page .streak-block { animation-delay: 0.2s; }
         .main-page .section-title { animation-delay: 0.3s; }
@@ -362,7 +340,6 @@
         .main-page .employer-card:nth-child(2) { animation-delay: 0.6s; }
         .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
 
-        /* Задержки для профиля */
         .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
         .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
@@ -371,26 +348,22 @@
         .profile-page .profile-message { animation-delay: 0.6s; }
         .profile-page .profile-role-card { animation-delay: 0.7s; }
 
-        /* Задержки для рефералов */
         .referral-page .referral-link-block { animation-delay: 0.1s; }
         .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.2s; }
         .referral-page .referral-stat-card:nth-child(2) { animation-delay: 0.3s; }
         .referral-page .friends-list { animation-delay: 0.4s; }
 
-        /* Задержки для вывода */
         .withdraw-page .balance-block { animation-delay: 0.1s; }
         .withdraw-page .withdraw-field:nth-of-type(1) { animation-delay: 0.2s; }
         .withdraw-page .withdraw-field:nth-of-type(2) { animation-delay: 0.3s; }
         .withdraw-page #withdrawSubmit { animation-delay: 0.4s; }
         .withdraw-page .recent-transfers { animation-delay: 0.5s; }
 
-        /* Задержки для аналитики */
         .analytics-page .period-tabs { animation-delay: 0.1s; }
         .analytics-page .analytics-total:nth-of-type(1) { animation-delay: 0.2s; }
         .analytics-page .analytics-total:nth-of-type(2) { animation-delay: 0.3s; }
         .analytics-page .recent-transfers { animation-delay: 0.4s; }
 
-        /* ===== ОСТАЛЬНЫЕ СТИЛИ ===== */
         body {
             display: flex;
             flex-direction: column;
@@ -399,7 +372,6 @@
             padding: 0;
         }
 
-        /* Splash screen */
         .splash {
             position: fixed;
             top: 0;
@@ -446,7 +418,6 @@
             z-index: 1;
         }
 
-        /* Фиксированная шапка (без анимации) */
         .fixed-header {
             position: fixed;
             top: 0;
@@ -478,7 +449,6 @@
             gap: 4px;
             pointer-events: auto;
         }
-        /* Аватар в шапке */
         .avatar {
             width: 56px;
             height: 56px;
@@ -504,7 +474,6 @@
             object-fit: cover;
         }
 
-        /* Контейнер страниц */
         .pages-container {
             flex: 1;
             min-height: 0;
@@ -523,7 +492,6 @@
             display: block;
         }
 
-        /* Анимация смены контента (для роли и аналитики) */
         .fade-content {
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
@@ -673,7 +641,6 @@
             margin-left: 8px;
         }
 
-        /* Интерфейс заказчика */
         .employer-create-field {
             width: 100%;
             padding: 14px;
@@ -879,7 +846,6 @@
             color: var(--text-muted);
         }
 
-        /* Карточка роли (переключатель) */
         .profile-role-card {
             display: flex;
             align-items: center;
@@ -909,7 +875,6 @@
             color: var(--accent);
         }
 
-        /* ===== МОДАЛКА ПРОГРЕССА УРОВНЯ ===== */
         .level-progress {
             display: flex;
             align-items: center;
@@ -952,7 +917,6 @@
             color: var(--text-muted);
         }
 
-        /* ===== МОДАЛКА ДРУЗЕЙ ===== */
         .friend-item-modal {
             display: flex;
             align-items: center;
@@ -1217,7 +1181,6 @@
             color: var(--accent);
         }
 
-        /* ===== УЛУЧШЕННЫЕ АНИМАЦИИ (зелёные, длинные, яркие) ===== */
         .streak-animation-overlay,
         .level-up-overlay {
             position: fixed;
@@ -1234,7 +1197,7 @@
             opacity: 0;
             transition: opacity 0.8s ease, transform 0.8s ease;
             transform: scale(0.8);
-            background: rgba(0,0,0,0.9); /* плотный чёрный фон */
+            background: rgba(0,0,0,0.9);
         }
         .streak-animation-overlay.active,
         .level-up-overlay.active {
@@ -1274,7 +1237,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 400px; /* чуть больше */
+            width: 400px;
             height: 400px;
             z-index: 2;
         }
@@ -1282,7 +1245,7 @@
         .old-streak, .new-streak,
         .old-level, .new-level {
             position: absolute;
-            font-size: 140px; /* увеличен */
+            font-size: 140px;
             font-weight: 900;
             color: white;
             text-shadow: 0 0 30px var(--accent), 0 0 60px var(--accent-dark);
@@ -1290,14 +1253,14 @@
         }
 
         .old-streak, .old-level {
-            animation: fadeOutUp 1.2s forwards; /* чуть длиннее */
+            animation: fadeOutUp 1.2s forwards;
         }
         .new-streak, .new-level {
             animation: fadeInUp 1.2s forwards;
         }
 
         .level-up-title {
-            font-size: 40px; /* увеличен */
+            font-size: 40px;
             font-weight: 700;
             color: white;
             text-shadow: 0 0 20px var(--accent);
@@ -1316,7 +1279,6 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Адаптивность для маленьких экранов */
         @media (max-width: 360px) {
             .fixed-header .logo {
                 font-size: 32px;
@@ -1443,17 +1405,17 @@
                         <div class="profile-title" id="profileTitle">пуська</div>
                     </div>
 
-                    <!-- Показатели уровня и приглашённых (кликабельные) -->
+                    <!-- Показатели уровня и рейтинга (кликабельные) -->
                     <div class="profile-stats-under-avatar animate-stagger">
                         <div class="stat-under-item" onclick="openLevelModal()">
                             <i class="fas fa-chart-line stat-under-icon"></i>
                             <span class="stat-under-value" id="profileLevelValue">1</span>
                             <span class="stat-under-label">уровень</span>
                         </div>
-                        <div class="stat-under-item" onclick="openFriendsModal()">
-                            <i class="fas fa-users stat-under-icon"></i>
-                            <span class="stat-under-value" id="profileReferralsValue">0</span>
-                            <span class="stat-under-label">приглашено</span>
+                        <div class="stat-under-item" onclick="openRatingModal()">
+                            <i class="fas fa-trophy stat-under-icon"></i>
+                            <span class="stat-under-value" id="profileRatingPlace">топ</span>
+                            <span class="stat-under-label">рейтинг</span>
                         </div>
                     </div>
 
@@ -1510,12 +1472,12 @@
             </div>
         </div>
 
-        <!-- Модалка друзей -->
-        <div class="modal" id="friendsModal">
+        <!-- Модалка рейтинга (топ пользователей) -->
+        <div class="modal" id="ratingModal">
             <div class="modal-content">
-                <div class="modal-header"><button class="modal-close" id="closeFriendsModal">&times;</button></div>
-                <h3>приглашённые друзья</h3>
-                <div id="friendsModalContent"></div>
+                <div class="modal-header"><button class="modal-close" id="closeRatingModal">&times;</button></div>
+                <h3>топ-10 хайперов</h3>
+                <div id="ratingModalContent" style="max-height: 300px; overflow-y: auto;"></div>
             </div>
         </div>
 
@@ -1553,7 +1515,7 @@
             </a>
         </div>
 
-        <!-- Модалки -->
+        <!-- Модалки для заданий (оставляем как есть) -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1592,69 +1554,168 @@
     </div>
 
     <script>
-        // ---------- Звания по уровням (до 50) ----------
-        const titles = [
-            "пуська",
-            "нубяра",
-            "комфортик",
-            "красавчик",
-            "легенда",
-            "миллионер",
-            "хайпожор",
-            "босс",
-            "император",
-            "бог хайпа",
-            "киберпанк",
-            "флексер",
-            "краш",
-            "рофлан",
-            "чилл",
-            "вайб",
-            "форсер",
-            "топчик",
-            "король",
-            "легендарный",
-            "эпик",
-            "мифический",
-            "ачивка",
-            "скилловый",
-            "профи",
-            "мастер",
-            "гуру",
-            "сенсей",
-            "мэтр",
-            "ас",
-            "джедай",
-            "повелитель",
-            "властелин",
-            "титан",
-            "олимп",
-            "бессмертный",
-            "непобедимый",
-            "ультра",
-            "мега",
-            "гига",
-            "тера",
-            "пета",
-            "экза",
-            "зетта",
-            "йотта",
-            "ронни",
-            "коул",
-            "дрейк",
-            "йе",
-            "хайп"
-        ];
+        // ==================== ИНИЦИАЛИЗАЦИЯ SUPABASE ====================
+        const supabaseUrl = 'https://xnguo.xwcrncdingipzdz.supabase.co';
+        const supabaseKey = 'sb_publishable_oK5bT_Ed9K5ZBtT09h8A3A_tqXNYrYg';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-        function getTitle(level) {
-            if (level <= titles.length) {
-                return titles[level - 1];
+        // ==================== ОСНОВНЫЕ ПЕРЕМЕННЫЕ ====================
+        let tg = window.Telegram?.WebApp;
+        if (tg) tg.expand();
+        const userId = tg?.initDataUnsafe?.user?.id?.toString() || 'test_' + Math.random();
+        const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+        const username = tg?.initDataUnsafe?.user?.username || 'username';
+        const displayName = firstName;
+
+        // Данные пользователя (дублируются из localStorage для обратной совместимости)
+        let balance = parseInt(localStorage.getItem('balance')) || 0;
+        let counts = JSON.parse(localStorage.getItem('counts')) || {};
+
+        // ==================== ФУНКЦИИ ДЛЯ РАБОТЫ С SUPABASE ====================
+        async function initUser() {
+            // Пытаемся найти пользователя в Supabase
+            let { data: user, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('id', userId)
+                .single();
+
+            if (error || !user) {
+                // Пользователь не найден — создаём нового
+                const newUser = {
+                    id: userId,
+                    balance: 0,
+                    xp: 0,
+                    referrals: 0,
+                    streak: 0,
+                    last_streak_date: null,
+                    tasks_completed: {}
+                };
+                
+                const { data, error: insertError } = await supabase
+                    .from('users')
+                    .insert([newUser])
+                    .select()
+                    .single();
+                
+                if (insertError) {
+                    console.error('Ошибка создания пользователя:', insertError);
+                    // Если ошибка, используем localStorage как запасной вариант
+                    loadFromLocalStorage();
+                } else {
+                    user = data;
+                    console.log('Создан новый пользователь в Supabase');
+                }
             } else {
-                return "бог хайпа";
+                console.log('Пользователь загружен из Supabase');
+            }
+
+            if (user) {
+                // Сохраняем данные из Supabase в localStorage (для обратной совместимости)
+                localStorage.setItem('balance', user.balance);
+                localStorage.setItem('xp', user.xp);
+                localStorage.setItem('referralsCount', user.referrals);
+                localStorage.setItem('streak', user.streak);
+                localStorage.setItem('lastStreakDate', user.last_streak_date || '');
+                
+                // Обновляем глобальные переменные
+                balance = user.balance;
+                // Обновляем интерфейс
+                updateBalanceDisplay();
+                updateStreak(); // обновит streak из localStorage
+                updateProfilePage();
             }
         }
 
-        // ---------- Система опыта и уровней ----------
+        async function syncUserData() {
+            const xp = getXP();
+            const streak = getStreak();
+            const lastStreakDate = getLastStreakDate();
+            const referrals = getReferralsCount();
+
+            const { error } = await supabase
+                .from('users')
+                .update({
+                    balance: balance,
+                    xp: xp,
+                    streak: streak,
+                    last_streak_date: lastStreakDate,
+                    referrals: referrals
+                })
+                .eq('id', userId);
+
+            if (error) {
+                console.error('Ошибка синхронизации с Supabase:', error);
+            } else {
+                console.log('Данные синхронизированы с Supabase');
+            }
+        }
+
+        // Функция для получения топа пользователей (по XP)
+        async function getTopUsers() {
+            const { data: users, error } = await supabase
+                .from('users')
+                .select('id, xp, balance') // можно добавить другие поля
+                .order('xp', { ascending: false })
+                .limit(10);
+
+            if (error) {
+                console.error('Ошибка получения топа:', error);
+                return [];
+            }
+            return users;
+        }
+
+        // Функция открытия модалки с рейтингом
+        async function openRatingModal() {
+            const topUsers = await getTopUsers();
+            const modal = document.getElementById('ratingModal');
+            const content = document.getElementById('ratingModalContent');
+            
+            if (topUsers.length === 0) {
+                content.innerHTML = '<p style="text-align:center; color:var(--text-muted);">пока нет данных</p>';
+            } else {
+                let html = '<ol style="list-style: none; padding: 0; margin: 0;">';
+                topUsers.forEach((user, index) => {
+                    // Имя пользователя: показываем первые 6 символов id (или можно попробовать получить username)
+                    const shortId = user.id.slice(0, 6);
+                    html += `
+                        <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <span style="font-weight: 600;">${index+1}. @${shortId}</span>
+                            <span style="color: var(--accent); font-weight: 700;">${user.xp} XP</span>
+                        </li>
+                    `;
+                });
+                html += '</ol>';
+                content.innerHTML = html;
+            }
+            
+            modal.classList.add('show');
+        }
+
+        // Закрытие модалки рейтинга
+        document.getElementById('closeRatingModal').onclick = () => {
+            document.getElementById('ratingModal').classList.remove('show');
+        };
+
+        // ==================== СУЩЕСТВУЮЩИЕ ФУНКЦИИ (с добавлением вызовов syncUserData) ====================
+        const titles = [
+            "пуська", "нубяра", "комфортик", "красавчик", "легенда",
+            "миллионер", "хайпожор", "босс", "император", "бог хайпа",
+            "киберпанк", "флексер", "краш", "рофлан", "чилл",
+            "вайб", "форсер", "топчик", "король", "легендарный",
+            "эпик", "мифический", "ачивка", "скилловый", "профи",
+            "мастер", "гуру", "сенсей", "мэтр", "ас",
+            "джедай", "повелитель", "властелин", "титан", "олимп",
+            "бессмертный", "непобедимый", "ультра", "мега", "гига",
+            "тера", "пета", "экза", "зетта", "йотта",
+            "ронни", "коул", "дрейк", "йе", "хайп"
+        ];
+
+        function getTitle(level) {
+            return level <= titles.length ? titles[level - 1] : "бог хайпа";
+        }
+
         const BASE_XP = 10;
 
         function getTotalXPForLevel(level) {
@@ -1698,7 +1759,6 @@
             return xp;
         }
 
-        // ---------- Анимация повышения уровня ----------
         function showLevelUpAnimation(oldLevel, newLevel) {
             const overlay = document.getElementById('levelUpOverlay');
             const oldEl = document.getElementById('oldLevel');
@@ -1713,7 +1773,6 @@
             }, 3500);
         }
 
-        // ---------- Роль ----------
         let currentRole = 'worker';
 
         function toggleRole() {
@@ -1824,7 +1883,6 @@
             return `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`;
         }
 
-        // ---------- Табы на главной ----------
         document.getElementById('mainFilters')?.addEventListener('click', (e) => {
             const tab = e.target.closest('.tab');
             if (!tab) return;
@@ -1833,7 +1891,6 @@
             tab.classList.add('active');
         });
 
-        // ---------- Аналитика с переключением периодов ----------
         function initAnalyticsTabs() {
             const tabs = document.querySelectorAll('#analyticsTabs .period-tab');
             const content = document.getElementById('analyticsContent');
@@ -1886,7 +1943,6 @@
             `;
         }
 
-        // ---------- Модалка прогресса уровня ----------
         function openLevelModal() {
             const xp = getXP();
             const level = getLevelByXP(xp);
@@ -1922,42 +1978,6 @@
             document.getElementById('levelModal').classList.remove('show');
         };
 
-        // ---------- Модалка друзей ----------
-        function openFriendsModal() {
-            const modal = document.getElementById('friendsModal');
-            const content = document.getElementById('friendsModalContent');
-            content.innerHTML = `
-                <div class="friend-item-modal">
-                    <div class="friend-avatar-modal"></div>
-                    <div class="friend-info">
-                        <div class="friend-name">@антон_х</div>
-                        <div class="friend-level">уровень <span class="friend-level-value">3</span> (комфортик)</div>
-                    </div>
-                </div>
-                <div class="friend-item-modal">
-                    <div class="friend-avatar-modal"></div>
-                    <div class="friend-info">
-                        <div class="friend-name">@света_88</div>
-                        <div class="friend-level">уровень <span class="friend-level-value">2</span> (нубяра)</div>
-                    </div>
-                </div>
-                <div class="friend-item-modal">
-                    <div class="friend-avatar-modal"></div>
-                    <div class="friend-info">
-                        <div class="friend-name">@дима_к</div>
-                        <div class="friend-level">уровень <span class="friend-level-value">5</span> (легенда)</div>
-                    </div>
-                </div>
-                <div style="text-align:center; margin-top:12px; color:var(--text-muted);">приглашай друзей, чтобы список заполнился</div>
-            `;
-            modal.classList.add('show');
-        }
-
-        document.getElementById('closeFriendsModal').onclick = () => {
-            document.getElementById('friendsModal').classList.remove('show');
-        };
-
-        // Логика скролла для шапки
         const fixedHeader = document.getElementById('fixedHeader');
         const pagesContainer = document.getElementById('pagesContainer');
         let lastScrollTop = 0;
@@ -1983,19 +2003,10 @@
             }
         });
 
-        let tg = window.Telegram?.WebApp;
-        if (tg) tg.expand();
-        const userId = tg?.initDataUnsafe?.user?.id || 'test_' + Math.random();
-        const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
-        const username = tg?.initDataUnsafe?.user?.username || 'username';
-        const displayName = firstName;
-
         document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
         document.getElementById('profileName').innerText = firstName;
 
-        let counts = JSON.parse(localStorage.getItem('counts')) || {};
-        let balance = parseInt(localStorage.getItem('balance')) || 0;
         function updateBalanceDisplay() {
             document.getElementById('mainBalance').innerText = balance + ' ₽';
             document.getElementById('mainChange').innerText = `+${Math.floor(balance/10)} ₽ (${Math.floor(balance/100)}%)`;
@@ -2066,15 +2077,6 @@
             container.innerHTML = html;
         }
 
-        function getRating() {
-            return parseInt(localStorage.getItem('rating')) || 0;
-        }
-        function addRating(points = 10) {
-            let rating = getRating() + points;
-            localStorage.setItem('rating', rating);
-            return rating;
-        }
-
         function getReferralsCount() {
             return parseInt(localStorage.getItem('referralsCount')) || 0;
         }
@@ -2127,8 +2129,9 @@
             const title = getTitle(level);
 
             document.getElementById('profileLevelValue').innerText = level;
-            document.getElementById('profileReferralsValue').innerText = referrals;
             document.getElementById('profileTitle').innerText = title;
+            // Место в рейтинге пока не вычисляем, оставляем как "топ"
+            document.getElementById('profileRatingPlace').innerText = 'топ';
 
             const calendarEl = document.getElementById('profileCalendar');
             const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
@@ -2278,7 +2281,7 @@
             });
         });
 
-        claimBtn.onclick = () => {
+        claimBtn.onclick = async () => {
             if (currentWin === 0) return;
             const oldLevel = getLevelByXP(getXP());
             const oldStreak = getStreak();
@@ -2287,7 +2290,6 @@
             addXP(2);
             const newLevel = getLevelByXP(getXP());
             const newStreak = updateStreak();
-            addRating(10);
             addCount(3);
             updateRoleUI();
             updateStreakDisplay(newStreak > oldStreak, oldStreak);
@@ -2296,6 +2298,8 @@
                 showLevelUpAnimation(oldLevel, newLevel);
             }
             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
+            // Синхронизируем с Supabase
+            await syncUserData();
             gameModal.classList.remove('show');
         };
 
@@ -2321,7 +2325,6 @@
                 addXP(5);
                 const newLevel = getLevelByXP(getXP());
                 const newStreak = updateStreak();
-                addRating(10);
                 localStorage.setItem('subscription_done', 'true');
                 document.getElementById('checkResult').style.color = '#00b300';
                 document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
@@ -2331,6 +2334,8 @@
                     showLevelUpAnimation(oldLevel, newLevel);
                 }
                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
+                // Синхронизируем с Supabase
+                await syncUserData();
                 setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
             } else {
                 document.getElementById('checkResult').style.color = 'red';
@@ -2386,6 +2391,7 @@
         });
 
         // Инициализация
+        initUser(); // Загружаем пользователя из Supabase
         updateRoleUI();
         updateProfilePage();
         updateReferralsPage();
@@ -2397,7 +2403,10 @@
 
         animatePage(document.getElementById('tasks-page'));
 
-        function updateTasksGrid() {}
+        function loadFromLocalStorage() {
+            // Заглушка на случай ошибки Supabase
+            console.log('Используем localStorage');
+        }
     </script>
 </body>
 </html>
