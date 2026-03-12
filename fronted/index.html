@@ -2325,42 +2325,80 @@
                         gameModal.classList.remove('show');
                     };
 
+                    // ==================== НОВЫЙ ОБРАБОТЧИК ПРОВЕРКИ ПОДПИСКИ ====================
                     document.getElementById('checkBtn').onclick = async function() {
                         if (!canDo(2)) {
                             document.getElementById('checkResult').style.color = 'red';
                             document.getElementById('checkResult').innerText = 'задание уже выполнено';
                             return;
                         }
+                        
                         const checkBtn = this;
                         checkBtn.disabled = true;
                         checkBtn.innerText = 'проверка...';
                         document.getElementById('checkResult').innerText = '';
 
-                        await new Promise(r => setTimeout(r, 1500));
-                        const success = true;
-
-                        if (success) {
-                            const oldLevel = getLevelByXP(getXP());
-                            const oldStreak = getStreak();
-                            balance += 20;
-                            saveBalance();
-                            addXP(5);
-                            const newLevel = getLevelByXP(getXP());
-                            const newStreak = updateStreak();
-                            localStorage.setItem('subscription_done', 'true');
-                            document.getElementById('checkResult').style.color = '#00b300';
-                            document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
-                            updateStreakDisplay(newStreak > oldStreak, oldStreak);
-                            animateStreakIcon();
-                            if (newLevel > oldLevel) {
-                                showLevelUpAnimation(oldLevel, newLevel);
-                            }
-                            if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
-                            await syncUserData();
-                            setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
-                        } else {
+                        // Получаем ID пользователя Telegram
+                        const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+                        if (!userId) {
                             document.getElementById('checkResult').style.color = 'red';
-                            document.getElementById('checkResult').innerText = '❌ не подписан. попробуйте снова.';
+                            document.getElementById('checkResult').innerText = 'Ошибка: не удалось определить пользователя';
+                            checkBtn.disabled = false;
+                            checkBtn.innerText = 'проверить подписку';
+                            return;
+                        }
+
+                        try {
+                            // URL твоей Edge Function
+                            const functionUrl = 'https://xnguoxwcrncdinqipzdz.supabase.co/functions/v1/check-subscription';
+                            
+                            const response = await fetch(functionUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ user_id: userId }),
+                            });
+
+                            const result = await response.json();
+
+                            if (result.subscribed) {
+                                // Подписка подтверждена - начисляем награду
+                                const oldLevel = getLevelByXP(getXP());
+                                const oldStreak = getStreak();
+                                
+                                balance += 20;
+                                saveBalance();
+                                addXP(5);
+                                
+                                const newLevel = getLevelByXP(getXP());
+                                const newStreak = updateStreak();
+                                
+                                localStorage.setItem('subscription_done', 'true');
+                                document.getElementById('checkResult').style.color = '#00b300';
+                                document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
+                                
+                                updateStreakDisplay(newStreak > oldStreak, oldStreak);
+                                animateStreakIcon();
+                                
+                                if (newLevel > oldLevel) {
+                                    showLevelUpAnimation(oldLevel, newLevel);
+                                }
+                                
+                                if (document.getElementById('profile-page').classList.contains('active-page')) {
+                                    updateProfilePage();
+                                }
+                                
+                                await syncUserData();
+                                setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
+                            } else {
+                                document.getElementById('checkResult').style.color = 'red';
+                                document.getElementById('checkResult').innerText = '❌ Вы не подписаны. Подпишитесь и попробуйте снова.';
+                                checkBtn.disabled = false;
+                                checkBtn.innerText = 'проверить подписку';
+                            }
+                        } catch (error) {
+                            console.error('Ошибка проверки:', error);
+                            document.getElementById('checkResult').style.color = 'red';
+                            document.getElementById('checkResult').innerText = '❌ Ошибка проверки. Попробуйте позже.';
                             checkBtn.disabled = false;
                             checkBtn.innerText = 'проверить подписку';
                         }
