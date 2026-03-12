@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Supabase JS client -->
+    <!-- Supabase JS client (загружается один раз) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* ============================= */
@@ -1554,859 +1554,884 @@
     </div>
 
     <script>
-        // ==================== ИНИЦИАЛИЗАЦИЯ SUPABASE ====================
-        const supabaseUrl = 'https://xnguo.xwcrncdingipzdz.supabase.co';
-        const supabaseKey = 'sb_publishable_oK5bT_Ed9K5ZBtT09h8A3A_tqXNYrYg';
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        (function() {
+            // Дожидаемся полной загрузки DOM
+            document.addEventListener('DOMContentLoaded', function() {
+                try {
+                    // ==================== ИНИЦИАЛИЗАЦИЯ SUPABASE ====================
+                    if (typeof window.supabase === 'undefined') {
+                        throw new Error('Supabase JS client not loaded');
+                    }
+                    
+                    const supabaseUrl = 'https://xnguo.xwcrncdingipzdz.supabase.co';
+                    const supabaseKey = 'sb_publishable_oK5bT_Ed9K5ZBtT09h8A3A_tqXNYrYg';
+                    
+                    // Создаём клиент и сохраняем в переменную, уникальную для этого замыкания
+                    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+                    
+                    console.log('Supabase client created');
 
-        // ==================== ОСНОВНЫЕ ПЕРЕМЕННЫЕ ====================
-        let tg = window.Telegram?.WebApp;
-        if (tg) tg.expand();
-        const userId = tg?.initDataUnsafe?.user?.id?.toString() || 'test_' + Math.random();
-        const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
-        const username = tg?.initDataUnsafe?.user?.username || 'username';
-        const displayName = firstName;
+                    // ==================== ОСНОВНЫЕ ПЕРЕМЕННЫЕ ====================
+                    let tg = window.Telegram?.WebApp;
+                    if (tg) tg.expand();
+                    const userId = tg?.initDataUnsafe?.user?.id?.toString() || 'test_' + Math.random();
+                    const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+                    const displayName = firstName;
 
-        // Данные пользователя (дублируются из localStorage для обратной совместимости)
-        let balance = parseInt(localStorage.getItem('balance')) || 0;
-        let counts = JSON.parse(localStorage.getItem('counts')) || {};
+                    // Данные пользователя (дублируются из localStorage для обратной совместимости)
+                    let balance = parseInt(localStorage.getItem('balance')) || 0;
+                    let counts = JSON.parse(localStorage.getItem('counts')) || {};
 
-        // ==================== ФУНКЦИИ ДЛЯ РАБОТЫ С SUPABASE ====================
-        async function initUser() {
-            // Пытаемся найти пользователя в Supabase
-            let { data: user, error } = await supabase
-                .from('users')
-                .select('*')
-                .eq('id', userId)
-                .single();
+                    // ==================== ФУНКЦИИ ДЛЯ РАБОТЫ С SUPABASE ====================
+                    async function initUser() {
+                        try {
+                            let { data: user, error } = await supabaseClient
+                                .from('users')
+                                .select('*')
+                                .eq('id', userId)
+                                .maybeSingle();
 
-            if (error || !user) {
-                // Пользователь не найден — создаём нового
-                const newUser = {
-                    id: userId,
-                    balance: 0,
-                    xp: 0,
-                    referrals: 0,
-                    streak: 0,
-                    last_streak_date: null,
-                    tasks_completed: {}
-                };
-                
-                const { data, error: insertError } = await supabase
-                    .from('users')
-                    .insert([newUser])
-                    .select()
-                    .single();
-                
-                if (insertError) {
-                    console.error('Ошибка создания пользователя:', insertError);
-                    // Если ошибка, используем localStorage как запасной вариант
-                    loadFromLocalStorage();
-                } else {
-                    user = data;
-                    console.log('Создан новый пользователь в Supabase');
-                }
-            } else {
-                console.log('Пользователь загружен из Supabase');
-            }
+                            if (error) {
+                                console.error('Error fetching user:', error);
+                                loadFromLocalStorage();
+                                return;
+                            }
 
-            if (user) {
-                // Сохраняем данные из Supabase в localStorage (для обратной совместимости)
-                localStorage.setItem('balance', user.balance);
-                localStorage.setItem('xp', user.xp);
-                localStorage.setItem('referralsCount', user.referrals);
-                localStorage.setItem('streak', user.streak);
-                localStorage.setItem('lastStreakDate', user.last_streak_date || '');
-                
-                // Обновляем глобальные переменные
-                balance = user.balance;
-                // Обновляем интерфейс
-                updateBalanceDisplay();
-                updateStreak(); // обновит streak из localStorage
-                updateProfilePage();
-            }
-        }
+                            if (!user) {
+                                // Создаём нового пользователя
+                                const newUser = {
+                                    id: userId,
+                                    balance: 0,
+                                    xp: 0,
+                                    referrals: 0,
+                                    streak: 0,
+                                    last_streak_date: null,
+                                    tasks_completed: {}
+                                };
+                                
+                                const { data: inserted, error: insertError } = await supabaseClient
+                                    .from('users')
+                                    .insert([newUser])
+                                    .select()
+                                    .single();
+                                
+                                if (insertError) {
+                                    console.error('Error creating user:', insertError);
+                                    loadFromLocalStorage();
+                                } else {
+                                    user = inserted;
+                                    console.log('New user created in Supabase');
+                                }
+                            } else {
+                                console.log('User loaded from Supabase');
+                            }
 
-        async function syncUserData() {
-            const xp = getXP();
-            const streak = getStreak();
-            const lastStreakDate = getLastStreakDate();
-            const referrals = getReferralsCount();
+                            if (user) {
+                                // Сохраняем в localStorage для обратной совместимости
+                                localStorage.setItem('balance', user.balance);
+                                localStorage.setItem('xp', user.xp);
+                                localStorage.setItem('referralsCount', user.referrals);
+                                localStorage.setItem('streak', user.streak || 0);
+                                localStorage.setItem('lastStreakDate', user.last_streak_date || '');
+                                
+                                balance = user.balance;
+                                updateBalanceDisplay();
+                                updateStreak();
+                                updateProfilePage();
+                            }
+                        } catch (e) {
+                            console.error('initUser error:', e);
+                            loadFromLocalStorage();
+                        }
+                    }
 
-            const { error } = await supabase
-                .from('users')
-                .update({
-                    balance: balance,
-                    xp: xp,
-                    streak: streak,
-                    last_streak_date: lastStreakDate,
-                    referrals: referrals
-                })
-                .eq('id', userId);
+                    async function syncUserData() {
+                        try {
+                            const xp = getXP();
+                            const streak = getStreak();
+                            const lastStreakDate = getLastStreakDate();
+                            const referrals = getReferralsCount();
 
-            if (error) {
-                console.error('Ошибка синхронизации с Supabase:', error);
-            } else {
-                console.log('Данные синхронизированы с Supabase');
-            }
-        }
+                            const { error } = await supabaseClient
+                                .from('users')
+                                .update({
+                                    balance: balance,
+                                    xp: xp,
+                                    streak: streak,
+                                    last_streak_date: lastStreakDate,
+                                    referrals: referrals
+                                })
+                                .eq('id', userId);
 
-        // Функция для получения топа пользователей (по XP)
-        async function getTopUsers() {
-            const { data: users, error } = await supabase
-                .from('users')
-                .select('id, xp, balance') // можно добавить другие поля
-                .order('xp', { ascending: false })
-                .limit(10);
+                            if (error) {
+                                console.error('Sync error:', error);
+                            } else {
+                                console.log('Data synced to Supabase');
+                            }
+                        } catch (e) {
+                            console.error('syncUserData error:', e);
+                        }
+                    }
 
-            if (error) {
-                console.error('Ошибка получения топа:', error);
-                return [];
-            }
-            return users;
-        }
+                    async function getTopUsers() {
+                        try {
+                            const { data, error } = await supabaseClient
+                                .from('users')
+                                .select('id, xp, balance')
+                                .order('xp', { ascending: false })
+                                .limit(10);
+                            if (error) throw error;
+                            return data || [];
+                        } catch (e) {
+                            console.error('getTopUsers error:', e);
+                            return [];
+                        }
+                    }
 
-        // Функция открытия модалки с рейтингом
-        async function openRatingModal() {
-            const topUsers = await getTopUsers();
-            const modal = document.getElementById('ratingModal');
-            const content = document.getElementById('ratingModalContent');
-            
-            if (topUsers.length === 0) {
-                content.innerHTML = '<p style="text-align:center; color:var(--text-muted);">пока нет данных</p>';
-            } else {
-                let html = '<ol style="list-style: none; padding: 0; margin: 0;">';
-                topUsers.forEach((user, index) => {
-                    // Имя пользователя: показываем первые 6 символов id (или можно попробовать получить username)
-                    const shortId = user.id.slice(0, 6);
-                    html += `
-                        <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                            <span style="font-weight: 600;">${index+1}. @${shortId}</span>
-                            <span style="color: var(--accent); font-weight: 700;">${user.xp} XP</span>
-                        </li>
-                    `;
-                });
-                html += '</ol>';
-                content.innerHTML = html;
-            }
-            
-            modal.classList.add('show');
-        }
+                    // ==================== РЕЙТИНГ МОДАЛКА ====================
+                    window.openRatingModal = async function() {
+                        const modal = document.getElementById('ratingModal');
+                        const content = document.getElementById('ratingModalContent');
+                        const topUsers = await getTopUsers();
+                        
+                        if (topUsers.length === 0) {
+                            content.innerHTML = '<p style="text-align:center; color:var(--text-muted);">пока нет данных</p>';
+                        } else {
+                            let html = '<ol style="list-style: none; padding: 0; margin: 0;">';
+                            topUsers.forEach((user, index) => {
+                                const shortId = user.id.slice(0, 6);
+                                html += `
+                                    <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                        <span style="font-weight: 600;">${index+1}. @${shortId}</span>
+                                        <span style="color: var(--accent); font-weight: 700;">${user.xp} XP</span>
+                                    </li>
+                                `;
+                            });
+                            html += '</ol>';
+                            content.innerHTML = html;
+                        }
+                        modal.classList.add('show');
+                    };
 
-        // Закрытие модалки рейтинга
-        document.getElementById('closeRatingModal').onclick = () => {
-            document.getElementById('ratingModal').classList.remove('show');
-        };
+                    document.getElementById('closeRatingModal').onclick = function() {
+                        document.getElementById('ratingModal').classList.remove('show');
+                    };
 
-        // ==================== СУЩЕСТВУЮЩИЕ ФУНКЦИИ (с добавлением вызовов syncUserData) ====================
-        const titles = [
-            "пуська", "нубяра", "комфортик", "красавчик", "легенда",
-            "миллионер", "хайпожор", "босс", "император", "бог хайпа",
-            "киберпанк", "флексер", "краш", "рофлан", "чилл",
-            "вайб", "форсер", "топчик", "король", "легендарный",
-            "эпик", "мифический", "ачивка", "скилловый", "профи",
-            "мастер", "гуру", "сенсей", "мэтр", "ас",
-            "джедай", "повелитель", "властелин", "титан", "олимп",
-            "бессмертный", "непобедимый", "ультра", "мега", "гига",
-            "тера", "пета", "экза", "зетта", "йотта",
-            "ронни", "коул", "дрейк", "йе", "хайп"
-        ];
+                    // ==================== СУЩЕСТВУЮЩИЕ ФУНКЦИИ (без изменений) ====================
+                    const titles = [
+                        "пуська", "нубяра", "комфортик", "красавчик", "легенда",
+                        "миллионер", "хайпожор", "босс", "император", "бог хайпа",
+                        "киберпанк", "флексер", "краш", "рофлан", "чилл",
+                        "вайб", "форсер", "топчик", "король", "легендарный",
+                        "эпик", "мифический", "ачивка", "скилловый", "профи",
+                        "мастер", "гуру", "сенсей", "мэтр", "ас",
+                        "джедай", "повелитель", "властелин", "титан", "олимп",
+                        "бессмертный", "непобедимый", "ультра", "мега", "гига",
+                        "тера", "пета", "экза", "зетта", "йотта",
+                        "ронни", "коул", "дрейк", "йе", "хайп"
+                    ];
 
-        function getTitle(level) {
-            return level <= titles.length ? titles[level - 1] : "бог хайпа";
-        }
+                    function getTitle(level) {
+                        return level <= titles.length ? titles[level - 1] : "бог хайпа";
+                    }
 
-        const BASE_XP = 10;
+                    const BASE_XP = 10;
 
-        function getTotalXPForLevel(level) {
-            if (level <= 1) return 0;
-            let total = 0;
-            for (let i = 1; i < level; i++) {
-                total += Math.round(BASE_XP * Math.pow(1.5, i - 1));
-            }
-            return total;
-        }
+                    function getTotalXPForLevel(level) {
+                        if (level <= 1) return 0;
+                        let total = 0;
+                        for (let i = 1; i < level; i++) {
+                            total += Math.round(BASE_XP * Math.pow(1.5, i - 1));
+                        }
+                        return total;
+                    }
 
-        function getLevelByXP(xp) {
-            let level = 1;
-            while (true) {
-                let xpForNext = getTotalXPForLevel(level + 1);
-                if (xp >= xpForNext) {
-                    level++;
-                } else {
-                    break;
-                }
-            }
-            return level;
-        }
+                    function getLevelByXP(xp) {
+                        let level = 1;
+                        while (true) {
+                            let xpForNext = getTotalXPForLevel(level + 1);
+                            if (xp >= xpForNext) {
+                                level++;
+                            } else {
+                                break;
+                            }
+                        }
+                        return level;
+                    }
 
-        function getProgressToNextLevel(xp) {
-            const level = getLevelByXP(xp);
-            const xpCurrentLevel = getTotalXPForLevel(level);
-            const xpNextLevel = getTotalXPForLevel(level + 1);
-            const needed = xpNextLevel - xpCurrentLevel;
-            const have = xp - xpCurrentLevel;
-            return needed > 0 ? Math.min(100, Math.round((have / needed) * 100)) : 0;
-        }
+                    function getProgressToNextLevel(xp) {
+                        const level = getLevelByXP(xp);
+                        const xpCurrentLevel = getTotalXPForLevel(level);
+                        const xpNextLevel = getTotalXPForLevel(level + 1);
+                        const needed = xpNextLevel - xpCurrentLevel;
+                        const have = xp - xpCurrentLevel;
+                        return needed > 0 ? Math.min(100, Math.round((have / needed) * 100)) : 0;
+                    }
 
-        function getXP() {
-            return parseInt(localStorage.getItem('xp')) || 0;
-        }
+                    function getXP() {
+                        return parseInt(localStorage.getItem('xp')) || 0;
+                    }
 
-        function addXP(amount) {
-            let xp = getXP() + amount;
-            localStorage.setItem('xp', xp);
-            return xp;
-        }
+                    function addXP(amount) {
+                        let xp = getXP() + amount;
+                        localStorage.setItem('xp', xp);
+                        return xp;
+                    }
 
-        function showLevelUpAnimation(oldLevel, newLevel) {
-            const overlay = document.getElementById('levelUpOverlay');
-            const oldEl = document.getElementById('oldLevel');
-            const newEl = document.getElementById('newLevel');
-            const titleEl = document.getElementById('levelUpTitle');
-            oldEl.innerText = oldLevel;
-            newEl.innerText = newLevel;
-            titleEl.innerText = getTitle(newLevel);
-            overlay.classList.add('active');
-            setTimeout(() => {
-                overlay.classList.remove('active');
-            }, 3500);
-        }
+                    function showLevelUpAnimation(oldLevel, newLevel) {
+                        const overlay = document.getElementById('levelUpOverlay');
+                        const oldEl = document.getElementById('oldLevel');
+                        const newEl = document.getElementById('newLevel');
+                        const titleEl = document.getElementById('levelUpTitle');
+                        oldEl.innerText = oldLevel;
+                        newEl.innerText = newLevel;
+                        titleEl.innerText = getTitle(newLevel);
+                        overlay.classList.add('active');
+                        setTimeout(() => {
+                            overlay.classList.remove('active');
+                        }, 3500);
+                    }
 
-        let currentRole = 'worker';
+                    let currentRole = 'worker';
 
-        function toggleRole() {
-            const roleContent = document.getElementById('roleContent');
-            if (roleContent) {
-                roleContent.classList.add('fade-out');
-            }
+                    function toggleRole() {
+                        const roleContent = document.getElementById('roleContent');
+                        if (roleContent) {
+                            roleContent.classList.add('fade-out');
+                        }
 
-            setTimeout(() => {
-                currentRole = currentRole === 'worker' ? 'employer' : 'worker';
-                updateRoleUI();
-                const profileRoleValue = document.getElementById('profileRoleValue');
-                if (profileRoleValue) {
-                    profileRoleValue.innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
-                }
-                if (roleContent) {
-                    roleContent.classList.remove('fade-out');
-                    roleContent.classList.add('fade-in');
-                    setTimeout(() => roleContent.classList.remove('fade-in'), 300);
-                }
-            }, 150);
-        }
+                        setTimeout(() => {
+                            currentRole = currentRole === 'worker' ? 'employer' : 'worker';
+                            updateRoleUI();
+                            const profileRoleValue = document.getElementById('profileRoleValue');
+                            if (profileRoleValue) {
+                                profileRoleValue.innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
+                            }
+                            if (roleContent) {
+                                roleContent.classList.remove('fade-out');
+                                roleContent.classList.add('fade-in');
+                                setTimeout(() => roleContent.classList.remove('fade-in'), 300);
+                            }
+                        }, 150);
+                    }
 
-        function updateRoleUI() {
-            const roleContent = document.getElementById('roleContent');
-            const sectionTitle = document.getElementById('mainSectionTitle');
+                    function updateRoleUI() {
+                        const roleContent = document.getElementById('roleContent');
+                        const sectionTitle = document.getElementById('mainSectionTitle');
 
-            if (currentRole === 'worker') {
-                sectionTitle.innerText = 'задания';
-                roleContent.innerHTML = getWorkerTasksHTML();
-            } else {
-                sectionTitle.innerText = 'мои задания';
-                roleContent.innerHTML = getEmployerHTML();
-            }
+                        if (currentRole === 'worker') {
+                            sectionTitle.innerText = 'задания';
+                            roleContent.innerHTML = getWorkerTasksHTML();
+                        } else {
+                            sectionTitle.innerText = 'мои задания';
+                            roleContent.innerHTML = getEmployerHTML();
+                        }
 
-            const newElements = roleContent.querySelectorAll('.animate-stagger');
-            newElements.forEach(el => {
-                el.style.animation = 'none';
-                el.offsetHeight;
-                el.style.animation = '';
-            });
-        }
+                        const newElements = roleContent.querySelectorAll('.animate-stagger');
+                        newElements.forEach(el => {
+                            el.style.animation = 'none';
+                            el.offsetHeight;
+                            el.style.animation = '';
+                        });
+                    }
 
-        function getWorkerTasksHTML() {
-            const allTasks = [
-                { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу', price: 30 },
-                { id: 2, name: 'подпишись на канал', desc: '@hype_job1', price: 20 },
-                { id: 3, name: 'мини-игра', desc: 'выиграй до 20 ₽', price: '5-20' }
-            ];
-            let html = '<div class="tasks-grid">';
-            allTasks.forEach(t => {
-                html += `<div class="task-card animate-stagger" onclick="handleTaskClick(${t.id})">
-                    <div class="task-icon">${getTaskIcon(t.name)}</div>
-                    <div class="task-info">
-                        <h4>${t.name}</h4>
-                        <p>${t.desc}</p>
-                    </div>
-                    <div class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
-                </div>`;
-            });
-            html += '</div>';
-            return html;
-        }
+                    function getWorkerTasksHTML() {
+                        const allTasks = [
+                            { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу', price: 30 },
+                            { id: 2, name: 'подпишись на канал', desc: '@hype_job1', price: 20 },
+                            { id: 3, name: 'мини-игра', desc: 'выиграй до 20 ₽', price: '5-20' }
+                        ];
+                        let html = '<div class="tasks-grid">';
+                        allTasks.forEach(t => {
+                            html += `<div class="task-card animate-stagger" onclick="handleTaskClick(${t.id})">
+                                <div class="task-icon">${getTaskIcon(t.name)}</div>
+                                <div class="task-info">
+                                    <h4>${t.name}</h4>
+                                    <p>${t.desc}</p>
+                                </div>
+                                <div class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
+                            </div>`;
+                        });
+                        html += '</div>';
+                        return html;
+                    }
 
-        function getEmployerHTML() {
-            return `
-                <div class="employer-card animate-stagger">
-                    <h4 style="margin-bottom:15px;">создать новое задание</h4>
-                    <input class="employer-create-field" type="text" placeholder="название задания">
-                    <input class="employer-create-field" type="number" placeholder="цена (₽)">
-                    <button class="employer-create-btn" onclick="alert('задание создано (демо)')">опубликовать</button>
-                </div>
-                <div class="employer-card animate-stagger">
-                    <h4 style="margin-bottom:15px;">мои активные задания</h4>
-                    <div class="employer-order-item">
-                        <span>подпишись на канал</span>
-                        <span class="employer-order-status">20 ₽ • 5 выполнений</span>
-                    </div>
-                    <div class="employer-order-item">
-                        <span>пригласи друга</span>
-                        <span class="employer-order-status">30 ₽ • 2 выполнения</span>
-                    </div>
-                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">скоро здесь появится статистика</div>
-                </div>
-            `;
-        }
+                    function getEmployerHTML() {
+                        return `
+                            <div class="employer-card animate-stagger">
+                                <h4 style="margin-bottom:15px;">создать новое задание</h4>
+                                <input class="employer-create-field" type="text" placeholder="название задания">
+                                <input class="employer-create-field" type="number" placeholder="цена (₽)">
+                                <button class="employer-create-btn" onclick="alert('задание создано (демо)')">опубликовать</button>
+                            </div>
+                            <div class="employer-card animate-stagger">
+                                <h4 style="margin-bottom:15px;">мои активные задания</h4>
+                                <div class="employer-order-item">
+                                    <span>подпишись на канал</span>
+                                    <span class="employer-order-status">20 ₽ • 5 выполнений</span>
+                                </div>
+                                <div class="employer-order-item">
+                                    <span>пригласи друга</span>
+                                    <span class="employer-order-status">30 ₽ • 2 выполнения</span>
+                                </div>
+                                <div style="text-align:center; margin-top:12px; color:var(--text-muted);">скоро здесь появится статистика</div>
+                            </div>
+                        `;
+                    }
 
-        function handleTaskClick(id) {
-            if (id === 1) {
-                let link = 'https://t.me/your_bot?start=ref_' + userId;
-                document.getElementById('refLink').value = link;
-                document.getElementById('refModal').classList.add('show');
-            } else if (id === 2) {
-                document.getElementById('subModal').classList.add('show');
-            } else if (id === 3) {
-                resetGameModal();
-                document.getElementById('gameModal').classList.add('show');
-            }
-        }
+                    window.handleTaskClick = function(id) {
+                        if (id === 1) {
+                            let link = 'https://t.me/your_bot?start=ref_' + userId;
+                            document.getElementById('refLink').value = link;
+                            document.getElementById('refModal').classList.add('show');
+                        } else if (id === 2) {
+                            document.getElementById('subModal').classList.add('show');
+                        } else if (id === 3) {
+                            resetGameModal();
+                            document.getElementById('gameModal').classList.add('show');
+                        }
+                    };
 
-        function getTaskIcon(name) {
-            if (name.includes('друга')) {
-                return `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
-            }
-            if (name.includes('канал')) {
-                return `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/></svg>`;
-            }
-            return `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`;
-        }
+                    function getTaskIcon(name) {
+                        if (name.includes('друга')) {
+                            return `<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`;
+                        }
+                        if (name.includes('канал')) {
+                            return `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/></svg>`;
+                        }
+                        return `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>`;
+                    }
 
-        document.getElementById('mainFilters')?.addEventListener('click', (e) => {
-            const tab = e.target.closest('.tab');
-            if (!tab) return;
-            const tabs = document.querySelectorAll('#mainFilters .tab');
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-        });
-
-        function initAnalyticsTabs() {
-            const tabs = document.querySelectorAll('#analyticsTabs .period-tab');
-            const content = document.getElementById('analyticsContent');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    if (tab.classList.contains('active')) return;
-                    content.classList.add('fade-out');
-                    setTimeout(() => {
+                    document.getElementById('mainFilters')?.addEventListener('click', (e) => {
+                        const tab = e.target.closest('.tab');
+                        if (!tab) return;
+                        const tabs = document.querySelectorAll('#mainFilters .tab');
                         tabs.forEach(t => t.classList.remove('active'));
                         tab.classList.add('active');
-                        content.innerHTML = getAnalyticsContent();
-                        content.classList.remove('fade-out');
-                        content.classList.add('fade-in');
-                        setTimeout(() => content.classList.remove('fade-in'), 300);
-                    }, 150);
-                });
-            });
-        }
+                    });
 
-        function getAnalyticsContent() {
-            return `
-                <div class="analytics-total animate-stagger">
-                    <div class="balance-label">общий доход</div>
-                    <div class="balance-number" style="font-size:36px;">—</div>
-                </div>
-                <div class="analytics-total animate-stagger">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                        <span>доход</span>
-                        <span>—</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-                        <span>расход</span>
-                        <span>—</span>
-                    </div>
-                    <div class="chart-placeholder">
-                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
-                        <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
-                    </div>
-                    <div style="text-align:center; color:var(--text-muted); margin-top:10px;">статистика скоро появится</div>
-                </div>
-                <div style="margin-top:25px;">
-                    <h4 style="margin-bottom:15px;">последние операции</h4>
-                    <div class="recent-transfers animate-stagger">
-                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появится статистика</div>
-                    </div>
-                </div>
-            `;
-        }
+                    function initAnalyticsTabs() {
+                        const tabs = document.querySelectorAll('#analyticsTabs .period-tab');
+                        const content = document.getElementById('analyticsContent');
+                        tabs.forEach(tab => {
+                            tab.addEventListener('click', () => {
+                                if (tab.classList.contains('active')) return;
+                                content.classList.add('fade-out');
+                                setTimeout(() => {
+                                    tabs.forEach(t => t.classList.remove('active'));
+                                    tab.classList.add('active');
+                                    content.innerHTML = getAnalyticsContent();
+                                    content.classList.remove('fade-out');
+                                    content.classList.add('fade-in');
+                                    setTimeout(() => content.classList.remove('fade-in'), 300);
+                                }, 150);
+                            });
+                        });
+                    }
 
-        function openLevelModal() {
-            const xp = getXP();
-            const level = getLevelByXP(xp);
-            const nextLevel = level + 1;
-            const progress = getProgressToNextLevel(xp);
-            const currentTitle = getTitle(level);
-            const nextTitle = getTitle(nextLevel);
+                    function getAnalyticsContent() {
+                        return `
+                            <div class="analytics-total animate-stagger">
+                                <div class="balance-label">общий доход</div>
+                                <div class="balance-number" style="font-size:36px;">—</div>
+                            </div>
+                            <div class="analytics-total animate-stagger">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                                    <span>доход</span>
+                                    <span>—</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                                    <span>расход</span>
+                                    <span>—</span>
+                                </div>
+                                <div class="chart-placeholder">
+                                    <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
+                                    <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
+                                </div>
+                                <div style="text-align:center; color:var(--text-muted); margin-top:10px;">статистика скоро появится</div>
+                            </div>
+                            <div style="margin-top:25px;">
+                                <h4 style="margin-bottom:15px;">последние операции</h4>
+                                <div class="recent-transfers animate-stagger">
+                                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появится статистика</div>
+                                </div>
+                            </div>
+                        `;
+                    }
 
-            const modal = document.getElementById('levelModal');
-            const content = document.getElementById('levelModalContent');
-            content.innerHTML = `
-                <div class="level-progress">
-                    <div class="level-box">
-                        <div class="level-number">${level}</div>
-                        <div class="level-title">${currentTitle}</div>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill" style="width: ${progress}%;"></div>
-                        </div>
-                        <div class="progress-percent">${progress}%</div>
-                    </div>
-                    <div class="level-box">
-                        <div class="level-number">${nextLevel}</div>
-                        <div class="level-title">${nextTitle}</div>
-                    </div>
-                </div>
-            `;
-            modal.classList.add('show');
-        }
+                    window.openLevelModal = function() {
+                        const xp = getXP();
+                        const level = getLevelByXP(xp);
+                        const nextLevel = level + 1;
+                        const progress = getProgressToNextLevel(xp);
+                        const currentTitle = getTitle(level);
+                        const nextTitle = getTitle(nextLevel);
 
-        document.getElementById('closeLevelModal').onclick = () => {
-            document.getElementById('levelModal').classList.remove('show');
-        };
+                        const modal = document.getElementById('levelModal');
+                        const content = document.getElementById('levelModalContent');
+                        content.innerHTML = `
+                            <div class="level-progress">
+                                <div class="level-box">
+                                    <div class="level-number">${level}</div>
+                                    <div class="level-title">${currentTitle}</div>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill" style="width: ${progress}%;"></div>
+                                    </div>
+                                    <div class="progress-percent">${progress}%</div>
+                                </div>
+                                <div class="level-box">
+                                    <div class="level-number">${nextLevel}</div>
+                                    <div class="level-title">${nextTitle}</div>
+                                </div>
+                            </div>
+                        `;
+                        modal.classList.add('show');
+                    };
 
-        const fixedHeader = document.getElementById('fixedHeader');
-        const pagesContainer = document.getElementById('pagesContainer');
-        let lastScrollTop = 0;
+                    document.getElementById('closeLevelModal').onclick = () => {
+                        document.getElementById('levelModal').classList.remove('show');
+                    };
 
-        function handleScroll() {
-            const scrollTop = pagesContainer.scrollTop;
-            if (scrollTop > lastScrollTop && scrollTop > 20) {
-                fixedHeader.classList.add('hidden');
-            } else if (scrollTop < 100) {
-                fixedHeader.classList.remove('hidden');
-            }
-            lastScrollTop = scrollTop;
-        }
-        pagesContainer.addEventListener('scroll', handleScroll);
+                    const fixedHeader = document.getElementById('fixedHeader');
+                    const pagesContainer = document.getElementById('pagesContainer');
+                    let lastScrollTop = 0;
 
-        const splash = document.getElementById('splash');
-        const appContent = document.getElementById('appContent');
+                    function handleScroll() {
+                        const scrollTop = pagesContainer.scrollTop;
+                        if (scrollTop > lastScrollTop && scrollTop > 20) {
+                            fixedHeader.classList.add('hidden');
+                        } else if (scrollTop < 100) {
+                            fixedHeader.classList.remove('hidden');
+                        }
+                        lastScrollTop = scrollTop;
+                    }
+                    pagesContainer.addEventListener('scroll', handleScroll);
 
-        splash.addEventListener('animationend', function(e) {
-            if (e.animationName === 'fadeOut') {
-                splash.remove();
-                appContent.style.opacity = '1';
-            }
-        });
+                    const splash = document.getElementById('splash');
+                    const appContent = document.getElementById('appContent');
 
-        document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
-        document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
-        document.getElementById('profileName').innerText = firstName;
+                    splash.addEventListener('animationend', function(e) {
+                        if (e.animationName === 'fadeOut') {
+                            splash.remove();
+                            appContent.style.opacity = '1';
+                        }
+                    });
 
-        function updateBalanceDisplay() {
-            document.getElementById('mainBalance').innerText = balance + ' ₽';
-            document.getElementById('mainChange').innerText = `+${Math.floor(balance/10)} ₽ (${Math.floor(balance/100)}%)`;
-        }
-        updateBalanceDisplay();
+                    document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
+                    document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
+                    document.getElementById('profileName').innerText = firstName;
 
-        function getStreak() {
-            return parseInt(localStorage.getItem('streak')) || 0;
-        }
-        function getLastStreakDate() {
-            return localStorage.getItem('lastStreakDate');
-        }
-        function updateStreak() {
-            const today = new Date().toDateString();
-            const lastDate = getLastStreakDate();
-            let streak = getStreak();
-            if (lastDate === today) return streak;
-            const yesterday = new Date(Date.now() - 86400000).toDateString();
-            if (lastDate === yesterday) streak++;
-            else streak = 1;
-            localStorage.setItem('streak', streak);
-            localStorage.setItem('lastStreakDate', today);
-            return streak;
-        }
-        function updateStreakDisplay(animate = false, oldValue = null) {
-            const streak = getStreak();
-            document.getElementById('streakCount').innerText = streak;
-            renderWeekdays(streak);
-            
-            if (animate && oldValue !== null && oldValue < streak) {
-                const overlay = document.getElementById('streakAnimationOverlay');
-                const oldEl = document.getElementById('oldStreak');
-                const newEl = document.getElementById('newStreak');
-                oldEl.innerText = oldValue;
-                newEl.innerText = streak;
-                overlay.classList.add('active');
-                setTimeout(() => {
-                    overlay.classList.remove('active');
-                }, 3500);
-            }
-        }
+                    function updateBalanceDisplay() {
+                        document.getElementById('mainBalance').innerText = balance + ' ₽';
+                        document.getElementById('mainChange').innerText = `+${Math.floor(balance/10)} ₽ (${Math.floor(balance/100)}%)`;
+                    }
+                    updateBalanceDisplay();
 
-        function animateStreakIcon() {
-            const icon = document.getElementById('streakIcon');
-            icon.classList.add('pulse');
-            setTimeout(() => {
-                icon.classList.remove('pulse');
-            }, 500);
-        }
+                    function getStreak() {
+                        return parseInt(localStorage.getItem('streak')) || 0;
+                    }
+                    function getLastStreakDate() {
+                        return localStorage.getItem('lastStreakDate');
+                    }
+                    function updateStreak() {
+                        const today = new Date().toDateString();
+                        const lastDate = getLastStreakDate();
+                        let streak = getStreak();
+                        if (lastDate === today) return streak;
+                        const yesterday = new Date(Date.now() - 86400000).toDateString();
+                        if (lastDate === yesterday) streak++;
+                        else streak = 1;
+                        localStorage.setItem('streak', streak);
+                        localStorage.setItem('lastStreakDate', today);
+                        return streak;
+                    }
+                    function updateStreakDisplay(animate = false, oldValue = null) {
+                        const streak = getStreak();
+                        document.getElementById('streakCount').innerText = streak;
+                        renderWeekdays(streak);
+                        
+                        if (animate && oldValue !== null && oldValue < streak) {
+                            const overlay = document.getElementById('streakAnimationOverlay');
+                            const oldEl = document.getElementById('oldStreak');
+                            const newEl = document.getElementById('newStreak');
+                            oldEl.innerText = oldValue;
+                            newEl.innerText = streak;
+                            overlay.classList.add('active');
+                            setTimeout(() => {
+                                overlay.classList.remove('active');
+                            }, 3500);
+                        }
+                    }
 
-        function renderWeekdays(streak) {
-            const container = document.getElementById('weekdaysContainer');
-            if (!container) return;
-            const days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
-            const today = new Date().getDay();
-            let dayIndex = today === 0 ? 6 : today - 1;
-            let html = '';
-            for (let i = 0; i < 7; i++) {
-                const daysAgo = (dayIndex - i + 7) % 7;
-                const active = daysAgo < streak;
-                html += `
-                    <div class="weekday ${active ? 'active' : ''}">
-                        <span>${days[i]}</span>
-                        <div class="day-indicator"></div>
-                    </div>
-                `;
-            }
-            container.innerHTML = html;
-        }
+                    function animateStreakIcon() {
+                        const icon = document.getElementById('streakIcon');
+                        icon.classList.add('pulse');
+                        setTimeout(() => {
+                            icon.classList.remove('pulse');
+                        }, 500);
+                    }
 
-        function getReferralsCount() {
-            return parseInt(localStorage.getItem('referralsCount')) || 0;
-        }
+                    function renderWeekdays(streak) {
+                        const container = document.getElementById('weekdaysContainer');
+                        if (!container) return;
+                        const days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+                        const today = new Date().getDay();
+                        let dayIndex = today === 0 ? 6 : today - 1;
+                        let html = '';
+                        for (let i = 0; i < 7; i++) {
+                            const daysAgo = (dayIndex - i + 7) % 7;
+                            const active = daysAgo < streak;
+                            html += `
+                                <div class="weekday ${active ? 'active' : ''}">
+                                    <span>${days[i]}</span>
+                                    <div class="day-indicator"></div>
+                                </div>
+                            `;
+                        }
+                        container.innerHTML = html;
+                    }
 
-        function saveBalance() {
-            localStorage.setItem('balance', balance);
-            updateBalanceDisplay();
-        }
+                    function getReferralsCount() {
+                        return parseInt(localStorage.getItem('referralsCount')) || 0;
+                    }
 
-        function addCount(id) {
-            let key = id + '_' + new Date().toDateString();
-            counts[key] = (counts[key] || 0) + 1;
-            localStorage.setItem('counts', JSON.stringify(counts));
-        }
+                    function saveBalance() {
+                        localStorage.setItem('balance', balance);
+                        updateBalanceDisplay();
+                    }
 
-        function canDo(id) {
-            if (id === 2) {
-                return !localStorage.getItem('subscription_done');
-            } else if (id === 3) {
-                return true;
-            } else {
-                let key = id + '_' + new Date().toDateString();
-                return !counts[key] || counts[key] < 3;
-            }
-        }
+                    function addCount(id) {
+                        let key = id + '_' + new Date().toDateString();
+                        counts[key] = (counts[key] || 0) + 1;
+                        localStorage.setItem('counts', JSON.stringify(counts));
+                    }
 
-        function getTodayCount() {
-            const today = new Date().toDateString();
-            let total = 0;
-            for (let key in counts) {
-                if (key.includes(today)) total += counts[key];
-            }
-            return total;
-        }
+                    function canDo(id) {
+                        if (id === 2) {
+                            return !localStorage.getItem('subscription_done');
+                        } else if (id === 3) {
+                            return true;
+                        } else {
+                            let key = id + '_' + new Date().toDateString();
+                            return !counts[key] || counts[key] < 3;
+                        }
+                    }
 
-        function animatePage(pageElement) {
-            const animatedElements = pageElement.querySelectorAll('.animate-stagger');
-            animatedElements.forEach(el => {
-                el.style.animation = 'none';
-                el.offsetHeight;
-                el.style.animation = '';
-            });
-        }
+                    function getTodayCount() {
+                        const today = new Date().toDateString();
+                        let total = 0;
+                        for (let key in counts) {
+                            if (key.includes(today)) total += counts[key];
+                        }
+                        return total;
+                    }
 
-        function updateProfilePage() {
-            const xp = getXP();
-            const level = getLevelByXP(xp);
-            const streak = getStreak();
-            const referrals = getReferralsCount();
-            const title = getTitle(level);
+                    function animatePage(pageElement) {
+                        const animatedElements = pageElement.querySelectorAll('.animate-stagger');
+                        animatedElements.forEach(el => {
+                            el.style.animation = 'none';
+                            el.offsetHeight;
+                            el.style.animation = '';
+                        });
+                    }
 
-            document.getElementById('profileLevelValue').innerText = level;
-            document.getElementById('profileTitle').innerText = title;
-            // Место в рейтинге пока не вычисляем, оставляем как "топ"
-            document.getElementById('profileRatingPlace').innerText = 'топ';
+                    function updateProfilePage() {
+                        const xp = getXP();
+                        const level = getLevelByXP(xp);
+                        const streak = getStreak();
+                        const title = getTitle(level);
 
-            const calendarEl = document.getElementById('profileCalendar');
-            const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
-            const today = new Date();
-            const currentDay = today.getDay();
-            const monday = new Date(today);
-            monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
-            let datesHtml = '<div class="calendar-weekdays">';
-            daysOfWeek.forEach(day => { datesHtml += `<span>${day}</span>`; });
-            datesHtml += '</div><div class="calendar-dates">';
-            for (let i = 0; i < 7; i++) {
-                const date = new Date(monday);
-                date.setDate(monday.getDate() + i);
-                const dateNumber = date.getDate();
-                const dayDiff = Math.floor((today - date) / (1000 * 60 * 60 * 24));
-                const active = dayDiff >= 0 && dayDiff < streak;
-                datesHtml += `
-                    <div class="calendar-date-item ${active ? 'active' : ''}">
-                        <span class="calendar-date-number">${dateNumber}</span>
-                        <span class="calendar-date-indicator"></span>
-                    </div>
-                `;
-            }
-            datesHtml += '</div>';
-            calendarEl.innerHTML = datesHtml;
+                        document.getElementById('profileLevelValue').innerText = level;
+                        document.getElementById('profileTitle').innerText = title;
+                        document.getElementById('profileRatingPlace').innerText = 'топ';
 
-            document.getElementById('profileIdCard').innerHTML = `
-                <span class="id-label">id</span>
-                <span class="id-value">${userId}</span>
-            `;
+                        const calendarEl = document.getElementById('profileCalendar');
+                        const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+                        const today = new Date();
+                        const currentDay = today.getDay();
+                        const monday = new Date(today);
+                        monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
+                        let datesHtml = '<div class="calendar-weekdays">';
+                        daysOfWeek.forEach(day => { datesHtml += `<span>${day}</span>`; });
+                        datesHtml += '</div><div class="calendar-dates">';
+                        for (let i = 0; i < 7; i++) {
+                            const date = new Date(monday);
+                            date.setDate(monday.getDate() + i);
+                            const dateNumber = date.getDate();
+                            const dayDiff = Math.floor((today - date) / (1000 * 60 * 60 * 24));
+                            const active = dayDiff >= 0 && dayDiff < streak;
+                            datesHtml += `
+                                <div class="calendar-date-item ${active ? 'active' : ''}">
+                                    <span class="calendar-date-number">${dateNumber}</span>
+                                    <span class="calendar-date-indicator"></span>
+                                </div>
+                            `;
+                        }
+                        datesHtml += '</div>';
+                        calendarEl.innerHTML = datesHtml;
 
-            const messageEl = document.getElementById('profileMessage');
-            messageEl.innerHTML = `
-                <div class="profile-message-title">keep it up!</div>
-                <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
-            `;
+                        document.getElementById('profileIdCard').innerHTML = `
+                            <span class="id-label">id</span>
+                            <span class="id-value">${userId}</span>
+                        `;
 
-            document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
-        }
+                        const messageEl = document.getElementById('profileMessage');
+                        messageEl.innerHTML = `
+                            <div class="profile-message-title">keep it up!</div>
+                            <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
+                        `;
 
-        function updateReferralsPage() {
-            const container = document.getElementById('referralsContent');
-            if (!container) return;
-            container.innerHTML = `
-                <div class="referral-link-block animate-stagger">
-                    <div class="referral-link-label">твоя реферальная ссылка</div>
-                    <div class="ref-link-field">
-                        <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField">
-                        <button class="copy-ref-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">копировать</button>
-                    </div>
-                </div>
-                <div class="referral-stats">
-                    <div class="referral-stat-card animate-stagger">
-                        <div class="stat-label">приглашено</div>
-                        <div class="stat-number">${getReferralsCount()}</div>
-                    </div>
-                    <div class="referral-stat-card animate-stagger">
-                        <div class="stat-label">заработано</div>
-                        <div class="stat-number">0 ₽</div>
-                    </div>
-                </div>
-                <div class="friends-list animate-stagger">
-                    <h4 style="margin-bottom:15px;">недавно приглашённые</h4>
-                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">приглашай друзей, чтобы список заполнился</div>
-                </div>
-            `;
-        }
+                        document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
+                    }
 
-        function updateWithdrawPage() {
-            const container = document.getElementById('withdrawContent');
-            if (!container) return;
-            container.innerHTML = `
-                <div class="card-glow animate-stagger">
-                    <div class="card-logo">хайп</div>
-                    <div class="card-number">2200 0000 0000 0000</div>
-                    <div class="card-details">
-                        <span>01/29</span>
-                        <span>${displayName}</span>
-                    </div>
-                </div>
-                <div class="balance-block animate-stagger">
-                    <span class="balance-label">твой баланс</span>
-                    <span class="balance-number">${balance} ₽</span>
-                </div>
-                <div class="withdraw-field animate-stagger">
-                    <input type="number" placeholder="сумма (мин. 50 ₽)" id="withdrawAmount">
-                </div>
-                <div class="withdraw-field animate-stagger">
-                    <input type="text" placeholder="номер карты или кошелька" id="withdrawCard">
-                </div>
-                <button id="withdrawSubmit" class="animate-stagger">вывести</button>
-                <div style="margin-top:25px;">
-                    <h4 style="margin-bottom:15px;">недавние операции</h4>
-                    <div class="recent-transfers animate-stagger">
-                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                        <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появятся последние операции</div>
-                    </div>
-                </div>
-            `;
-            document.getElementById('withdrawSubmit').addEventListener('click', () => alert('вывод временно недоступен'));
-        }
+                    function updateReferralsPage() {
+                        const container = document.getElementById('referralsContent');
+                        if (!container) return;
+                        container.innerHTML = `
+                            <div class="referral-link-block animate-stagger">
+                                <div class="referral-link-label">твоя реферальная ссылка</div>
+                                <div class="ref-link-field">
+                                    <input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField">
+                                    <button class="copy-ref-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">копировать</button>
+                                </div>
+                            </div>
+                            <div class="referral-stats">
+                                <div class="referral-stat-card animate-stagger">
+                                    <div class="stat-label">приглашено</div>
+                                    <div class="stat-number">${getReferralsCount()}</div>
+                                </div>
+                                <div class="referral-stat-card animate-stagger">
+                                    <div class="stat-label">заработано</div>
+                                    <div class="stat-number">0 ₽</div>
+                                </div>
+                            </div>
+                            <div class="friends-list animate-stagger">
+                                <h4 style="margin-bottom:15px;">недавно приглашённые</h4>
+                                <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                                <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                                <div style="text-align:center; margin-top:12px; color:var(--text-muted);">приглашай друзей, чтобы список заполнился</div>
+                            </div>
+                        `;
+                    }
 
-        function updateAnalyticsPage() {
-            const container = document.getElementById('analyticsContent');
-            if (!container) return;
-            container.innerHTML = getAnalyticsContent();
-        }
+                    function updateWithdrawPage() {
+                        const container = document.getElementById('withdrawContent');
+                        if (!container) return;
+                        container.innerHTML = `
+                            <div class="card-glow animate-stagger">
+                                <div class="card-logo">хайп</div>
+                                <div class="card-number">2200 0000 0000 0000</div>
+                                <div class="card-details">
+                                    <span>01/29</span>
+                                    <span>${displayName}</span>
+                                </div>
+                            </div>
+                            <div class="balance-block animate-stagger">
+                                <span class="balance-label">твой баланс</span>
+                                <span class="balance-number">${balance} ₽</span>
+                            </div>
+                            <div class="withdraw-field animate-stagger">
+                                <input type="number" placeholder="сумма (мин. 50 ₽)" id="withdrawAmount">
+                            </div>
+                            <div class="withdraw-field animate-stagger">
+                                <input type="text" placeholder="номер карты или кошелька" id="withdrawCard">
+                            </div>
+                            <button id="withdrawSubmit" class="animate-stagger">вывести</button>
+                            <div style="margin-top:25px;">
+                                <h4 style="margin-bottom:15px;">недавние операции</h4>
+                                <div class="recent-transfers animate-stagger">
+                                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
+                                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появятся последние операции</div>
+                                </div>
+                            </div>
+                        `;
+                        document.getElementById('withdrawSubmit').addEventListener('click', () => alert('вывод временно недоступен'));
+                    }
 
-        // Модалка игры
-        const gameModal = document.getElementById('gameModal');
-        const closeGame = document.getElementById('closeGame');
-        const gameBoxes = document.querySelectorAll('.game-box');
-        const gameMessage = document.getElementById('gameMessage');
-        const gameReward = document.getElementById('gameReward');
-        const claimBtn = document.getElementById('claimBtn');
-        let currentWin = 0;
+                    function updateAnalyticsPage() {
+                        const container = document.getElementById('analyticsContent');
+                        if (!container) return;
+                        container.innerHTML = getAnalyticsContent();
+                    }
 
-        function resetGameModal() {
-            gameBoxes.forEach(box => {
-                box.classList.remove('disabled');
-                box.style.background = '';
-                box.innerText = '?';
-                box.style.pointerEvents = 'auto';
-            });
-            gameMessage.innerHTML = '<span>нажми на коробку</span><span class="game-reward" id="gameReward"></span>';
-            gameReward.innerText = '';
-            claimBtn.style.display = 'none';
-            currentWin = 0;
-        }
+                    // Модалка игры
+                    const gameModal = document.getElementById('gameModal');
+                    const closeGame = document.getElementById('closeGame');
+                    const gameBoxes = document.querySelectorAll('.game-box');
+                    const gameMessage = document.getElementById('gameMessage');
+                    const gameReward = document.getElementById('gameReward');
+                    const claimBtn = document.getElementById('claimBtn');
+                    let currentWin = 0;
 
-        closeGame.onclick = () => gameModal.classList.remove('show');
+                    function resetGameModal() {
+                        gameBoxes.forEach(box => {
+                            box.classList.remove('disabled');
+                            box.style.background = '';
+                            box.innerText = '?';
+                            box.style.pointerEvents = 'auto';
+                        });
+                        gameMessage.innerHTML = '<span>нажми на коробку</span><span class="game-reward" id="gameReward"></span>';
+                        gameReward.innerText = '';
+                        claimBtn.style.display = 'none';
+                        currentWin = 0;
+                    }
 
-        gameBoxes.forEach(box => {
-            box.addEventListener('click', function(e) {
-                if (this.classList.contains('disabled')) return;
-                const rewards = [5, 10, 20];
-                currentWin = rewards[Math.floor(Math.random() * rewards.length)];
-                this.innerText = currentWin + ' ₽';
-                this.style.background = '#2a5c1a';
-                gameBoxes.forEach(b => b.classList.add('disabled'));
-                gameMessage.innerHTML = '<span>поздравляем!</span><span class="game-reward">+ ' + currentWin + ' ₽</span>';
-                claimBtn.style.display = 'block';
-            });
-        });
+                    closeGame.onclick = () => gameModal.classList.remove('show');
 
-        claimBtn.onclick = async () => {
-            if (currentWin === 0) return;
-            const oldLevel = getLevelByXP(getXP());
-            const oldStreak = getStreak();
-            balance += currentWin;
-            saveBalance();
-            addXP(2);
-            const newLevel = getLevelByXP(getXP());
-            const newStreak = updateStreak();
-            addCount(3);
-            updateRoleUI();
-            updateStreakDisplay(newStreak > oldStreak, oldStreak);
-            animateStreakIcon();
-            if (newLevel > oldLevel) {
-                showLevelUpAnimation(oldLevel, newLevel);
-            }
-            if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
-            // Синхронизируем с Supabase
-            await syncUserData();
-            gameModal.classList.remove('show');
-        };
+                    gameBoxes.forEach(box => {
+                        box.addEventListener('click', function(e) {
+                            if (this.classList.contains('disabled')) return;
+                            const rewards = [5, 10, 20];
+                            currentWin = rewards[Math.floor(Math.random() * rewards.length)];
+                            this.innerText = currentWin + ' ₽';
+                            this.style.background = '#2a5c1a';
+                            gameBoxes.forEach(b => b.classList.add('disabled'));
+                            gameMessage.innerHTML = '<span>поздравляем!</span><span class="game-reward">+ ' + currentWin + ' ₽</span>';
+                            claimBtn.style.display = 'block';
+                        });
+                    });
 
-        document.getElementById('checkBtn').onclick = async function() {
-            if (!canDo(2)) {
-                document.getElementById('checkResult').style.color = 'red';
-                document.getElementById('checkResult').innerText = 'задание уже выполнено';
-                return;
-            }
-            const checkBtn = this;
-            checkBtn.disabled = true;
-            checkBtn.innerText = 'проверка...';
-            document.getElementById('checkResult').innerText = '';
+                    claimBtn.onclick = async () => {
+                        if (currentWin === 0) return;
+                        const oldLevel = getLevelByXP(getXP());
+                        const oldStreak = getStreak();
+                        balance += currentWin;
+                        saveBalance();
+                        addXP(2);
+                        const newLevel = getLevelByXP(getXP());
+                        const newStreak = updateStreak();
+                        addCount(3);
+                        updateRoleUI();
+                        updateStreakDisplay(newStreak > oldStreak, oldStreak);
+                        animateStreakIcon();
+                        if (newLevel > oldLevel) {
+                            showLevelUpAnimation(oldLevel, newLevel);
+                        }
+                        if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
+                        // Синхронизируем с Supabase
+                        await syncUserData();
+                        gameModal.classList.remove('show');
+                    };
 
-            await new Promise(r => setTimeout(r, 1500));
-            const success = true;
+                    document.getElementById('checkBtn').onclick = async function() {
+                        if (!canDo(2)) {
+                            document.getElementById('checkResult').style.color = 'red';
+                            document.getElementById('checkResult').innerText = 'задание уже выполнено';
+                            return;
+                        }
+                        const checkBtn = this;
+                        checkBtn.disabled = true;
+                        checkBtn.innerText = 'проверка...';
+                        document.getElementById('checkResult').innerText = '';
 
-            if (success) {
-                const oldLevel = getLevelByXP(getXP());
-                const oldStreak = getStreak();
-                balance += 20;
-                saveBalance();
-                addXP(5);
-                const newLevel = getLevelByXP(getXP());
-                const newStreak = updateStreak();
-                localStorage.setItem('subscription_done', 'true');
-                document.getElementById('checkResult').style.color = '#00b300';
-                document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
-                updateStreakDisplay(newStreak > oldStreak, oldStreak);
-                animateStreakIcon();
-                if (newLevel > oldLevel) {
-                    showLevelUpAnimation(oldLevel, newLevel);
+                        await new Promise(r => setTimeout(r, 1500));
+                        const success = true;
+
+                        if (success) {
+                            const oldLevel = getLevelByXP(getXP());
+                            const oldStreak = getStreak();
+                            balance += 20;
+                            saveBalance();
+                            addXP(5);
+                            const newLevel = getLevelByXP(getXP());
+                            const newStreak = updateStreak();
+                            localStorage.setItem('subscription_done', 'true');
+                            document.getElementById('checkResult').style.color = '#00b300';
+                            document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
+                            updateStreakDisplay(newStreak > oldStreak, oldStreak);
+                            animateStreakIcon();
+                            if (newLevel > oldLevel) {
+                                showLevelUpAnimation(oldLevel, newLevel);
+                            }
+                            if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
+                            // Синхронизируем с Supabase
+                            await syncUserData();
+                            setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
+                        } else {
+                            document.getElementById('checkResult').style.color = 'red';
+                            document.getElementById('checkResult').innerText = '❌ не подписан. попробуйте снова.';
+                            checkBtn.disabled = false;
+                            checkBtn.innerText = 'проверить подписку';
+                        }
+                    };
+
+                    document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
+                    document.getElementById('copyBtn').onclick = () => {
+                        let inp = document.getElementById('refLink');
+                        inp.select();
+                        navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
+                    };
+
+                    document.getElementById('channelBtn').onclick = () => {
+                        if (tg) tg.openTelegramLink('https://t.me/HYPE_JOB1');
+                        else window.open('https://t.me/HYPE_JOB1', '_blank');
+                    };
+
+                    const closeSub = document.getElementById('closeSub');
+                    closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
+
+                    const pages = {
+                        tasks: document.getElementById('tasks-page'),
+                        profile: document.getElementById('profile-page'),
+                        analytics: document.getElementById('analytics-page'),
+                        referrals: document.getElementById('referrals-page'),
+                        withdraw: document.getElementById('withdraw-page')
+                    };
+
+                    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+                    navItems.forEach(item => {
+                        item.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const page = item.dataset.page;
+                            const targetPage = pages[page];
+                            const currentActive = document.querySelector('.page.active-page');
+                            if (!targetPage || targetPage === currentActive) return;
+                            if (currentActive) currentActive.classList.remove('active-page');
+                            targetPage.classList.add('active-page');
+                            navItems.forEach(nav => nav.classList.remove('active'));
+                            item.classList.add('active');
+
+                            if (page === 'profile') updateProfilePage();
+                            else if (page === 'referrals') updateReferralsPage();
+                            else if (page === 'withdraw') updateWithdrawPage();
+                            else if (page === 'analytics') updateAnalyticsPage();
+
+                            animatePage(targetPage);
+                        });
+                    });
+
+                    // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+                    initUser(); // Загружаем пользователя из Supabase
+                    updateRoleUI();
+                    updateProfilePage();
+                    updateReferralsPage();
+                    updateWithdrawPage();
+                    updateAnalyticsPage();
+                    updateStreak();
+                    updateStreakDisplay();
+                    initAnalyticsTabs();
+
+                    animatePage(document.getElementById('tasks-page'));
+
+                    function loadFromLocalStorage() {
+                        console.log('Using localStorage fallback');
+                        // Данные уже в localStorage, ничего не делаем
+                    }
+
+                } catch (e) {
+                    console.error('Global error:', e);
+                    // Если произошла фатальная ошибка, показываем заглушку
+                    document.body.innerHTML = '<div style="color: white; padding: 20px;">Произошла ошибка. Попробуйте обновить страницу.</div>';
                 }
-                if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
-                // Синхронизируем с Supabase
-                await syncUserData();
-                setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
-            } else {
-                document.getElementById('checkResult').style.color = 'red';
-                document.getElementById('checkResult').innerText = '❌ не подписан. попробуйте снова.';
-                checkBtn.disabled = false;
-                checkBtn.innerText = 'проверить подписку';
-            }
-        };
-
-        document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
-        document.getElementById('copyBtn').onclick = () => {
-            let inp = document.getElementById('refLink');
-            inp.select();
-            navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
-        };
-
-        document.getElementById('channelBtn').onclick = () => {
-            if (tg) tg.openTelegramLink('https://t.me/HYPE_JOB1');
-            else window.open('https://t.me/HYPE_JOB1', '_blank');
-        };
-
-        const closeSub = document.getElementById('closeSub');
-        closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
-
-        const pages = {
-            tasks: document.getElementById('tasks-page'),
-            profile: document.getElementById('profile-page'),
-            analytics: document.getElementById('analytics-page'),
-            referrals: document.getElementById('referrals-page'),
-            withdraw: document.getElementById('withdraw-page')
-        };
-
-        const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                const page = item.dataset.page;
-                const targetPage = pages[page];
-                const currentActive = document.querySelector('.page.active-page');
-                if (!targetPage || targetPage === currentActive) return;
-                if (currentActive) currentActive.classList.remove('active-page');
-                targetPage.classList.add('active-page');
-                navItems.forEach(nav => nav.classList.remove('active'));
-                item.classList.add('active');
-
-                if (page === 'profile') updateProfilePage();
-                else if (page === 'referrals') updateReferralsPage();
-                else if (page === 'withdraw') updateWithdrawPage();
-                else if (page === 'analytics') updateAnalyticsPage();
-
-                animatePage(targetPage);
             });
-        });
-
-        // Инициализация
-        initUser(); // Загружаем пользователя из Supabase
-        updateRoleUI();
-        updateProfilePage();
-        updateReferralsPage();
-        updateWithdrawPage();
-        updateAnalyticsPage();
-        updateStreak();
-        updateStreakDisplay();
-        initAnalyticsTabs();
-
-        animatePage(document.getElementById('tasks-page'));
-
-        function loadFromLocalStorage() {
-            // Заглушка на случай ошибки Supabase
-            console.log('Используем localStorage');
-        }
+        })();
     </script>
 </body>
 </html>
