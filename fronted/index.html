@@ -1555,7 +1555,6 @@
 
     <script>
         (function() {
-            // Дожидаемся полной загрузки DOM
             document.addEventListener('DOMContentLoaded', function() {
                 try {
                     // ==================== ИНИЦИАЛИЗАЦИЯ SUPABASE ====================
@@ -1563,11 +1562,11 @@
                         throw new Error('Supabase JS client not loaded');
                     }
                     
-                    // Исправленный URL на основе Project ID, предоставленного пользователем
-                    const supabaseUrl = 'https://xnguoxwcrncdinqipzdz.supabase.co';
-                    const supabaseKey = 'sb_publ1shable_ok5bT_Ed9K52BcT09h8A3A_tqXNY_'; // publishable key из скриншота
+                    // Project ID из скриншота General: xnguoxwcmcdnqipzdz
+                    const supabaseUrl = 'https://xnguoxwcmcdnqipzdz.supabase.co';
+                    // publishable key из твоего скриншота (замени на актуальный, если нужно)
+                    const supabaseKey = 'sb_publ1shable_ok5bT_Ed9K52BcT09h8A3A_tqXNY_';
                     
-                    // Создаём клиент и сохраняем в переменную, уникальную для этого замыкания
                     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
                     
                     console.log('Supabase client created');
@@ -1579,7 +1578,6 @@
                     const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
                     const displayName = firstName;
 
-                    // Данные пользователя (дублируются из localStorage для обратной совместимости)
                     let balance = parseInt(localStorage.getItem('balance')) || 0;
                     let counts = JSON.parse(localStorage.getItem('counts')) || {};
 
@@ -1599,7 +1597,6 @@
                             }
 
                             if (!user) {
-                                // Создаём нового пользователя с именем
                                 const newUser = {
                                     id: userId,
                                     name: firstName,
@@ -1626,7 +1623,6 @@
                                 }
                             } else {
                                 console.log('User loaded from Supabase');
-                                // Если имя в базе отличается от текущего (например, пользователь сменил имя в Telegram), обновляем
                                 if (user.name !== firstName) {
                                     const { error: updateError } = await supabaseClient
                                         .from('users')
@@ -1640,7 +1636,6 @@
                             }
 
                             if (user) {
-                                // Сохраняем в localStorage для обратной совместимости
                                 localStorage.setItem('balance', user.balance);
                                 localStorage.setItem('xp', user.xp);
                                 localStorage.setItem('referralsCount', user.referrals);
@@ -2328,7 +2323,6 @@
                             showLevelUpAnimation(oldLevel, newLevel);
                         }
                         if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
-                        // Синхронизируем с Supabase
                         await syncUserData();
                         gameModal.classList.remove('show');
                     };
@@ -2364,7 +2358,6 @@
                                 showLevelUpAnimation(oldLevel, newLevel);
                             }
                             if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
-                            // Синхронизируем с Supabase
                             await syncUserData();
                             setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
                         } else {
@@ -2421,7 +2414,7 @@
                     });
 
                     // ==================== ИНИЦИАЛИЗАЦИЯ ====================
-                    initUser(); // Загружаем пользователя из Supabase
+                    initUser();
                     updateRoleUI();
                     updateProfilePage();
                     updateReferralsPage();
@@ -2435,12 +2428,10 @@
 
                     function loadFromLocalStorage() {
                         console.log('Using localStorage fallback');
-                        // Данные уже в localStorage, ничего не делаем
                     }
 
                 } catch (e) {
                     console.error('Global error:', e);
-                    // Если произошла фатальная ошибка, показываем заглушку
                     document.body.innerHTML = '<div style="color: white; padding: 20px;">Произошла ошибка. Попробуйте обновить страницу.</div>';
                 }
             });
