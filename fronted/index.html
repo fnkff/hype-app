@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Supabase JS client (загружается один раз) -->
+    <!-- Supabase JS client (один раз) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* ============================= */
@@ -1598,9 +1598,10 @@
                             }
 
                             if (!user) {
-                                // Создаём нового пользователя
+                                // Создаём нового пользователя с именем
                                 const newUser = {
                                     id: userId,
+                                    name: firstName,
                                     balance: 0,
                                     xp: 0,
                                     referrals: 0,
@@ -1624,6 +1625,17 @@
                                 }
                             } else {
                                 console.log('User loaded from Supabase');
+                                // Если имя в базе отличается от текущего (например, пользователь сменил имя в Telegram), обновляем
+                                if (user.name !== firstName) {
+                                    const { error: updateError } = await supabaseClient
+                                        .from('users')
+                                        .update({ name: firstName })
+                                        .eq('id', userId);
+                                    if (!updateError) {
+                                        console.log('User name updated');
+                                        user.name = firstName;
+                                    }
+                                }
                             }
 
                             if (user) {
@@ -1677,7 +1689,7 @@
                         try {
                             const { data, error } = await supabaseClient
                                 .from('users')
-                                .select('id, xp, balance')
+                                .select('id, name, xp, balance')
                                 .order('xp', { ascending: false })
                                 .limit(10);
                             if (error) throw error;
@@ -1699,10 +1711,10 @@
                         } else {
                             let html = '<ol style="list-style: none; padding: 0; margin: 0;">';
                             topUsers.forEach((user, index) => {
-                                const shortId = user.id.slice(0, 6);
+                                const displayName = user.name || `@${user.id.slice(0, 6)}`;
                                 html += `
                                     <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                        <span style="font-weight: 600;">${index+1}. @${shortId}</span>
+                                        <span style="font-weight: 600;">${index+1}. ${displayName}</span>
                                         <span style="color: var(--accent); font-weight: 700;">${user.xp} XP</span>
                                     </li>
                                 `;
@@ -1794,7 +1806,7 @@
 
                     let currentRole = 'worker';
 
-                    function toggleRole() {
+                    window.toggleRole = function() {
                         const roleContent = document.getElementById('roleContent');
                         if (roleContent) {
                             roleContent.classList.add('fade-out');
@@ -1813,7 +1825,7 @@
                                 setTimeout(() => roleContent.classList.remove('fade-in'), 300);
                             }
                         }, 150);
-                    }
+                    };
 
                     function updateRoleUI() {
                         const roleContent = document.getElementById('roleContent');
