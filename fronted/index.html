@@ -993,20 +993,6 @@
         .period-tab:hover {
             background: rgba(255,255,255,0.1);
         }
-        .chart-placeholder {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 150px;
-            margin: 20px 0;
-        }
-        .chart-bar {
-            width: 20px;
-            background: linear-gradient(to top, var(--accent), var(--accent-dark));
-            border-radius: 10px 10px 0 0;
-            height: 0;
-            opacity: 0.5;
-        }
         .modal {
             position: fixed;
             top: 0;
@@ -1216,6 +1202,12 @@
                 height: 20px;
             }
         }
+        canvas {
+            width: 100%;
+            height: 150px;
+            display: block;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -1403,7 +1395,6 @@
                 <button class="claim-btn" id="claimBtn" style="display:none;">забрать</button>
             </div>
         </div>
-        <!-- Модалка для тестового задания -->
         <div class="modal" id="testTaskModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeTestTask">&times;</button></div>
@@ -1869,14 +1860,12 @@
                         tab.classList.add('active');
                     });
 
-                    // ---------- ANALYTICS PAGE (REAL) ----------
+                    // ---------- ANALYTICS PAGE (NEW LINE CHART) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
 
                         const userIdNum = tg?.initDataUnsafe?.user?.id;
-                        console.log('Analytics: userIdNum =', userIdNum); // отладка
-
                         if (!userIdNum) {
                             container.innerHTML = '<p style="color: var(--text-muted);">Ошибка: не удалось определить пользователя</p>';
                             return;
@@ -1885,19 +1874,23 @@
                         container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">загрузка...</p>';
 
                         const now = new Date();
-                        let startDate;
+                        let startDate, daysCount, periodText;
                         if (period === 'day') {
                             startDate = new Date(now);
                             startDate.setHours(0, 0, 0, 0);
+                            daysCount = 1;
+                            periodText = 'день';
                         } else if (period === 'week') {
                             startDate = new Date(now);
                             startDate.setDate(now.getDate() - 7);
-                        } else {
+                            daysCount = 7;
+                            periodText = 'неделю';
+                        } else { // month
                             startDate = new Date(now);
                             startDate.setMonth(now.getMonth() - 1);
+                            daysCount = 30;
+                            periodText = '30 дней';
                         }
-
-                        console.log('Analytics: fetching events from', startDate.toISOString());
 
                         try {
                             const { data: events, error } = await supabaseClient
@@ -1905,10 +1898,7 @@
                                 .select('*')
                                 .eq('user_id', String(userIdNum))
                                 .gte('created_at', startDate.toISOString())
-                                .order('created_at', { ascending: false });
-
-                            console.log('Analytics: events data =', events);
-                            console.log('Analytics: error =', error);
+                                .order('created_at', { ascending: true });
 
                             if (error) {
                                 console.error('Error loading events:', error);
@@ -1921,47 +1911,49 @@
                                 return;
                             }
 
+                            // Общий доход
                             const totalIncome = events.reduce((sum, e) => sum + (e.amount || 0), 0);
+
+                            // Группируем по дням
                             const daysMap = new Map();
                             events.forEach(e => {
-                                const date = new Date(e.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
-                                daysMap.set(date, (daysMap.get(date) || 0) + e.amount);
+                                const dateStr = new Date(e.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+                                const date = new Date(e.created_at).setHours(0,0,0,0); // для сортировки
+                                if (!daysMap.has(date)) {
+                                    daysMap.set(date, { label: dateStr, total: 0 });
+                                }
+                                daysMap.get(date).total += e.amount;
                             });
+
+                            // Преобразуем в массив и сортируем по дате
                             const chartData = Array.from(daysMap.entries())
-                                .map(([date, amount]) => ({ date, amount }))
-                                .sort((a, b) => new Date(a.date) - new Date(b.date));
+                                .map(([timestamp, { label, total }]) => ({ date: label, timestamp, amount: total }))
+                                .sort((a, b) => a.timestamp - b.timestamp);
+
                             const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
+
+                            // Формируем HTML с canvas
                             let html = `
-                                <div class="analytics-total animate-stagger">
-                                    <div class="balance-label">общий доход</div>
-                                    <div class="balance-number" style="font-size:36px;">${totalIncome} ₽</div>
+                                <div class="analytics-total animate-stagger" style="text-align: center;">
+                                    <div class="balance-label" style="font-size: 18px;">доход</div>
+                                    <div class="balance-value" style="font-size: 48px; margin: 5px 0;">${totalIncome} ₽</div>
+                                    <div style="color: var(--text-muted); font-size: 16px;">за последние ${period === 'month' ? '30 дней' : daysCount === 1 ? 'день' : daysCount < 5 ? 'дня' : 'дней'}</div>
                                 </div>
-                                <div class="analytics-total animate-stagger">
-                                    <div style="margin-bottom:20px;">
-                                        <h4 style="margin-bottom:15px;">график дохода</h4>
-                                        <div class="chart-placeholder" style="display: flex; gap: 8px; align-items: flex-end; justify-content: center; height: 150px;">
-                            `;
-                            if (chartData.length === 0) {
-                                html += '<p style="color: var(--text-muted); text-align: center; width: 100%;">нет данных за период</p>';
-                            } else {
-                                chartData.forEach(item => {
-                                    const height = (item.amount / maxAmount) * 100;
-                                    html += `
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 40px;">
-                                            <div style="height: ${height}px; width: 20px; background: linear-gradient(to top, var(--accent), var(--accent-dark)); border-radius: 10px 10px 0 0;"></div>
-                                            <span style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">${item.date}</span>
-                                        </div>
-                                    `;
-                                });
-                            }
-                            html += `
+                                <div class="analytics-total animate-stagger" style="padding: 20px;">
+                                    <div style="margin-bottom: 20px;">
+                                        <h4 style="margin-bottom: 15px; text-align: center;">график дохода</h4>
+                                        <canvas id="incomeChart" width="300" height="150" style="width:100%; height:150px;"></canvas>
+                                        <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 14px; margin-top: 5px;">
+                                            <span>${chartData[0]?.date || ''}</span>
+                                            <span>${chartData[chartData.length-1]?.date || ''}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div style="margin-top:25px;">
-                                    <h4 style="margin-bottom:15px;">последние операции</h4>
+                                <div style="margin-top: 25px;">
+                                    <h4 style="margin-bottom: 15px;">последние операции</h4>
                                     <div class="recent-transfers animate-stagger">
                             `;
+
                             events.slice(0, 10).forEach(e => {
                                 const date = new Date(e.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
                                 let typeText = '';
@@ -1979,11 +1971,51 @@
                                     </div>
                                 `;
                             });
+
                             html += `
                                     </div>
                                 </div>
                             `;
+
                             container.innerHTML = html;
+
+                            // Рисуем график
+                            const canvas = document.getElementById('incomeChart');
+                            if (!canvas) return;
+                            const ctx = canvas.getContext('2d');
+                            const width = canvas.width;
+                            const height = canvas.height;
+                            ctx.clearRect(0, 0, width, height);
+
+                            if (chartData.length < 2) return; // нужны хотя бы две точки
+
+                            const points = chartData.map((d, i) => ({
+                                x: 30 + (i * (width - 60) / (chartData.length - 1)),
+                                y: height - 20 - (d.amount / maxAmount) * (height - 40)
+                            }));
+
+                            // Рисуем линию
+                            ctx.beginPath();
+                            ctx.strokeStyle = '#5DD62C';
+                            ctx.lineWidth = 2;
+                            ctx.moveTo(points[0].x, points[0].y);
+                            for (let i = 1; i < points.length; i++) {
+                                ctx.lineTo(points[i].x, points[i].y);
+                            }
+                            ctx.stroke();
+
+                            // Рисуем точки
+                            ctx.fillStyle = '#5DD62C';
+                            points.forEach(p => {
+                                ctx.beginPath();
+                                ctx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
+                                ctx.fill();
+                                ctx.shadowColor = '#5DD62C';
+                                ctx.shadowBlur = 8;
+                                ctx.fill();
+                                ctx.shadowBlur = 0;
+                            });
+
                         } catch (e) {
                             console.error('Analytics exception:', e);
                             container.innerHTML = '<p style="color: var(--text-muted);">Ошибка при загрузке</p>';
