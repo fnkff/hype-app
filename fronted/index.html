@@ -1403,7 +1403,7 @@
                 <button class="claim-btn" id="claimBtn" style="display:none;">забрать</button>
             </div>
         </div>
-        <!-- Новая модалка для тестового задания -->
+        <!-- Модалка для тестового задания -->
         <div class="modal" id="testTaskModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeTestTask">&times;</button></div>
@@ -1438,9 +1438,12 @@
                     // ---------- Log Event ----------
                     async function logEvent(eventType, amount, xp, metadata = {}) {
                         const realUserId = tg?.initDataUnsafe?.user?.id;
-                        if (!realUserId) return;
+                        if (!realUserId) {
+                            console.warn('logEvent: no realUserId');
+                            return;
+                        }
                         try {
-                            await supabaseClient
+                            const { error } = await supabaseClient
                                 .from('events')
                                 .insert([{
                                     user_id: String(realUserId),
@@ -1450,9 +1453,13 @@
                                     metadata: metadata,
                                     created_at: new Date().toISOString()
                                 }]);
-                            console.log('Event logged:', eventType);
+                            if (error) {
+                                console.error('Error logging event:', error);
+                            } else {
+                                console.log('Event logged:', eventType);
+                            }
                         } catch (e) {
-                            console.error('Error logging event:', e);
+                            console.error('Exception in logEvent:', e);
                         }
                     }
 
@@ -1686,7 +1693,7 @@
                             { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу', price: 30, xp: 5 },
                             { id: 2, name: 'подпишись на канал', desc: '@hype_job1', price: 20, xp: 5 },
                             { id: 3, name: 'мини-игра', desc: 'выиграй до 20 ₽', price: '5-20', xp: 2 },
-                            { id: 4, name: 'тест', desc: 'тестовое задание 1₽', price: 1, xp: 1 } // новое задание
+                            { id: 4, name: 'тест', desc: 'тестовое задание 1₽', price: 1, xp: 1 }
                         ];
                         let html = '<div class="tasks-grid">';
                         allTasks.forEach(t => {
@@ -1834,7 +1841,7 @@
                         addCount(4);
                         await logEvent('test_task', 1, 1);
 
-                        updateRoleUI(); // может обновить список заданий, но не обязательно
+                        updateRoleUI();
                         updateStreakDisplay(newStreak > oldStreak, oldStreak);
                         animateStreakIcon();
                         if (newLevel > oldLevel) showLevelUpAnimation(oldLevel, newLevel);
@@ -1866,13 +1873,15 @@
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
+
                         const userIdNum = tg?.initDataUnsafe?.user?.id;
+                        console.log('Analytics: userIdNum =', userIdNum); // отладка
+
                         if (!userIdNum) {
                             container.innerHTML = '<p style="color: var(--text-muted);">Ошибка: не удалось определить пользователя</p>';
                             return;
                         }
 
-                        // Показываем загрузку
                         container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">загрузка...</p>';
 
                         const now = new Date();
@@ -1887,61 +1896,72 @@
                             startDate = new Date(now);
                             startDate.setMonth(now.getMonth() - 1);
                         }
-                        const { data: events, error } = await supabaseClient
-                            .from('events')
-                            .select('*')
-                            .eq('user_id', String(userIdNum))
-                            .gte('created_at', startDate.toISOString())
-                            .order('created_at', { ascending: false });
-                        if (error) {
-                            console.error('Error loading events:', error);
-                            container.innerHTML = '<p style="color: var(--text-muted);">Ошибка загрузки статистики</p>';
-                            return;
-                        }
-                        const totalIncome = events.reduce((sum, e) => sum + (e.amount || 0), 0);
-                        const daysMap = new Map();
-                        events.forEach(e => {
-                            const date = new Date(e.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
-                            daysMap.set(date, (daysMap.get(date) || 0) + e.amount);
-                        });
-                        const chartData = Array.from(daysMap.entries())
-                            .map(([date, amount]) => ({ date, amount }))
-                            .sort((a, b) => new Date(a.date) - new Date(b.date));
-                        const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
-                        let html = `
-                            <div class="analytics-total animate-stagger">
-                                <div class="balance-label">общий доход</div>
-                                <div class="balance-number" style="font-size:36px;">${totalIncome} ₽</div>
-                            </div>
-                            <div class="analytics-total animate-stagger">
-                                <div style="margin-bottom:20px;">
-                                    <h4 style="margin-bottom:15px;">график дохода</h4>
-                                    <div class="chart-placeholder" style="display: flex; gap: 8px; align-items: flex-end; justify-content: center; height: 150px;">
-                        `;
-                        if (chartData.length === 0) {
-                            html += '<p style="color: var(--text-muted); text-align: center; width: 100%;">нет данных за период</p>';
-                        } else {
-                            chartData.forEach(item => {
-                                const height = (item.amount / maxAmount) * 100;
-                                html += `
-                                    <div style="display: flex; flex-direction: column; align-items: center; width: 40px;">
-                                        <div style="height: ${height}px; width: 20px; background: linear-gradient(to top, var(--accent), var(--accent-dark)); border-radius: 10px 10px 0 0;"></div>
-                                        <span style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">${item.date}</span>
-                                    </div>
-                                `;
+
+                        console.log('Analytics: fetching events from', startDate.toISOString());
+
+                        try {
+                            const { data: events, error } = await supabaseClient
+                                .from('events')
+                                .select('*')
+                                .eq('user_id', String(userIdNum))
+                                .gte('created_at', startDate.toISOString())
+                                .order('created_at', { ascending: false });
+
+                            console.log('Analytics: events data =', events);
+                            console.log('Analytics: error =', error);
+
+                            if (error) {
+                                console.error('Error loading events:', error);
+                                container.innerHTML = '<p style="color: var(--text-muted);">Ошибка загрузки статистики</p>';
+                                return;
+                            }
+
+                            if (!events || events.length === 0) {
+                                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">нет данных за период</p>';
+                                return;
+                            }
+
+                            const totalIncome = events.reduce((sum, e) => sum + (e.amount || 0), 0);
+                            const daysMap = new Map();
+                            events.forEach(e => {
+                                const date = new Date(e.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+                                daysMap.set(date, (daysMap.get(date) || 0) + e.amount);
                             });
-                        }
-                        html += `
+                            const chartData = Array.from(daysMap.entries())
+                                .map(([date, amount]) => ({ date, amount }))
+                                .sort((a, b) => new Date(a.date) - new Date(b.date));
+                            const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
+                            let html = `
+                                <div class="analytics-total animate-stagger">
+                                    <div class="balance-label">общий доход</div>
+                                    <div class="balance-number" style="font-size:36px;">${totalIncome} ₽</div>
+                                </div>
+                                <div class="analytics-total animate-stagger">
+                                    <div style="margin-bottom:20px;">
+                                        <h4 style="margin-bottom:15px;">график дохода</h4>
+                                        <div class="chart-placeholder" style="display: flex; gap: 8px; align-items: flex-end; justify-content: center; height: 150px;">
+                            `;
+                            if (chartData.length === 0) {
+                                html += '<p style="color: var(--text-muted); text-align: center; width: 100%;">нет данных за период</p>';
+                            } else {
+                                chartData.forEach(item => {
+                                    const height = (item.amount / maxAmount) * 100;
+                                    html += `
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 40px;">
+                                            <div style="height: ${height}px; width: 20px; background: linear-gradient(to top, var(--accent), var(--accent-dark)); border-radius: 10px 10px 0 0;"></div>
+                                            <span style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">${item.date}</span>
+                                        </div>
+                                    `;
+                                });
+                            }
+                            html += `
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div style="margin-top:25px;">
-                                <h4 style="margin-bottom:15px;">последние операции</h4>
-                                <div class="recent-transfers animate-stagger">
-                        `;
-                        if (events.length === 0) {
-                            html += '<p style="color: var(--text-muted); text-align: center;">пока нет операций</p>';
-                        } else {
+                                <div style="margin-top:25px;">
+                                    <h4 style="margin-bottom:15px;">последние операции</h4>
+                                    <div class="recent-transfers animate-stagger">
+                            `;
                             events.slice(0, 10).forEach(e => {
                                 const date = new Date(e.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
                                 let typeText = '';
@@ -1959,12 +1979,15 @@
                                     </div>
                                 `;
                             });
-                        }
-                        html += `
+                            html += `
+                                    </div>
                                 </div>
-                            </div>
-                        `;
-                        container.innerHTML = html;
+                            `;
+                            container.innerHTML = html;
+                        } catch (e) {
+                            console.error('Analytics exception:', e);
+                            container.innerHTML = '<p style="color: var(--text-muted);">Ошибка при загрузке</p>';
+                        }
                     }
 
                     const analyticsTabs = document.querySelectorAll('#analyticsTabs .period-tab');
