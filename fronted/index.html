@@ -993,6 +993,32 @@
         .period-tab:hover {
             background: rgba(255,255,255,0.1);
         }
+        .chart-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 150px;
+            margin: 20px 0;
+            gap: 4px;
+        }
+        .chart-bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            max-width: 40px;
+        }
+        .chart-bar {
+            width: 100%;
+            background: linear-gradient(to top, var(--accent), var(--accent-dark));
+            border-radius: 6px 6px 0 0;
+            min-height: 2px;
+        }
+        .chart-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
         .modal {
             position: fixed;
             top: 0;
@@ -1201,12 +1227,6 @@
                 width: 20px;
                 height: 20px;
             }
-        }
-        canvas {
-            width: 100%;
-            height: 150px;
-            display: block;
-            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -1860,7 +1880,7 @@
                         tab.classList.add('active');
                     });
 
-                    // ---------- ANALYTICS PAGE (NEW LINE CHART) ----------
+                    // ---------- ANALYTICS PAGE (STABLE BARS) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -1917,22 +1937,25 @@
                             // Группируем по дням
                             const daysMap = new Map();
                             events.forEach(e => {
-                                const dateStr = new Date(e.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
-                                const date = new Date(e.created_at).setHours(0,0,0,0); // для сортировки
+                                const date = new Date(e.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
                                 if (!daysMap.has(date)) {
-                                    daysMap.set(date, { label: dateStr, total: 0 });
+                                    daysMap.set(date, 0);
                                 }
-                                daysMap.get(date).total += e.amount;
+                                daysMap.set(date, daysMap.get(date) + e.amount);
                             });
 
                             // Преобразуем в массив и сортируем по дате
                             const chartData = Array.from(daysMap.entries())
-                                .map(([timestamp, { label, total }]) => ({ date: label, timestamp, amount: total }))
-                                .sort((a, b) => a.timestamp - b.timestamp);
+                                .map(([date, amount]) => ({ date, amount }))
+                                .sort((a, b) => {
+                                    const [d1, m1] = a.date.split('.').map(Number);
+                                    const [d2, m2] = b.date.split('.').map(Number);
+                                    return (m1 * 100 + d1) - (m2 * 100 + d2);
+                                });
 
                             const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
 
-                            // Формируем HTML с canvas
+                            // Формируем HTML со столбцами
                             let html = `
                                 <div class="analytics-total animate-stagger" style="text-align: center;">
                                     <div class="balance-label" style="font-size: 18px;">доход</div>
@@ -1942,10 +1965,24 @@
                                 <div class="analytics-total animate-stagger" style="padding: 20px;">
                                     <div style="margin-bottom: 20px;">
                                         <h4 style="margin-bottom: 15px; text-align: center;">график дохода</h4>
-                                        <canvas id="incomeChart" width="300" height="150" style="width:100%; height:150px;"></canvas>
-                                        <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 14px; margin-top: 5px;">
-                                            <span>${chartData[0]?.date || ''}</span>
-                                            <span>${chartData[chartData.length-1]?.date || ''}</span>
+                                        <div class="chart-container">
+                            `;
+
+                            if (chartData.length === 0) {
+                                html += '<p style="color: var(--text-muted); text-align: center;">нет данных за период</p>';
+                            } else {
+                                chartData.forEach(item => {
+                                    const height = (item.amount / maxAmount) * 100;
+                                    html += `
+                                        <div class="chart-bar-wrapper">
+                                            <div class="chart-bar" style="height: ${height}px;"></div>
+                                            <span class="chart-label">${item.date}</span>
+                                        </div>
+                                    `;
+                                });
+                            }
+
+                            html += `
                                         </div>
                                     </div>
                                 </div>
@@ -1978,44 +2015,6 @@
                             `;
 
                             container.innerHTML = html;
-
-                            // Рисуем график
-                            const canvas = document.getElementById('incomeChart');
-                            if (!canvas) return;
-                            const ctx = canvas.getContext('2d');
-                            const width = canvas.width;
-                            const height = canvas.height;
-                            ctx.clearRect(0, 0, width, height);
-
-                            if (chartData.length < 2) return; // нужны хотя бы две точки
-
-                            const points = chartData.map((d, i) => ({
-                                x: 30 + (i * (width - 60) / (chartData.length - 1)),
-                                y: height - 20 - (d.amount / maxAmount) * (height - 40)
-                            }));
-
-                            // Рисуем линию
-                            ctx.beginPath();
-                            ctx.strokeStyle = '#5DD62C';
-                            ctx.lineWidth = 2;
-                            ctx.moveTo(points[0].x, points[0].y);
-                            for (let i = 1; i < points.length; i++) {
-                                ctx.lineTo(points[i].x, points[i].y);
-                            }
-                            ctx.stroke();
-
-                            // Рисуем точки
-                            ctx.fillStyle = '#5DD62C';
-                            points.forEach(p => {
-                                ctx.beginPath();
-                                ctx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
-                                ctx.fill();
-                                ctx.shadowColor = '#5DD62C';
-                                ctx.shadowBlur = 8;
-                                ctx.fill();
-                                ctx.shadowBlur = 0;
-                            });
-
                         } catch (e) {
                             console.error('Analytics exception:', e);
                             container.innerHTML = '<p style="color: var(--text-muted);">Ошибка при загрузке</p>';
