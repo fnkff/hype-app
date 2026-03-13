@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Supabase JS client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
@@ -201,10 +200,6 @@
             font-weight: 600;
             font-size: 14px;
         }
-
-        /* ============================= */
-        /* BOTTOM NAVIGATION */
-        /* ============================= */
         .bottom-nav {
             position: fixed;
             bottom: 16px;
@@ -258,7 +253,6 @@
             height: 24px;
             fill: currentColor;
         }
-
         .game-box {
             background: var(--bg-card);
             border-radius: 20px;
@@ -279,7 +273,6 @@
             transform: translateY(-4px);
             box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
-
         @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -297,7 +290,6 @@
         .main-page .task-card:nth-child(2),
         .main-page .employer-card:nth-child(2) { animation-delay: 0.6s; }
         .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
-
         .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
         .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
@@ -305,23 +297,19 @@
         .profile-page .profile-id-card { animation-delay: 0.5s; }
         .profile-page .profile-message { animation-delay: 0.6s; }
         .profile-page .profile-role-card { animation-delay: 0.7s; }
-
         .referral-page .referral-link-block { animation-delay: 0.1s; }
         .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.2s; }
         .referral-page .referral-stat-card:nth-child(2) { animation-delay: 0.3s; }
         .referral-page .friends-list { animation-delay: 0.4s; }
-
         .withdraw-page .balance-block { animation-delay: 0.1s; }
         .withdraw-page .withdraw-field:nth-of-type(1) { animation-delay: 0.2s; }
         .withdraw-page .withdraw-field:nth-of-type(2) { animation-delay: 0.3s; }
         .withdraw-page #withdrawSubmit { animation-delay: 0.4s; }
         .withdraw-page .recent-transfers { animation-delay: 0.5s; }
-
         .analytics-page .period-tabs { animation-delay: 0.1s; }
         .analytics-page .analytics-total:nth-of-type(1) { animation-delay: 0.2s; }
         .analytics-page .analytics-total:nth-of-type(2) { animation-delay: 0.3s; }
         .analytics-page .recent-transfers { animation-delay: 0.4s; }
-
         body {
             display: flex;
             flex-direction: column;
@@ -329,7 +317,6 @@
             overflow: hidden;
             padding: 0;
         }
-
         .splash {
             position: fixed;
             top: 0;
@@ -364,7 +351,6 @@
             50% { text-shadow: 0 0 40px rgba(255,255,255,1), 0 0 80px rgba(93,214,44,0.8); }
             100% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(93,214,44,0.5); }
         }
-
         .app-content {
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -374,7 +360,6 @@
             position: relative;
             z-index: 1;
         }
-
         .fixed-header {
             position: fixed;
             top: 0;
@@ -430,7 +415,6 @@
             height: 100%;
             object-fit: cover;
         }
-
         .pages-container {
             flex: 1;
             min-height: 0;
@@ -441,14 +425,12 @@
             scrollbar-color: var(--accent) transparent;
             -webkit-overflow-scrolling: touch;
         }
-
         .page {
             display: none;
         }
         .page.active-page {
             display: block;
         }
-
         .fade-content {
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
@@ -460,12 +442,9 @@
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
         .main-page {
             padding: 0 20px 20px 20px;
         }
-
         .balance-label {
             font-size: 16px;
             font-weight: 600;
@@ -485,11 +464,9 @@
             font-weight: 700;
             margin-top: 4px;
         }
-
         .action-buttons {
             display: none;
         }
-
         .streak-header {
             display: flex;
             align-items: center;
@@ -522,7 +499,6 @@
             background: var(--accent);
             box-shadow: 0 0 10px var(--accent);
         }
-
         .section-title {
             margin: 25px 0 15px;
         }
@@ -532,7 +508,6 @@
             color: #fff;
             text-shadow: 0 0 5px rgba(93,214,44,0.5);
         }
-
         .filters-tabs {
             display: flex;
             gap: 15px;
@@ -554,13 +529,11 @@
         .tab:hover {
             color: white;
         }
-
         .tasks-grid {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
-
         .task-card {
             display: flex;
             align-items: center;
@@ -602,7 +575,6 @@
             font-weight: 400;
             text-align: right;
         }
-
         .employer-create-field {
             width: 100%;
             padding: 14px;
@@ -632,12 +604,9 @@
             font-size: 14px;
             color: var(--accent);
         }
-
-        /* ===== ПРОФИЛЬ ===== */
         .profile-page {
             padding: 0 20px 20px 20px;
         }
-
         .profile-avatar-wrapper {
             display: flex;
             justify-content: center;
@@ -665,7 +634,6 @@
             height: 100%;
             object-fit: cover;
         }
-
         .profile-header {
             text-align: center;
             margin-bottom: 15px;
@@ -686,7 +654,6 @@
             color: var(--text-muted);
             margin-bottom: 5px;
         }
-
         .profile-stats-under-avatar {
             display: flex;
             justify-content: center;
@@ -720,7 +687,6 @@
             font-size: 14px;
             color: var(--text-muted);
         }
-
         .profile-calendar {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -764,7 +730,6 @@
             background: var(--accent);
             box-shadow: 0 0 10px var(--accent);
         }
-
         .profile-id-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -787,7 +752,6 @@
             color: white;
             font-family: 'Inter', sans-serif;
         }
-
         .profile-message {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
@@ -807,7 +771,6 @@
             font-size: 16px;
             color: var(--text-muted);
         }
-
         .profile-role-card {
             display: flex;
             align-items: center;
@@ -836,7 +799,6 @@
             font-weight: 700;
             color: var(--accent);
         }
-
         .level-progress {
             display: flex;
             align-items: center;
@@ -878,7 +840,6 @@
             font-size: 14px;
             color: var(--text-muted);
         }
-
         .friend-item-modal {
             display: flex;
             align-items: center;
@@ -907,8 +868,6 @@
             color: var(--accent);
             font-weight: 600;
         }
-
-        /* ===== РЕФЕРАЛЫ ===== */
         .referral-page {
             padding: 0 20px 20px 20px;
         }
@@ -959,8 +918,6 @@
             font-size: 32px;
             font-weight: 800;
         }
-
-        /* ===== ВЫВОД ===== */
         .withdraw-page {
             padding: 0 20px 20px 20px;
         }
@@ -1006,8 +963,6 @@
             font-weight: 600;
             outline: none;
         }
-
-        /* ===== АНАЛИТИКА ===== */
         .analytics-page {
             padding: 0 20px 20px 20px;
         }
@@ -1052,8 +1007,6 @@
             height: 0;
             opacity: 0.5;
         }
-
-        /* Модалки */
         .modal {
             position: fixed;
             top: 0;
@@ -1118,7 +1071,6 @@
             text-align: center;
             font-weight: 500;
         }
-
         .game-boxes {
             display: flex;
             justify-content: space-around;
@@ -1142,7 +1094,6 @@
             font-weight: bold;
             color: var(--accent);
         }
-
         .streak-animation-overlay,
         .level-up-overlay {
             position: fixed;
@@ -1166,7 +1117,6 @@
             opacity: 1;
             transform: scale(1);
         }
-
         .fire-effect {
             position: absolute;
             width: 100%;
@@ -1183,7 +1133,6 @@
             filter: blur(50px);
             animation: fireMove 4s ease-in-out infinite alternate;
         }
-
         @keyframes firePulse {
             0% { opacity: 0.7; transform: scale(1); }
             100% { opacity: 1; transform: scale(1.2); }
@@ -1192,7 +1141,6 @@
             0% { transform: translate(-10%, -10%) scale(1); }
             100% { transform: translate(10%, 10%) scale(1.3); }
         }
-
         .streak-number-container,
         .level-number-container {
             position: relative;
@@ -1203,7 +1151,6 @@
             height: 400px;
             z-index: 2;
         }
-
         .old-streak, .new-streak,
         .old-level, .new-level {
             position: absolute;
@@ -1213,14 +1160,12 @@
             text-shadow: 0 0 30px var(--accent), 0 0 60px var(--accent-dark);
             transition: all 0.5s ease;
         }
-
         .old-streak, .old-level {
             animation: fadeOutUp 1.2s forwards;
         }
         .new-streak, .new-level {
             animation: fadeInUp 1.2s forwards;
         }
-
         .level-up-title {
             font-size: 40px;
             font-weight: 700;
@@ -1231,7 +1176,6 @@
             animation: fadeInUp 1.2s ease 0.4s forwards;
             z-index: 2;
         }
-
         @keyframes fadeOutUp {
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
@@ -1240,7 +1184,6 @@
             0% { opacity: 0; transform: translateY(50px) scale(0.5); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
-
         @media (max-width: 360px) {
             .fixed-header .logo {
                 font-size: 32px;
@@ -1276,7 +1219,6 @@
     </style>
 </head>
 <body>
-    <!-- Оверлей для анимации огонька -->
     <div class="streak-animation-overlay" id="streakAnimationOverlay">
         <div class="fire-effect"></div>
         <div class="fire-effect2"></div>
@@ -1285,8 +1227,6 @@
             <div class="new-streak" id="newStreak"></div>
         </div>
     </div>
-
-    <!-- Оверлей для анимации повышения уровня -->
     <div class="level-up-overlay" id="levelUpOverlay">
         <div class="fire-effect"></div>
         <div class="fire-effect2"></div>
@@ -1296,13 +1236,10 @@
         </div>
         <div class="level-up-title" id="levelUpTitle"></div>
     </div>
-
     <div class="splash" id="splash">
         <div class="splash-logo">ХАЙП</div>
     </div>
-
     <div class="app-content" id="appContent">
-        <!-- Фиксированная шапка -->
         <div class="fixed-header" id="fixedHeader">
             <div class="logo">ХАЙП</div>
             <div class="header-right">
@@ -1315,9 +1252,7 @@
                 <div class="avatar" id="headerAvatar">Т</div>
             </div>
         </div>
-
         <div class="pages-container" id="pagesContainer">
-            <!-- Главная страница -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
                     <div class="total-balance animate-stagger">
@@ -1325,8 +1260,6 @@
                         <div class="balance-value" id="mainBalance">0 ₽</div>
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
-
-                    <!-- Блок Streak -->
                     <div class="streak-block animate-stagger" id="streakBlock">
                         <div class="streak-header">
                             <span class="streak-icon" id="streakIcon"><i class="fas fa-fire"></i></span>
@@ -1335,36 +1268,27 @@
                         </div>
                         <div class="weekdays" id="weekdaysContainer"></div>
                     </div>
-
                     <div class="section-title animate-stagger">
                         <h3 id="mainSectionTitle">задания</h3>
                     </div>
-
-                    <!-- Фильтры (кликабельные) -->
                     <div class="filters-tabs animate-stagger" id="mainFilters">
                         <span class="tab active" data-filter="favorites">избранное</span>
                         <span class="tab" data-filter="top">топ</span>
                         <span class="tab" data-filter="new">новые</span>
                         <span class="tab" data-filter="leaders">лидеры</span>
                     </div>
-
-                    <!-- Контент, зависящий от роли -->
                     <div id="roleContent" class="role-content"></div>
                 </div>
             </div>
-
-            <!-- Профиль -->
             <div id="profile-page" class="page">
                 <div class="profile-page">
                     <div class="profile-avatar-wrapper animate-stagger">
                         <div class="profile-avatar" id="profileAvatar">Т</div>
                     </div>
-
                     <div class="profile-header animate-stagger">
                         <div class="profile-name" id="profileName">тимофей</div>
                         <div class="profile-title" id="profileTitle">пуська</div>
                     </div>
-
                     <div class="profile-stats-under-avatar animate-stagger">
                         <div class="stat-under-item" onclick="openLevelModal()">
                             <i class="fas fa-chart-line stat-under-icon"></i>
@@ -1377,11 +1301,8 @@
                             <span class="stat-under-label">рейтинг</span>
                         </div>
                     </div>
-
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
-
                     <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
-
                     <div class="profile-role-card animate-stagger" onclick="toggleRole()">
                         <div class="role-card-left">
                             <i class="fas fa-exchange-alt role-icon"></i>
@@ -1389,12 +1310,9 @@
                         </div>
                         <span class="role-value" id="profileRoleValue">исполнитель</span>
                     </div>
-
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
                 </div>
             </div>
-
-            <!-- Аналитика -->
             <div id="analytics-page" class="page">
                 <div class="analytics-page">
                     <div class="period-tabs animate-stagger" id="analyticsTabs">
@@ -1405,23 +1323,17 @@
                     <div id="analyticsContent" class="fade-content"></div>
                 </div>
             </div>
-
-            <!-- Рефералы -->
             <div id="referrals-page" class="page">
                 <div class="referral-page">
                     <div id="referralsContent"></div>
                 </div>
             </div>
-
-            <!-- Вывод средств -->
             <div id="withdraw-page" class="page">
                 <div class="withdraw-page">
                     <div id="withdrawContent"></div>
                 </div>
             </div>
         </div>
-
-        <!-- Модалка прогресса уровня -->
         <div class="modal" id="levelModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeLevelModal">&times;</button></div>
@@ -1429,8 +1341,6 @@
                 <div id="levelModalContent"></div>
             </div>
         </div>
-
-        <!-- Модалка рейтинга -->
         <div class="modal" id="ratingModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRatingModal">&times;</button></div>
@@ -1438,8 +1348,6 @@
                 <div id="ratingModalContent" style="max-height: 300px; overflow-y: auto;"></div>
             </div>
         </div>
-
-        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
@@ -1462,8 +1370,6 @@
                 <span>вывод</span>
             </a>
         </div>
-
-        <!-- Модалки заданий -->
         <div class="modal" id="refModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeRef">&times;</button></div>
@@ -1473,7 +1379,6 @@
                 <button class="copy-btn" id="copyBtn">копировать ссылку</button>
             </div>
         </div>
-
         <div class="modal" id="subModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeSub">&times;</button></div>
@@ -1484,7 +1389,6 @@
                 <div class="result" id="checkResult"></div>
             </div>
         </div>
-
         <div class="modal" id="gameModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeGame">&times;</button></div>
@@ -1506,14 +1410,9 @@
             document.addEventListener('DOMContentLoaded', function() {
                 try {
                     // Supabase init
-                    if (typeof window.supabase === 'undefined') {
-                        throw new Error('Supabase JS client not loaded');
-                    }
-                    
                     const supabaseUrl = 'https://xnguoxwcrncdinqipzdz.supabase.co';
                     const supabaseKey = 'sb_publishable_oK5bT_Ed9K5ZBtT09h8A3A_tqXNYrYg';
                     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-                    
                     console.log('Supabase client created');
 
                     // Telegram data
@@ -1527,7 +1426,28 @@
                     let balance = parseInt(localStorage.getItem('balance')) || 0;
                     let counts = JSON.parse(localStorage.getItem('counts')) || {};
 
-                    // ---------- Supabase functions ----------
+                    // ---------- Log Event ----------
+                    async function logEvent(eventType, amount, xp, metadata = {}) {
+                        const realUserId = tg?.initDataUnsafe?.user?.id;
+                        if (!realUserId) return;
+                        try {
+                            await supabaseClient
+                                .from('events')
+                                .insert([{
+                                    user_id: String(realUserId),
+                                    event_type: eventType,
+                                    amount: amount,
+                                    xp: xp,
+                                    metadata: metadata,
+                                    created_at: new Date().toISOString()
+                                }]);
+                            console.log('Event logged:', eventType);
+                        } catch (e) {
+                            console.error('Error logging event:', e);
+                        }
+                    }
+
+                    // ---------- Supabase user functions ----------
                     async function initUser() {
                         try {
                             let { data: user, error } = await supabaseClient
@@ -1553,13 +1473,11 @@
                                     last_streak_date: null,
                                     tasks_completed: {}
                                 };
-                                
                                 const { data: inserted, error: insertError } = await supabaseClient
                                     .from('users')
                                     .insert([newUser])
                                     .select()
                                     .single();
-                                
                                 if (insertError) {
                                     console.error('Error creating user:', insertError);
                                     loadFromLocalStorage();
@@ -1587,7 +1505,6 @@
                                 localStorage.setItem('referralsCount', user.referrals);
                                 localStorage.setItem('streak', user.streak || 0);
                                 localStorage.setItem('lastStreakDate', user.last_streak_date || '');
-                                
                                 balance = user.balance;
                                 updateBalanceDisplay();
                                 updateStreak();
@@ -1605,7 +1522,6 @@
                             const streak = getStreak();
                             const lastStreakDate = getLastStreakDate();
                             const referrals = getReferralsCount();
-
                             const { error } = await supabaseClient
                                 .from('users')
                                 .update({
@@ -1616,17 +1532,14 @@
                                     referrals: referrals
                                 })
                                 .eq('id', userId);
-
-                            if (error) {
-                                console.error('Sync error:', error);
-                            } else {
-                                console.log('Data synced to Supabase');
-                            }
+                            if (error) console.error('Sync error:', error);
+                            else console.log('Data synced to Supabase');
                         } catch (e) {
                             console.error('syncUserData error:', e);
                         }
                     }
 
+                    // ---------- Top users (rating) ----------
                     async function getTopUsers() {
                         try {
                             const { data, error } = await supabaseClient
@@ -1642,12 +1555,10 @@
                         }
                     }
 
-                    // ---------- Rating modal ----------
                     window.openRatingModal = async function() {
                         const modal = document.getElementById('ratingModal');
                         const content = document.getElementById('ratingModalContent');
                         const topUsers = await getTopUsers();
-                        
                         if (topUsers.length === 0) {
                             content.innerHTML = '<p style="text-align:center; color:var(--text-muted);">пока нет данных</p>';
                         } else {
@@ -1666,10 +1577,7 @@
                         }
                         modal.classList.add('show');
                     };
-
-                    document.getElementById('closeRatingModal').onclick = function() {
-                        document.getElementById('ratingModal').classList.remove('show');
-                    };
+                    document.getElementById('closeRatingModal').onclick = () => document.getElementById('ratingModal').classList.remove('show');
 
                     // ---------- Titles & XP system ----------
                     const titles = [
@@ -1684,13 +1592,10 @@
                         "тера", "пета", "экза", "зетта", "йотта",
                         "ронни", "коул", "дрейк", "йе", "хайп"
                     ];
-
                     function getTitle(level) {
                         return level <= titles.length ? titles[level - 1] : "бог хайпа";
                     }
-
                     const BASE_XP = 10;
-
                     function getTotalXPForLevel(level) {
                         if (level <= 1) return 0;
                         let total = 0;
@@ -1699,20 +1604,16 @@
                         }
                         return total;
                     }
-
                     function getLevelByXP(xp) {
                         let level = 1;
                         while (true) {
                             let xpForNext = getTotalXPForLevel(level + 1);
                             if (xp >= xpForNext) {
                                 level++;
-                            } else {
-                                break;
-                            }
+                            } else break;
                         }
                         return level;
                     }
-
                     function getProgressToNextLevel(xp) {
                         const level = getLevelByXP(xp);
                         const xpCurrentLevel = getTotalXPForLevel(level);
@@ -1721,17 +1622,8 @@
                         const have = xp - xpCurrentLevel;
                         return needed > 0 ? Math.min(100, Math.round((have / needed) * 100)) : 0;
                     }
-
-                    function getXP() {
-                        return parseInt(localStorage.getItem('xp')) || 0;
-                    }
-
-                    function addXP(amount) {
-                        let xp = getXP() + amount;
-                        localStorage.setItem('xp', xp);
-                        return xp;
-                    }
-
+                    function getXP() { return parseInt(localStorage.getItem('xp')) || 0; }
+                    function addXP(amount) { let xp = getXP() + amount; localStorage.setItem('xp', xp); return xp; }
                     function showLevelUpAnimation(oldLevel, newLevel) {
                         const overlay = document.getElementById('levelUpOverlay');
                         const oldEl = document.getElementById('oldLevel');
@@ -1741,26 +1633,19 @@
                         newEl.innerText = newLevel;
                         titleEl.innerText = getTitle(newLevel);
                         overlay.classList.add('active');
-                        setTimeout(() => {
-                            overlay.classList.remove('active');
-                        }, 3500);
+                        setTimeout(() => overlay.classList.remove('active'), 3500);
                     }
 
+                    // ---------- Role switching ----------
                     let currentRole = 'worker';
-
                     window.toggleRole = function() {
                         const roleContent = document.getElementById('roleContent');
-                        if (roleContent) {
-                            roleContent.classList.add('fade-out');
-                        }
-
+                        if (roleContent) roleContent.classList.add('fade-out');
                         setTimeout(() => {
                             currentRole = currentRole === 'worker' ? 'employer' : 'worker';
                             updateRoleUI();
                             const profileRoleValue = document.getElementById('profileRoleValue');
-                            if (profileRoleValue) {
-                                profileRoleValue.innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
-                            }
+                            if (profileRoleValue) profileRoleValue.innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
                             if (roleContent) {
                                 roleContent.classList.remove('fade-out');
                                 roleContent.classList.add('fade-in');
@@ -1768,11 +1653,9 @@
                             }
                         }, 150);
                     };
-
                     function updateRoleUI() {
                         const roleContent = document.getElementById('roleContent');
                         const sectionTitle = document.getElementById('mainSectionTitle');
-
                         if (currentRole === 'worker') {
                             sectionTitle.innerText = 'задания';
                             roleContent.innerHTML = getWorkerTasksHTML();
@@ -1780,7 +1663,6 @@
                             sectionTitle.innerText = 'мои задания';
                             roleContent.innerHTML = getEmployerHTML();
                         }
-
                         const newElements = roleContent.querySelectorAll('.animate-stagger');
                         newElements.forEach(el => {
                             el.style.animation = 'none';
@@ -1789,7 +1671,7 @@
                         });
                     }
 
-                    // ---------- Tasks HTML (with XP) ----------
+                    // ---------- Tasks HTML with XP ----------
                     function getWorkerTasksHTML() {
                         const allTasks = [
                             { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу', price: 30, xp: 5 },
@@ -1813,7 +1695,6 @@
                         html += '</div>';
                         return html;
                     }
-
                     function getEmployerHTML() {
                         return `
                             <div class="employer-card animate-stagger">
@@ -1851,11 +1732,9 @@
                         const today = new Date().toDateString();
                         return lastPlay !== today;
                     }
-
                     function setGamePlayed() {
                         localStorage.setItem('lastGameDate', new Date().toDateString());
                     }
-
                     function resetGameModal() {
                         gameBoxes.forEach(box => {
                             box.classList.remove('disabled');
@@ -1912,25 +1791,18 @@
                         balance += currentWin;
                         saveBalance();
                         addXP(2);
-
                         const newLevel = getLevelByXP(getXP());
                         const newStreak = updateStreak();
                         addCount(3);
-
                         setGamePlayed();
+
+                        await logEvent('game_played', currentWin, 2);
 
                         updateRoleUI();
                         updateStreakDisplay(newStreak > oldStreak, oldStreak);
                         animateStreakIcon();
-
-                        if (newLevel > oldLevel) {
-                            showLevelUpAnimation(oldLevel, newLevel);
-                        }
-
-                        if (document.getElementById('profile-page').classList.contains('active-page')) {
-                            updateProfilePage();
-                        }
-
+                        if (newLevel > oldLevel) showLevelUpAnimation(oldLevel, newLevel);
+                        if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                         await syncUserData();
                         gameModal.classList.remove('show');
                         resetGameModal();
@@ -1955,242 +1827,228 @@
                         tab.classList.add('active');
                     });
 
-                    function initAnalyticsTabs() {
-                        const tabs = document.querySelectorAll('#analyticsTabs .period-tab');
-                        const content = document.getElementById('analyticsContent');
-                        tabs.forEach(tab => {
-                            tab.addEventListener('click', () => {
-                                if (tab.classList.contains('active')) return;
-                                content.classList.add('fade-out');
-                                setTimeout(() => {
-                                    tabs.forEach(t => t.classList.remove('active'));
-                                    tab.classList.add('active');
-                                    content.innerHTML = getAnalyticsContent();
-                                    content.classList.remove('fade-out');
-                                    content.classList.add('fade-in');
-                                    setTimeout(() => content.classList.remove('fade-in'), 300);
-                                }, 150);
-                            });
+                    // ---------- ANALYTICS PAGE (REAL) ----------
+                    async function loadAnalytics(period = 'day') {
+                        const container = document.getElementById('analyticsContent');
+                        if (!container) return;
+                        const userIdNum = tg?.initDataUnsafe?.user?.id;
+                        if (!userIdNum) {
+                            container.innerHTML = '<p style="color: var(--text-muted);">Ошибка: не удалось определить пользователя</p>';
+                            return;
+                        }
+                        const now = new Date();
+                        let startDate;
+                        if (period === 'day') {
+                            startDate = new Date(now);
+                            startDate.setHours(0, 0, 0, 0);
+                        } else if (period === 'week') {
+                            startDate = new Date(now);
+                            startDate.setDate(now.getDate() - 7);
+                        } else {
+                            startDate = new Date(now);
+                            startDate.setMonth(now.getMonth() - 1);
+                        }
+                        const { data: events, error } = await supabaseClient
+                            .from('events')
+                            .select('*')
+                            .eq('user_id', String(userIdNum))
+                            .gte('created_at', startDate.toISOString())
+                            .order('created_at', { ascending: false });
+                        if (error) {
+                            console.error('Error loading events:', error);
+                            container.innerHTML = '<p style="color: var(--text-muted);">Ошибка загрузки статистики</p>';
+                            return;
+                        }
+                        const totalIncome = events.reduce((sum, e) => sum + (e.amount || 0), 0);
+                        const daysMap = new Map();
+                        events.forEach(e => {
+                            const date = new Date(e.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+                            daysMap.set(date, (daysMap.get(date) || 0) + e.amount);
                         });
-                    }
-
-                    function getAnalyticsContent() {
-                        return `
+                        const chartData = Array.from(daysMap.entries())
+                            .map(([date, amount]) => ({ date, amount }))
+                            .sort((a, b) => new Date(a.date) - new Date(b.date));
+                        const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
+                        let html = `
                             <div class="analytics-total animate-stagger">
                                 <div class="balance-label">общий доход</div>
-                                <div class="balance-number" style="font-size:36px;">—</div>
+                                <div class="balance-number" style="font-size:36px;">${totalIncome} ₽</div>
                             </div>
                             <div class="analytics-total animate-stagger">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                                    <span>доход</span>
-                                    <span>—</span>
+                                <div style="margin-bottom:20px;">
+                                    <h4 style="margin-bottom:15px;">график дохода</h4>
+                                    <div class="chart-placeholder" style="display: flex; gap: 8px; align-items: flex-end; justify-content: center; height: 150px;">
+                        `;
+                        if (chartData.length === 0) {
+                            html += '<p style="color: var(--text-muted); text-align: center; width: 100%;">нет данных за период</p>';
+                        } else {
+                            chartData.forEach(item => {
+                                const height = (item.amount / maxAmount) * 100;
+                                html += `
+                                    <div style="display: flex; flex-direction: column; align-items: center; width: 40px;">
+                                        <div style="height: ${height}px; width: 20px; background: linear-gradient(to top, var(--accent), var(--accent-dark)); border-radius: 10px 10px 0 0;"></div>
+                                        <span style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">${item.date}</span>
+                                    </div>
+                                `;
+                            });
+                        }
+                        html += `
+                                    </div>
                                 </div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-                                    <span>расход</span>
-                                    <span>—</span>
-                                </div>
-                                <div class="chart-placeholder">
-                                    <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
-                                    <div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div><div class="chart-bar" style="height:0;"></div>
-                                </div>
-                                <div style="text-align:center; color:var(--text-muted); margin-top:10px;">статистика скоро появится</div>
                             </div>
                             <div style="margin-top:25px;">
                                 <h4 style="margin-bottom:15px;">последние операции</h4>
                                 <div class="recent-transfers animate-stagger">
-                                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                                    <div class="friend-item"><div class="friend-avatar"></div><div style="flex:1;"><div></div><div style="height:16px;"></div></div><div></div></div>
-                                    <div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появится статистика</div>
-                                </div>
-                            </div>
                         `;
-                    }
-
-                    window.openLevelModal = function() {
-                        const xp = getXP();
-                        const level = getLevelByXP(xp);
-                        const nextLevel = level + 1;
-                        const progress = getProgressToNextLevel(xp);
-                        const currentTitle = getTitle(level);
-                        const nextTitle = getTitle(nextLevel);
-
-                        const modal = document.getElementById('levelModal');
-                        const content = document.getElementById('levelModalContent');
-                        content.innerHTML = `
-                            <div class="level-progress">
-                                <div class="level-box">
-                                    <div class="level-number">${level}</div>
-                                    <div class="level-title">${currentTitle}</div>
-                                </div>
-                                <div class="progress-container">
-                                    <div class="progress-bar-bg">
-                                        <div class="progress-bar-fill" style="width: ${progress}%;"></div>
+                        if (events.length === 0) {
+                            html += '<p style="color: var(--text-muted); text-align: center;">пока нет операций</p>';
+                        } else {
+                            events.slice(0, 10).forEach(e => {
+                                const date = new Date(e.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+                                let typeText = '';
+                                if (e.event_type === 'task_completed') typeText = '✅ задание';
+                                else if (e.event_type === 'game_played') typeText = '🎮 игра';
+                                else typeText = e.event_type;
+                                html += `
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                        <div>
+                                            <div style="font-weight: 600;">${typeText}</div>
+                                            <div style="font-size: 12px; color: var(--text-muted);">${date}</div>
+                                        </div>
+                                        <div style="color: var(--accent); font-weight: 700;">+${e.amount} ₽</div>
                                     </div>
-                                    <div class="progress-percent">${progress}%</div>
-                                </div>
-                                <div class="level-box">
-                                    <div class="level-number">${nextLevel}</div>
-                                    <div class="level-title">${nextTitle}</div>
+                                `;
+                            });
+                        }
+                        html += `
                                 </div>
                             </div>
                         `;
-                        modal.classList.add('show');
-                    };
-
-                    document.getElementById('closeLevelModal').onclick = () => {
-                        document.getElementById('levelModal').classList.remove('show');
-                    };
-
-                    const fixedHeader = document.getElementById('fixedHeader');
-                    const pagesContainer = document.getElementById('pagesContainer');
-                    let lastScrollTop = 0;
-
-                    function handleScroll() {
-                        const scrollTop = pagesContainer.scrollTop;
-                        if (scrollTop > lastScrollTop && scrollTop > 20) {
-                            fixedHeader.classList.add('hidden');
-                        } else if (scrollTop < 100) {
-                            fixedHeader.classList.remove('hidden');
-                        }
-                        lastScrollTop = scrollTop;
-                    }
-                    pagesContainer.addEventListener('scroll', handleScroll);
-
-                    const splash = document.getElementById('splash');
-                    const appContent = document.getElementById('appContent');
-
-                    splash.addEventListener('animationend', function(e) {
-                        if (e.animationName === 'fadeOut') {
-                            splash.remove();
-                            appContent.style.opacity = '1';
-                        }
-                    });
-
-                    document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
-                    document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
-                    document.getElementById('profileName').innerText = firstName;
-
-                    function updateBalanceDisplay() {
-                        document.getElementById('mainBalance').innerText = balance + ' ₽';
-                        document.getElementById('mainChange').innerText = `+${Math.floor(balance/10)} ₽ (${Math.floor(balance/100)}%)`;
-                    }
-                    updateBalanceDisplay();
-
-                    function getStreak() {
-                        return parseInt(localStorage.getItem('streak')) || 0;
-                    }
-                    function getLastStreakDate() {
-                        return localStorage.getItem('lastStreakDate');
-                    }
-                    function updateStreak() {
-                        const today = new Date().toDateString();
-                        const lastDate = getLastStreakDate();
-                        let streak = getStreak();
-                        if (lastDate === today) return streak;
-                        const yesterday = new Date(Date.now() - 86400000).toDateString();
-                        if (lastDate === yesterday) streak++;
-                        else streak = 1;
-                        localStorage.setItem('streak', streak);
-                        localStorage.setItem('lastStreakDate', today);
-                        return streak;
-                    }
-                    function updateStreakDisplay(animate = false, oldValue = null) {
-                        const streak = getStreak();
-                        document.getElementById('streakCount').innerText = streak;
-                        renderWeekdays(streak);
-                        
-                        if (animate && oldValue !== null && oldValue < streak) {
-                            const overlay = document.getElementById('streakAnimationOverlay');
-                            const oldEl = document.getElementById('oldStreak');
-                            const newEl = document.getElementById('newStreak');
-                            oldEl.innerText = oldValue;
-                            newEl.innerText = streak;
-                            overlay.classList.add('active');
-                            setTimeout(() => {
-                                overlay.classList.remove('active');
-                            }, 3500);
-                        }
-                    }
-
-                    function animateStreakIcon() {
-                        const icon = document.getElementById('streakIcon');
-                        icon.classList.add('pulse');
-                        setTimeout(() => {
-                            icon.classList.remove('pulse');
-                        }, 500);
-                    }
-
-                    function renderWeekdays(streak) {
-                        const container = document.getElementById('weekdaysContainer');
-                        if (!container) return;
-                        const days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
-                        const today = new Date().getDay();
-                        let dayIndex = today === 0 ? 6 : today - 1;
-                        let html = '';
-                        for (let i = 0; i < 7; i++) {
-                            const daysAgo = (dayIndex - i + 7) % 7;
-                            const active = daysAgo < streak;
-                            html += `
-                                <div class="weekday ${active ? 'active' : ''}">
-                                    <span>${days[i]}</span>
-                                    <div class="day-indicator"></div>
-                                </div>
-                            `;
-                        }
                         container.innerHTML = html;
                     }
 
-                    function getReferralsCount() {
-                        return parseInt(localStorage.getItem('referralsCount')) || 0;
-                    }
-
-                    function saveBalance() {
-                        localStorage.setItem('balance', balance);
-                        updateBalanceDisplay();
-                    }
-
-                    function addCount(id) {
-                        let key = id + '_' + new Date().toDateString();
-                        counts[key] = (counts[key] || 0) + 1;
-                        localStorage.setItem('counts', JSON.stringify(counts));
-                    }
-
-                    function canDo(id) {
-                        if (id === 2) {
-                            return !localStorage.getItem('subscription_done');
-                        } else if (id === 3) {
-                            return true;
-                        } else {
-                            let key = id + '_' + new Date().toDateString();
-                            return !counts[key] || counts[key] < 3;
-                        }
-                    }
-
-                    function getTodayCount() {
-                        const today = new Date().toDateString();
-                        let total = 0;
-                        for (let key in counts) {
-                            if (key.includes(today)) total += counts[key];
-                        }
-                        return total;
-                    }
-
-                    function animatePage(pageElement) {
-                        const animatedElements = pageElement.querySelectorAll('.animate-stagger');
-                        animatedElements.forEach(el => {
-                            el.style.animation = 'none';
-                            el.offsetHeight;
-                            el.style.animation = '';
+                    const analyticsTabs = document.querySelectorAll('#analyticsTabs .period-tab');
+                    analyticsTabs.forEach(tab => {
+                        tab.addEventListener('click', () => {
+                            if (tab.classList.contains('active')) return;
+                            analyticsTabs.forEach(t => t.classList.remove('active'));
+                            tab.classList.add('active');
+                            const period = tab.dataset.period;
+                            loadAnalytics(period);
                         });
-                    }
+                    });
+                    function updateAnalyticsPage() { loadAnalytics('day'); }
 
+                    // ---------- Real subscription check ----------
+                    document.getElementById('checkBtn').onclick = async function() {
+                        if (!canDo(2)) {
+                            document.getElementById('checkResult').style.color = 'red';
+                            document.getElementById('checkResult').innerText = 'задание уже выполнено';
+                            return;
+                        }
+                        const checkBtn = this;
+                        checkBtn.disabled = true;
+                        checkBtn.innerText = 'проверка...';
+                        document.getElementById('checkResult').innerText = '';
+
+                        const userIdNum = tg?.initDataUnsafe?.user?.id;
+                        if (!userIdNum) {
+                            document.getElementById('checkResult').style.color = 'red';
+                            document.getElementById('checkResult').innerText = 'Ошибка: не удалось определить пользователя';
+                            checkBtn.disabled = false;
+                            checkBtn.innerText = 'проверить подписку';
+                            return;
+                        }
+
+                        try {
+                            const functionUrl = 'https://xnguoxwcrncdinqipzdz.supabase.co/functions/v1/check-subscription';
+                            const response = await fetch(functionUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ user_id: userIdNum }),
+                            });
+                            const result = await response.json();
+
+                            if (result.subscribed) {
+                                const oldLevel = getLevelByXP(getXP());
+                                const oldStreak = getStreak();
+                                balance += 20;
+                                saveBalance();
+                                addXP(5);
+                                const newLevel = getLevelByXP(getXP());
+                                const newStreak = updateStreak();
+                                localStorage.setItem('subscription_done', 'true');
+                                await logEvent('task_completed', 20, 5, { task_id: 2 });
+                                document.getElementById('checkResult').style.color = '#00b300';
+                                document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
+                                updateStreakDisplay(newStreak > oldStreak, oldStreak);
+                                animateStreakIcon();
+                                if (newLevel > oldLevel) showLevelUpAnimation(oldLevel, newLevel);
+                                if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
+                                await syncUserData();
+                                setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
+                            } else {
+                                document.getElementById('checkResult').style.color = 'red';
+                                document.getElementById('checkResult').innerText = '❌ Вы не подписаны. Подпишитесь и попробуйте снова.';
+                                checkBtn.disabled = false;
+                                checkBtn.innerText = 'проверить подписку';
+                            }
+                        } catch (error) {
+                            console.error('Ошибка проверки:', error);
+                            document.getElementById('checkResult').style.color = 'red';
+                            document.getElementById('checkResult').innerText = '❌ Ошибка проверки. Попробуйте позже.';
+                            checkBtn.disabled = false;
+                            checkBtn.innerText = 'проверить подписку';
+                        }
+                    };
+
+                    document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
+                    document.getElementById('copyBtn').onclick = () => {
+                        let inp = document.getElementById('refLink');
+                        inp.select();
+                        navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
+                    };
+                    document.getElementById('channelBtn').onclick = () => {
+                        if (tg) tg.openTelegramLink('https://t.me/HYPE_JOB1');
+                        else window.open('https://t.me/HYPE_JOB1', '_blank');
+                    };
+                    const closeSub = document.getElementById('closeSub');
+                    closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
+
+                    // ---------- Navigation ----------
+                    const pages = {
+                        tasks: document.getElementById('tasks-page'),
+                        profile: document.getElementById('profile-page'),
+                        analytics: document.getElementById('analytics-page'),
+                        referrals: document.getElementById('referrals-page'),
+                        withdraw: document.getElementById('withdraw-page')
+                    };
+                    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+                    navItems.forEach(item => {
+                        item.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const page = item.dataset.page;
+                            const targetPage = pages[page];
+                            const currentActive = document.querySelector('.page.active-page');
+                            if (!targetPage || targetPage === currentActive) return;
+                            if (currentActive) currentActive.classList.remove('active-page');
+                            targetPage.classList.add('active-page');
+                            navItems.forEach(nav => nav.classList.remove('active'));
+                            item.classList.add('active');
+                            if (page === 'profile') updateProfilePage();
+                            else if (page === 'referrals') updateReferralsPage();
+                            else if (page === 'withdraw') updateWithdrawPage();
+                            else if (page === 'analytics') updateAnalyticsPage();
+                            animatePage(targetPage);
+                        });
+                    });
+
+                    // ---------- Profile, referrals, withdraw page updates ----------
                     function updateProfilePage() {
                         const xp = getXP();
                         const level = getLevelByXP(xp);
                         const streak = getStreak();
                         const title = getTitle(level);
-
                         document.getElementById('profileLevelValue').innerText = level;
                         document.getElementById('profileTitle').innerText = title;
                         document.getElementById('profileRatingPlace').innerText = 'топ';
@@ -2224,13 +2082,11 @@
                             <span class="id-label">id</span>
                             <span class="id-value">${userId}</span>
                         `;
-
                         const messageEl = document.getElementById('profileMessage');
                         messageEl.innerHTML = `
                             <div class="profile-message-title">keep it up!</div>
                             <div class="profile-message-text">${streak} дней подряд ты с нами!</div>
                         `;
-
                         document.getElementById('profileRoleValue').innerText = currentRole === 'worker' ? 'исполнитель' : 'заказчик';
                     }
 
@@ -2300,132 +2156,142 @@
                         document.getElementById('withdrawSubmit').addEventListener('click', () => alert('вывод временно недоступен'));
                     }
 
-                    function updateAnalyticsPage() {
-                        const container = document.getElementById('analyticsContent');
+                    // ---------- Streak, balance, counts ----------
+                    function getStreak() { return parseInt(localStorage.getItem('streak')) || 0; }
+                    function getLastStreakDate() { return localStorage.getItem('lastStreakDate'); }
+                    function updateStreak() {
+                        const today = new Date().toDateString();
+                        const lastDate = getLastStreakDate();
+                        let streak = getStreak();
+                        if (lastDate === today) return streak;
+                        const yesterday = new Date(Date.now() - 86400000).toDateString();
+                        if (lastDate === yesterday) streak++;
+                        else streak = 1;
+                        localStorage.setItem('streak', streak);
+                        localStorage.setItem('lastStreakDate', today);
+                        return streak;
+                    }
+                    function updateStreakDisplay(animate = false, oldValue = null) {
+                        const streak = getStreak();
+                        document.getElementById('streakCount').innerText = streak;
+                        renderWeekdays(streak);
+                        if (animate && oldValue !== null && oldValue < streak) {
+                            const overlay = document.getElementById('streakAnimationOverlay');
+                            const oldEl = document.getElementById('oldStreak');
+                            const newEl = document.getElementById('newStreak');
+                            oldEl.innerText = oldValue;
+                            newEl.innerText = streak;
+                            overlay.classList.add('active');
+                            setTimeout(() => overlay.classList.remove('active'), 3500);
+                        }
+                    }
+                    function animateStreakIcon() {
+                        const icon = document.getElementById('streakIcon');
+                        icon.classList.add('pulse');
+                        setTimeout(() => icon.classList.remove('pulse'), 500);
+                    }
+                    function renderWeekdays(streak) {
+                        const container = document.getElementById('weekdaysContainer');
                         if (!container) return;
-                        container.innerHTML = getAnalyticsContent();
+                        const days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+                        const today = new Date().getDay();
+                        let dayIndex = today === 0 ? 6 : today - 1;
+                        let html = '';
+                        for (let i = 0; i < 7; i++) {
+                            const daysAgo = (dayIndex - i + 7) % 7;
+                            const active = daysAgo < streak;
+                            html += `<div class="weekday ${active ? 'active' : ''}"><span>${days[i]}</span><div class="day-indicator"></div></div>`;
+                        }
+                        container.innerHTML = html;
+                    }
+                    function getReferralsCount() { return parseInt(localStorage.getItem('referralsCount')) || 0; }
+                    function saveBalance() { localStorage.setItem('balance', balance); updateBalanceDisplay(); }
+                    function addCount(id) {
+                        let key = id + '_' + new Date().toDateString();
+                        counts[key] = (counts[key] || 0) + 1;
+                        localStorage.setItem('counts', JSON.stringify(counts));
+                    }
+                    function canDo(id) {
+                        if (id === 2) return !localStorage.getItem('subscription_done');
+                        else if (id === 3) return true;
+                        else {
+                            let key = id + '_' + new Date().toDateString();
+                            return !counts[key] || counts[key] < 3;
+                        }
+                    }
+                    function getTodayCount() {
+                        const today = new Date().toDateString();
+                        let total = 0;
+                        for (let key in counts) if (key.includes(today)) total += counts[key];
+                        return total;
+                    }
+                    function animatePage(pageElement) {
+                        const animatedElements = pageElement.querySelectorAll('.animate-stagger');
+                        animatedElements.forEach(el => {
+                            el.style.animation = 'none';
+                            el.offsetHeight;
+                            el.style.animation = '';
+                        });
+                    }
+                    function updateBalanceDisplay() {
+                        document.getElementById('mainBalance').innerText = balance + ' ₽';
+                        document.getElementById('mainChange').innerText = `+${Math.floor(balance/10)} ₽ (${Math.floor(balance/100)}%)`;
                     }
 
-                    // ---------- Real subscription check ----------
-                    document.getElementById('checkBtn').onclick = async function() {
-                        if (!canDo(2)) {
-                            document.getElementById('checkResult').style.color = 'red';
-                            document.getElementById('checkResult').innerText = 'задание уже выполнено';
-                            return;
+                    // ---------- Splash & header ----------
+                    const splash = document.getElementById('splash');
+                    const appContent = document.getElementById('appContent');
+                    splash.addEventListener('animationend', function(e) {
+                        if (e.animationName === 'fadeOut') {
+                            splash.remove();
+                            appContent.style.opacity = '1';
                         }
-                        
-                        const checkBtn = this;
-                        checkBtn.disabled = true;
-                        checkBtn.innerText = 'проверка...';
-                        document.getElementById('checkResult').innerText = '';
-
-                        const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
-                        if (!userId) {
-                            document.getElementById('checkResult').style.color = 'red';
-                            document.getElementById('checkResult').innerText = 'Ошибка: не удалось определить пользователя';
-                            checkBtn.disabled = false;
-                            checkBtn.innerText = 'проверить подписку';
-                            return;
-                        }
-
-                        try {
-                            const functionUrl = 'https://xnguoxwcrncdinqipzdz.supabase.co/functions/v1/check-subscription';
-                            
-                            const response = await fetch(functionUrl, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ user_id: userId }),
-                            });
-
-                            const result = await response.json();
-
-                            if (result.subscribed) {
-                                const oldLevel = getLevelByXP(getXP());
-                                const oldStreak = getStreak();
-                                
-                                balance += 20;
-                                saveBalance();
-                                addXP(5);
-                                
-                                const newLevel = getLevelByXP(getXP());
-                                const newStreak = updateStreak();
-                                
-                                localStorage.setItem('subscription_done', 'true');
-                                document.getElementById('checkResult').style.color = '#00b300';
-                                document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
-                                
-                                updateStreakDisplay(newStreak > oldStreak, oldStreak);
-                                animateStreakIcon();
-                                
-                                if (newLevel > oldLevel) {
-                                    showLevelUpAnimation(oldLevel, newLevel);
-                                }
-                                
-                                if (document.getElementById('profile-page').classList.contains('active-page')) {
-                                    updateProfilePage();
-                                }
-                                
-                                await syncUserData();
-                                setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
-                            } else {
-                                document.getElementById('checkResult').style.color = 'red';
-                                document.getElementById('checkResult').innerText = '❌ Вы не подписаны. Подпишитесь и попробуйте снова.';
-                                checkBtn.disabled = false;
-                                checkBtn.innerText = 'проверить подписку';
-                            }
-                        } catch (error) {
-                            console.error('Ошибка проверки:', error);
-                            document.getElementById('checkResult').style.color = 'red';
-                            document.getElementById('checkResult').innerText = '❌ Ошибка проверки. Попробуйте позже.';
-                            checkBtn.disabled = false;
-                            checkBtn.innerText = 'проверить подписку';
-                        }
-                    };
-
-                    document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
-                    document.getElementById('copyBtn').onclick = () => {
-                        let inp = document.getElementById('refLink');
-                        inp.select();
-                        navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
-                    };
-
-                    document.getElementById('channelBtn').onclick = () => {
-                        if (tg) tg.openTelegramLink('https://t.me/HYPE_JOB1');
-                        else window.open('https://t.me/HYPE_JOB1', '_blank');
-                    };
-
-                    const closeSub = document.getElementById('closeSub');
-                    closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
-
-                    const pages = {
-                        tasks: document.getElementById('tasks-page'),
-                        profile: document.getElementById('profile-page'),
-                        analytics: document.getElementById('analytics-page'),
-                        referrals: document.getElementById('referrals-page'),
-                        withdraw: document.getElementById('withdraw-page')
-                    };
-
-                    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-                    navItems.forEach(item => {
-                        item.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            const page = item.dataset.page;
-                            const targetPage = pages[page];
-                            const currentActive = document.querySelector('.page.active-page');
-                            if (!targetPage || targetPage === currentActive) return;
-                            if (currentActive) currentActive.classList.remove('active-page');
-                            targetPage.classList.add('active-page');
-                            navItems.forEach(nav => nav.classList.remove('active'));
-                            item.classList.add('active');
-
-                            if (page === 'profile') updateProfilePage();
-                            else if (page === 'referrals') updateReferralsPage();
-                            else if (page === 'withdraw') updateWithdrawPage();
-                            else if (page === 'analytics') updateAnalyticsPage();
-
-                            animatePage(targetPage);
-                        });
                     });
+
+                    document.getElementById('headerAvatar').innerText = firstName.charAt(0).toUpperCase();
+                    document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
+                    document.getElementById('profileName').innerText = firstName;
+
+                    // ---------- Scroll header ----------
+                    const fixedHeader = document.getElementById('fixedHeader');
+                    const pagesContainer = document.getElementById('pagesContainer');
+                    let lastScrollTop = 0;
+                    pagesContainer.addEventListener('scroll', () => {
+                        const scrollTop = pagesContainer.scrollTop;
+                        if (scrollTop > lastScrollTop && scrollTop > 20) fixedHeader.classList.add('hidden');
+                        else if (scrollTop < 100) fixedHeader.classList.remove('hidden');
+                        lastScrollTop = scrollTop;
+                    });
+
+                    // ---------- Level modal ----------
+                    window.openLevelModal = function() {
+                        const xp = getXP();
+                        const level = getLevelByXP(xp);
+                        const nextLevel = level + 1;
+                        const progress = getProgressToNextLevel(xp);
+                        const currentTitle = getTitle(level);
+                        const nextTitle = getTitle(nextLevel);
+                        const modal = document.getElementById('levelModal');
+                        const content = document.getElementById('levelModalContent');
+                        content.innerHTML = `
+                            <div class="level-progress">
+                                <div class="level-box">
+                                    <div class="level-number">${level}</div>
+                                    <div class="level-title">${currentTitle}</div>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div>
+                                    <div class="progress-percent">${progress}%</div>
+                                </div>
+                                <div class="level-box">
+                                    <div class="level-number">${nextLevel}</div>
+                                    <div class="level-title">${nextTitle}</div>
+                                </div>
+                            </div>
+                        `;
+                        modal.classList.add('show');
+                    };
+                    document.getElementById('closeLevelModal').onclick = () => document.getElementById('levelModal').classList.remove('show');
 
                     // ---------- Init ----------
                     initUser();
@@ -2436,14 +2302,9 @@
                     updateAnalyticsPage();
                     updateStreak();
                     updateStreakDisplay();
-                    initAnalyticsTabs();
-
                     animatePage(document.getElementById('tasks-page'));
 
-                    function loadFromLocalStorage() {
-                        console.log('Using localStorage fallback');
-                    }
-
+                    function loadFromLocalStorage() { console.log('Using localStorage fallback'); }
                 } catch (e) {
                     console.error('Global error:', e);
                     document.body.innerHTML = '<div style="color: white; padding: 20px;">Произошла ошибка. Попробуйте обновить страницу.</div>';
