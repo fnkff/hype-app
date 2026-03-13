@@ -289,7 +289,8 @@
         .main-page .employer-card:nth-child(1) { animation-delay: 0.5s; }
         .main-page .task-card:nth-child(2),
         .main-page .employer-card:nth-child(2) { animation-delay: 0.6s; }
-        .main-page .task-card:nth-child(3) { animation-delay: 0.7s; }
+        .main-page .task-card:nth-child(3),
+        .main-page .task-card:nth-child(4) { animation-delay: 0.7s; }
         .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
         .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
@@ -573,7 +574,6 @@
             font-size: 14px;
             color: var(--text-muted);
             font-weight: 400;
-            text-align: right;
         }
         .employer-create-field {
             width: 100%;
@@ -1403,6 +1403,15 @@
                 <button class="claim-btn" id="claimBtn" style="display:none;">забрать</button>
             </div>
         </div>
+        <!-- Новая модалка для тестового задания -->
+        <div class="modal" id="testTaskModal">
+            <div class="modal-content">
+                <div class="modal-header"><button class="modal-close" id="closeTestTask">&times;</button></div>
+                <h3>тестовое задание</h3>
+                <p>нажми "забрать", чтобы получить 1 ₽ и 1 XP</p>
+                <button class="claim-test-btn" id="claimTestBtn">забрать</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1676,7 +1685,8 @@
                         const allTasks = [
                             { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу', price: 30, xp: 5 },
                             { id: 2, name: 'подпишись на канал', desc: '@hype_job1', price: 20, xp: 5 },
-                            { id: 3, name: 'мини-игра', desc: 'выиграй до 20 ₽', price: '5-20', xp: 2 }
+                            { id: 3, name: 'мини-игра', desc: 'выиграй до 20 ₽', price: '5-20', xp: 2 },
+                            { id: 4, name: 'тест', desc: 'тестовое задание 1₽', price: 1, xp: 1 } // новое задание
                         ];
                         let html = '<div class="tasks-grid">';
                         allTasks.forEach(t => {
@@ -1686,7 +1696,7 @@
                                     <h4>${t.name}</h4>
                                     <p>${t.desc}</p>
                                 </div>
-                                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                <div style="display: flex; flex-direction: column; align-items: center;">
                                     <div class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
                                     <div class="task-xp">+${t.xp} XP</div>
                                 </div>
@@ -1763,6 +1773,8 @@
                             }
                             resetGameModal();
                             gameModal.classList.add('show');
+                        } else if (id === 4) {
+                            document.getElementById('testTaskModal').classList.add('show');
                         }
                     };
 
@@ -1808,6 +1820,29 @@
                         resetGameModal();
                     };
 
+                    // ---------- Test task ----------
+                    document.getElementById('closeTestTask').onclick = () => document.getElementById('testTaskModal').classList.remove('show');
+                    document.getElementById('claimTestBtn').onclick = async () => {
+                        const oldLevel = getLevelByXP(getXP());
+                        const oldStreak = getStreak();
+
+                        balance += 1;
+                        saveBalance();
+                        addXP(1);
+                        const newLevel = getLevelByXP(getXP());
+                        const newStreak = updateStreak();
+                        addCount(4);
+                        await logEvent('test_task', 1, 1);
+
+                        updateRoleUI(); // может обновить список заданий, но не обязательно
+                        updateStreakDisplay(newStreak > oldStreak, oldStreak);
+                        animateStreakIcon();
+                        if (newLevel > oldLevel) showLevelUpAnimation(oldLevel, newLevel);
+                        if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
+                        await syncUserData();
+                        document.getElementById('testTaskModal').classList.remove('show');
+                    };
+
                     // ---------- Other functions ----------
                     function getTaskIcon(name) {
                         if (name.includes('друга')) {
@@ -1836,6 +1871,10 @@
                             container.innerHTML = '<p style="color: var(--text-muted);">Ошибка: не удалось определить пользователя</p>';
                             return;
                         }
+
+                        // Показываем загрузку
+                        container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">загрузка...</p>';
+
                         const now = new Date();
                         let startDate;
                         if (period === 'day') {
@@ -1908,6 +1947,7 @@
                                 let typeText = '';
                                 if (e.event_type === 'task_completed') typeText = '✅ задание';
                                 else if (e.event_type === 'game_played') typeText = '🎮 игра';
+                                else if (e.event_type === 'test_task') typeText = '🧪 тест';
                                 else typeText = e.event_type;
                                 html += `
                                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
