@@ -999,25 +999,35 @@
             justify-content: space-around;
             height: 150px;
             margin: 20px 0;
-            gap: 4px;
+            gap: 2px;
+            flex-wrap: wrap;
         }
         .chart-bar-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 1;
-            max-width: 40px;
+            width: 30px;
+            min-width: 20px;
         }
         .chart-bar {
             width: 100%;
             background: linear-gradient(to top, var(--accent), var(--accent-dark));
             border-radius: 6px 6px 0 0;
-            min-height: 2px;
+            min-height: 2px; /* минимальная высота, чтобы даже нулевой столбик был виден */
         }
         .chart-label {
-            font-size: 12px;
+            font-size: 10px;
             color: var(--text-muted);
             margin-top: 5px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .chart-amount {
+            font-size: 9px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 2px;
+            white-space: nowrap;
         }
         .modal {
             position: fixed;
@@ -1227,10 +1237,14 @@
                 width: 20px;
                 height: 20px;
             }
+            .chart-bar-wrapper {
+                width: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Оверлеи для анимаций -->
     <div class="streak-animation-overlay" id="streakAnimationOverlay">
         <div class="fire-effect"></div>
         <div class="fire-effect2"></div>
@@ -1248,10 +1262,15 @@
         </div>
         <div class="level-up-title" id="levelUpTitle"></div>
     </div>
+
+    <!-- Заставка -->
     <div class="splash" id="splash">
         <div class="splash-logo">ХАЙП</div>
     </div>
+
+    <!-- Основное содержимое -->
     <div class="app-content" id="appContent">
+        <!-- Фиксированная шапка -->
         <div class="fixed-header" id="fixedHeader">
             <div class="logo">ХАЙП</div>
             <div class="header-right">
@@ -1264,7 +1283,10 @@
                 <div class="avatar" id="headerAvatar">Т</div>
             </div>
         </div>
+
+        <!-- Контейнер страниц -->
         <div class="pages-container" id="pagesContainer">
+            <!-- Главная страница -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
                     <div class="total-balance animate-stagger">
@@ -1272,6 +1294,8 @@
                         <div class="balance-value" id="mainBalance">0 ₽</div>
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
+
+                    <!-- Блок Streak -->
                     <div class="streak-block animate-stagger" id="streakBlock">
                         <div class="streak-header">
                             <span class="streak-icon" id="streakIcon"><i class="fas fa-fire"></i></span>
@@ -1280,18 +1304,25 @@
                         </div>
                         <div class="weekdays" id="weekdaysContainer"></div>
                     </div>
+
                     <div class="section-title animate-stagger">
                         <h3 id="mainSectionTitle">задания</h3>
                     </div>
+
+                    <!-- Фильтры (кликабельные) -->
                     <div class="filters-tabs animate-stagger" id="mainFilters">
                         <span class="tab active" data-filter="favorites">избранное</span>
                         <span class="tab" data-filter="top">топ</span>
                         <span class="tab" data-filter="new">новые</span>
                         <span class="tab" data-filter="leaders">лидеры</span>
                     </div>
+
+                    <!-- Контент, зависящий от роли -->
                     <div id="roleContent" class="role-content"></div>
                 </div>
             </div>
+
+            <!-- Профиль -->
             <div id="profile-page" class="page">
                 <div class="profile-page">
                     <div class="profile-avatar-wrapper animate-stagger">
@@ -1325,6 +1356,8 @@
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
                 </div>
             </div>
+
+            <!-- Аналитика -->
             <div id="analytics-page" class="page">
                 <div class="analytics-page">
                     <div class="period-tabs animate-stagger" id="analyticsTabs">
@@ -1335,17 +1368,23 @@
                     <div id="analyticsContent" class="fade-content"></div>
                 </div>
             </div>
+
+            <!-- Рефералы -->
             <div id="referrals-page" class="page">
                 <div class="referral-page">
                     <div id="referralsContent"></div>
                 </div>
             </div>
+
+            <!-- Вывод средств -->
             <div id="withdraw-page" class="page">
                 <div class="withdraw-page">
                     <div id="withdrawContent"></div>
                 </div>
             </div>
         </div>
+
+        <!-- Модалки -->
         <div class="modal" id="levelModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeLevelModal">&times;</button></div>
@@ -1359,28 +1398,6 @@
                 <h3>топ-10 хайперов</h3>
                 <div id="ratingModalContent" style="max-height: 300px; overflow-y: auto;"></div>
             </div>
-        </div>
-        <div class="bottom-nav">
-            <a class="nav-item active" data-page="tasks">
-                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-                <span>главная</span>
-            </a>
-            <a class="nav-item" data-page="profile">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span>профиль</span>
-            </a>
-            <a class="nav-item" data-page="analytics">
-                <svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
-                <span>аналитика</span>
-            </a>
-            <a class="nav-item" data-page="referrals">
-                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-                <span>рефералы</span>
-            </a>
-            <a class="nav-item" data-page="withdraw">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-                <span>вывод</span>
-            </a>
         </div>
         <div class="modal" id="refModal">
             <div class="modal-content">
@@ -1422,6 +1439,30 @@
                 <p>нажми "забрать", чтобы получить 1 ₽ и 1 XP</p>
                 <button class="claim-test-btn" id="claimTestBtn">забрать</button>
             </div>
+        </div>
+
+        <!-- Нижняя навигация -->
+        <div class="bottom-nav">
+            <a class="nav-item active" data-page="tasks">
+                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                <span>главная</span>
+            </a>
+            <a class="nav-item" data-page="profile">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>профиль</span>
+            </a>
+            <a class="nav-item" data-page="analytics">
+                <svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
+                <span>аналитика</span>
+            </a>
+            <a class="nav-item" data-page="referrals">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <span>рефералы</span>
+            </a>
+            <a class="nav-item" data-page="withdraw">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                <span>вывод</span>
+            </a>
         </div>
     </div>
 
@@ -1471,6 +1512,31 @@
                             }
                         } catch (e) {
                             console.error('Exception in logEvent:', e);
+                        }
+                    }
+
+                    // ---------- Load last 24h income for main page ----------
+                    async function loadDailyChange() {
+                        const realUserId = tg?.initDataUnsafe?.user?.id;
+                        if (!realUserId) return;
+                        const now = new Date();
+                        const yesterday = new Date(now);
+                        yesterday.setDate(now.getDate() - 1);
+                        try {
+                            const { data: events, error } = await supabaseClient
+                                .from('events')
+                                .select('amount')
+                                .eq('user_id', String(realUserId))
+                                .gte('created_at', yesterday.toISOString());
+                            if (error) {
+                                console.error('Error loading daily change:', error);
+                                return;
+                            }
+                            const total24h = events.reduce((sum, e) => sum + (e.amount || 0), 0);
+                            const percent = balance > 0 ? ((total24h / balance) * 100).toFixed(1) : 0;
+                            document.getElementById('mainChange').innerText = `+${total24h} ₽ (${percent}%)`;
+                        } catch (e) {
+                            console.error('Exception in loadDailyChange:', e);
                         }
                     }
 
@@ -1527,6 +1593,8 @@
                             }
 
                             if (user) {
+                                // Проверяем, изменился ли streak (для анимации)
+                                const oldStreak = parseInt(localStorage.getItem('streak')) || 0;
                                 localStorage.setItem('balance', user.balance);
                                 localStorage.setItem('xp', user.xp);
                                 localStorage.setItem('referralsCount', user.referrals);
@@ -1535,7 +1603,16 @@
                                 balance = user.balance;
                                 updateBalanceDisplay();
                                 updateStreak();
+                                // Если streak увеличился при загрузке (новый день), показываем анимацию
+                                if (user.streak > oldStreak) {
+                                    // Показываем анимацию с задержкой, чтобы страница успела загрузиться
+                                    setTimeout(() => {
+                                        showStreakAnimation(oldStreak, user.streak);
+                                    }, 1000);
+                                }
                                 updateProfilePage();
+                                // Загружаем сумму за 24ч
+                                loadDailyChange();
                             }
                         } catch (e) {
                             console.error('initUser error:', e);
@@ -1651,6 +1728,7 @@
                     }
                     function getXP() { return parseInt(localStorage.getItem('xp')) || 0; }
                     function addXP(amount) { let xp = getXP() + amount; localStorage.setItem('xp', xp); return xp; }
+
                     function showLevelUpAnimation(oldLevel, newLevel) {
                         const overlay = document.getElementById('levelUpOverlay');
                         const oldEl = document.getElementById('oldLevel');
@@ -1659,6 +1737,16 @@
                         oldEl.innerText = oldLevel;
                         newEl.innerText = newLevel;
                         titleEl.innerText = getTitle(newLevel);
+                        overlay.classList.add('active');
+                        setTimeout(() => overlay.classList.remove('active'), 3500);
+                    }
+
+                    function showStreakAnimation(oldStreak, newStreak) {
+                        const overlay = document.getElementById('streakAnimationOverlay');
+                        const oldEl = document.getElementById('oldStreak');
+                        const newEl = document.getElementById('newStreak');
+                        oldEl.innerText = oldStreak;
+                        newEl.innerText = newStreak;
                         overlay.classList.add('active');
                         setTimeout(() => overlay.classList.remove('active'), 3500);
                     }
@@ -1834,6 +1922,7 @@
                         if (newLevel > oldLevel) showLevelUpAnimation(oldLevel, newLevel);
                         if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                         await syncUserData();
+                        await loadDailyChange(); // обновляем сумму за 24ч
                         gameModal.classList.remove('show');
                         resetGameModal();
                     };
@@ -1858,6 +1947,7 @@
                         if (newLevel > oldLevel) showLevelUpAnimation(oldLevel, newLevel);
                         if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                         await syncUserData();
+                        await loadDailyChange(); // обновляем сумму за 24ч
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
@@ -1880,7 +1970,7 @@
                         tab.classList.add('active');
                     });
 
-                    // ---------- ANALYTICS PAGE (STABLE BARS) ----------
+                    // ---------- ANALYTICS PAGE (FIXED) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -1894,22 +1984,19 @@
                         container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">загрузка...</p>';
 
                         const now = new Date();
-                        let startDate, daysCount, periodText;
+                        let startDate, format;
                         if (period === 'day') {
                             startDate = new Date(now);
                             startDate.setHours(0, 0, 0, 0);
-                            daysCount = 1;
-                            periodText = 'день';
+                            format = 'hour';
                         } else if (period === 'week') {
                             startDate = new Date(now);
                             startDate.setDate(now.getDate() - 7);
-                            daysCount = 7;
-                            periodText = 'неделю';
+                            format = 'day';
                         } else { // month
                             startDate = new Date(now);
                             startDate.setMonth(now.getMonth() - 1);
-                            daysCount = 30;
-                            periodText = '30 дней';
+                            format = 'day';
                         }
 
                         try {
@@ -1931,27 +2018,62 @@
                                 return;
                             }
 
-                            // Общий доход
                             const totalIncome = events.reduce((sum, e) => sum + (e.amount || 0), 0);
 
-                            // Группируем по дням
-                            const daysMap = new Map();
-                            events.forEach(e => {
-                                const date = new Date(e.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
-                                if (!daysMap.has(date)) {
-                                    daysMap.set(date, 0);
+                            // Группировка по часам или дням
+                            let chartData = [];
+                            if (period === 'day') {
+                                // 24 часа от 0 до 23
+                                for (let h = 0; h < 24; h++) {
+                                    chartData.push({ label: `${h.toString().padStart(2,'0')}:00`, amount: 0 });
                                 }
-                                daysMap.set(date, daysMap.get(date) + e.amount);
-                            });
-
-                            // Преобразуем в массив и сортируем по дате
-                            const chartData = Array.from(daysMap.entries())
-                                .map(([date, amount]) => ({ date, amount }))
-                                .sort((a, b) => {
-                                    const [d1, m1] = a.date.split('.').map(Number);
-                                    const [d2, m2] = b.date.split('.').map(Number);
-                                    return (m1 * 100 + d1) - (m2 * 100 + d2);
+                                events.forEach(e => {
+                                    const date = new Date(e.created_at);
+                                    const hour = date.getHours();
+                                    chartData[hour].amount += e.amount || 0;
                                 });
+                            } else if (period === 'week') {
+                                // Последние 7 дней
+                                const dayNames = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+                                for (let i = 6; i >= 0; i--) {
+                                    const d = new Date(now);
+                                    d.setDate(now.getDate() - i);
+                                    const dayIndex = d.getDay(); // 0 = воскресенье
+                                    chartData.push({ 
+                                        label: dayNames[dayIndex], 
+                                        amount: 0,
+                                        timestamp: d.setHours(0,0,0,0)
+                                    });
+                                }
+                                events.forEach(e => {
+                                    const eventDate = new Date(e.created_at).setHours(0,0,0,0);
+                                    const index = chartData.findIndex(item => item.timestamp === eventDate);
+                                    if (index !== -1) {
+                                        chartData[index].amount += e.amount || 0;
+                                    }
+                                });
+                            } else { // month
+                                // последние 30 дней (по датам)
+                                const monthDays = [];
+                                for (let i = 29; i >= 0; i--) {
+                                    const d = new Date(now);
+                                    d.setDate(now.getDate() - i);
+                                    const label = d.getDate().toString();
+                                    monthDays.push({ 
+                                        label, 
+                                        amount: 0,
+                                        timestamp: d.setHours(0,0,0,0)
+                                    });
+                                }
+                                chartData = monthDays;
+                                events.forEach(e => {
+                                    const eventDate = new Date(e.created_at).setHours(0,0,0,0);
+                                    const index = chartData.findIndex(item => item.timestamp === eventDate);
+                                    if (index !== -1) {
+                                        chartData[index].amount += e.amount || 0;
+                                    }
+                                });
+                            }
 
                             const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
 
@@ -1960,7 +2082,7 @@
                                 <div class="analytics-total animate-stagger" style="text-align: center;">
                                     <div class="balance-label" style="font-size: 18px;">доход</div>
                                     <div class="balance-value" style="font-size: 48px; margin: 5px 0;">${totalIncome} ₽</div>
-                                    <div style="color: var(--text-muted); font-size: 16px;">за последние ${period === 'month' ? '30 дней' : daysCount === 1 ? 'день' : daysCount < 5 ? 'дня' : 'дней'}</div>
+                                    <div style="color: var(--text-muted); font-size: 16px;">за последние ${period === 'day' ? '24 часа' : period === 'week' ? '7 дней' : '30 дней'}</div>
                                 </div>
                                 <div class="analytics-total animate-stagger" style="padding: 20px;">
                                     <div style="margin-bottom: 20px;">
@@ -1968,19 +2090,16 @@
                                         <div class="chart-container">
                             `;
 
-                            if (chartData.length === 0) {
-                                html += '<p style="color: var(--text-muted); text-align: center;">нет данных за период</p>';
-                            } else {
-                                chartData.forEach(item => {
-                                    const height = (item.amount / maxAmount) * 100;
-                                    html += `
-                                        <div class="chart-bar-wrapper">
-                                            <div class="chart-bar" style="height: ${height}px;"></div>
-                                            <span class="chart-label">${item.date}</span>
-                                        </div>
-                                    `;
-                                });
-                            }
+                            chartData.forEach(item => {
+                                const height = (item.amount / maxAmount) * 100;
+                                html += `
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-amount">+${item.amount}</div>
+                                        <div class="chart-bar" style="height: ${height}px;"></div>
+                                        <div class="chart-label">${item.label}</div>
+                                    </div>
+                                `;
+                            });
 
                             html += `
                                         </div>
@@ -2073,13 +2192,16 @@
                                 const newStreak = updateStreak();
                                 localStorage.setItem('subscription_done', 'true');
                                 await logEvent('task_completed', 20, 5, { task_id: 2 });
+
                                 document.getElementById('checkResult').style.color = '#00b300';
                                 document.getElementById('checkResult').innerText = '✅ подписка подтверждена! +20 ₽';
+                                
                                 updateStreakDisplay(newStreak > oldStreak, oldStreak);
                                 animateStreakIcon();
                                 if (newLevel > oldLevel) showLevelUpAnimation(oldLevel, newLevel);
                                 if (document.getElementById('profile-page').classList.contains('active-page')) updateProfilePage();
                                 await syncUserData();
+                                await loadDailyChange(); // обновляем сумму за 24ч
                                 setTimeout(() => document.getElementById('subModal').classList.remove('show'), 1500);
                             } else {
                                 document.getElementById('checkResult').style.color = 'red';
@@ -2270,13 +2392,7 @@
                         document.getElementById('streakCount').innerText = streak;
                         renderWeekdays(streak);
                         if (animate && oldValue !== null && oldValue < streak) {
-                            const overlay = document.getElementById('streakAnimationOverlay');
-                            const oldEl = document.getElementById('oldStreak');
-                            const newEl = document.getElementById('newStreak');
-                            oldEl.innerText = oldValue;
-                            newEl.innerText = streak;
-                            overlay.classList.add('active');
-                            setTimeout(() => overlay.classList.remove('active'), 3500);
+                            showStreakAnimation(oldValue, streak);
                         }
                     }
                     function animateStreakIcon() {
@@ -2329,7 +2445,6 @@
                     }
                     function updateBalanceDisplay() {
                         document.getElementById('mainBalance').innerText = balance + ' ₽';
-                        document.getElementById('mainChange').innerText = `+${Math.floor(balance/10)} ₽ (${Math.floor(balance/100)}%)`;
                     }
 
                     // ---------- Splash & header ----------
