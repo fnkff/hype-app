@@ -574,7 +574,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-size: 16px;
             color: var(--text-muted);
         }
@@ -584,6 +584,17 @@
         }
         .company-rating {
             color: #FFC107; /* золотой для звёзд */
+        }
+        .company-rating i {
+            margin-right: 4px;
+        }
+        /* Крупная цена */
+        .task-price-large {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(93,214,44,0.5);
         }
         .task-tags {
             display: flex;
@@ -599,31 +610,23 @@
             font-size: 14px;
             font-weight: 600;
         }
-        .task-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .task-price {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--accent);
-            text-shadow: 0 0 5px rgba(93,214,44,0.5);
-        }
-        .task-take-btn {
+        /* Кнопка на всю ширину */
+        .task-take-btn-full {
+            width: 100%;
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
             border: none;
             border-radius: 18px;
-            padding: 8px 20px;
-            font-weight: 600;
-            font-size: 16px;
+            padding: 14px 20px;
+            font-weight: 700;
+            font-size: 18px;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 8px;
         }
-        .task-take-btn:hover {
+        .task-take-btn-full:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(93,214,44,0.5);
+            box-shadow: 0 0 20px rgba(93,214,44,0.6);
         }
         .employer-create-field {
             width: 100%;
@@ -1290,8 +1293,8 @@
             .task-title {
                 font-size: 18px;
             }
-            .task-price {
-                font-size: 20px;
+            .task-price-large {
+                font-size: 28px;
             }
             .bottom-nav .nav-item {
                 font-size: 10px;
@@ -1865,15 +1868,13 @@
                                     </div>
                                     <div class="task-company">
                                         <span class="company-name">${t.company}</span>
-                                        <span class="company-rating">⭐ 5.0</span>
+                                        <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> 5.0</span>
                                     </div>
+                                    <div class="task-price-large">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
                                     <div class="task-tags">
                                         ${t.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}
                                     </div>
-                                    <div class="task-footer">
-                                        <div class="task-price">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
-                                        <button class="task-take-btn" onclick="event.stopPropagation(); handleTaskClick(${t.id})">взять</button>
-                                    </div>
+                                    <button class="task-take-btn-full" onclick="event.stopPropagation(); handleTaskClick(${t.id})">взять</button>
                                 </div>
                             `;
                         });
