@@ -286,14 +286,11 @@
         .main-page .section-title { animation-delay: 0.3s; }
         .main-page .filters-tabs { animation-delay: 0.4s; }
         .main-page .task-card-new:nth-child(1),
-        .main-page .employer-card:nth-child(1),
-        .main-page .swipe-card:nth-child(1) { animation-delay: 0.5s; }
+        .main-page .employer-card:nth-child(1) { animation-delay: 0.5s; }
         .main-page .task-card-new:nth-child(2),
-        .main-page .employer-card:nth-child(2),
-        .main-page .swipe-card:nth-child(2) { animation-delay: 0.6s; }
+        .main-page .employer-card:nth-child(2) { animation-delay: 0.6s; }
         .main-page .task-card-new:nth-child(3),
-        .main-page .task-card-new:nth-child(4),
-        .main-page .swipe-card:nth-child(3) { animation-delay: 0.7s; }
+        .main-page .task-card-new:nth-child(4) { animation-delay: 0.7s; }
         .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
         .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
@@ -583,7 +580,7 @@
             margin-bottom: 8px;
         }
         .task-title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
             color: white;
             margin: 0;
@@ -602,7 +599,7 @@
             align-items: center;
             gap: 8px;
             margin-bottom: 8px;
-            font-size: 18px;
+            font-size: 20px;
             color: var(--text-muted);
         }
         .company-name {
@@ -633,7 +630,7 @@
             color: var(--accent);
             padding: 4px 12px;
             border-radius: 50px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
         }
         .task-take-btn-full {
@@ -653,35 +650,73 @@
             transform: translateY(-2px);
             box-shadow: 0 0 20px rgba(93,214,44,0.6);
         }
+        /* Стили для свайп-карточки */
+        .swipe-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
         .swipe-card {
+            position: absolute;
+            width: 100%;
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 16px;
+            padding: 24px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.03);
-            text-align: center;
+            transition: transform 0.3s ease;
+            touch-action: pan-y pinch-zoom;
+            user-select: none;
+            will-change: transform;
+            cursor: grab;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .swipe-card:active {
+            cursor: grabbing;
+        }
+        .swipe-card .task-header {
+            margin-bottom: 12px;
         }
         .swipe-card .task-title {
-            font-size: 24px;
-            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .swipe-card .task-company {
+            font-size: 22px;
+            margin-bottom: 16px;
         }
         .swipe-card .task-price-large {
             font-size: 40px;
-            margin: 15px 0;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .swipe-card .task-tags {
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .swipe-card .task-tag {
+            font-size: 20px;
+            padding: 8px 16px;
+        }
+        .swipe-card .task-favorite {
+            font-size: 28px;
         }
         .swipe-actions {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
             margin-top: 20px;
         }
         .swipe-btn {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             border: none;
-            font-size: 32px;
+            font-size: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1367,7 +1402,7 @@
                 font-size: 40px;
             }
             .task-title {
-                font-size: 20px;
+                font-size: 22px;
             }
             .task-price-large {
                 font-size: 28px;
@@ -1929,6 +1964,7 @@
                                 roleContent.innerHTML = getWorkerTasksHTML();
                             } else {
                                 roleContent.innerHTML = getWorkerSwipeHTML();
+                                initSwipe();
                             }
                         } else {
                             sectionTitle.innerText = 'мои задания';
@@ -1974,29 +2010,168 @@
                         return html;
                     }
 
-                    // Временный свайп-режим
+                    // ---------- Swipe mode ----------
+                    let swipeTasks = [
+                        { id: 1, name: 'пригласи друга', price: 30, company: 'ХАЙП', tags: ['без опыта', 'моментально'] },
+                        { id: 2, name: 'подпишись на канал', price: 20, company: 'ХАЙП', tags: ['без опыта'] },
+                        { id: 3, name: 'мини-игра', price: '5-20', company: 'ХАЙП', tags: ['игра'] },
+                        { id: 4, name: 'тест', price: 1, company: 'ХАЙП', tags: ['тест'] }
+                    ];
+                    let currentSwipeIndex = 0;
+                    let isSwiping = false;
+                    let startX, currentX, initialTransform;
+
                     function getWorkerSwipeHTML() {
+                        const t = swipeTasks[currentSwipeIndex % swipeTasks.length];
                         return `
-                            <div class="swipe-card animate-stagger">
-                                <div class="task-header">
-                                    <h4 class="task-title">пригласи друга</h4>
-                                    <i class="far fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(1)"></i>
-                                </div>
-                                <div class="task-company">
-                                    <span class="company-name">ХАЙП</span>
-                                    <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> 5.0</span>
-                                </div>
-                                <div class="task-price-large">30 ₽</div>
-                                <div class="task-tags">
-                                    <span class="task-tag">без опыта</span>
-                                    <span class="task-tag">моментально</span>
-                                </div>
-                                <div class="swipe-actions">
-                                    <button class="swipe-btn dislike" onclick="alert('Пропущено (в разработке)')"><i class="fas fa-times"></i></button>
-                                    <button class="swipe-btn like" onclick="alert('Лайк (в разработке)')"><i class="fas fa-heart"></i></button>
+                            <div class="swipe-container">
+                                <div class="swipe-card" id="swipeCard">
+                                    <div class="task-header">
+                                        <h4 class="task-title">${t.name}</h4>
+                                        <i class="far fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id})"></i>
+                                    </div>
+                                    <div class="task-company">
+                                        <span class="company-name">${t.company}</span>
+                                        <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> 5.0</span>
+                                    </div>
+                                    <div class="task-price-large">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
+                                    <div class="task-tags">
+                                        ${t.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}
+                                    </div>
+                                    <div class="swipe-actions">
+                                        <button class="swipe-btn dislike" onclick="swipeLeft()"><i class="fas fa-times"></i></button>
+                                        <button class="swipe-btn like" onclick="swipeRight()"><i class="fas fa-heart"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         `;
+                    }
+
+                    function initSwipe() {
+                        const card = document.getElementById('swipeCard');
+                        if (!card) return;
+                        card.addEventListener('touchstart', onTouchStart, { passive: false });
+                        card.addEventListener('touchmove', onTouchMove, { passive: false });
+                        card.addEventListener('touchend', onTouchEnd);
+                        // Для мышки (отладка на ПК)
+                        card.addEventListener('mousedown', onMouseDown);
+                        card.addEventListener('mousemove', onMouseMove);
+                        card.addEventListener('mouseup', onMouseUp);
+                        card.addEventListener('mouseleave', onMouseUp);
+                    }
+
+                    function onTouchStart(e) {
+                        e.preventDefault();
+                        const touch = e.touches[0];
+                        startX = touch.clientX;
+                        currentX = startX;
+                        const card = document.getElementById('swipeCard');
+                        const transform = window.getComputedStyle(card).transform;
+                        if (transform && transform !== 'none') {
+                            const matrix = transform.match(/matrix.*\((.+)\)/);
+                            if (matrix) {
+                                const values = matrix[1].split(', ');
+                                initialTransform = parseFloat(values[4]) || 0;
+                            } else {
+                                initialTransform = 0;
+                            }
+                        } else {
+                            initialTransform = 0;
+                        }
+                        card.style.transition = 'none';
+                        isSwiping = true;
+                    }
+
+                    function onTouchMove(e) {
+                        if (!isSwiping) return;
+                        e.preventDefault();
+                        const touch = e.touches[0];
+                        const deltaX = touch.clientX - startX;
+                        const card = document.getElementById('swipeCard');
+                        card.style.transform = `translateX(${initialTransform + deltaX}px) rotate(${deltaX * 0.1}deg)`;
+                    }
+
+                    function onTouchEnd(e) {
+                        if (!isSwiping) return;
+                        e.preventDefault();
+                        const card = document.getElementById('swipeCard');
+                        const deltaX = currentX - startX;
+                        card.style.transition = 'transform 0.3s ease';
+                        if (Math.abs(deltaX) > 100) {
+                            if (deltaX > 0) {
+                                swipeRight();
+                            } else {
+                                swipeLeft();
+                            }
+                        } else {
+                            card.style.transform = '';
+                        }
+                        isSwiping = false;
+                    }
+
+                    // Mouse events (для десктопного тестирования)
+                    function onMouseDown(e) {
+                        e.preventDefault();
+                        startX = e.clientX;
+                        currentX = startX;
+                        const card = document.getElementById('swipeCard');
+                        const transform = window.getComputedStyle(card).transform;
+                        if (transform && transform !== 'none') {
+                            const matrix = transform.match(/matrix.*\((.+)\)/);
+                            if (matrix) {
+                                const values = matrix[1].split(', ');
+                                initialTransform = parseFloat(values[4]) || 0;
+                            } else {
+                                initialTransform = 0;
+                            }
+                        } else {
+                            initialTransform = 0;
+                        }
+                        card.style.transition = 'none';
+                        isSwiping = true;
+                    }
+
+                    function onMouseMove(e) {
+                        if (!isSwiping) return;
+                        e.preventDefault();
+                        const deltaX = e.clientX - startX;
+                        const card = document.getElementById('swipeCard');
+                        card.style.transform = `translateX(${initialTransform + deltaX}px) rotate(${deltaX * 0.1}deg)`;
+                    }
+
+                    function onMouseUp(e) {
+                        if (!isSwiping) return;
+                        e.preventDefault();
+                        const card = document.getElementById('swipeCard');
+                        const deltaX = e.clientX - startX;
+                        card.style.transition = 'transform 0.3s ease';
+                        if (Math.abs(deltaX) > 100) {
+                            if (deltaX > 0) {
+                                swipeRight();
+                            } else {
+                                swipeLeft();
+                            }
+                        } else {
+                            card.style.transform = '';
+                        }
+                        isSwiping = false;
+                    }
+
+                    window.swipeLeft = function() {
+                        alert('Пропущено (в разработке)');
+                        nextSwipeCard();
+                    };
+
+                    window.swipeRight = function() {
+                        alert('Лайк (в разработке)');
+                        nextSwipeCard();
+                    };
+
+                    function nextSwipeCard() {
+                        currentSwipeIndex++;
+                        const roleContent = document.getElementById('roleContent');
+                        roleContent.innerHTML = getWorkerSwipeHTML();
+                        initSwipe();
                     }
 
                     window.toggleFavorite = function(taskId) {
