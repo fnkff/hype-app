@@ -474,6 +474,8 @@
         .main-page, .profile-page, .analytics-page, .referral-page, .withdraw-page,
         .notification-page, .settings-page {
             padding: 0 20px 20px 20px;
+            min-height: 100%;
+            background: transparent; /* фон наследуется от body */
         }
         .page-header {
             display: flex;
@@ -1304,9 +1306,9 @@
         .chart-container {
             display: flex;
             align-items: flex-end;
-            gap: 4px; /* увеличили промежуток */
+            gap: 4px;
             padding-bottom: 5px;
-            height: 200px; /* увеличили высоту */
+            height: 200px;
             margin: 20px 0;
             overflow-x: auto;
             scrollbar-width: thin;
@@ -1325,14 +1327,13 @@
         }
         .chart-bar-wrapper {
             flex: 0 0 auto;
-            width: 40px; /* шире */
+            width: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
             height: 100%;
         }
-        /* Для недели и месяца делаем равномерное распределение */
         .chart-container.week-view .chart-bar-wrapper,
         .chart-container.month-view .chart-bar-wrapper {
             flex: 1 1 0px;
@@ -1770,7 +1771,7 @@
             </div>
         </div>
 
-        <!-- Модалки (оставим только нужные) -->
+        <!-- Модалки (оставлены только нужные) -->
         <div class="modal" id="levelModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeLevelModal">&times;</button></div>
@@ -2600,7 +2601,8 @@
                             startDate.setDate(now.getDate() - 7);
                         } else {
                             startDate = new Date(now);
-                            startDate.setMonth(now.getMonth() - 1);
+                            startDate.setDate(1); // первый день текущего месяца
+                            startDate.setHours(0,0,0,0);
                         }
 
                         try {
@@ -2626,6 +2628,7 @@
 
                             let chartData = [];
                             if (period === 'day') {
+                                // 24 часа
                                 for (let h = 0; h < 24; h++) {
                                     chartData.push({ label: `${h.toString().padStart(2,'0')}:00`, amount: 0 });
                                 }
@@ -2635,6 +2638,7 @@
                                     chartData[hour].amount += e.amount || 0;
                                 });
                             } else if (period === 'week') {
+                                // последние 7 дней от старого к новому
                                 const dayNames = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
                                 for (let i = 6; i >= 0; i--) {
                                     const d = new Date(now);
@@ -2653,16 +2657,16 @@
                                         chartData[index].amount += e.amount || 0;
                                     }
                                 });
-                            } else {
-                                const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-                                for (let i = daysInMonth - 1; i >= 0; i--) {
-                                    const d = new Date(now);
-                                    d.setDate(now.getDate() - i);
-                                    const label = d.getDate().toString();
-                                    chartData.push({ 
-                                        label, 
+                            } else { // month - текущий месяц с 1 по последнее число
+                                const year = now.getFullYear();
+                                const month = now.getMonth();
+                                const lastDay = new Date(year, month + 1, 0).getDate();
+                                for (let day = 1; day <= lastDay; day++) {
+                                    const date = new Date(year, month, day);
+                                    chartData.push({
+                                        label: day.toString(),
                                         amount: 0,
-                                        timestamp: d.setHours(0,0,0,0)
+                                        timestamp: date.setHours(0,0,0,0)
                                     });
                                 }
                                 events.forEach(e => {
@@ -2692,7 +2696,7 @@
                             `;
 
                             chartData.forEach(item => {
-                                const height = (item.amount / maxAmount) * 180; // до 180px высота
+                                const height = (item.amount / maxAmount) * 180;
                                 html += `
                                     <div class="chart-bar-wrapper">
                                         <div class="chart-amount">+${item.amount}</div>
@@ -2831,21 +2835,21 @@
 
                     // ---------- Notifications and Settings pages ----------
                     document.getElementById('notificationIcon').addEventListener('click', () => {
-                        showPage('notifications-page');
+                        showPage('notifications');
                     });
                     document.getElementById('settingsIcon').addEventListener('click', () => {
-                        showPage('settings-page');
+                        showPage('settings');
                     });
 
                     window.closeNotifications = function() {
-                        showPage('tasks-page');
+                        showPage('tasks');
                     };
                     window.closeSettings = function() {
-                        showPage('tasks-page');
+                        showPage('tasks');
                     };
 
                     window.toggleTheme = function() {
-                        // Заглушка для смены темы (позже можно добавить)
+                        // Заглушка для смены темы
                         console.log('Theme toggled');
                     };
 
@@ -2863,7 +2867,7 @@
                     function showPage(pageId) {
                         Object.values(pages).forEach(p => p.classList.remove('active-page'));
                         pages[pageId].classList.add('active-page');
-                        // Синхронизируем нижнюю навигацию, если это основные страницы
+                        // Синхронизируем нижнюю навигацию для основных страниц
                         if (['tasks', 'profile', 'analytics', 'referrals', 'withdraw'].includes(pageId)) {
                             document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
                                 if (item.dataset.page === pageId) {
@@ -2873,7 +2877,7 @@
                                 }
                             });
                         } else {
-                            // Для уведомлений и настроек убираем активность с навигации
+                            // Для уведомлений и настроек снимаем активность с навигации
                             document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
                                 item.classList.remove('active');
                             });
