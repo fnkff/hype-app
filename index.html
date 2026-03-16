@@ -42,7 +42,8 @@
             text-transform: lowercase;
         }
         .fixed-header .logo,
-        .splash-logo {
+        .splash-logo,
+        .page-header h2 {
             text-transform: none;
         }
         ::-webkit-scrollbar {
@@ -60,7 +61,8 @@
         }
         .glass-card, .task-card, .stat-item, .referral-link-block, .friends-list,
         .balance-block, .withdraw-field, .analytics-total, .recent-transfers,
-        .total-balance, .streak-block, .employer-card, .profile-role-card {
+        .total-balance, .streak-block, .employer-card, .profile-role-card,
+        .notification-item, .settings-item {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
             padding: 16px;
@@ -69,12 +71,12 @@
             border: 1px solid rgba(255,255,255,0.03);
             transition: all 0.3s ease;
         }
-        /* Hover-эффекты только для устройств с поддержкой hover */
         @media (hover: hover) {
             .glass-card:hover, .task-card:hover, .stat-item:hover, .referral-link-block:hover,
             .friends-list:hover, .balance-block:hover, .withdraw-field:hover,
             .analytics-total:hover, .recent-transfers:hover,
-            .total-balance:hover, .streak-block:hover, .employer-card:hover {
+            .total-balance:hover, .streak-block:hover, .employer-card:hover,
+            .notification-item:hover, .settings-item:hover {
                 transform: translateY(-3px);
                 box-shadow: 0 12px 35px rgba(0,0,0,0.6);
             }
@@ -188,10 +190,10 @@
         .modal-content button:last-child {
             margin-bottom: 0;
         }
-        .modal-close {
+        .modal-close, .page-header .close-btn {
             background: transparent !important;
             color: white;
-            font-size: 24px;
+            font-size: 28px;
             border: none;
             box-shadow: none !important;
             filter: none !important;
@@ -199,9 +201,9 @@
             padding: 0;
             width: auto !important;
             height: auto;
-            margin-bottom: 0 !important;
+            cursor: pointer;
         }
-        .modal-close:hover {
+        .modal-close:hover, .page-header .close-btn:hover {
             transform: none;
             box-shadow: none;
             background: transparent;
@@ -469,8 +471,25 @@
             opacity: 1;
             transform: translateY(0);
         }
-        .main-page {
+        .main-page, .profile-page, .analytics-page, .referral-page, .withdraw-page,
+        .notification-page, .settings-page {
             padding: 0 20px 20px 20px;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .page-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 0 5px var(--accent);
+        }
+        .close-btn {
+            font-size: 32px;
+            color: var(--text-muted);
         }
         .balance-label {
             font-size: 16px;
@@ -676,7 +695,7 @@
             min-height: 500px;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* прижать к верху */
+            align-items: flex-start;
             margin-top: 0;
         }
         .swipe-card {
@@ -758,6 +777,111 @@
         }
         .swipe-btn:active {
             transform: scale(0.9);
+        }
+        /* Уведомления */
+        .notification-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .notification-icon-small {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        .notification-content {
+            flex: 1;
+        }
+        .notification-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
+        .notification-text {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .notification-time {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        /* Настройки */
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .settings-icon-small {
+            width: 40px;
+            height: 40px;
+            background: rgba(93,214,44,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 20px;
+        }
+        .settings-item-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: white;
+        }
+        .settings-item-value {
+            color: var(--accent);
+            font-size: 16px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--accent);
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
         }
         .employer-create-field {
             width: 100%;
@@ -1180,11 +1304,11 @@
         .chart-container {
             display: flex;
             align-items: flex-end;
-            overflow-x: auto;
-            gap: 2px;
+            gap: 4px; /* увеличили промежуток */
             padding-bottom: 5px;
-            height: 170px;
+            height: 200px; /* увеличили высоту */
             margin: 20px 0;
+            overflow-x: auto;
             scrollbar-width: thin;
             scrollbar-color: var(--accent) var(--bg-card);
         }
@@ -1201,12 +1325,18 @@
         }
         .chart-bar-wrapper {
             flex: 0 0 auto;
-            width: 30px;
+            width: 40px; /* шире */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
             height: 100%;
+        }
+        /* Для недели и месяца делаем равномерное распределение */
+        .chart-container.week-view .chart-bar-wrapper,
+        .chart-container.month-view .chart-bar-wrapper {
+            flex: 1 1 0px;
+            min-width: 30px;
         }
         .chart-bar {
             width: 100%;
@@ -1216,14 +1346,14 @@
             transition: height 0.2s ease;
         }
         .chart-amount {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--accent);
             font-weight: 600;
             margin-bottom: 2px;
             white-space: nowrap;
         }
         .chart-label {
-            font-size: 10px;
+            font-size: 11px;
             color: var(--text-muted);
             margin-top: 5px;
             text-align: center;
@@ -1435,7 +1565,7 @@
                 height: 20px;
             }
             .chart-bar-wrapper {
-                width: 25px;
+                width: 35px;
             }
         }
     </style>
@@ -1471,10 +1601,10 @@
         <div class="fixed-header" id="fixedHeader">
             <div class="logo">ХАЙП</div>
             <div class="header-right">
-                <div class="notification-icon" onclick="alert('Уведомления (в разработке)')">
+                <div class="notification-icon" id="notificationIcon">
                     <i class="fas fa-bell"></i>
                 </div>
-                <div class="settings-icon" onclick="alert('Настройки (в разработке)')">
+                <div class="settings-icon" id="settingsIcon">
                     <i class="fas fa-cog"></i>
                 </div>
                 <div class="avatar" id="headerAvatar">Т</div>
@@ -1583,9 +1713,64 @@
                     <div id="withdrawContent"></div>
                 </div>
             </div>
+
+            <!-- Страница уведомлений -->
+            <div id="notifications-page" class="page">
+                <div class="notification-page">
+                    <div class="page-header">
+                        <h2>уведомления</h2>
+                        <button class="close-btn" onclick="closeNotifications()">&times;</button>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-icon-small"><i class="fas fa-info"></i></div>
+                        <div class="notification-content">
+                            <div class="notification-title">Добро пожаловать в ХАЙП!</div>
+                            <div class="notification-text">Здесь будут появляться уведомления о новых заданиях, выплатах и событиях.</div>
+                            <div class="notification-time">только что</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Страница настроек -->
+            <div id="settings-page" class="page">
+                <div class="settings-page">
+                    <div class="page-header">
+                        <h2>настройки</h2>
+                        <button class="close-btn" onclick="closeSettings()">&times;</button>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-left">
+                            <div class="settings-icon-small"><i class="fas fa-moon"></i></div>
+                            <span class="settings-item-title">тёмная тема</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked id="themeToggle" onchange="toggleTheme()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-left">
+                            <div class="settings-icon-small"><i class="fas fa-bell"></i></div>
+                            <span class="settings-item-title">уведомления</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked id="notifToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-item" onclick="alert('ХАЙП — платформа для микрозадач. Версия 2.0')">
+                        <div class="settings-item-left">
+                            <div class="settings-icon-small"><i class="fas fa-info-circle"></i></div>
+                            <span class="settings-item-title">о приложении</span>
+                        </div>
+                        <span class="settings-item-value"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Модалки -->
+        <!-- Модалки (оставим только нужные) -->
         <div class="modal" id="levelModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeLevelModal">&times;</button></div>
@@ -1642,7 +1827,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
+        <!-- Нижняя навигация (без изменений) -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
@@ -1976,15 +2161,14 @@
                     };
 
                     // ---------- Filter state ----------
-                    let currentFilter = 'favorites'; // favorites, top, new, leaders
-
+                    let currentFilter = 'favorites';
                     window.setFilter = function(filter) {
                         const tabs = document.querySelectorAll('#mainFilters .tab');
                         tabs.forEach(t => t.classList.remove('active'));
                         document.querySelector(`#mainFilters .tab[data-filter="${filter}"]`).classList.add('active');
                         currentFilter = filter;
                         if (currentRole === 'worker' && viewMode === 'list') {
-                            updateRoleUI(); // перерисовываем список с учётом фильтра
+                            updateRoleUI();
                         }
                     };
 
@@ -2003,7 +2187,6 @@
                             favoriteIds.splice(index, 1);
                         }
                         saveFavorites();
-                        // обновляем иконки на всех карточках
                         document.querySelectorAll(`.task-favorite[onclick*="toggleFavorite(${taskId})"]`).forEach(el => {
                             if (favoriteIds.includes(taskId)) {
                                 el.classList.remove('far');
@@ -2031,7 +2214,6 @@
                         if (currentFilter === 'favorites') {
                             return tasks.filter(t => favoriteIds.includes(t.id));
                         }
-                        // другие фильтры пока заглушки
                         return tasks;
                     }
 
@@ -2109,7 +2291,6 @@
                         card.addEventListener('touchstart', onTouchStart, { passive: false });
                         card.addEventListener('touchmove', onTouchMove, { passive: false });
                         card.addEventListener('touchend', onTouchEnd);
-                        // Для мышки (отладка на ПК)
                         card.addEventListener('mousedown', onMouseDown);
                         card.addEventListener('mousemove', onMouseMove);
                         card.addEventListener('mouseup', onMouseUp);
@@ -2142,7 +2323,7 @@
                         if (!isSwiping) return;
                         e.preventDefault();
                         const touch = e.touches[0];
-                        currentX = touch.clientX; // обновляем текущую позицию
+                        currentX = touch.clientX;
                         const deltaX = currentX - startX;
                         const card = document.getElementById('swipeCard');
                         card.style.transform = `translateX(${initialTransform + deltaX}px) rotate(${deltaX * 0.1}deg)`;
@@ -2166,7 +2347,6 @@
                         isSwiping = false;
                     }
 
-                    // Mouse events (для десктопного тестирования)
                     function onMouseDown(e) {
                         e.preventDefault();
                         startX = e.clientX;
@@ -2216,12 +2396,10 @@
                     }
 
                     window.swipeLeft = function() {
-                        // пропуск
                         nextSwipeCard();
                     };
 
                     window.swipeRight = function() {
-                        // лайк = добавить в избранное
                         const t = swipeTasks[currentSwipeIndex % swipeTasks.length];
                         if (!isFavorite(t.id)) {
                             toggleFavorite(t.id);
@@ -2476,7 +2654,8 @@
                                     }
                                 });
                             } else {
-                                for (let i = 29; i >= 0; i--) {
+                                const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+                                for (let i = daysInMonth - 1; i >= 0; i--) {
                                     const d = new Date(now);
                                     d.setDate(now.getDate() - i);
                                     const label = d.getDate().toString();
@@ -2497,6 +2676,9 @@
 
                             const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
 
+                            // Определяем класс для контейнера в зависимости от периода
+                            const chartClass = period === 'day' ? '' : (period === 'week' ? 'week-view' : 'month-view');
+
                             let html = `
                                 <div class="analytics-total animate-stagger" style="text-align: center;">
                                     <div class="balance-label" style="font-size: 18px;">доход</div>
@@ -2506,11 +2688,11 @@
                                 <div class="analytics-total animate-stagger" style="padding: 20px;">
                                     <div style="margin-bottom: 20px;">
                                         <h4 style="margin-bottom: 15px; text-align: center;">график дохода</h4>
-                                        <div class="chart-container">
+                                        <div class="chart-container ${chartClass}">
                             `;
 
                             chartData.forEach(item => {
-                                const height = (item.amount / maxAmount) * 100;
+                                const height = (item.amount / maxAmount) * 180; // до 180px высота
                                 html += `
                                     <div class="chart-bar-wrapper">
                                         <div class="chart-amount">+${item.amount}</div>
@@ -2647,31 +2829,68 @@
                     const closeSub = document.getElementById('closeSub');
                     closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
 
+                    // ---------- Notifications and Settings pages ----------
+                    document.getElementById('notificationIcon').addEventListener('click', () => {
+                        showPage('notifications-page');
+                    });
+                    document.getElementById('settingsIcon').addEventListener('click', () => {
+                        showPage('settings-page');
+                    });
+
+                    window.closeNotifications = function() {
+                        showPage('tasks-page');
+                    };
+                    window.closeSettings = function() {
+                        showPage('tasks-page');
+                    };
+
+                    window.toggleTheme = function() {
+                        // Заглушка для смены темы (позже можно добавить)
+                        console.log('Theme toggled');
+                    };
+
                     // ---------- Navigation ----------
                     const pages = {
                         tasks: document.getElementById('tasks-page'),
                         profile: document.getElementById('profile-page'),
                         analytics: document.getElementById('analytics-page'),
                         referrals: document.getElementById('referrals-page'),
-                        withdraw: document.getElementById('withdraw-page')
+                        withdraw: document.getElementById('withdraw-page'),
+                        notifications: document.getElementById('notifications-page'),
+                        settings: document.getElementById('settings-page')
                     };
+
+                    function showPage(pageId) {
+                        Object.values(pages).forEach(p => p.classList.remove('active-page'));
+                        pages[pageId].classList.add('active-page');
+                        // Синхронизируем нижнюю навигацию, если это основные страницы
+                        if (['tasks', 'profile', 'analytics', 'referrals', 'withdraw'].includes(pageId)) {
+                            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+                                if (item.dataset.page === pageId) {
+                                    item.classList.add('active');
+                                } else {
+                                    item.classList.remove('active');
+                                }
+                            });
+                        } else {
+                            // Для уведомлений и настроек убираем активность с навигации
+                            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+                                item.classList.remove('active');
+                            });
+                        }
+                        if (pageId === 'profile') updateProfilePage();
+                        else if (pageId === 'referrals') updateReferralsPage();
+                        else if (pageId === 'withdraw') updateWithdrawPage();
+                        else if (pageId === 'analytics') updateAnalyticsPage();
+                        else if (pageId === 'tasks') animatePage(pages[pageId]);
+                    }
+
                     const navItems = document.querySelectorAll('.bottom-nav .nav-item');
                     navItems.forEach(item => {
                         item.addEventListener('click', (e) => {
                             e.preventDefault();
                             const page = item.dataset.page;
-                            const targetPage = pages[page];
-                            const currentActive = document.querySelector('.page.active-page');
-                            if (!targetPage || targetPage === currentActive) return;
-                            if (currentActive) currentActive.classList.remove('active-page');
-                            targetPage.classList.add('active-page');
-                            navItems.forEach(nav => nav.classList.remove('active'));
-                            item.classList.add('active');
-                            if (page === 'profile') updateProfilePage();
-                            else if (page === 'referrals') updateReferralsPage();
-                            else if (page === 'withdraw') updateWithdrawPage();
-                            else if (page === 'analytics') updateAnalyticsPage();
-                            animatePage(targetPage);
+                            showPage(page);
                         });
                     });
 
