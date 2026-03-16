@@ -69,12 +69,47 @@
             border: 1px solid rgba(255,255,255,0.03);
             transition: all 0.3s ease;
         }
-        .glass-card:hover, .task-card:hover, .stat-item:hover, .referral-link-block:hover,
-        .friends-list:hover, .balance-block:hover, .withdraw-field:hover,
-        .analytics-total:hover, .recent-transfers:hover,
-        .total-balance:hover, .streak-block:hover, .employer-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+        /* Hover-эффекты только для устройств с поддержкой hover */
+        @media (hover: hover) {
+            .glass-card:hover, .task-card:hover, .stat-item:hover, .referral-link-block:hover,
+            .friends-list:hover, .balance-block:hover, .withdraw-field:hover,
+            .analytics-total:hover, .recent-transfers:hover,
+            .total-balance:hover, .streak-block:hover, .employer-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+            }
+            .settings-icon:hover, .notification-icon:hover {
+                color: white;
+                transform: rotate(10deg);
+                filter: drop-shadow(0 0 8px var(--accent));
+            }
+            .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 0 25px rgba(93,214,44,0.5);
+            }
+            .task-favorite:hover {
+                color: var(--accent);
+            }
+            .view-toggle-btn:hover {
+                background: rgba(255,255,255,0.1);
+                color: white;
+            }
+            .tab:hover {
+                color: white;
+            }
+            .task-card-new:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+            }
+            .swipe-btn:hover {
+                transform: scale(1.1);
+            }
+            .profile-role-card:hover {
+                background: rgba(93,214,44,0.1);
+            }
+            .period-tab:hover {
+                background: rgba(255,255,255,0.1);
+            }
         }
         .total-balance {
             margin-bottom: 30px;
@@ -128,11 +163,6 @@
         .settings-icon i, .notification-icon i {
             font-size: 24px;
         }
-        .settings-icon:hover, .notification-icon:hover {
-            color: white;
-            transform: rotate(10deg);
-            filter: drop-shadow(0 0 8px var(--accent));
-        }
         button {
             border: none;
             border-radius: 18px;
@@ -145,10 +175,6 @@
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
             box-shadow: 0 4px 15px rgba(93,214,44,0.3);
-        }
-        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(93,214,44,0.5);
         }
         .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active, .modal button:active, .copy-ref-btn:active, .employer-create-btn:active {
             transform: scale(0.96);
@@ -527,10 +553,6 @@
             cursor: pointer;
             transition: background 0.2s, color 0.2s;
         }
-        .view-toggle-btn:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
         .view-toggle-btn:active {
             transform: scale(0.9);
         }
@@ -552,9 +574,6 @@
             color: white;
             border-bottom-color: var(--accent);
         }
-        .tab:hover {
-            color: white;
-        }
         .tasks-grid {
             display: flex;
             flex-direction: column;
@@ -568,10 +587,6 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.03);
             transition: all 0.3s ease;
-        }
-        .task-card-new:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
         .task-header {
             display: flex;
@@ -591,14 +606,14 @@
             cursor: pointer;
             transition: color 0.2s;
         }
-        .task-favorite:hover {
+        .task-favorite.active {
             color: var(--accent);
         }
         .task-company {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             font-size: 20px;
             color: var(--text-muted);
         }
@@ -611,6 +626,11 @@
         }
         .company-rating i {
             margin-right: 4px;
+        }
+        .task-description {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
         }
         .task-price-large {
             font-size: 32px;
@@ -646,23 +666,23 @@
             transition: all 0.3s ease;
             margin-top: 8px;
         }
-        .task-take-btn-full:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(93,214,44,0.6);
+        .task-take-btn-full:active {
+            transform: scale(0.96);
         }
         /* Стили для свайп-карточки */
         .swipe-container {
             position: relative;
             width: 100%;
-            height: 500px;
+            min-height: 500px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            margin-top: 20px;
+            align-items: flex-start; /* прижать к верху */
+            margin-top: 0;
         }
         .swipe-card {
             position: absolute;
             width: 100%;
+            max-width: 400px;
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
             padding: 24px;
@@ -673,7 +693,6 @@
             user-select: none;
             will-change: transform;
             cursor: grab;
-            max-width: 400px;
             margin: 0 auto;
         }
         .swipe-card:active {
@@ -687,7 +706,11 @@
         }
         .swipe-card .task-company {
             font-size: 22px;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
+        }
+        .swipe-card .task-description {
+            font-size: 18px;
+            margin-bottom: 12px;
         }
         .swipe-card .task-price-large {
             font-size: 40px;
@@ -732,9 +755,6 @@
             background: #ff4d4d;
             color: white;
             box-shadow: 0 0 20px #ff4d4d;
-        }
-        .swipe-btn:hover {
-            transform: scale(1.1);
         }
         .swipe-btn:active {
             transform: scale(0.9);
@@ -834,8 +854,8 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-        .stat-under-item:hover {
-            transform: scale(1.05);
+        .stat-under-item:active {
+            transform: scale(0.95);
         }
         .stat-under-icon {
             font-size: 24px;
@@ -942,8 +962,8 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        .profile-role-card:hover {
-            background: rgba(93,214,44,0.1);
+        .profile-role-card:active {
+            background: rgba(93,214,44,0.2);
         }
         .role-card-left {
             display: flex;
@@ -1154,8 +1174,8 @@
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: white;
         }
-        .period-tab:hover {
-            background: rgba(255,255,255,0.1);
+        .period-tab:active {
+            background: rgba(255,255,255,0.2);
         }
         .chart-container {
             display: flex;
@@ -1492,10 +1512,10 @@
 
                     <!-- Фильтры -->
                     <div class="filters-tabs animate-stagger" id="mainFilters">
-                        <span class="tab active" data-filter="favorites">избранное</span>
-                        <span class="tab" data-filter="top">топ</span>
-                        <span class="tab" data-filter="new">новые</span>
-                        <span class="tab" data-filter="leaders">лидеры</span>
+                        <span class="tab active" data-filter="favorites" onclick="setFilter('favorites')">избранное</span>
+                        <span class="tab" data-filter="top" onclick="setFilter('top')">топ</span>
+                        <span class="tab" data-filter="new" onclick="setFilter('new')">новые</span>
+                        <span class="tab" data-filter="leaders" onclick="setFilter('leaders')">лидеры</span>
                     </div>
 
                     <!-- Контент в зависимости от роли и режима -->
@@ -1542,9 +1562,9 @@
             <div id="analytics-page" class="page">
                 <div class="analytics-page">
                     <div class="period-tabs animate-stagger" id="analyticsTabs">
-                        <span class="period-tab active" data-period="day">день</span>
-                        <span class="period-tab" data-period="week">неделя</span>
-                        <span class="period-tab" data-period="month">месяц</span>
+                        <span class="period-tab active" data-period="day" onclick="setAnalyticsPeriod('day')">день</span>
+                        <span class="period-tab" data-period="week" onclick="setAnalyticsPeriod('week')">неделя</span>
+                        <span class="period-tab" data-period="month" onclick="setAnalyticsPeriod('month')">месяц</span>
                     </div>
                     <div id="analyticsContent" class="fade-content"></div>
                 </div>
@@ -1955,49 +1975,85 @@
                         updateRoleUI();
                     };
 
-                    function updateRoleUI() {
-                        const roleContent = document.getElementById('roleContent');
-                        const sectionTitle = document.getElementById('mainSectionTitle');
-                        if (currentRole === 'worker') {
-                            sectionTitle.innerText = 'задания';
-                            if (viewMode === 'list') {
-                                roleContent.innerHTML = getWorkerTasksHTML();
-                            } else {
-                                roleContent.innerHTML = getWorkerSwipeHTML();
-                                initSwipe();
-                            }
-                        } else {
-                            sectionTitle.innerText = 'мои задания';
-                            roleContent.innerHTML = getEmployerHTML();
+                    // ---------- Filter state ----------
+                    let currentFilter = 'favorites'; // favorites, top, new, leaders
+
+                    window.setFilter = function(filter) {
+                        const tabs = document.querySelectorAll('#mainFilters .tab');
+                        tabs.forEach(t => t.classList.remove('active'));
+                        document.querySelector(`#mainFilters .tab[data-filter="${filter}"]`).classList.add('active');
+                        currentFilter = filter;
+                        if (currentRole === 'worker' && viewMode === 'list') {
+                            updateRoleUI(); // перерисовываем список с учётом фильтра
                         }
-                        const newElements = roleContent.querySelectorAll('.animate-stagger');
-                        newElements.forEach(el => {
-                            el.style.animation = 'none';
-                            el.offsetHeight;
-                            el.style.animation = '';
-                        });
+                    };
+
+                    // ---------- Favorites ----------
+                    let favoriteIds = JSON.parse(localStorage.getItem('favoriteIds')) || [];
+
+                    function saveFavorites() {
+                        localStorage.setItem('favoriteIds', JSON.stringify(favoriteIds));
                     }
 
-                    // ---------- Tasks HTML (list) ----------
+                    window.toggleFavorite = function(taskId) {
+                        const index = favoriteIds.indexOf(taskId);
+                        if (index === -1) {
+                            favoriteIds.push(taskId);
+                        } else {
+                            favoriteIds.splice(index, 1);
+                        }
+                        saveFavorites();
+                        // обновляем иконки на всех карточках
+                        document.querySelectorAll(`.task-favorite[onclick*="toggleFavorite(${taskId})"]`).forEach(el => {
+                            if (favoriteIds.includes(taskId)) {
+                                el.classList.remove('far');
+                                el.classList.add('fas');
+                            } else {
+                                el.classList.remove('fas');
+                                el.classList.add('far');
+                            }
+                        });
+                    };
+
+                    function isFavorite(taskId) {
+                        return favoriteIds.includes(taskId);
+                    }
+
+                    // ---------- Tasks data ----------
+                    const allTasks = [
+                        { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу и получи бонус', price: 30, xp: 5, company: 'ХАЙП', tags: ['без опыта', 'моментально'] },
+                        { id: 2, name: 'подпишись на канал', desc: 'подпишись на @hype_job1', price: 20, xp: 5, company: 'ХАЙП', tags: ['без опыта'] },
+                        { id: 3, name: 'мини-игра', desc: 'сыграй и выиграй до 20 ₽', price: '5-20', xp: 2, company: 'ХАЙП', tags: ['игра'] },
+                        { id: 4, name: 'тест', desc: 'тестовое задание 1₽', price: 1, xp: 1, company: 'ХАЙП', tags: ['тест'] }
+                    ];
+
+                    function filterTasks(tasks) {
+                        if (currentFilter === 'favorites') {
+                            return tasks.filter(t => favoriteIds.includes(t.id));
+                        }
+                        // другие фильтры пока заглушки
+                        return tasks;
+                    }
+
                     function getWorkerTasksHTML() {
-                        const allTasks = [
-                            { id: 1, name: 'пригласи друга', price: 30, xp: 5, company: 'ХАЙП', tags: ['без опыта', 'моментально'] },
-                            { id: 2, name: 'подпишись на канал', price: 20, xp: 5, company: 'ХАЙП', tags: ['без опыта'] },
-                            { id: 3, name: 'мини-игра', price: '5-20', xp: 2, company: 'ХАЙП', tags: ['игра'] },
-                            { id: 4, name: 'тест', price: 1, xp: 1, company: 'ХАЙП', tags: ['тест'] }
-                        ];
+                        const filtered = filterTasks(allTasks);
+                        if (filtered.length === 0) {
+                            return '<div style="text-align: center; color: var(--text-muted); padding: 20px;">нет заданий</div>';
+                        }
                         let html = '<div class="tasks-grid">';
-                        allTasks.forEach(t => {
+                        filtered.forEach(t => {
+                            const favClass = isFavorite(t.id) ? 'fas' : 'far';
                             html += `
                                 <div class="task-card-new" data-task-id="${t.id}">
                                     <div class="task-header">
                                         <h4 class="task-title">${t.name}</h4>
-                                        <i class="far fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id})"></i>
+                                        <i class="${favClass} fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id})"></i>
                                     </div>
                                     <div class="task-company">
                                         <span class="company-name">${t.company}</span>
                                         <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> 5.0</span>
                                     </div>
+                                    <div class="task-description">${t.desc}</div>
                                     <div class="task-price-large">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
                                     <div class="task-tags">
                                         ${t.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}
@@ -2011,29 +2067,29 @@
                     }
 
                     // ---------- Swipe mode ----------
-                    let swipeTasks = [
-                        { id: 1, name: 'пригласи друга', price: 30, company: 'ХАЙП', tags: ['без опыта', 'моментально'] },
-                        { id: 2, name: 'подпишись на канал', price: 20, company: 'ХАЙП', tags: ['без опыта'] },
-                        { id: 3, name: 'мини-игра', price: '5-20', company: 'ХАЙП', tags: ['игра'] },
-                        { id: 4, name: 'тест', price: 1, company: 'ХАЙП', tags: ['тест'] }
-                    ];
+                    let swipeTasks = [...allTasks];
                     let currentSwipeIndex = 0;
                     let isSwiping = false;
                     let startX, currentX, initialTransform;
 
                     function getWorkerSwipeHTML() {
+                        if (swipeTasks.length === 0) {
+                            return '<div style="text-align: center; color: var(--text-muted); padding: 20px;">нет заданий</div>';
+                        }
                         const t = swipeTasks[currentSwipeIndex % swipeTasks.length];
+                        const favClass = isFavorite(t.id) ? 'fas' : 'far';
                         return `
                             <div class="swipe-container">
                                 <div class="swipe-card" id="swipeCard">
                                     <div class="task-header">
                                         <h4 class="task-title">${t.name}</h4>
-                                        <i class="far fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id})"></i>
+                                        <i class="${favClass} fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id})"></i>
                                     </div>
                                     <div class="task-company">
                                         <span class="company-name">${t.company}</span>
                                         <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> 5.0</span>
                                     </div>
+                                    <div class="task-description">${t.desc}</div>
                                     <div class="task-price-large">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
                                     <div class="task-tags">
                                         ${t.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}
@@ -2086,7 +2142,8 @@
                         if (!isSwiping) return;
                         e.preventDefault();
                         const touch = e.touches[0];
-                        const deltaX = touch.clientX - startX;
+                        currentX = touch.clientX; // обновляем текущую позицию
+                        const deltaX = currentX - startX;
                         const card = document.getElementById('swipeCard');
                         card.style.transform = `translateX(${initialTransform + deltaX}px) rotate(${deltaX * 0.1}deg)`;
                     }
@@ -2134,7 +2191,8 @@
                     function onMouseMove(e) {
                         if (!isSwiping) return;
                         e.preventDefault();
-                        const deltaX = e.clientX - startX;
+                        currentX = e.clientX;
+                        const deltaX = currentX - startX;
                         const card = document.getElementById('swipeCard');
                         card.style.transform = `translateX(${initialTransform + deltaX}px) rotate(${deltaX * 0.1}deg)`;
                     }
@@ -2143,7 +2201,7 @@
                         if (!isSwiping) return;
                         e.preventDefault();
                         const card = document.getElementById('swipeCard');
-                        const deltaX = e.clientX - startX;
+                        const deltaX = currentX - startX;
                         card.style.transition = 'transform 0.3s ease';
                         if (Math.abs(deltaX) > 100) {
                             if (deltaX > 0) {
@@ -2158,12 +2216,16 @@
                     }
 
                     window.swipeLeft = function() {
-                        alert('Пропущено (в разработке)');
+                        // пропуск
                         nextSwipeCard();
                     };
 
                     window.swipeRight = function() {
-                        alert('Лайк (в разработке)');
+                        // лайк = добавить в избранное
+                        const t = swipeTasks[currentSwipeIndex % swipeTasks.length];
+                        if (!isFavorite(t.id)) {
+                            toggleFavorite(t.id);
+                        }
                         nextSwipeCard();
                     };
 
@@ -2173,13 +2235,6 @@
                         roleContent.innerHTML = getWorkerSwipeHTML();
                         initSwipe();
                     }
-
-                    window.toggleFavorite = function(taskId) {
-                        const icon = event.target;
-                        icon.classList.toggle('fas');
-                        icon.classList.toggle('far');
-                        console.log('Избранное для задания', taskId);
-                    };
 
                     function getEmployerHTML() {
                         return `
@@ -2202,6 +2257,29 @@
                                 <div style="text-align:center; margin-top:12px; color:var(--text-muted);">скоро здесь появится статистика</div>
                             </div>
                         `;
+                    }
+
+                    function updateRoleUI() {
+                        const roleContent = document.getElementById('roleContent');
+                        const sectionTitle = document.getElementById('mainSectionTitle');
+                        if (currentRole === 'worker') {
+                            sectionTitle.innerText = 'задания';
+                            if (viewMode === 'list') {
+                                roleContent.innerHTML = getWorkerTasksHTML();
+                            } else {
+                                roleContent.innerHTML = getWorkerSwipeHTML();
+                                initSwipe();
+                            }
+                        } else {
+                            sectionTitle.innerText = 'мои задания';
+                            roleContent.innerHTML = getEmployerHTML();
+                        }
+                        const newElements = roleContent.querySelectorAll('.animate-stagger');
+                        newElements.forEach(el => {
+                            el.style.animation = 'none';
+                            el.offsetHeight;
+                            el.style.animation = '';
+                        });
                     }
 
                     // ---------- Game (1 per day) ----------
@@ -2320,15 +2398,6 @@
                         await loadDailyChange();
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
-
-                    // ---------- Filters (demo) ----------
-                    document.getElementById('mainFilters')?.addEventListener('click', (e) => {
-                        const tab = e.target.closest('.tab');
-                        if (!tab) return;
-                        const tabs = document.querySelectorAll('#mainFilters .tab');
-                        tabs.forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                    });
 
                     // ---------- ANALYTICS ----------
                     async function loadAnalytics(period = 'day') {
@@ -2490,16 +2559,13 @@
                         }
                     }
 
-                    const analyticsTabs = document.querySelectorAll('#analyticsTabs .period-tab');
-                    analyticsTabs.forEach(tab => {
-                        tab.addEventListener('click', () => {
-                            if (tab.classList.contains('active')) return;
-                            analyticsTabs.forEach(t => t.classList.remove('active'));
-                            tab.classList.add('active');
-                            const period = tab.dataset.period;
-                            loadAnalytics(period);
-                        });
-                    });
+                    window.setAnalyticsPeriod = function(period) {
+                        const tabs = document.querySelectorAll('#analyticsTabs .period-tab');
+                        tabs.forEach(t => t.classList.remove('active'));
+                        document.querySelector(`#analyticsTabs .period-tab[data-period="${period}"]`).classList.add('active');
+                        loadAnalytics(period);
+                    };
+
                     function updateAnalyticsPage() { loadAnalytics('day'); }
 
                     // ---------- Subscription check ----------
