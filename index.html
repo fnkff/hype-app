@@ -46,6 +46,11 @@
         .page-header h2 {
             text-transform: none;
         }
+        /* Для уведомлений и настроек убираем зелёную обводку */
+        .page-header h2.white {
+            text-shadow: none;
+            color: white;
+        }
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -313,12 +318,9 @@
         .main-page .streak-block { animation-delay: 0.2s; }
         .main-page .section-title { animation-delay: 0.3s; }
         .main-page .filters-tabs { animation-delay: 0.4s; }
-        .main-page .task-card-new:nth-child(1),
-        .main-page .employer-card:nth-child(1) { animation-delay: 0.5s; }
-        .main-page .task-card-new:nth-child(2),
-        .main-page .employer-card:nth-child(2) { animation-delay: 0.6s; }
-        .main-page .task-card-new:nth-child(3),
-        .main-page .task-card-new:nth-child(4) { animation-delay: 0.7s; }
+        .main-page .task-card-new:nth-child(1) { animation-delay: 0.5s; }
+        .main-page .task-card-new:nth-child(2) { animation-delay: 0.6s; }
+        .main-page .task-card-new:nth-child(3) { animation-delay: 0.7s; }
         .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
         .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
@@ -487,7 +489,11 @@
             font-size: 28px;
             font-weight: 800;
             color: white;
-            text-shadow: 0 0 5px var(--accent);
+            text-shadow: 0 0 5px var(--accent); /* по умолчанию есть свечение */
+        }
+        /* Для уведомлений и настроек свечение убираем */
+        .page-header h2.white {
+            text-shadow: none;
         }
         .close-btn {
             font-size: 32px;
@@ -641,6 +647,7 @@
         .company-name {
             font-weight: 600;
             color: white;
+            text-transform: none; /* чтобы "ХАЙП" оставался заглавным */
         }
         .company-rating {
             color: #FFC107;
@@ -690,7 +697,7 @@
         .task-take-btn-full:active {
             transform: scale(0.96);
         }
-        /* Стили для свайп-карточки (уже были, оставляем) */
+        /* Стили для свайп-карточки */
         .swipe-container {
             position: relative;
             width: 100%;
@@ -1245,6 +1252,7 @@
             font-weight: 800;
             margin-bottom: 30px;
             color: white;
+            text-transform: uppercase; /* чтобы "ХАЙП" было заглавными */
         }
         .card-number {
             font-size: 20px;
@@ -1341,7 +1349,7 @@
         }
         .chart-bar {
             width: 100%;
-            background: linear-gradient(to top, var(--accent), var(--accent-dark));
+            background: var(--accent); /* убрали градиент, оставили сплошной цвет */
             border-radius: 6px 6px 0 0;
             min-height: 2px;
             transition: height 0.2s ease;
@@ -1721,7 +1729,7 @@
             <div id="notifications-page" class="page">
                 <div class="notification-page">
                     <div class="page-header">
-                        <h2>уведомления</h2>
+                        <h2 class="white">уведомления</h2>
                         <button class="close-btn" onclick="closeNotifications()">&times;</button>
                     </div>
                     <div class="notification-item">
@@ -1739,7 +1747,7 @@
             <div id="settings-page" class="page">
                 <div class="settings-page">
                     <div class="page-header">
-                        <h2>настройки</h2>
+                        <h2 class="white">настройки</h2>
                         <button class="close-btn" onclick="closeSettings()">&times;</button>
                     </div>
                     <div class="settings-item">
@@ -1997,6 +2005,7 @@
                                 balance = user.balance;
                                 updateBalanceDisplay();
                                 updateStreak();
+                                // Если streak увеличился при загрузке (новый день), показываем анимацию
                                 if (user.streak > oldStreak) {
                                     setTimeout(() => {
                                         showStreakAnimation(oldStreak, user.streak);
@@ -2505,6 +2514,8 @@
                                 roleContent.style.display = 'block';
                                 swipeContainer.style.display = 'none';
                                 roleContent.innerHTML = getWorkerTasksHTML();
+                                // Анимируем новые элементы
+                                animateNewElements(roleContent);
                             } else {
                                 roleContent.style.display = 'none';
                                 swipeContainer.style.display = 'flex';
@@ -2519,6 +2530,8 @@
                                 roleContent.style.display = 'block';
                                 swipeContainer.style.display = 'none';
                                 roleContent.innerHTML = getEmployerHTML();
+                                // Анимируем новые элементы
+                                animateNewElements(roleContent);
                             } else {
                                 roleContent.style.display = 'none';
                                 swipeContainer.style.display = 'flex';
@@ -2530,11 +2543,14 @@
                                 });
                             }
                         }
-                        // анимация для новых элементов
-                        const newElements = (viewMode === 'list' ? roleContent : swipeContainer).querySelectorAll('.animate-stagger');
+                    }
+
+                    // Функция для повторной анимации элементов после обновления списка
+                    function animateNewElements(container) {
+                        const newElements = container.querySelectorAll('.task-card-new, .employer-card');
                         newElements.forEach(el => {
                             el.style.animation = 'none';
-                            el.offsetHeight;
+                            el.offsetHeight; // форсируем reflow
                             el.style.animation = '';
                         });
                     }
@@ -2716,24 +2732,23 @@
                                     chartData[hour].amount += e.amount || 0;
                                 });
                             } else if (period === 'week') {
-                                // последние 7 дней от старого к новому
-                                const dayNames = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
-                                for (let i = 6; i >= 0; i--) {
-                                    const d = new Date(now);
-                                    d.setDate(now.getDate() - i);
-                                    const dayIndex = d.getDay();
+                                // Неделя от понедельника до воскресенья (фиксированные названия)
+                                const dayNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+                                // Создаём массив с днями от понедельника (индекс 0) до воскресенья (индекс 6)
+                                for (let i = 0; i < 7; i++) {
                                     chartData.push({ 
-                                        label: dayNames[dayIndex], 
+                                        label: dayNames[i], 
                                         amount: 0,
-                                        timestamp: d.setHours(0,0,0,0)
+                                        // Не привязываемся к конкретным датам, просто по порядку
                                     });
                                 }
+                                // Теперь нужно распределить события по дням недели, используя день недели события
                                 events.forEach(e => {
-                                    const eventDate = new Date(e.created_at).setHours(0,0,0,0);
-                                    const index = chartData.findIndex(item => item.timestamp === eventDate);
-                                    if (index !== -1) {
-                                        chartData[index].amount += e.amount || 0;
-                                    }
+                                    const eventDate = new Date(e.created_at);
+                                    const dayIndex = eventDate.getDay(); // 0 = воскресенье, 1 = понедельник, ... 6 = суббота
+                                    // Преобразуем: нам нужно, чтобы понедельник был индекс 0
+                                    let idx = dayIndex === 0 ? 6 : dayIndex - 1; // воскресенье (0) -> 6, пн (1) -> 0, вт (2)->1, ...
+                                    chartData[idx].amount += e.amount || 0;
                                 });
                             } else { // month - текущий месяц с 1 по последнее число
                                 const year = now.getFullYear();
@@ -3058,7 +3073,7 @@
                         if (!container) return;
                         container.innerHTML = `
                             <div class="card-glow animate-stagger">
-                                <div class="card-logo">хайп</div>
+                                <div class="card-logo">ХАЙП</div>
                                 <div class="card-number">2200 0000 0000 0000</div>
                                 <div class="card-details">
                                     <span>01/29</span>
@@ -3098,8 +3113,13 @@
                         let streak = getStreak();
                         if (lastDate === today) return streak;
                         const yesterday = new Date(Date.now() - 86400000).toDateString();
-                        if (lastDate === yesterday) streak++;
-                        else streak = 1;
+                        if (lastDate === yesterday) {
+                            const oldStreak = streak;
+                            streak++;
+                            showStreakAnimation(oldStreak, streak);
+                        } else {
+                            streak = 1;
+                        }
                         localStorage.setItem('streak', streak);
                         localStorage.setItem('lastStreakDate', today);
                         return streak;
