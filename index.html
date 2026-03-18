@@ -46,7 +46,6 @@
         .page-header h2 {
             text-transform: none;
         }
-        /* Для уведомлений и настроек убираем зелёную обводку */
         .page-header h2.white {
             text-shadow: none;
             color: white;
@@ -489,9 +488,8 @@
             font-size: 28px;
             font-weight: 800;
             color: white;
-            text-shadow: 0 0 5px var(--accent); /* по умолчанию есть свечение */
+            text-shadow: 0 0 5px var(--accent);
         }
-        /* Для уведомлений и настроек свечение убираем */
         .page-header h2.white {
             text-shadow: none;
         }
@@ -647,7 +645,7 @@
         .company-name {
             font-weight: 600;
             color: white;
-            text-transform: none; /* чтобы "ХАЙП" оставался заглавным */
+            text-transform: none;
         }
         .company-rating {
             color: #FFC107;
@@ -702,7 +700,7 @@
             position: relative;
             width: 100%;
             min-height: 500px;
-            display: none; /* скрыт по умолчанию */
+            display: none;
             justify-content: center;
             align-items: flex-start;
             margin-top: 0;
@@ -1252,7 +1250,7 @@
             font-weight: 800;
             margin-bottom: 30px;
             color: white;
-            text-transform: uppercase; /* чтобы "ХАЙП" было заглавными */
+            text-transform: uppercase;
         }
         .card-number {
             font-size: 20px;
@@ -1349,7 +1347,7 @@
         }
         .chart-bar {
             width: 100%;
-            background: var(--accent); /* убрали градиент, оставили сплошной цвет */
+            background: var(--accent);
             border-radius: 6px 6px 0 0;
             min-height: 2px;
             transition: height 0.2s ease;
@@ -2695,7 +2693,7 @@
                             startDate.setDate(now.getDate() - 7);
                         } else {
                             startDate = new Date(now);
-                            startDate.setDate(1); // первый день текущего месяца
+                            startDate.setDate(1);
                             startDate.setHours(0,0,0,0);
                         }
 
@@ -2722,7 +2720,6 @@
 
                             let chartData = [];
                             if (period === 'day') {
-                                // 24 часа
                                 for (let h = 0; h < 24; h++) {
                                     chartData.push({ label: `${h.toString().padStart(2,'0')}:00`, amount: 0 });
                                 }
@@ -2732,25 +2729,20 @@
                                     chartData[hour].amount += e.amount || 0;
                                 });
                             } else if (period === 'week') {
-                                // Неделя от понедельника до воскресенья (фиксированные названия)
                                 const dayNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
-                                // Создаём массив с днями от понедельника (индекс 0) до воскресенья (индекс 6)
                                 for (let i = 0; i < 7; i++) {
                                     chartData.push({ 
                                         label: dayNames[i], 
-                                        amount: 0,
-                                        // Не привязываемся к конкретным датам, просто по порядку
+                                        amount: 0
                                     });
                                 }
-                                // Теперь нужно распределить события по дням недели, используя день недели события
                                 events.forEach(e => {
                                     const eventDate = new Date(e.created_at);
-                                    const dayIndex = eventDate.getDay(); // 0 = воскресенье, 1 = понедельник, ... 6 = суббота
-                                    // Преобразуем: нам нужно, чтобы понедельник был индекс 0
-                                    let idx = dayIndex === 0 ? 6 : dayIndex - 1; // воскресенье (0) -> 6, пн (1) -> 0, вт (2)->1, ...
+                                    const dayIndex = eventDate.getDay(); // 0 = воскресенье, 1 = понедельник, ...
+                                    let idx = dayIndex === 0 ? 6 : dayIndex - 1; // преобразуем: воскресенье (0) -> 6
                                     chartData[idx].amount += e.amount || 0;
                                 });
-                            } else { // month - текущий месяц с 1 по последнее число
+                            } else {
                                 const year = now.getFullYear();
                                 const month = now.getMonth();
                                 const lastDay = new Date(year, month + 1, 0).getDate();
@@ -2772,8 +2764,6 @@
                             }
 
                             const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
-
-                            // Определяем класс для контейнера в зависимости от периода
                             const chartClass = period === 'day' ? '' : (period === 'week' ? 'week-view' : 'month-view');
 
                             let html = `
@@ -2811,9 +2801,9 @@
                             events.slice(0, 10).forEach(e => {
                                 const date = new Date(e.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
                                 let typeText = '';
-                                if (e.event_type === 'task_completed') typeText = '✅ задание';
-                                else if (e.event_type === 'game_played') typeText = '🎮 игра';
-                                else if (e.event_type === 'test_task') typeText = '🧪 тест';
+                                if (e.event_type === 'task_completed') typeText = 'задание';
+                                else if (e.event_type === 'game_played') typeText = 'игра';
+                                else if (e.event_type === 'test_task') typeText = 'тест';
                                 else typeText = e.event_type;
                                 html += `
                                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
@@ -2942,7 +2932,6 @@
                     };
 
                     window.toggleTheme = function() {
-                        // Заглушка для смены темы
                         console.log('Theme toggled');
                     };
 
@@ -2960,7 +2949,6 @@
                     function showPage(pageId) {
                         Object.values(pages).forEach(p => p.classList.remove('active-page'));
                         pages[pageId].classList.add('active-page');
-                        // Синхронизируем нижнюю навигацию для основных страниц
                         if (['tasks', 'profile', 'analytics', 'referrals', 'withdraw'].includes(pageId)) {
                             document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
                                 if (item.dataset.page === pageId) {
@@ -2970,7 +2958,6 @@
                                 }
                             });
                         } else {
-                            // Для уведомлений и настроек снимаем активность с навигации
                             document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
                                 item.classList.remove('active');
                             });
@@ -2979,7 +2966,16 @@
                         else if (pageId === 'referrals') updateReferralsPage();
                         else if (pageId === 'withdraw') updateWithdrawPage();
                         else if (pageId === 'analytics') updateAnalyticsPage();
-                        else if (pageId === 'tasks') animatePage(pages[pageId]);
+                        else if (pageId === 'tasks') {
+                            animatePage(pages[pageId]);
+                            // Дополнительно анимируем задания после загрузки
+                            setTimeout(() => {
+                                const container = document.getElementById('roleContent');
+                                if (container && currentRole === 'worker' && viewMode === 'list') {
+                                    animateNewElements(container);
+                                }
+                            }, 100);
+                        }
                     }
 
                     const navItems = document.querySelectorAll('.bottom-nav .nav-item');
@@ -3041,6 +3037,7 @@
                     function updateReferralsPage() {
                         const container = document.getElementById('referralsContent');
                         if (!container) return;
+                        const referralsCount = parseInt(localStorage.getItem('referralsCount')) || 0;
                         container.innerHTML = `
                             <div class="referral-link-block animate-stagger">
                                 <div class="referral-link-label">твоя реферальная ссылка</div>
@@ -3052,7 +3049,7 @@
                             <div class="referral-stats">
                                 <div class="referral-stat-card animate-stagger">
                                     <div class="stat-label">приглашено</div>
-                                    <div class="stat-number">${getReferralsCount()}</div>
+                                    <div class="stat-number">${referralsCount}</div>
                                 </div>
                                 <div class="referral-stat-card animate-stagger">
                                     <div class="stat-label">заработано</div>
@@ -3090,7 +3087,7 @@
                             <div class="withdraw-field animate-stagger">
                                 <input type="text" placeholder="номер карты или кошелька" id="withdrawCard">
                             </div>
-                            <button id="withdrawSubmit" class="animate-stagger">вывести</button>
+                            <button id="withdrawSubmit" class="animate-stagger" onclick="alert('вывод временно недоступен')">вывести</button>
                             <div style="margin-top:25px;">
                                 <h4 style="margin-bottom:15px;">недавние операции</h4>
                                 <div class="recent-transfers animate-stagger">
