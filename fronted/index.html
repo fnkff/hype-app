@@ -11,7 +11,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* все твои стили остаются без изменений */
         :root {
             --bg-main: #0F0F0F;
             --bg-card: #202020;
@@ -2482,7 +2481,7 @@
                         displayEmployerSwipeCandidate();
                     }
 
-                    // ---------- Employer HTML (исправленный) ----------
+                    // ---------- Employer HTML ----------
                     function getEmployerHTML() {
                         return `
                             <div class="employer-card animate-stagger">
@@ -2501,7 +2500,7 @@
                         `;
                     }
 
-                    // ---------- Новая функция для создания задания ----------
+                    // ---------- Создание задания ----------
                     window.createNewTask = async function() {
                         const title = document.getElementById('newTaskTitle')?.value.trim();
                         const description = document.getElementById('newTaskDesc')?.value.trim() || '';
@@ -2575,44 +2574,20 @@
                         container.innerHTML = html;
                     }
 
-                    // ---------- НОВАЯ ФУНКЦИЯ: загрузка реальных заданий для исполнителя ----------
+                    // ---------- НОВАЯ ФУНКЦИЯ: загрузка реальных заданий для исполнителя (без JOIN) ----------
                     async function loadTasks() {
                         // Скрываем свайп-контейнер, показываем tasksContainer
                         document.getElementById('swipeContainer').style.display = 'none';
                         document.getElementById('tasksContainer').style.display = 'block';
                         document.getElementById('roleContent').style.display = 'none';
 
-                        let query = supabaseClient
+                        // Просто загружаем все открытые задания
+                        const { data: tasks, error } = await supabaseClient
                             .from('tasks')
-                            .select(`
-                                *,
-                                profiles!tasks_employer_id_fkey (username, full_name, rating)
-                            `)
+                            .select('*')
                             .eq('status', 'open')
                             .order('created_at', { ascending: false });
 
-                        // Применяем фильтр
-                        if (currentFilter === 'favorites') {
-                            const favoriteTaskIds = favoriteIds.filter(id => typeof id === 'number');
-                            if (favoriteTaskIds.length === 0) {
-                                document.getElementById('tasksContainer').innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет избранных заданий</p>';
-                                return;
-                            }
-                            query = query.in('id', favoriteTaskIds);
-                        } else if (currentFilter === 'my') {
-                            const { data: responses } = await supabaseClient
-                                .from('responses')
-                                .select('task_id')
-                                .eq('worker_id', userId);
-                            const taskIds = responses.map(r => r.task_id);
-                            if (taskIds.length === 0) {
-                                document.getElementById('tasksContainer').innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет откликов</p>';
-                                return;
-                            }
-                            query = query.in('id', taskIds);
-                        }
-
-                        const { data: tasks, error } = await query;
                         if (error) {
                             console.error('Error loading tasks:', error);
                             return;
@@ -2624,10 +2599,18 @@
                             return;
                         }
 
+                        // Для каждого задания получим профиль заказчика отдельно
                         let html = '';
                         for (let task of tasks) {
-                            const employerName = task.profiles?.full_name || task.profiles?.username || 'Неизвестно';
-                            const employerRating = task.profiles?.rating ? task.profiles.rating.toFixed(1) : '0.0';
+                            // Получаем профиль заказчика
+                            const { data: profile } = await supabaseClient
+                                .from('profiles')
+                                .select('username, full_name, rating')
+                                .eq('id', task.employer_id)
+                                .single();
+
+                            const employerName = profile?.full_name || profile?.username || 'Неизвестно';
+                            const employerRating = profile?.rating ? profile.rating.toFixed(1) : '0.0';
                             const showTakeButton = (currentRole === 'worker' && task.status === 'open');
                             let alreadyResponded = false;
                             if (showTakeButton) {
@@ -2699,7 +2682,7 @@
                         }
                     };
 
-                    // ---------- Обновление UI в зависимости от роли и режима (ИСПРАВЛЕННАЯ) ----------
+                    // ---------- Обновление UI в зависимости от роли и режима ----------
                     function updateRoleUI() {
                         const roleContent = document.getElementById('roleContent');
                         const swipeContainer = document.getElementById('swipeContainer');
