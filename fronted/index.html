@@ -313,13 +313,16 @@
             opacity: 0;
             animation: fadeInUp 0.4s ease-out forwards;
         }
-        .main-page .total-balance { animation-delay: 0.1s; }
-        .main-page .streak-block { animation-delay: 0.2s; }
-        .main-page .section-title { animation-delay: 0.3s; }
-        .main-page .filters-tabs { animation-delay: 0.4s; }
-        .main-page .task-card-new:nth-child(1) { animation-delay: 0.5s; }
-        .main-page .task-card-new:nth-child(2) { animation-delay: 0.6s; }
-        .main-page .task-card-new:nth-child(3) { animation-delay: 0.7s; }
+        /* Добавим класс для анимации карточек заданий (будем назначать динамически) */
+        .task-card-new.animate-stagger {
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+        /* Задержки для карточек (опционально) */
+        .task-card-new:nth-child(1) { animation-delay: 0.5s; }
+        .task-card-new:nth-child(2) { animation-delay: 0.6s; }
+        .task-card-new:nth-child(3) { animation-delay: 0.7s; }
+        .task-card-new:nth-child(4) { animation-delay: 0.8s; }
+        .task-card-new:nth-child(5) { animation-delay: 0.9s; }
         .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
         .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
@@ -700,7 +703,7 @@
             position: relative;
             width: 100%;
             min-height: 500px;
-            display: none;
+            display: none; /* скрыт по умолчанию */
             justify-content: center;
             align-items: flex-start;
             margin-top: 0;
@@ -2003,7 +2006,6 @@
                                 balance = user.balance;
                                 updateBalanceDisplay();
                                 updateStreak();
-                                // Если streak увеличился при загрузке (новый день), показываем анимацию
                                 if (user.streak > oldStreak) {
                                     setTimeout(() => {
                                         showStreakAnimation(oldStreak, user.streak);
@@ -2501,6 +2503,18 @@
                         `;
                     }
 
+                    // ---------- Функция для анимации новых элементов ----------
+                    function animateNewElements(container) {
+                        const newElements = container.querySelectorAll('.task-card-new, .employer-card');
+                        newElements.forEach(el => {
+                            el.classList.add('animate-stagger');
+                            // Перезапуск анимации: убираем класс, форсируем reflow, добавляем снова
+                            el.style.animation = 'none';
+                            el.offsetHeight; // форсируем reflow
+                            el.style.animation = '';
+                        });
+                    }
+
                     // ---------- Обновление UI в зависимости от роли и режима ----------
                     function updateRoleUI() {
                         const roleContent = document.getElementById('roleContent');
@@ -2541,16 +2555,6 @@
                                 });
                             }
                         }
-                    }
-
-                    // Функция для повторной анимации элементов после обновления списка
-                    function animateNewElements(container) {
-                        const newElements = container.querySelectorAll('.task-card-new, .employer-card');
-                        newElements.forEach(el => {
-                            el.style.animation = 'none';
-                            el.offsetHeight; // форсируем reflow
-                            el.style.animation = '';
-                        });
                     }
 
                     // ---------- Game (1 per day) ----------
@@ -2739,7 +2743,7 @@
                                 events.forEach(e => {
                                     const eventDate = new Date(e.created_at);
                                     const dayIndex = eventDate.getDay(); // 0 = воскресенье, 1 = понедельник, ...
-                                    let idx = dayIndex === 0 ? 6 : dayIndex - 1; // преобразуем: воскресенье (0) -> 6
+                                    let idx = dayIndex === 0 ? 6 : dayIndex - 1;
                                     chartData[idx].amount += e.amount || 0;
                                 });
                             } else {
