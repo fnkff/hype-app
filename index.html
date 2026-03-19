@@ -313,11 +313,9 @@
             opacity: 0;
             animation: fadeInUp 0.4s ease-out forwards;
         }
-        /* Добавим класс для анимации карточек заданий (будем назначать динамически) */
         .task-card-new.animate-stagger {
             animation: fadeInUp 0.4s ease-out forwards;
         }
-        /* Задержки для карточек (опционально) */
         .task-card-new:nth-child(1) { animation-delay: 0.5s; }
         .task-card-new:nth-child(2) { animation-delay: 0.6s; }
         .task-card-new:nth-child(3) { animation-delay: 0.7s; }
@@ -479,7 +477,7 @@
         .notification-page, .settings-page {
             padding: 0 20px 20px 20px;
             min-height: 100%;
-            background: transparent; /* фон наследуется от body */
+            background: transparent;
         }
         .page-header {
             display: flex;
@@ -698,12 +696,11 @@
         .task-take-btn-full:active {
             transform: scale(0.96);
         }
-        /* Стили для свайп-карточки */
         .swipe-container {
             position: relative;
             width: 100%;
             min-height: 500px;
-            display: none; /* скрыт по умолчанию */
+            display: none;
             justify-content: center;
             align-items: flex-start;
             margin-top: 0;
@@ -788,7 +785,6 @@
         .swipe-btn:active {
             transform: scale(0.9);
         }
-        /* Уведомления */
         .notification-item {
             display: flex;
             align-items: center;
@@ -822,7 +818,6 @@
             color: var(--text-muted);
             margin-top: 4px;
         }
-        /* Настройки */
         .settings-item {
             display: flex;
             justify-content: space-between;
@@ -1886,7 +1881,7 @@
                     let counts = JSON.parse(localStorage.getItem('counts')) || {};
 
                     // Глобальные переменные для свайпа заказчика
-                    let swipeCandidates = [];          // массив кандидатов (исполнителей)
+                    let swipeCandidates = [];
                     let currentSwipeIndex = 0;
                     let isSwiping = false;
                     let startX, currentX, initialTransform;
@@ -2175,7 +2170,7 @@
                         viewMode = viewMode === 'list' ? 'swipe' : 'list';
                         const icon = document.getElementById('viewToggleIcon');
                         icon.className = viewMode === 'list' ? 'fas fa-list' : 'fas fa-th-large';
-                        updateRoleUI(); // перерисовываем контент
+                        updateRoleUI();
                     };
 
                     // ---------- Filter state ----------
@@ -2266,7 +2261,7 @@
                         return html;
                     }
 
-                    // ---------- Swipe mode для исполнителя (старый) ----------
+                    // ---------- Swipe mode для исполнителя ----------
                     let swipeTasks = [...allTasks];
                     let currentSwipeTaskIndex = 0;
 
@@ -2355,11 +2350,9 @@
                         card.style.transition = 'transform 0.3s ease';
                         if (Math.abs(deltaX) > 100) {
                             if (deltaX > 0) {
-                                // свайп вправо -> like
                                 const likeBtn = card.querySelector('.swipe-btn.like');
                                 if (likeBtn) likeBtn.click();
                             } else {
-                                // свайп влево -> dislike
                                 const dislikeBtn = card.querySelector('.swipe-btn.dislike');
                                 if (dislikeBtn) dislikeBtn.click();
                             }
@@ -2384,7 +2377,6 @@
 
                     function nextSwipeCard() {
                         currentSwipeTaskIndex++;
-                        // обновляем карточку в контейнере
                         const container = document.getElementById('swipeContainer');
                         if (container) {
                             container.innerHTML = getWorkerSwipeHTML();
@@ -2392,9 +2384,8 @@
                         }
                     }
 
-                    // ---------- Функции для свайпа заказчика (новое) ----------
+                    // ---------- Функции для свайпа заказчика ----------
                     async function loadEmployerSwipeCandidates() {
-                        // Получаем ID пользователей, которых этот заказчик уже лайкнул (чтобы исключить)
                         const { data: likedUsers } = await supabaseClient
                             .from('likes')
                             .select('to_user_id')
@@ -2403,11 +2394,10 @@
 
                         const likedIds = likedUsers?.map(l => l.to_user_id) || [];
 
-                        // Загружаем исполнителей (profiles) с рейтингом и количеством выполненных заданий
                         let query = supabaseClient
                             .from('profiles')
                             .select('*')
-                            .not('id', 'eq', userId); // исключаем себя
+                            .not('id', 'eq', userId);
 
                         if (likedIds.length > 0) {
                             query = query.not('id', 'in', `(${likedIds.map(id => `'${id}'`).join(',')})`);
@@ -2453,7 +2443,6 @@
                     }
 
                     window.swipeRightCandidate = async function(candidateId) {
-                        // Сохраняем лайк в БД
                         const { error } = await supabaseClient
                             .from('likes')
                             .insert([{
@@ -2472,47 +2461,103 @@
                     async function nextSwipeCandidate() {
                         currentSwipeIndex++;
                         if (currentSwipeIndex >= swipeCandidates.length) {
-                            // Если кандидаты закончились, загружаем новую порцию
                             swipeCandidates = await loadEmployerSwipeCandidates();
                             currentSwipeIndex = 0;
                         }
                         displayEmployerSwipeCandidate();
                     }
 
-                    // ---------- Employer HTML (старый) ----------
+                    // ---------- Employer HTML (исправленный) ----------
                     function getEmployerHTML() {
                         return `
                             <div class="employer-card animate-stagger">
                                 <h4 style="margin-bottom:15px;">создать новое задание</h4>
-                                <input class="employer-create-field" type="text" placeholder="название задания">
-                                <input class="employer-create-field" type="number" placeholder="цена (₽)">
-                                <button class="employer-create-btn" onclick="alert('задание создано (демо)')">опубликовать</button>
+                                <input class="employer-create-field" type="text" id="newTaskTitle" placeholder="название задания">
+                                <input class="employer-create-field" type="text" id="newTaskDesc" placeholder="описание (необязательно)">
+                                <input class="employer-create-field" type="number" id="newTaskPrice" placeholder="цена (₽)">
+                                <input class="employer-create-field" type="text" id="newTaskCategory" placeholder="категория (необязательно)">
+                                <button class="employer-create-btn" onclick="createNewTask()">опубликовать</button>
                             </div>
                             <div class="employer-card animate-stagger">
                                 <h4 style="margin-bottom:15px;">мои активные задания</h4>
-                                <div class="employer-order-item">
-                                    <span>подпишись на канал</span>
-                                    <span class="employer-order-status">20 ₽ • 5 выполнений</span>
-                                </div>
-                                <div class="employer-order-item">
-                                    <span>пригласи друга</span>
-                                    <span class="employer-order-status">30 ₽ • 2 выполнения</span>
-                                </div>
+                                <div id="employerActiveTasks"></div>
                                 <div style="text-align:center; margin-top:12px; color:var(--text-muted);">скоро здесь появится статистика</div>
                             </div>
                         `;
                     }
 
-                    // ---------- Функция для анимации новых элементов ----------
-                    function animateNewElements(container) {
-                        const newElements = container.querySelectorAll('.task-card-new, .employer-card');
-                        newElements.forEach(el => {
-                            el.classList.add('animate-stagger');
-                            // Перезапуск анимации: убираем класс, форсируем reflow, добавляем снова
-                            el.style.animation = 'none';
-                            el.offsetHeight; // форсируем reflow
-                            el.style.animation = '';
+                    // ---------- Новая функция для создания задания ----------
+                    window.createNewTask = async function() {
+                        const title = document.getElementById('newTaskTitle')?.value.trim();
+                        const description = document.getElementById('newTaskDesc')?.value.trim() || '';
+                        const price = parseInt(document.getElementById('newTaskPrice')?.value);
+                        const category = document.getElementById('newTaskCategory')?.value.trim() || null;
+
+                        if (!title || !price) {
+                            alert('Заполните название и цену');
+                            return;
+                        }
+
+                        const { error } = await supabaseClient
+                            .from('tasks')
+                            .insert([{
+                                employer_id: userId,
+                                title: title,
+                                description: description,
+                                price: price,
+                                category: category,
+                                status: 'open'
+                            }]);
+
+                        if (error) {
+                            console.error('Error creating task:', error);
+                            alert('Ошибка при создании задания: ' + error.message);
+                        } else {
+                            alert('Задание опубликовано!');
+                            // Очищаем поля
+                            document.getElementById('newTaskTitle').value = '';
+                            document.getElementById('newTaskDesc').value = '';
+                            document.getElementById('newTaskPrice').value = '';
+                            document.getElementById('newTaskCategory').value = '';
+                            // Обновляем список заданий (если нужно)
+                            if (currentRole === 'employer') {
+                                loadEmployerActiveTasks();
+                            }
+                        }
+                    };
+
+                    // ---------- Загрузка активных заданий заказчика ----------
+                    async function loadEmployerActiveTasks() {
+                        const { data: tasks, error } = await supabaseClient
+                            .from('tasks')
+                            .select('*')
+                            .eq('employer_id', userId)
+                            .eq('status', 'open')
+                            .order('created_at', { ascending: false });
+
+                        if (error) {
+                            console.error('Error loading employer tasks:', error);
+                            return;
+                        }
+
+                        const container = document.getElementById('employerActiveTasks');
+                        if (!container) return;
+
+                        if (!tasks || tasks.length === 0) {
+                            container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">нет активных заданий</p>';
+                            return;
+                        }
+
+                        let html = '';
+                        tasks.forEach(task => {
+                            html += `
+                                <div class="employer-order-item">
+                                    <span>${task.title}</span>
+                                    <span class="employer-order-status">${task.price} ₽ • создано ${new Date(task.created_at).toLocaleDateString()}</span>
+                                </div>
+                            `;
                         });
+                        container.innerHTML = html;
                     }
 
                     // ---------- Обновление UI в зависимости от роли и режима ----------
@@ -2526,12 +2571,10 @@
                                 roleContent.style.display = 'block';
                                 swipeContainer.style.display = 'none';
                                 roleContent.innerHTML = getWorkerTasksHTML();
-                                // Анимируем новые элементы
                                 animateNewElements(roleContent);
                             } else {
                                 roleContent.style.display = 'none';
                                 swipeContainer.style.display = 'flex';
-                                // для worker используем старый свайп заданий
                                 currentSwipeTaskIndex = 0;
                                 swipeContainer.innerHTML = getWorkerSwipeHTML();
                                 initSwipe();
@@ -2542,12 +2585,12 @@
                                 roleContent.style.display = 'block';
                                 swipeContainer.style.display = 'none';
                                 roleContent.innerHTML = getEmployerHTML();
-                                // Анимируем новые элементы
+                                // Загружаем активные задания
+                                loadEmployerActiveTasks();
                                 animateNewElements(roleContent);
                             } else {
                                 roleContent.style.display = 'none';
                                 swipeContainer.style.display = 'flex';
-                                // загружаем кандидатов для заказчика
                                 loadEmployerSwipeCandidates().then(candidates => {
                                     swipeCandidates = candidates;
                                     currentSwipeIndex = 0;
@@ -2555,6 +2598,17 @@
                                 });
                             }
                         }
+                    }
+
+                    // ---------- Функция для анимации новых элементов ----------
+                    function animateNewElements(container) {
+                        const newElements = container.querySelectorAll('.task-card-new, .employer-card');
+                        newElements.forEach(el => {
+                            el.classList.add('animate-stagger');
+                            el.style.animation = 'none';
+                            el.offsetHeight;
+                            el.style.animation = '';
+                        });
                     }
 
                     // ---------- Game (1 per day) ----------
@@ -2742,7 +2796,7 @@
                                 }
                                 events.forEach(e => {
                                     const eventDate = new Date(e.created_at);
-                                    const dayIndex = eventDate.getDay(); // 0 = воскресенье, 1 = понедельник, ...
+                                    const dayIndex = eventDate.getDay();
                                     let idx = dayIndex === 0 ? 6 : dayIndex - 1;
                                     chartData[idx].amount += e.amount || 0;
                                 });
@@ -2972,7 +3026,6 @@
                         else if (pageId === 'analytics') updateAnalyticsPage();
                         else if (pageId === 'tasks') {
                             animatePage(pages[pageId]);
-                            // Дополнительно анимируем задания после загрузки
                             setTimeout(() => {
                                 const container = document.getElementById('roleContent');
                                 if (container && currentRole === 'worker' && viewMode === 'list') {
