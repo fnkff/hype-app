@@ -2237,44 +2237,6 @@
                         { id: 4, name: 'тест', desc: 'тестовое задание 1₽', price: 1, xp: 1, company: 'ХАЙП', tags: ['тест'] }
                     ];
 
-                    function filterTasks(tasks) {
-                        if (currentFilter === 'favorites') {
-                            return tasks.filter(t => favoriteIds.includes(t.id));
-                        }
-                        return tasks;
-                    }
-
-                    function getWorkerTasksHTML() {
-                        const filtered = filterTasks(allTasks);
-                        if (filtered.length === 0) {
-                            return '<div style="text-align: center; color: var(--text-muted); padding: 20px;">нет заданий</div>';
-                        }
-                        let html = '<div class="tasks-grid">';
-                        filtered.forEach(t => {
-                            const favClass = isFavorite(t.id) ? 'fas' : 'far';
-                            html += `
-                                <div class="task-card-new" data-task-id="${t.id}">
-                                    <div class="task-header">
-                                        <h4 class="task-title">${t.name}</h4>
-                                        <i class="${favClass} fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id})"></i>
-                                    </div>
-                                    <div class="task-company">
-                                        <span class="company-name">${t.company}</span>
-                                        <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> 5.0</span>
-                                    </div>
-                                    <div class="task-description">${t.desc}</div>
-                                    <div class="task-price-large">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
-                                    <div class="task-tags">
-                                        ${t.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}
-                                    </div>
-                                    <button class="task-take-btn-full" onclick="event.stopPropagation(); handleTaskClick(${t.id})">взять</button>
-                                </div>
-                            `;
-                        });
-                        html += '</div>';
-                        return html;
-                    }
-
                     // ---------- Swipe mode для исполнителя ----------
                     let swipeTasks = [...allTasks];
                     let currentSwipeTaskIndex = 0;
@@ -2574,15 +2536,15 @@
                         container.innerHTML = html;
                     }
 
-                    // ---------- НОВАЯ ФУНКЦИЯ: загрузка реальных заданий для исполнителя (без JOIN) ----------
+                    // ---------- ЗАГРУЗКА ЗАДАНИЙ ДЛЯ ИСПОЛНИТЕЛЯ (реальные + моковые) ----------
                     async function loadTasks() {
                         // Скрываем свайп-контейнер, показываем tasksContainer
                         document.getElementById('swipeContainer').style.display = 'none';
                         document.getElementById('tasksContainer').style.display = 'block';
                         document.getElementById('roleContent').style.display = 'none';
 
-                        // Просто загружаем все открытые задания
-                        const { data: tasks, error } = await supabaseClient
+                        // 1. Загружаем реальные открытые задания
+                        const { data: realTasks, error } = await supabaseClient
                             .from('tasks')
                             .select('*')
                             .eq('status', 'open')
@@ -2590,30 +2552,63 @@
 
                         if (error) {
                             console.error('Error loading tasks:', error);
-                            return;
                         }
 
+                        // 2. Берём моковые задания
+                        const mockTasks = allTasks.filter(t => t.price !== undefined); // все моковые
+
+                        // 3. Объединяем и сортируем по дате (моковые имеют created_at = сейчас, реальные – свои)
+                        // Для сортировки добавим каждому моковому created_at = текущее время
+                        const now = new Date().toISOString();
+                        const mockWithDate = mockTasks.map(t => ({ ...t, created_at: now, isMock: true }));
+
+                        let all = [];
+                        if (realTasks) all = [...realTasks, ...mockWithDate];
+                        else all = [...mockWithDate];
+
+                        // Сортировка по убыванию даты (новые сверху)
+                        all.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
                         const container = document.getElementById('tasksContainer');
-                        if (!tasks || tasks.length === 0) {
+                        if (all.length === 0) {
                             container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет заданий</p>';
                             return;
                         }
 
-                        // Для каждого задания получим профиль заказчика отдельно
                         let html = '';
-                        for (let task of tasks) {
-                            // Получаем профиль заказчика
-                            const { data: profile } = await supabaseClient
-                                .from('profiles')
-                                .select('username, full_name, rating')
-                                .eq('id', task.employer_id)
-                                .single();
+                        for (let task of all) {
+                            let employerName = 'ХАЙП';
+                            let employerRating = '5.0';
+                            let tags = [];
+                            let description = '';
+                            let priceDisplay = task.price;
+                            let isMock = task.isMock || false;
 
-                            const employerName = profile?.full_name || profile?.username || 'Неизвестно';
-                            const employerRating = profile?.rating ? profile.rating.toFixed(1) : '0.0';
-                            const showTakeButton = (currentRole === 'worker' && task.status === 'open');
+                            if (isMock) {
+                                // моковое задание
+                                employerName = task.company;
+                                tags = task.tags;
+                                description = task.desc;
+                                // price уже в нужном формате (число или строка)
+                            } else {
+                                // реальное задание – получаем профиль заказчика
+                                const { data: profile } = await supabaseClient
+                                    .from('profiles')
+                                    .select('username, full_name, rating')
+                                    .eq('id', task.employer_id)
+                                    .single();
+                                employerName = profile?.full_name || profile?.username || 'Заказчик';
+                                employerRating = profile?.rating ? profile.rating.toFixed(1) : '0.0';
+                                // теги из категории или по умолчанию
+                                tags = task.category ? [task.category] : ['без опыта'];
+                                description = task.description || '';
+                                priceDisplay = task.price; // число
+                            }
+
+                            const favClass = isMock && isFavorite(task.id) ? 'fas' : 'far'; // для моковых избранное работает
+                            const showTakeButton = (currentRole === 'worker');
                             let alreadyResponded = false;
-                            if (showTakeButton) {
+                            if (!isMock && showTakeButton) {
                                 const { data: resp } = await supabaseClient
                                     .from('responses')
                                     .select('id')
@@ -2624,23 +2619,25 @@
                             }
 
                             html += `
-                                <div class="task-card-new" data-task-id="${task.id}">
+                                <div class="task-card-new" data-task-id="${task.id}" data-ismock="${isMock}">
                                     <div class="task-header">
-                                        <span class="task-title">${task.title}</span>
-                                        <span class="task-category">${task.category || 'разное'}</span>
+                                        <span class="task-title">${task.name || task.title}</span>
+                                        ${isMock ? `<i class="${favClass} fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${task.id})"></i>` : ''}
                                     </div>
-                                    <div class="task-employer" onclick="viewProfile('${task.employer_id}')">
-                                        ${employerName} ⭐ ${employerRating}
+                                    <div class="task-company">
+                                        <span class="company-name">${employerName}</span>
+                                        <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> ${employerRating}</span>
                                     </div>
-                                    <div class="task-description">${task.description || ''}</div>
-                                    <div class="task-price">${task.price} ₽</div>
-                                    <div class="task-meta">
-                                        <span class="task-status open">${task.status}</span>
-                                        <span>${new Date(task.created_at).toLocaleDateString()}</span>
+                                    <div class="task-description">${description}</div>
+                                    <div class="task-price-large">${typeof priceDisplay === 'number' ? priceDisplay + ' ₽' : priceDisplay + ' ₽'}</div>
+                                    <div class="task-tags">
+                                        ${tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}
                                     </div>
-                                    ${showTakeButton ? (alreadyResponded ? 
-                                        '<button class="task-take-btn-full" disabled style="opacity:0.5;">уже откликнулись</button>' : 
-                                        `<button class="task-take-btn-full" onclick="respondToTask('${task.id}', '${task.employer_id}')">написать заказчику</button>`) 
+                                    ${showTakeButton ? (isMock ? 
+                                        `<button class="task-take-btn-full" onclick="event.stopPropagation(); handleTaskClick(${task.id})">взять</button>` : 
+                                        (alreadyResponded ? 
+                                            '<button class="task-take-btn-full" disabled style="opacity:0.5;">уже откликнулись</button>' : 
+                                            `<button class="task-take-btn-full" onclick="respondToTask('${task.id}', '${task.employer_id}')">написать заказчику</button>`)) 
                                         : ''}
                                 </div>
                             `;
@@ -2654,7 +2651,7 @@
                         });
                     }
 
-                    // ---------- НОВАЯ ФУНКЦИЯ: отклик на задание ----------
+                    // ---------- Отклик на задание ----------
                     window.respondToTask = async function(taskId, employerId) {
                         const { data: empProfile } = await supabaseClient
                             .from('profiles')
@@ -2692,13 +2689,13 @@
                         if (currentRole === 'worker') {
                             sectionTitle.innerText = 'задания';
                             if (viewMode === 'list') {
-                                // Показываем реальные задания
+                                // Показываем реальные + моковые задания
                                 roleContent.style.display = 'none';
                                 swipeContainer.style.display = 'none';
                                 tasksContainer.style.display = 'block';
-                                loadTasks(); // загружаем из базы
+                                loadTasks(); // загружаем из базы и моковые
                             } else {
-                                // Свайп-режим (моковые задания)
+                                // Свайп-режим (только моковые задания)
                                 roleContent.style.display = 'none';
                                 tasksContainer.style.display = 'none';
                                 swipeContainer.style.display = 'flex';
