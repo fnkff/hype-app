@@ -11,6 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* все твои стили остаются без изменений */
         :root {
             --bg-main: #0F0F0F;
             --bg-card: #202020;
@@ -1654,8 +1655,8 @@
                     </div>
 
                     <!-- Контент в зависимости от роли и режима -->
-                    <div id="roleContent" class="role-content"></div>
-                    <!-- Контейнер для свайп-карточек (скрыт по умолчанию) -->
+                    <div id="roleContent" class="role-content" style="display: block;"></div>
+                    <div id="tasksContainer" class="tasks-grid" style="display: none;"></div>
                     <div id="swipeContainer" class="swipe-container" style="display: none;"></div>
                 </div>
             </div>
@@ -1756,16 +1757,6 @@
                             <span class="slider"></span>
                         </label>
                     </div>
-                    <div class="settings-item">
-                        <div class="settings-item-left">
-                            <div class="settings-icon-small"><i class="fas fa-bell"></i></div>
-                            <span class="settings-item-title">уведомления</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" checked id="notifToggle">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
                     <div class="settings-item" onclick="alert('ХАЙП — платформа для микрозадач. Версия 2.0')">
                         <div class="settings-item-left">
                             <div class="settings-icon-small"><i class="fas fa-info-circle"></i></div>
@@ -1777,7 +1768,31 @@
             </div>
         </div>
 
-        <!-- Модалки (оставлены только нужные) -->
+        <!-- Модалки -->
+        <div class="modal" id="confirmModal">
+            <div class="modal-content">
+                <div class="modal-header"><button class="modal-close" id="closeConfirmModal">&times;</button></div>
+                <h3>подтверждение выполнения</h3>
+                <p>Вы уверены, что задание выполнено?</p>
+                <button class="confirm-btn" id="confirmComplete">да, подтвердить</button>
+                <button class="cancel-btn" onclick="closeModal('confirmModal')">отмена</button>
+            </div>
+        </div>
+        <div class="modal" id="reviewModal">
+            <div class="modal-content">
+                <div class="modal-header"><button class="modal-close" id="closeReviewModal">&times;</button></div>
+                <h3>оставьте отзыв</h3>
+                <div class="rating-stars" id="ratingStars">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
+                </div>
+                <textarea id="reviewComment" placeholder="комментарий (необязательно)" rows="3"></textarea>
+                <button class="submit-review" id="submitReview">отправить</button>
+            </div>
+        </div>
         <div class="modal" id="levelModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeLevelModal">&times;</button></div>
@@ -1834,7 +1849,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация (без изменений) -->
+        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks">
                 <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
@@ -2181,7 +2196,7 @@
                         document.querySelector(`#mainFilters .tab[data-filter="${filter}"]`).classList.add('active');
                         currentFilter = filter;
                         if (currentRole === 'worker' && viewMode === 'list') {
-                            updateRoleUI();
+                            loadTasks(); // при смене фильтра перезагружаем реальные задания
                         }
                     };
 
@@ -2215,7 +2230,7 @@
                         return favoriteIds.includes(taskId);
                     }
 
-                    // ---------- Tasks data ----------
+                    // ---------- Tasks data (моковые для свайпа) ----------
                     const allTasks = [
                         { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу и получи бонус', price: 30, xp: 5, company: 'ХАЙП', tags: ['без опыта', 'моментально'] },
                         { id: 2, name: 'подпишись на канал', desc: 'подпишись на @hype_job1', price: 20, xp: 5, company: 'ХАЙП', tags: ['без опыта'] },
@@ -2519,7 +2534,7 @@
                             document.getElementById('newTaskDesc').value = '';
                             document.getElementById('newTaskPrice').value = '';
                             document.getElementById('newTaskCategory').value = '';
-                            // Обновляем список заданий (если нужно)
+                            // Обновляем список заданий заказчика
                             if (currentRole === 'employer') {
                                 loadEmployerActiveTasks();
                             }
@@ -2560,20 +2575,149 @@
                         container.innerHTML = html;
                     }
 
-                    // ---------- Обновление UI в зависимости от роли и режима ----------
+                    // ---------- НОВАЯ ФУНКЦИЯ: загрузка реальных заданий для исполнителя ----------
+                    async function loadTasks() {
+                        // Скрываем свайп-контейнер, показываем tasksContainer
+                        document.getElementById('swipeContainer').style.display = 'none';
+                        document.getElementById('tasksContainer').style.display = 'block';
+                        document.getElementById('roleContent').style.display = 'none';
+
+                        let query = supabaseClient
+                            .from('tasks')
+                            .select(`
+                                *,
+                                profiles!tasks_employer_id_fkey (username, full_name, rating)
+                            `)
+                            .eq('status', 'open')
+                            .order('created_at', { ascending: false });
+
+                        // Применяем фильтр
+                        if (currentFilter === 'favorites') {
+                            const favoriteTaskIds = favoriteIds.filter(id => typeof id === 'number');
+                            if (favoriteTaskIds.length === 0) {
+                                document.getElementById('tasksContainer').innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет избранных заданий</p>';
+                                return;
+                            }
+                            query = query.in('id', favoriteTaskIds);
+                        } else if (currentFilter === 'my') {
+                            const { data: responses } = await supabaseClient
+                                .from('responses')
+                                .select('task_id')
+                                .eq('worker_id', userId);
+                            const taskIds = responses.map(r => r.task_id);
+                            if (taskIds.length === 0) {
+                                document.getElementById('tasksContainer').innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет откликов</p>';
+                                return;
+                            }
+                            query = query.in('id', taskIds);
+                        }
+
+                        const { data: tasks, error } = await query;
+                        if (error) {
+                            console.error('Error loading tasks:', error);
+                            return;
+                        }
+
+                        const container = document.getElementById('tasksContainer');
+                        if (!tasks || tasks.length === 0) {
+                            container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет заданий</p>';
+                            return;
+                        }
+
+                        let html = '';
+                        for (let task of tasks) {
+                            const employerName = task.profiles?.full_name || task.profiles?.username || 'Неизвестно';
+                            const employerRating = task.profiles?.rating ? task.profiles.rating.toFixed(1) : '0.0';
+                            const showTakeButton = (currentRole === 'worker' && task.status === 'open');
+                            let alreadyResponded = false;
+                            if (showTakeButton) {
+                                const { data: resp } = await supabaseClient
+                                    .from('responses')
+                                    .select('id')
+                                    .eq('task_id', task.id)
+                                    .eq('worker_id', userId)
+                                    .maybeSingle();
+                                alreadyResponded = !!resp;
+                            }
+
+                            html += `
+                                <div class="task-card-new" data-task-id="${task.id}">
+                                    <div class="task-header">
+                                        <span class="task-title">${task.title}</span>
+                                        <span class="task-category">${task.category || 'разное'}</span>
+                                    </div>
+                                    <div class="task-employer" onclick="viewProfile('${task.employer_id}')">
+                                        ${employerName} ⭐ ${employerRating}
+                                    </div>
+                                    <div class="task-description">${task.description || ''}</div>
+                                    <div class="task-price">${task.price} ₽</div>
+                                    <div class="task-meta">
+                                        <span class="task-status open">${task.status}</span>
+                                        <span>${new Date(task.created_at).toLocaleDateString()}</span>
+                                    </div>
+                                    ${showTakeButton ? (alreadyResponded ? 
+                                        '<button class="task-take-btn-full" disabled style="opacity:0.5;">уже откликнулись</button>' : 
+                                        `<button class="task-take-btn-full" onclick="respondToTask('${task.id}', '${task.employer_id}')">написать заказчику</button>`) 
+                                        : ''}
+                                </div>
+                            `;
+                        }
+                        container.innerHTML = html;
+                        // анимация
+                        const cards = container.querySelectorAll('.task-card-new');
+                        cards.forEach((el, idx) => {
+                            el.classList.add('animate-stagger');
+                            el.style.animationDelay = `${0.5 + idx * 0.1}s`;
+                        });
+                    }
+
+                    // ---------- НОВАЯ ФУНКЦИЯ: отклик на задание ----------
+                    window.respondToTask = async function(taskId, employerId) {
+                        const { data: empProfile } = await supabaseClient
+                            .from('profiles')
+                            .select('username')
+                            .eq('id', employerId)
+                            .single();
+
+                        if (empProfile?.username) {
+                            tg?.openTelegramLink(`https://t.me/${empProfile.username}`);
+                        } else {
+                            alert('У заказчика не указан username, напишите в поддержку');
+                            return;
+                        }
+
+                        const { error } = await supabaseClient
+                            .from('responses')
+                            .insert([{ task_id: taskId, worker_id: userId, status: 'pending' }]);
+
+                        if (error) {
+                            console.error('Error creating response:', error);
+                            alert('Не удалось откликнуться');
+                        } else {
+                            alert('Отклик отправлен! Заказчик увидит его в своём профиле.');
+                            loadTasks(); // обновляем список
+                        }
+                    };
+
+                    // ---------- Обновление UI в зависимости от роли и режима (ИСПРАВЛЕННАЯ) ----------
                     function updateRoleUI() {
                         const roleContent = document.getElementById('roleContent');
                         const swipeContainer = document.getElementById('swipeContainer');
+                        const tasksContainer = document.getElementById('tasksContainer');
                         const sectionTitle = document.getElementById('mainSectionTitle');
+
                         if (currentRole === 'worker') {
                             sectionTitle.innerText = 'задания';
                             if (viewMode === 'list') {
-                                roleContent.style.display = 'block';
-                                swipeContainer.style.display = 'none';
-                                roleContent.innerHTML = getWorkerTasksHTML();
-                                animateNewElements(roleContent);
-                            } else {
+                                // Показываем реальные задания
                                 roleContent.style.display = 'none';
+                                swipeContainer.style.display = 'none';
+                                tasksContainer.style.display = 'block';
+                                loadTasks(); // загружаем из базы
+                            } else {
+                                // Свайп-режим (моковые задания)
+                                roleContent.style.display = 'none';
+                                tasksContainer.style.display = 'none';
                                 swipeContainer.style.display = 'flex';
                                 currentSwipeTaskIndex = 0;
                                 swipeContainer.innerHTML = getWorkerSwipeHTML();
@@ -2584,12 +2728,13 @@
                             if (viewMode === 'list') {
                                 roleContent.style.display = 'block';
                                 swipeContainer.style.display = 'none';
+                                tasksContainer.style.display = 'none';
                                 roleContent.innerHTML = getEmployerHTML();
-                                // Загружаем активные задания
                                 loadEmployerActiveTasks();
                                 animateNewElements(roleContent);
                             } else {
                                 roleContent.style.display = 'none';
+                                tasksContainer.style.display = 'none';
                                 swipeContainer.style.display = 'flex';
                                 loadEmployerSwipeCandidates().then(candidates => {
                                     swipeCandidates = candidates;
@@ -3027,9 +3172,8 @@
                         else if (pageId === 'tasks') {
                             animatePage(pages[pageId]);
                             setTimeout(() => {
-                                const container = document.getElementById('roleContent');
-                                if (container && currentRole === 'worker' && viewMode === 'list') {
-                                    animateNewElements(container);
+                                if (currentRole === 'worker' && viewMode === 'list') {
+                                    loadTasks(); // при возврате на главную перезагружаем задания
                                 }
                             }, 100);
                         }
