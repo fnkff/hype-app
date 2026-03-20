@@ -313,14 +313,11 @@
             opacity: 0;
             animation: fadeInUp 0.4s ease-out forwards;
         }
-        .task-card-new.animate-stagger {
-            animation: fadeInUp 0.4s ease-out forwards;
-        }
-        .task-card-new:nth-child(1) { animation-delay: 0.5s; }
-        .task-card-new:nth-child(2) { animation-delay: 0.6s; }
-        .task-card-new:nth-child(3) { animation-delay: 0.7s; }
-        .task-card-new:nth-child(4) { animation-delay: 0.8s; }
-        .task-card-new:nth-child(5) { animation-delay: 0.9s; }
+        .main-page .total-balance { animation-delay: 0.1s; }
+        .main-page .streak-block { animation-delay: 0.2s; }
+        .main-page .section-title { animation-delay: 0.3s; }
+        .main-page .filters-tabs { animation-delay: 0.4s; }
+        .main-page .task-card-new { animation: fadeInUp 0.3s ease-out forwards; animation-delay: 0.2s; } /* быстрая анимация для карточек при фильтрах */
         .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
         .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
@@ -613,6 +610,7 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.03);
             transition: all 0.3s ease;
+            animation: fadeInUp 0.3s ease-out forwards;
         }
         .task-header {
             display: flex;
@@ -692,6 +690,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(93,214,44,0.3);
         }
         .task-take-btn-full:active {
             transform: scale(0.96);
@@ -784,6 +784,21 @@
         }
         .swipe-btn:active {
             transform: scale(0.9);
+        }
+        /* Модалка для задания */
+        .task-modal {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .task-modal .task-price-large {
+            margin: 20px 0;
+        }
+        .task-modal .task-take-btn-full {
+            margin-top: 20px;
         }
         .notification-item {
             display: flex;
@@ -1792,6 +1807,16 @@
                 <button class="submit-review" id="submitReview">отправить</button>
             </div>
         </div>
+        <div class="modal" id="taskDetailModal">
+            <div class="modal-content task-modal">
+                <div class="modal-header"><button class="modal-close" id="closeTaskModal">&times;</button></div>
+                <h3 id="taskModalTitle">задание</h3>
+                <div class="task-description" id="taskModalDesc"></div>
+                <div class="task-price-large" id="taskModalPrice"></div>
+                <div class="task-tags" id="taskModalTags"></div>
+                <button class="task-take-btn-full" id="taskModalContactBtn">написать заказчику</button>
+            </div>
+        </div>
         <div class="modal" id="levelModal">
             <div class="modal-content">
                 <div class="modal-header"><button class="modal-close" id="closeLevelModal">&times;</button></div>
@@ -2195,7 +2220,7 @@
                         document.querySelector(`#mainFilters .tab[data-filter="${filter}"]`).classList.add('active');
                         currentFilter = filter;
                         if (currentRole === 'worker' && viewMode === 'list') {
-                            loadTasks(); // при смене фильтра перезагружаем реальные задания
+                            loadTasks(true); // true = не анимировать всю страницу, только задания
                         }
                     };
 
@@ -2536,8 +2561,11 @@
                         container.innerHTML = html;
                     }
 
+                    // ---------- Переменная для отслеживания, была ли уже анимация главной ----------
+                    let mainPageAnimated = false;
+
                     // ---------- ЗАГРУЗКА ЗАДАНИЙ ДЛЯ ИСПОЛНИТЕЛЯ (реальные + моковые) ----------
-                    async function loadTasks() {
+                    async function loadTasks(quick = false) {
                         // Скрываем свайп-контейнер, показываем tasksContainer
                         document.getElementById('swipeContainer').style.display = 'none';
                         document.getElementById('tasksContainer').style.display = 'block';
@@ -2555,10 +2583,9 @@
                         }
 
                         // 2. Берём моковые задания
-                        const mockTasks = allTasks.filter(t => t.price !== undefined); // все моковые
+                        const mockTasks = allTasks.filter(t => t.price !== undefined);
 
-                        // 3. Объединяем и сортируем по дате (моковые имеют created_at = сейчас, реальные – свои)
-                        // Для сортировки добавим каждому моковому created_at = текущее время
+                        // 3. Объединяем и сортируем по дате (моковые имеют created_at = сейчас)
                         const now = new Date().toISOString();
                         const mockWithDate = mockTasks.map(t => ({ ...t, created_at: now, isMock: true }));
 
@@ -2589,7 +2616,7 @@
                                 employerName = task.company;
                                 tags = task.tags;
                                 description = task.desc;
-                                // price уже в нужном формате (число или строка)
+                                // price уже в нужном формате
                             } else {
                                 // реальное задание – получаем профиль заказчика
                                 const { data: profile } = await supabaseClient
@@ -2599,13 +2626,12 @@
                                     .single();
                                 employerName = profile?.full_name || profile?.username || 'Заказчик';
                                 employerRating = profile?.rating ? profile.rating.toFixed(1) : '0.0';
-                                // теги из категории или по умолчанию
                                 tags = task.category ? [task.category] : ['без опыта'];
                                 description = task.description || '';
-                                priceDisplay = task.price; // число
+                                priceDisplay = task.price;
                             }
 
-                            const favClass = isMock && isFavorite(task.id) ? 'fas' : 'far'; // для моковых избранное работает
+                            const favClass = isMock && isFavorite(task.id) ? 'fas' : 'far';
                             const showTakeButton = (currentRole === 'worker');
                             let alreadyResponded = false;
                             if (!isMock && showTakeButton) {
@@ -2619,7 +2645,7 @@
                             }
 
                             html += `
-                                <div class="task-card-new" data-task-id="${task.id}" data-ismock="${isMock}">
+                                <div class="task-card-new" data-task-id="${task.id}" data-ismock="${isMock}" data-employer-id="${!isMock ? task.employer_id : ''}" data-task-title="${task.name || task.title}" data-task-desc="${description}" data-task-price="${priceDisplay}" data-task-tags='${JSON.stringify(tags)}' data-employer-name="${employerName}" data-employer-rating="${employerRating}">
                                     <div class="task-header">
                                         <span class="task-title">${task.name || task.title}</span>
                                         ${isMock ? `<i class="${favClass} fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${task.id})"></i>` : ''}
@@ -2637,22 +2663,74 @@
                                         `<button class="task-take-btn-full" onclick="event.stopPropagation(); handleTaskClick(${task.id})">взять</button>` : 
                                         (alreadyResponded ? 
                                             '<button class="task-take-btn-full" disabled style="opacity:0.5;">уже откликнулись</button>' : 
-                                            `<button class="task-take-btn-full" onclick="respondToTask('${task.id}', '${task.employer_id}')">написать заказчику</button>`)) 
+                                            `<button class="task-take-btn-full" onclick="event.stopPropagation(); showTaskModal('${task.id}', '${task.employer_id}', '${task.name || task.title}', \`${description}\`, ${priceDisplay}, '${JSON.stringify(tags)}', '${employerName}', '${employerRating}')">взять</button>`)) 
                                         : ''}
                                 </div>
                             `;
                         }
                         container.innerHTML = html;
-                        // анимация
-                        const cards = container.querySelectorAll('.task-card-new');
-                        cards.forEach((el, idx) => {
-                            el.classList.add('animate-stagger');
-                            el.style.animationDelay = `${0.5 + idx * 0.1}s`;
-                        });
+                        // Анимация: если быстрая перезагрузка (смена фильтра, выполнение задания), то просто добавляем класс, без задержек
+                        if (!quick) {
+                            // При первой загрузке главной страницы анимируем всю страницу (это уже сделано в animatePage)
+                            if (!mainPageAnimated) {
+                                mainPageAnimated = true;
+                                const cards = container.querySelectorAll('.task-card-new');
+                                cards.forEach((el, idx) => {
+                                    el.classList.add('animate-stagger');
+                                    el.style.animationDelay = `${0.2 + idx * 0.1}s`;
+                                });
+                            } else {
+                                // просто добавляем анимацию карточкам без задержек
+                                const cards = container.querySelectorAll('.task-card-new');
+                                cards.forEach(el => {
+                                    el.style.animation = 'fadeInUp 0.3s ease-out forwards';
+                                });
+                            }
+                        } else {
+                            // быстрая перезагрузка – анимация без задержек
+                            const cards = container.querySelectorAll('.task-card-new');
+                            cards.forEach(el => {
+                                el.style.animation = 'fadeInUp 0.3s ease-out forwards';
+                            });
+                        }
                     }
 
-                    // ---------- Отклик на задание ----------
+                    // ---------- Показать модалку с заданием и кнопкой "написать заказчику" ----------
+                    let currentTaskEmployerId = null;
+                    window.showTaskModal = function(taskId, employerId, title, description, price, tagsJson, employerName, employerRating) {
+                        currentTaskEmployerId = employerId;
+                        const modal = document.getElementById('taskDetailModal');
+                        document.getElementById('taskModalTitle').innerText = title;
+                        document.getElementById('taskModalDesc').innerText = description;
+                        document.getElementById('taskModalPrice').innerHTML = (typeof price === 'number' ? price + ' ₽' : price + ' ₽');
+                        const tags = JSON.parse(tagsJson);
+                        const tagsHtml = tags.map(tag => `<span class="task-tag">${tag}</span>`).join('');
+                        document.getElementById('taskModalTags').innerHTML = tagsHtml;
+                        // Обновляем текст кнопки
+                        document.getElementById('taskModalContactBtn').innerText = 'написать заказчику';
+                        modal.classList.add('show');
+                    };
+
+                    document.getElementById('closeTaskModal').onclick = () => closeModal('taskDetailModal');
+                    document.getElementById('taskModalContactBtn').onclick = async function() {
+                        if (!currentTaskEmployerId) return;
+                        const { data: empProfile } = await supabaseClient
+                            .from('profiles')
+                            .select('username')
+                            .eq('id', currentTaskEmployerId)
+                            .single();
+
+                        if (empProfile?.username) {
+                            tg?.openTelegramLink(`https://t.me/${empProfile.username}`);
+                        } else {
+                            alert('У заказчика не указан username, напишите в поддержку');
+                        }
+                        closeModal('taskDetailModal');
+                    };
+
+                    // ---------- Отклик на задание (старая функция, больше не используется, но оставим для совместимости) ----------
                     window.respondToTask = async function(taskId, employerId) {
+                        // Этот метод больше не вызывается из кнопки "взять", но может использоваться где-то ещё
                         const { data: empProfile } = await supabaseClient
                             .from('profiles')
                             .select('username')
@@ -2675,7 +2753,7 @@
                             alert('Не удалось откликнуться');
                         } else {
                             alert('Отклик отправлен! Заказчик увидит его в своём профиле.');
-                            loadTasks(); // обновляем список
+                            loadTasks(true); // обновляем список без анимации всей страницы
                         }
                     };
 
@@ -2693,7 +2771,7 @@
                                 roleContent.style.display = 'none';
                                 swipeContainer.style.display = 'none';
                                 tasksContainer.style.display = 'block';
-                                loadTasks(); // загружаем из базы и моковые
+                                loadTasks(false); // false = обычная анимация (но только для первого раза)
                             } else {
                                 // Свайп-режим (только моковые задания)
                                 roleContent.style.display = 'none';
@@ -3151,9 +3229,10 @@
                         else if (pageId === 'analytics') updateAnalyticsPage();
                         else if (pageId === 'tasks') {
                             animatePage(pages[pageId]);
+                            // при возврате на главную перезагружаем задания (без анимации всей страницы)
                             setTimeout(() => {
                                 if (currentRole === 'worker' && viewMode === 'list') {
-                                    loadTasks(); // при возврате на главную перезагружаем задания
+                                    loadTasks(true);
                                 }
                             }, 100);
                         }
