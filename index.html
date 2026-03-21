@@ -11,7 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ========== Стили (полностью сохранены из оригинала) ========== */
+        /* ========== СТИЛИ (полностью идентичны предыдущей версии) ========== */
         :root {
             --bg-main: #0F0F0F;
             --bg-card: #202020;
@@ -611,8 +611,8 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.03);
             transition: all 0.3s ease;
-            animation: fadeInUp 0.3s ease-out forwards;
             opacity: 0;
+            animation: fadeInUp 0.3s ease-out forwards;
         }
         .task-header {
             display: flex;
@@ -1671,12 +1671,11 @@
                         </button>
                     </div>
 
-                    <!-- Фильтры -->
+                    <!-- Фильтры: на хайпе, новые, избранные -->
                     <div class="filters-tabs animate-stagger" id="mainFilters">
-                        <span class="tab active" data-filter="favorites" onclick="setFilter('favorites')">избранное</span>
-                        <span class="tab" data-filter="top" onclick="setFilter('top')">топ</span>
+                        <span class="tab active" data-filter="all" onclick="setFilter('all')">на хайпе</span>
                         <span class="tab" data-filter="new" onclick="setFilter('new')">новые</span>
-                        <span class="tab" data-filter="leaders" onclick="setFilter('leaders')">лидеры</span>
+                        <span class="tab" data-filter="favorites" onclick="setFilter('favorites')">избранные</span>
                     </div>
 
                     <!-- Контент в зависимости от роли и режима -->
@@ -2227,8 +2226,8 @@
                         updateRoleUI();
                     };
 
-                    // ---------- Filter state ----------
-                    let currentFilter = 'favorites';
+                    // ---------- Filter state (новый порядок: all, new, favorites) ----------
+                    let currentFilter = 'all';
                     window.setFilter = function(filter) {
                         const tabs = document.querySelectorAll('#mainFilters .tab');
                         tabs.forEach(t => t.classList.remove('active'));
@@ -2645,7 +2644,7 @@
                     // ---------- Переменная для отслеживания, была ли уже анимация главной ----------
                     let mainPageAnimated = false;
 
-                    // ---------- ЗАГРУЗКА ЗАДАНИЙ ДЛЯ ИСПОЛНИТЕЛЯ (реальные + моковые) с фильтрацией и анимацией ----------
+                    // ---------- ЗАГРУЗКА ЗАДАНИЙ ДЛЯ ИСПОЛНИТЕЛЯ (реальные + моковые) с фильтрацией и плавным обновлением ----------
                     async function loadTasks(quick = false) {
                         document.getElementById('swipeContainer').style.display = 'none';
                         document.getElementById('tasksContainer').style.display = 'block';
@@ -2653,7 +2652,6 @@
 
                         // Получаем реальные задания
                         let realTasks = [];
-                        let realTasksError = null;
                         try {
                             const { data, error } = await supabaseClient
                                 .from('tasks')
@@ -2664,7 +2662,6 @@
                             realTasks = data || [];
                         } catch (e) {
                             console.error('Error loading tasks:', e);
-                            realTasksError = e;
                         }
 
                         // Получаем избранные реальные задания (для фильтрации)
@@ -2685,33 +2682,36 @@
                         }
 
                         // Моковые задания
-                        let mockTasks = allTasks.filter(t => t.price !== undefined);
+                        let mockTasks = [...allTasks];
                         if (currentFilter === 'favorites') {
-                            // Показываем только избранные моковые
                             mockTasks = mockTasks.filter(t => favoriteIds.includes(t.id));
                         }
 
                         const now = new Date().toISOString();
                         const mockWithDate = mockTasks.map(t => ({ ...t, created_at: now, isMock: true }));
 
-                        let all = [];
-                        if (realTasks) {
-                            // Фильтруем реальные задания в зависимости от фильтра
-                            let filteredReal = [...realTasks];
-                            if (currentFilter === 'favorites') {
-                                filteredReal = filteredReal.filter(task => likedRealTaskIds.includes(task.id));
-                            }
-                            all = [...filteredReal, ...mockWithDate];
-                        } else {
-                            all = [...mockWithDate];
+                        // Применяем фильтр к реальным заданиям
+                        let filteredReal = [...realTasks];
+                        if (currentFilter === 'favorites') {
+                            filteredReal = filteredReal.filter(task => likedRealTaskIds.includes(task.id));
                         }
+                        // Для фильтров "all" и "new" — показываем все (сортировка будет позже)
 
-                        // Сортировка по дате (новые сверху)
+                        let all = [...filteredReal, ...mockWithDate];
+
+                        // Сортировка: для "новые" и "на хайпе" — одинаково, по убыванию даты (новые сверху)
                         all.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
                         const container = document.getElementById('tasksContainer');
                         if (all.length === 0) {
-                            container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет заданий</p>';
+                            // Плавное обновление: fade out, замена, fade in
+                            container.style.transition = 'opacity 0.2s';
+                            container.style.opacity = '0';
+                            setTimeout(() => {
+                                container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет заданий</p>';
+                                container.style.opacity = '1';
+                                setTimeout(() => { container.style.transition = ''; }, 200);
+                            }, 200);
                             return;
                         }
 
@@ -2773,7 +2773,6 @@
                                 }
                             }
 
-                            // Формируем карточку
                             html += `
                                 <div class="task-card-new" style="opacity:0; animation: fadeInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.05}s;" data-task-id="${task.id}" data-ismock="${isMock}" data-employer-id="${!isMock ? task.employer_id : ''}" data-task-title="${task.name || task.title}" data-task-desc="${description}" data-task-price="${priceDisplay}" data-task-tags='${JSON.stringify(tags)}' data-employer-name="${employerName}" data-employer-rating="${employerRating}">
                                     <div class="task-header">
@@ -2800,18 +2799,14 @@
                             `;
                         }
 
-                        // Вместо мгновенной замены, делаем fade-out старых карточек
-                        if (container.children.length > 0) {
-                            container.style.transition = 'opacity 0.2s';
-                            container.style.opacity = '0';
-                            setTimeout(() => {
-                                container.innerHTML = html;
-                                container.style.opacity = '1';
-                                container.style.transition = '';
-                            }, 200);
-                        } else {
+                        // Плавное обновление
+                        container.style.transition = 'opacity 0.2s';
+                        container.style.opacity = '0';
+                        setTimeout(() => {
                             container.innerHTML = html;
-                        }
+                            container.style.opacity = '1';
+                            setTimeout(() => { container.style.transition = ''; }, 200);
+                        }, 200);
                     }
 
                     // ---------- Показать модалку с заданием и кнопкой "написать заказчику" ----------
@@ -3017,7 +3012,7 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- ANALYTICS (всегда отображается, даже без данных) ----------
+                    // ---------- ANALYTICS (исправленная версия для месяца и недели) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -3029,33 +3024,42 @@
                         }
 
                         const now = new Date();
-                        let startDate;
+                        let startDate, endDate;
                         if (period === 'day') {
                             startDate = new Date(now);
                             startDate.setHours(0, 0, 0, 0);
+                            endDate = new Date(now);
+                            endDate.setHours(23, 59, 59, 999);
                         } else if (period === 'week') {
+                            // Неделя с понедельника по воскресенье, включая сегодня
+                            const dayOfWeek = now.getDay(); // 0 воскресенье, 1 понедельник...
+                            const daysToMonday = (dayOfWeek === 0 ? 6 : dayOfWeek - 1);
                             startDate = new Date(now);
-                            startDate.setDate(now.getDate() - 7);
-                        } else {
-                            startDate = new Date(now);
-                            startDate.setDate(1);
+                            startDate.setDate(now.getDate() - daysToMonday);
                             startDate.setHours(0,0,0,0);
+                            endDate = new Date(now);
+                            endDate.setHours(23,59,59,999);
+                        } else {
+                            // Месяц: с 1-го числа по сегодняшний день
+                            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                            startDate.setHours(0,0,0,0);
+                            endDate = new Date(now);
+                            endDate.setHours(23,59,59,999);
                         }
 
                         let events = [];
-                        let errorOccurred = false;
                         try {
                             const { data, error } = await supabaseClient
                                 .from('events')
                                 .select('*')
                                 .eq('user_id', String(userIdNum))
                                 .gte('created_at', startDate.toISOString())
+                                .lte('created_at', endDate.toISOString())
                                 .order('created_at', { ascending: true });
                             if (error) throw error;
                             events = data || [];
                         } catch (e) {
                             console.error('Error loading events:', e);
-                            errorOccurred = true;
                         }
 
                         const totalIncome = events.reduce((sum, e) => sum + (e.amount || 0), 0);
@@ -3077,20 +3081,21 @@
                             }
                             events.forEach(e => {
                                 const eventDate = new Date(e.created_at);
-                                const dayIndex = eventDate.getDay();
+                                // Получаем день недели (0 воскресенье)
+                                let dayIndex = eventDate.getDay();
+                                // Преобразуем в индекс для массива с понедельника (0 понедельник)
                                 let idx = dayIndex === 0 ? 6 : dayIndex - 1;
-                                chartData[idx].amount += e.amount || 0;
+                                if (idx >= 0 && idx < 7) chartData[idx].amount += e.amount || 0;
                             });
                         } else {
                             const year = now.getFullYear();
                             const month = now.getMonth();
                             const lastDay = new Date(year, month + 1, 0).getDate();
                             for (let day = 1; day <= lastDay; day++) {
-                                const date = new Date(year, month, day);
                                 chartData.push({
                                     label: day.toString(),
                                     amount: 0,
-                                    timestamp: date.setHours(0,0,0,0)
+                                    timestamp: new Date(year, month, day).setHours(0,0,0,0)
                                 });
                             }
                             events.forEach(e => {
@@ -3164,7 +3169,14 @@
                             </div>
                         `;
 
-                        container.innerHTML = html;
+                        // Плавное обновление аналитики без исчезновения
+                        container.style.transition = 'opacity 0.2s';
+                        container.style.opacity = '0';
+                        setTimeout(() => {
+                            container.innerHTML = html;
+                            container.style.opacity = '1';
+                            setTimeout(() => { container.style.transition = ''; }, 200);
+                        }, 200);
                     }
 
                     window.setAnalyticsPeriod = function(period) {
