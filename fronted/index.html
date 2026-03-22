@@ -11,7 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ========== СТИЛИ (полностью идентичны предыдущей версии) ========== */
+        /* ========== ВСЕ СТИЛИ (полностью сохранены, но изменён порядок элементов в карточке) ========== */
         :root {
             --bg-main: #0F0F0F;
             --bg-card: #202020;
@@ -655,7 +655,7 @@
             color: white;
             text-transform: none;
         }
-        .verified-badge {
+        .vip-badge {
             color: var(--accent);
             font-size: 14px;
             font-weight: 600;
@@ -2226,7 +2226,7 @@
                         updateRoleUI();
                     };
 
-                    // ---------- Filter state (новый порядок: all, new, favorites) ----------
+                    // ---------- Filter state ----------
                     let currentFilter = 'all';
                     window.setFilter = function(filter) {
                         const tabs = document.querySelectorAll('#mainFilters .tab');
@@ -2238,14 +2238,13 @@
                         }
                     };
 
-                    // ---------- Favorites (localStorage для моковых, БД для реальных) ----------
+                    // ---------- Favorites ----------
                     let favoriteIds = JSON.parse(localStorage.getItem('favoriteIds')) || [];
 
                     function saveFavorites() {
                         localStorage.setItem('favoriteIds', JSON.stringify(favoriteIds));
                     }
 
-                    // Функция для проверки, избранно ли реальное задание
                     async function isRealTaskFavorite(taskId) {
                         if (isTestMode) return false;
                         try {
@@ -2267,7 +2266,6 @@
                         }
                     }
 
-                    // Функция для добавления/удаления лайка реального задания
                     async function toggleRealTaskFavorite(taskId) {
                         if (isTestMode) {
                             alert('В тестовом режиме избранное для реальных заданий недоступно');
@@ -2300,7 +2298,6 @@
                                 if (error) throw error;
                                 console.log('Added like for task', taskId);
                             }
-                            // Перезагружаем задания, чтобы обновить иконки и фильтр
                             loadTasks(true);
                         } catch (e) {
                             console.error('Error toggling real task favorite:', e);
@@ -2317,7 +2314,6 @@
                                 favoriteIds.splice(index, 1);
                             }
                             saveFavorites();
-                            // Обновляем иконку на всех карточках
                             document.querySelectorAll(`.task-favorite[data-task-id="${taskId}"]`).forEach(el => {
                                 if (favoriteIds.includes(taskId)) {
                                     el.classList.remove('far');
@@ -2445,7 +2441,7 @@
                         isSwiping = false;
                     }
 
-                    // ---------- Swipe для исполнителя (обработчики) ----------
+                    // ---------- Swipe для исполнителя ----------
                     window.swipeLeft = function() {
                         nextSwipeCard();
                     };
@@ -2641,10 +2637,10 @@
                         container.innerHTML = html;
                     }
 
-                    // ---------- Переменная для отслеживания, была ли уже анимация главной ----------
+                    // ---------- Анимация главной ----------
                     let mainPageAnimated = false;
 
-                    // ---------- ЗАГРУЗКА ЗАДАНИЙ ДЛЯ ИСПОЛНИТЕЛЯ (реальные + моковые) с фильтрацией и плавным обновлением ----------
+                    // ---------- ЗАГРУЗКА ЗАДАНИЙ С ПЛАВНОЙ АНИМАЦИЕЙ ----------
                     async function loadTasks(quick = false) {
                         document.getElementById('swipeContainer').style.display = 'none';
                         document.getElementById('tasksContainer').style.display = 'block';
@@ -2690,21 +2686,16 @@
                         const now = new Date().toISOString();
                         const mockWithDate = mockTasks.map(t => ({ ...t, created_at: now, isMock: true }));
 
-                        // Применяем фильтр к реальным заданиям
                         let filteredReal = [...realTasks];
                         if (currentFilter === 'favorites') {
                             filteredReal = filteredReal.filter(task => likedRealTaskIds.includes(task.id));
                         }
-                        // Для фильтров "all" и "new" — показываем все (сортировка будет позже)
 
                         let all = [...filteredReal, ...mockWithDate];
-
-                        // Сортировка: для "новые" и "на хайпе" — одинаково, по убыванию даты (новые сверху)
                         all.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
                         const container = document.getElementById('tasksContainer');
                         if (all.length === 0) {
-                            // Плавное обновление: fade out, замена, fade in
                             container.style.transition = 'opacity 0.2s';
                             container.style.opacity = '0';
                             setTimeout(() => {
@@ -2725,7 +2716,6 @@
                             let priceDisplay = task.price;
                             let isMock = task.isMock || false;
                             let isFavoriteFlag = false;
-                            let verifiedBadge = '<span class="verified-badge">проверенный пользователь</span>';
 
                             if (isMock) {
                                 employerName = task.company;
@@ -2733,7 +2723,6 @@
                                 description = task.desc;
                                 isFavoriteFlag = isFavoriteLocal(task.id);
                             } else {
-                                // Реальное задание
                                 const { data: profile } = await supabaseClient
                                     .from('profiles')
                                     .select('username, full_name, rating')
@@ -2744,12 +2733,9 @@
                                 tags = task.category ? [task.category] : ['без опыта'];
                                 description = task.description || '';
                                 priceDisplay = task.price;
-                                // Проверяем лайк
                                 if (!isTestMode) {
                                     const liked = await isRealTaskFavorite(task.id);
                                     isFavoriteFlag = liked;
-                                } else {
-                                    isFavoriteFlag = false;
                                 }
                             }
 
@@ -2773,6 +2759,7 @@
                                 }
                             }
 
+                            // Порядок: имя, звёздочки, вип
                             html += `
                                 <div class="task-card-new" style="opacity:0; animation: fadeInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.05}s;" data-task-id="${task.id}" data-ismock="${isMock}" data-employer-id="${!isMock ? task.employer_id : ''}" data-task-title="${task.name || task.title}" data-task-desc="${description}" data-task-price="${priceDisplay}" data-task-tags='${JSON.stringify(tags)}' data-employer-name="${employerName}" data-employer-rating="${employerRating}">
                                     <div class="task-header">
@@ -2780,9 +2767,9 @@
                                         <i class="${isFavoriteFlag ? 'fas' : 'far'} fa-heart task-favorite" data-task-id="${task.id}" data-ismock="${isMock}" onclick="event.stopPropagation(); toggleFavorite(${task.id}, ${isMock})"></i>
                                     </div>
                                     <div class="task-company">
-                                        <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> ${employerRating}</span>
                                         <span class="company-name">${employerName}</span>
-                                        ${verifiedBadge}
+                                        <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> ${employerRating}</span>
+                                        <span class="vip-badge">вип</span>
                                     </div>
                                     <div class="task-description">${description}</div>
                                     <div class="task-price-large">${typeof priceDisplay === 'number' ? priceDisplay + ' ₽' : priceDisplay + ' ₽'}</div>
@@ -2799,7 +2786,7 @@
                             `;
                         }
 
-                        // Плавное обновление
+                        // Плавная замена
                         container.style.transition = 'opacity 0.2s';
                         container.style.opacity = '0';
                         setTimeout(() => {
@@ -2809,7 +2796,7 @@
                         }, 200);
                     }
 
-                    // ---------- Показать модалку с заданием и кнопкой "написать заказчику" ----------
+                    // ---------- Модалка задания ----------
                     let currentTaskEmployerId = null;
                     window.showTaskModal = function(taskId, employerId, title, description, price, tagsJson, employerName, employerRating) {
                         currentTaskEmployerId = employerId;
@@ -2841,7 +2828,7 @@
                         closeModal('taskDetailModal');
                     };
 
-                    // ---------- Обновление UI в зависимости от роли и режима ----------
+                    // ---------- Обновление UI ----------
                     function updateRoleUI() {
                         const roleContent = document.getElementById('roleContent');
                         const swipeContainer = document.getElementById('swipeContainer');
@@ -2895,7 +2882,7 @@
                         });
                     }
 
-                    // ---------- Game (1 per day) ----------
+                    // ---------- Game ----------
                     const gameModal = document.getElementById('gameModal');
                     const closeGame = document.getElementById('closeGame');
                     const gameBoxes = document.querySelectorAll('.game-box');
@@ -3012,7 +2999,7 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- ANALYTICS (исправленная версия для месяца и недели) ----------
+                    // ---------- АНАЛИТИКА (график за период, история всегда последние 10) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -3031,8 +3018,7 @@
                             endDate = new Date(now);
                             endDate.setHours(23, 59, 59, 999);
                         } else if (period === 'week') {
-                            // Неделя с понедельника по воскресенье, включая сегодня
-                            const dayOfWeek = now.getDay(); // 0 воскресенье, 1 понедельник...
+                            const dayOfWeek = now.getDay();
                             const daysToMonday = (dayOfWeek === 0 ? 6 : dayOfWeek - 1);
                             startDate = new Date(now);
                             startDate.setDate(now.getDate() - daysToMonday);
@@ -3040,14 +3026,14 @@
                             endDate = new Date(now);
                             endDate.setHours(23,59,59,999);
                         } else {
-                            // Месяц: с 1-го числа по сегодняшний день
                             startDate = new Date(now.getFullYear(), now.getMonth(), 1);
                             startDate.setHours(0,0,0,0);
                             endDate = new Date(now);
                             endDate.setHours(23,59,59,999);
                         }
 
-                        let events = [];
+                        // События для графика (за период)
+                        let periodEvents = [];
                         try {
                             const { data, error } = await supabaseClient
                                 .from('events')
@@ -3057,19 +3043,33 @@
                                 .lte('created_at', endDate.toISOString())
                                 .order('created_at', { ascending: true });
                             if (error) throw error;
-                            events = data || [];
+                            periodEvents = data || [];
                         } catch (e) {
-                            console.error('Error loading events:', e);
+                            console.error('Error loading period events:', e);
                         }
 
-                        const totalIncome = events.reduce((sum, e) => sum + (e.amount || 0), 0);
+                        // Все события для истории (последние 10)
+                        let allEvents = [];
+                        try {
+                            const { data, error } = await supabaseClient
+                                .from('events')
+                                .select('*')
+                                .eq('user_id', String(userIdNum))
+                                .order('created_at', { ascending: false })
+                                .limit(10);
+                            if (error) throw error;
+                            allEvents = data || [];
+                        } catch (e) {
+                            console.error('Error loading all events:', e);
+                        }
 
+                        // --- График ---
                         let chartData = [];
                         if (period === 'day') {
                             for (let h = 0; h < 24; h++) {
                                 chartData.push({ label: `${h.toString().padStart(2,'0')}:00`, amount: 0 });
                             }
-                            events.forEach(e => {
+                            periodEvents.forEach(e => {
                                 const date = new Date(e.created_at);
                                 const hour = date.getHours();
                                 chartData[hour].amount += e.amount || 0;
@@ -3079,11 +3079,9 @@
                             for (let i = 0; i < 7; i++) {
                                 chartData.push({ label: dayNames[i], amount: 0 });
                             }
-                            events.forEach(e => {
+                            periodEvents.forEach(e => {
                                 const eventDate = new Date(e.created_at);
-                                // Получаем день недели (0 воскресенье)
                                 let dayIndex = eventDate.getDay();
-                                // Преобразуем в индекс для массива с понедельника (0 понедельник)
                                 let idx = dayIndex === 0 ? 6 : dayIndex - 1;
                                 if (idx >= 0 && idx < 7) chartData[idx].amount += e.amount || 0;
                             });
@@ -3098,7 +3096,7 @@
                                     timestamp: new Date(year, month, day).setHours(0,0,0,0)
                                 });
                             }
-                            events.forEach(e => {
+                            periodEvents.forEach(e => {
                                 const eventDate = new Date(e.created_at).setHours(0,0,0,0);
                                 const index = chartData.findIndex(item => item.timestamp === eventDate);
                                 if (index !== -1) {
@@ -3107,6 +3105,7 @@
                             });
                         }
 
+                        const totalIncome = periodEvents.reduce((sum, e) => sum + (e.amount || 0), 0);
                         const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
                         const chartClass = period === 'day' ? '' : (period === 'week' ? 'week-view' : 'month-view');
 
@@ -3142,10 +3141,10 @@
                                 <div class="recent-transfers animate-stagger">
                         `;
 
-                        if (events.length === 0) {
-                            html += '<p style="text-align:center; color:var(--text-muted);">нет операций за период</p>';
+                        if (allEvents.length === 0) {
+                            html += '<p style="text-align:center; color:var(--text-muted);">нет операций</p>';
                         } else {
-                            events.slice(0, 10).forEach(e => {
+                            allEvents.forEach(e => {
                                 const date = new Date(e.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
                                 let typeText = '';
                                 if (e.event_type === 'task_completed') typeText = 'задание';
@@ -3169,7 +3168,7 @@
                             </div>
                         `;
 
-                        // Плавное обновление аналитики без исчезновения
+                        // Плавное обновление
                         container.style.transition = 'opacity 0.2s';
                         container.style.opacity = '0';
                         setTimeout(() => {
@@ -3267,7 +3266,7 @@
                     const closeSub = document.getElementById('closeSub');
                     closeSub.onclick = () => document.getElementById('subModal').classList.remove('show');
 
-                    // ---------- Notifications and Settings pages ----------
+                    // ---------- Notifications and Settings ----------
                     document.getElementById('notificationIcon').addEventListener('click', () => {
                         showPage('notifications');
                     });
@@ -3336,7 +3335,7 @@
                         });
                     });
 
-                    // ---------- Profile, referrals, withdraw updates ----------
+                    // ---------- Profile, referrals, withdraw ----------
                     function updateProfilePage() {
                         const xp = getXP();
                         const level = getLevelByXP(xp);
