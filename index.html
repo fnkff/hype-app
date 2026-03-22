@@ -11,7 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ========== ВСЕ СТИЛИ (полностью сохранены, но изменён порядок элементов в карточке) ========== */
+        /* ========== ПЕРЕМЕННЫЕ (тёмная тема по умолчанию) ========== */
         :root {
             --bg-main: #0F0F0F;
             --bg-card: #202020;
@@ -21,6 +21,19 @@
             --text-muted: #9A9A9A;
             --glass-bg: rgba(32,32,32,0.75);
             --glow: 0 0 25px rgba(93,214,44,0.35);
+            --card-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            --border-light: 1px solid rgba(255,255,255,0.03);
+        }
+        /* Светлая тема */
+        body.light-theme {
+            --bg-main: #F5F5F7;
+            --bg-card: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-muted: #6B6B6B;
+            --glass-bg: rgba(255,255,255,0.85);
+            --glow: 0 0 25px rgba(93,214,44,0.35);
+            --card-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            --border-light: 1px solid rgba(0,0,0,0.05);
         }
         * {
             box-sizing: border-box;
@@ -34,6 +47,7 @@
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
+            transition: background 0.3s ease, color 0.3s ease;
         }
         body {
             background:
@@ -41,6 +55,10 @@
                 radial-gradient(circle at 80% 100%, rgba(93,214,44,0.05), transparent 50%),
                 var(--bg-main);
             text-transform: lowercase;
+            transition: background 0.3s ease;
+        }
+        body.light-theme {
+            background: var(--bg-main);
         }
         .fixed-header .logo,
         .splash-logo,
@@ -72,8 +90,8 @@
             border-radius: 24px;
             padding: 16px;
             margin-bottom: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: var(--card-shadow);
+            border: var(--border-light);
             transition: all 0.3s ease;
         }
         @media (hover: hover) {
@@ -106,7 +124,7 @@
             }
             .task-card-new:hover {
                 transform: translateY(-3px);
-                box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+                box-shadow: var(--card-shadow);
             }
             .swipe-btn:hover {
                 transform: scale(1.1);
@@ -318,7 +336,6 @@
         .main-page .streak-block { animation-delay: 0.2s; }
         .main-page .section-title { animation-delay: 0.3s; }
         .main-page .filters-tabs { animation-delay: 0.4s; }
-        /* Для карточек будет динамическая задержка */
         .profile-page .profile-avatar-wrapper { animation-delay: 0.1s; }
         .profile-page .profile-header { animation-delay: 0.2s; }
         .profile-page .profile-stats-under-avatar { animation-delay: 0.3s; }
@@ -608,11 +625,9 @@
             border-radius: 24px;
             padding: 16px;
             margin-bottom: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: var(--card-shadow);
+            border: var(--border-light);
             transition: all 0.3s ease;
-            opacity: 0;
-            animation: fadeInUp 0.3s ease-out forwards;
         }
         .task-header {
             display: flex;
@@ -623,7 +638,7 @@
         .task-title {
             font-size: 24px;
             font-weight: 700;
-            color: white;
+            color: var(--text-main);
             margin: 0;
         }
         .task-favorite {
@@ -652,7 +667,7 @@
         }
         .company-name {
             font-weight: 600;
-            color: white;
+            color: var(--text-main);
             text-transform: none;
         }
         .vip-badge {
@@ -724,8 +739,8 @@
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
             padding: 24px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: var(--card-shadow);
+            border: var(--border-light);
             transition: transform 0.3s ease;
             touch-action: pan-y pinch-zoom;
             user-select: none;
@@ -833,7 +848,7 @@
         .notification-title {
             font-weight: 700;
             font-size: 18px;
-            color: white;
+            color: var(--text-main);
         }
         .notification-text {
             font-size: 14px;
@@ -869,7 +884,7 @@
         .settings-item-title {
             font-weight: 600;
             font-size: 18px;
-            color: white;
+            color: var(--text-main);
         }
         .settings-item-value {
             color: var(--accent);
@@ -984,7 +999,7 @@
         .profile-name {
             font-size: 28px;
             font-weight: 800;
-            color: white;
+            color: var(--text-main);
             line-height: 1.2;
             text-transform: none;
         }
@@ -1008,6 +1023,8 @@
             gap: 4px;
             cursor: pointer;
             transition: transform 0.2s;
+            position: relative;
+            z-index: 2;
         }
         .stat-under-item:active {
             transform: scale(0.95);
@@ -1020,7 +1037,7 @@
         .stat-under-value {
             font-size: 22px;
             font-weight: 800;
-            color: white;
+            color: var(--text-main);
         }
         .stat-under-label {
             font-size: 14px;
@@ -1031,8 +1048,8 @@
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: var(--card-shadow);
+            border: var(--border-light);
         }
         .calendar-weekdays {
             display: flex;
@@ -1056,7 +1073,7 @@
         .calendar-date-number {
             font-size: 18px;
             font-weight: 700;
-            color: white;
+            color: var(--text-main);
         }
         .calendar-date-indicator {
             width: 6px;
@@ -1077,8 +1094,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: var(--card-shadow);
+            border: var(--border-light);
         }
         .id-label {
             font-size: 16px;
@@ -1088,7 +1105,7 @@
         .id-value {
             font-size: 18px;
             font-weight: 700;
-            color: white;
+            color: var(--text-main);
             font-family: 'Inter', sans-serif;
         }
         .profile-message {
@@ -1096,14 +1113,14 @@
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: var(--card-shadow);
+            border: var(--border-light);
             text-align: center;
         }
         .profile-message-title {
             font-size: 20px;
             font-weight: 700;
-            color: white;
+            color: var(--text-main);
             margin-bottom: 8px;
         }
         .profile-message-text {
@@ -1131,7 +1148,7 @@
         }
         .role-text {
             font-weight: 600;
-            color: white;
+            color: var(--text-main);
         }
         .role-value {
             font-size: 18px;
@@ -1250,8 +1267,8 @@
             background: var(--bg-card);
             border-radius: 24px;
             padding: 18px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: var(--card-shadow);
+            border: var(--border-light);
         }
         .referral-stat-value {
             font-size: 32px;
@@ -1939,15 +1956,37 @@
                     let isSwiping = false;
                     let startX, currentX, initialTransform;
 
+                    // ---------- Тема ----------
+                    function applyTheme() {
+                        const isDark = localStorage.getItem('theme') !== 'light';
+                        if (!isDark) {
+                            document.body.classList.add('light-theme');
+                            document.getElementById('themeToggle').checked = false;
+                        } else {
+                            document.body.classList.remove('light-theme');
+                            document.getElementById('themeToggle').checked = true;
+                        }
+                    }
+                    window.toggleTheme = function() {
+                        const isDark = document.body.classList.contains('light-theme');
+                        if (isDark) {
+                            document.body.classList.remove('light-theme');
+                            localStorage.setItem('theme', 'dark');
+                        } else {
+                            document.body.classList.add('light-theme');
+                            localStorage.setItem('theme', 'light');
+                        }
+                        // Анимация смены темы идёт через CSS transition
+                    };
+                    // Применяем тему при загрузке
+                    applyTheme();
+
                     // ---------- Log Event ----------
                     async function logEvent(eventType, amount, xp, metadata = {}) {
                         const realUserId = tg?.initDataUnsafe?.user?.id;
-                        if (!realUserId) {
-                            console.warn('logEvent: no realUserId');
-                            return;
-                        }
+                        if (!realUserId) return;
                         try {
-                            const { error } = await supabaseClient
+                            await supabaseClient
                                 .from('events')
                                 .insert([{
                                     user_id: String(realUserId),
@@ -1957,11 +1996,6 @@
                                     metadata: metadata,
                                     created_at: new Date().toISOString()
                                 }]);
-                            if (error) {
-                                console.error('Error logging event:', error);
-                            } else {
-                                console.log('Event logged:', eventType);
-                            }
                         } catch (e) {
                             console.error('Exception in logEvent:', e);
                         }
@@ -1980,10 +2014,7 @@
                                 .select('amount')
                                 .eq('user_id', String(realUserId))
                                 .gte('created_at', yesterday.toISOString());
-                            if (error) {
-                                console.error('Error loading daily change:', error);
-                                return;
-                            }
+                            if (error) throw error;
                             const total24h = events.reduce((sum, e) => sum + (e.amount || 0), 0);
                             const percent = balance > 0 ? ((total24h / balance) * 100).toFixed(1) : 0;
                             document.getElementById('mainChange').innerText = `+${total24h} ₽ (${percent}%)`;
@@ -2001,11 +2032,7 @@
                                 .eq('id', userId)
                                 .maybeSingle();
 
-                            if (error) {
-                                console.error('Error fetching user:', error);
-                                loadFromLocalStorage();
-                                return;
-                            }
+                            if (error) throw error;
 
                             if (!user) {
                                 const newUser = {
@@ -2023,24 +2050,16 @@
                                     .insert([newUser])
                                     .select()
                                     .single();
-                                if (insertError) {
-                                    console.error('Error creating user:', insertError);
-                                    loadFromLocalStorage();
-                                } else {
-                                    user = inserted;
-                                    console.log('New user created in Supabase');
-                                }
+                                if (insertError) throw insertError;
+                                user = inserted;
+                                console.log('New user created in Supabase');
                             } else {
                                 console.log('User loaded from Supabase');
                                 if (user.name !== firstName) {
-                                    const { error: updateError } = await supabaseClient
+                                    await supabaseClient
                                         .from('users')
                                         .update({ name: firstName })
                                         .eq('id', userId);
-                                    if (!updateError) {
-                                        console.log('User name updated');
-                                        user.name = firstName;
-                                    }
                                 }
                             }
 
@@ -2074,7 +2093,7 @@
                             const streak = getStreak();
                             const lastStreakDate = getLastStreakDate();
                             const referrals = getReferralsCount();
-                            const { error } = await supabaseClient
+                            await supabaseClient
                                 .from('users')
                                 .update({
                                     balance: balance,
@@ -2084,8 +2103,6 @@
                                     referrals: referrals
                                 })
                                 .eq('id', userId);
-                            if (error) console.error('Sync error:', error);
-                            else console.log('Data synced to Supabase');
                         } catch (e) {
                             console.error('syncUserData error:', e);
                         }
@@ -2252,7 +2269,7 @@
                                 .from('likes')
                                 .select('id')
                                 .eq('from_user_id', userId)
-                                .eq('to_task_id', taskId)
+                                .eq('task_id', taskId)   // исправлено: task_id вместо to_task_id
                                 .eq('type', 'task')
                                 .maybeSingle();
                             if (error) {
@@ -2276,7 +2293,7 @@
                                 .from('likes')
                                 .select('id')
                                 .eq('from_user_id', userId)
-                                .eq('to_task_id', taskId)
+                                .eq('task_id', taskId)   // исправлено
                                 .eq('type', 'task')
                                 .maybeSingle();
 
@@ -2292,7 +2309,7 @@
                                     .from('likes')
                                     .insert([{
                                         from_user_id: userId,
-                                        to_task_id: taskId,
+                                        task_id: taskId,   // исправлено
                                         type: 'task'
                                     }]);
                                 if (error) throw error;
@@ -2301,7 +2318,7 @@
                             loadTasks(true);
                         } catch (e) {
                             console.error('Error toggling real task favorite:', e);
-                            alert('Не удалось добавить в избранное');
+                            alert('Не удалось добавить в избранное: ' + (e.message || 'ошибка'));
                         }
                     }
 
@@ -2441,7 +2458,6 @@
                         isSwiping = false;
                     }
 
-                    // ---------- Swipe для исполнителя ----------
                     window.swipeLeft = function() {
                         nextSwipeCard();
                     };
@@ -2637,10 +2653,7 @@
                         container.innerHTML = html;
                     }
 
-                    // ---------- Анимация главной ----------
-                    let mainPageAnimated = false;
-
-                    // ---------- ЗАГРУЗКА ЗАДАНИЙ С ПЛАВНОЙ АНИМАЦИЕЙ ----------
+                    // ---------- ЗАГРУЗКА ЗАДАНИЙ (без анимации карточек, но с плавной сменой) ----------
                     async function loadTasks(quick = false) {
                         document.getElementById('swipeContainer').style.display = 'none';
                         document.getElementById('tasksContainer').style.display = 'block';
@@ -2666,11 +2679,11 @@
                             try {
                                 const { data: likes, error } = await supabaseClient
                                     .from('likes')
-                                    .select('to_task_id')
+                                    .select('task_id')
                                     .eq('from_user_id', userId)
                                     .eq('type', 'task');
                                 if (!error && likes) {
-                                    likedRealTaskIds = likes.map(l => l.to_task_id);
+                                    likedRealTaskIds = likes.map(l => l.task_id);
                                 }
                             } catch (e) {
                                 console.error('Error loading likes for filter:', e);
@@ -2759,9 +2772,8 @@
                                 }
                             }
 
-                            // Порядок: имя, звёздочки, вип
                             html += `
-                                <div class="task-card-new" style="opacity:0; animation: fadeInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.05}s;" data-task-id="${task.id}" data-ismock="${isMock}" data-employer-id="${!isMock ? task.employer_id : ''}" data-task-title="${task.name || task.title}" data-task-desc="${description}" data-task-price="${priceDisplay}" data-task-tags='${JSON.stringify(tags)}' data-employer-name="${employerName}" data-employer-rating="${employerRating}">
+                                <div class="task-card-new" data-task-id="${task.id}" data-ismock="${isMock}" data-employer-id="${!isMock ? task.employer_id : ''}" data-task-title="${task.name || task.title}" data-task-desc="${description}" data-task-price="${priceDisplay}" data-task-tags='${JSON.stringify(tags)}' data-employer-name="${employerName}" data-employer-rating="${employerRating}">
                                     <div class="task-header">
                                         <span class="task-title">${task.name || task.title}</span>
                                         <i class="${isFavoriteFlag ? 'fas' : 'far'} fa-heart task-favorite" data-task-id="${task.id}" data-ismock="${isMock}" onclick="event.stopPropagation(); toggleFavorite(${task.id}, ${isMock})"></i>
@@ -2786,7 +2798,7 @@
                             `;
                         }
 
-                        // Плавная замена
+                        // Плавная замена без анимации карточек
                         container.style.transition = 'opacity 0.2s';
                         container.style.opacity = '0';
                         setTimeout(() => {
@@ -2796,7 +2808,7 @@
                         }, 200);
                     }
 
-                    // ---------- Модалка задания ----------
+                    // ---------- Показать модалку с заданием и кнопкой "написать заказчику" ----------
                     let currentTaskEmployerId = null;
                     window.showTaskModal = function(taskId, employerId, title, description, price, tagsJson, employerName, employerRating) {
                         currentTaskEmployerId = employerId;
@@ -2828,7 +2840,7 @@
                         closeModal('taskDetailModal');
                     };
 
-                    // ---------- Обновление UI ----------
+                    // ---------- Обновление UI в зависимости от роли и режима ----------
                     function updateRoleUI() {
                         const roleContent = document.getElementById('roleContent');
                         const swipeContainer = document.getElementById('swipeContainer');
@@ -2999,7 +3011,7 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- АНАЛИТИКА (график за период, история всегда последние 10) ----------
+                    // ---------- АНАЛИТИКА (график за период, история последние 10) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -3032,7 +3044,6 @@
                             endDate.setHours(23,59,59,999);
                         }
 
-                        // События для графика (за период)
                         let periodEvents = [];
                         try {
                             const { data, error } = await supabaseClient
@@ -3048,7 +3059,6 @@
                             console.error('Error loading period events:', e);
                         }
 
-                        // Все события для истории (последние 10)
                         let allEvents = [];
                         try {
                             const { data, error } = await supabaseClient
@@ -3063,7 +3073,7 @@
                             console.error('Error loading all events:', e);
                         }
 
-                        // --- График ---
+                        // График
                         let chartData = [];
                         if (period === 'day') {
                             for (let h = 0; h < 24; h++) {
@@ -3168,7 +3178,7 @@
                             </div>
                         `;
 
-                        // Плавное обновление
+                        // Плавная смена
                         container.style.transition = 'opacity 0.2s';
                         container.style.opacity = '0';
                         setTimeout(() => {
@@ -3279,10 +3289,6 @@
                     };
                     window.closeSettings = function() {
                         showPage('tasks');
-                    };
-
-                    window.toggleTheme = function() {
-                        console.log('Theme toggled');
                     };
 
                     // ---------- Navigation ----------
