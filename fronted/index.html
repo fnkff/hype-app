@@ -50,7 +50,6 @@
             background: var(--bg-main);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
             transition: background 0.3s ease, color 0.3s ease;
         }
         body {
@@ -86,6 +85,7 @@
         .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover {
             background: var(--accent-dark);
         }
+        /* Остальные стили (сохранены, но с использованием переменных) */
         .fixed-header .logo,
         .splash-logo,
         .page-header h2 {
@@ -350,6 +350,7 @@
         .profile-page .profile-id-card { animation-delay: 0.5s; }
         .profile-page .profile-message { animation-delay: 0.6s; }
         .profile-page .profile-role-card { animation-delay: 0.7s; }
+        .profile-page .profile-vip-card { animation-delay: 0.8s; }
         .referral-page .referral-link-block { animation-delay: 0.1s; }
         .referral-page .referral-stat-card:nth-child(1) { animation-delay: 0.2s; }
         .referral-page .referral-stat-card:nth-child(2) { animation-delay: 0.3s; }
@@ -633,7 +634,7 @@
         .task-company {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px; /* Увеличил отступы для равномерного расстояния */
             margin-bottom: 4px;
             font-size: 20px;
             color: var(--text-muted);
@@ -657,7 +658,7 @@
             background: rgba(93,214,44,0.15);
             padding: 2px 8px;
             border-radius: 20px;
-            margin-left: 8px;
+            margin-left: 0; /* Убрал лишний отступ, gap обеспечивает расстояние */
         }
         .task-description {
             font-size: 16px;
@@ -1107,33 +1108,123 @@
             font-size: 16px;
             color: var(--text-muted);
         }
-        .profile-role-card {
+        .profile-role-card, .profile-vip-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
             transition: background 0.2s;
         }
-        .profile-role-card:active {
+        .profile-role-card:active, .profile-vip-card:active {
             background: rgba(93,214,44,0.2);
         }
-        .role-card-left {
+        .role-card-left, .vip-card-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .role-icon {
+        .role-icon, .vip-icon {
             font-size: 24px;
             color: var(--accent);
         }
-        .role-text {
+        .role-text, .vip-text {
             font-weight: 600;
             color: var(--text-main);
         }
-        .role-value {
+        .role-value, .vip-value {
             font-size: 18px;
             font-weight: 700;
             color: var(--accent);
+        }
+        /* Стили для модалки подписки (Telegram Premium стиль) */
+        .premium-modal-content {
+            background: var(--bg-card);
+            border-radius: 32px;
+            max-width: 400px;
+            width: 90%;
+            padding: 0;
+            overflow: hidden;
+        }
+        .premium-header {
+            background: linear-gradient(135deg, #1f2a3a, #0f1722);
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .premium-header h3 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: white;
+        }
+        .premium-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+        .premium-plans {
+            padding: 20px;
+        }
+        .plan-option {
+            background: rgba(93,214,44,0.1);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .plan-option.selected {
+            border-color: var(--accent);
+            background: rgba(93,214,44,0.2);
+        }
+        .plan-title {
+            font-weight: 700;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .plan-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .plan-period {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .premium-features {
+            padding: 0 20px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .premium-features h4 {
+            margin: 16px 0 12px;
+            font-size: 18px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        .feature-item i {
+            color: var(--accent);
+            width: 20px;
+        }
+        .premium-subscribe-btn {
+            margin: 20px;
+            padding: 16px;
+            background: var(--accent);
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .premium-subscribe-btn:active {
+            transform: scale(0.97);
         }
         .level-progress {
             display: flex;
@@ -1707,6 +1798,14 @@
                         </div>
                         <span class="role-value" id="profileRoleValue">исполнитель</span>
                     </div>
+                    <!-- Новая кнопка VIP подписки -->
+                    <div class="profile-vip-card animate-stagger" onclick="openPremiumModal()">
+                        <div class="vip-card-left">
+                            <i class="fas fa-crown vip-icon"></i>
+                            <span class="vip-text">вип подписка</span>
+                        </div>
+                        <span class="vip-value"><i class="fas fa-chevron-right"></i></span>
+                    </div>
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
                 </div>
             </div>
@@ -1874,6 +1973,49 @@
             </div>
         </div>
 
+        <!-- Модалка Premium подписки -->
+        <div class="modal" id="premiumModal">
+            <div class="premium-modal-content">
+                <div class="modal-header"><button class="modal-close" id="closePremiumModal">&times;</button></div>
+                <div class="premium-header">
+                    <h3>VIP подписка</h3>
+                    <p>больше возможностей, больше дохода</p>
+                </div>
+                <div class="premium-plans">
+                    <div class="plan-option selected" data-plan="monthly">
+                        <div class="plan-title">
+                            <span>Ежемесячно</span>
+                            <span class="plan-price">179 ₽</span>
+                        </div>
+                        <div class="plan-period">списание каждый месяц</div>
+                    </div>
+                    <div class="plan-option" data-plan="yearly">
+                        <div class="plan-title">
+                            <span>Годовая</span>
+                            <span class="plan-price">1290 ₽</span>
+                        </div>
+                        <div class="plan-period">-40% • 107 ₽/мес</div>
+                    </div>
+                    <div class="plan-option" data-plan="stars">
+                        <div class="plan-title">
+                            <span>Telegram Stars</span>
+                            <span class="plan-price">100 ⭐</span>
+                        </div>
+                        <div class="plan-period">оплата звёздами</div>
+                    </div>
+                </div>
+                <div class="premium-features">
+                    <h4>Преимущества VIP:</h4>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Зелёная галочка «вип» в профиле и заданиях</span></div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Приоритетный показ заданий</span></div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Увеличенный лимит откликов</span></div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Бонус +10% к доходу</span></div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Эксклюзивные задания от партнёров</span></div>
+                </div>
+                <button class="premium-subscribe-btn" id="premiumSubscribeBtn">оформить подписку</button>
+            </div>
+        </div>
+
         <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks">
@@ -1915,16 +2057,13 @@
                     const userId = tg?.initDataUnsafe?.user?.id?.toString() || 'test_' + Math.random();
                     const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
                     const displayName = firstName;
+                    const startParam = tg?.initDataUnsafe?.start_param || '';
                     
-                    // Флаг тестового режима
                     const isTestMode = !tg || userId.startsWith('test_');
                     if (isTestMode) console.warn('Test mode: using random user ID', userId);
 
-                    // Local data
                     let balance = parseInt(localStorage.getItem('balance')) || 0;
                     let counts = JSON.parse(localStorage.getItem('counts')) || {};
-
-                    // Глобальные переменные для свайпа заказчика
                     let swipeCandidates = [];
                     let currentSwipeIndex = 0;
                     let isSwiping = false;
@@ -2001,6 +2140,16 @@
                                 .maybeSingle();
                             if (error) throw error;
                             if (!user) {
+                                let referrerId = null;
+                                if (startParam && startParam.startsWith('ref_')) {
+                                    referrerId = startParam.substring(4);
+                                    const { data: referrerExists } = await supabaseClient
+                                        .from('users')
+                                        .select('id')
+                                        .eq('id', referrerId)
+                                        .maybeSingle();
+                                    if (!referrerExists) referrerId = null;
+                                }
                                 const newUser = {
                                     id: userId,
                                     name: firstName,
@@ -2009,7 +2158,8 @@
                                     referrals: 0,
                                     streak: 0,
                                     last_streak_date: null,
-                                    tasks_completed: {}
+                                    tasks_completed: {},
+                                    referrer_id: referrerId
                                 };
                                 const { data: inserted, error: insertError } = await supabaseClient
                                     .from('users')
@@ -2018,7 +2168,7 @@
                                     .single();
                                 if (insertError) throw insertError;
                                 user = inserted;
-                                console.log('New user created');
+                                console.log('New user created', referrerId ? `referrer: ${referrerId}` : 'no referrer');
                             } else {
                                 if (user.name !== firstName) {
                                     await supabaseClient.from('users').update({ name: firstName }).eq('id', userId);
@@ -2069,7 +2219,6 @@
                         } catch (e) { console.error(e); return 0; }
                     }
 
-                    // ---------- Top users ----------
                     async function getTopUsers() {
                         try {
                             const { data, error } = await supabaseClient
@@ -2780,7 +2929,7 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- Аналитика (с исправленным месяцем) ----------
+                    // ---------- Аналитика (исправлен месяц, сброс скролла, дефолт день) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -2803,7 +2952,6 @@
                             endDate = new Date(now);
                             endDate.setHours(23,59,59,999);
                         } else {
-                            // Месяц: с начала месяца по конец сегодняшнего дня
                             startDate = new Date(now.getFullYear(), now.getMonth(), 1);
                             startDate.setHours(0,0,0,0);
                             endDate = new Date(now);
@@ -2917,7 +3065,12 @@
                         document.querySelector(`#analyticsTabs .period-tab[data-period="${period}"]`).classList.add('active');
                         loadAnalytics(period);
                     };
-                    function updateAnalyticsPage() { loadAnalytics('day'); }
+                    function updateAnalyticsPage() {
+                        // Сбрасываем активную вкладку на "день"
+                        document.querySelectorAll('#analyticsTabs .period-tab').forEach(t => t.classList.remove('active'));
+                        document.querySelector('#analyticsTabs .period-tab[data-period="day"]').classList.add('active');
+                        loadAnalytics('day');
+                    }
 
                     // ---------- Subscription check ----------
                     document.getElementById('checkBtn').onclick = async function() {
@@ -2988,13 +3141,38 @@
                     };
                     document.getElementById('closeSub').onclick = () => document.getElementById('subModal').classList.remove('show');
 
+                    // ---------- Premium модалка ----------
+                    window.openPremiumModal = function() {
+                        const modal = document.getElementById('premiumModal');
+                        modal.classList.add('show');
+                        // Подсветка выбранного плана
+                        document.querySelectorAll('.plan-option').forEach(opt => {
+                            opt.addEventListener('click', function() {
+                                document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
+                                this.classList.add('selected');
+                            });
+                        });
+                        document.getElementById('premiumSubscribeBtn').onclick = () => {
+                            const selected = document.querySelector('.plan-option.selected');
+                            let plan = '';
+                            if (selected) {
+                                if (selected.dataset.plan === 'monthly') plan = 'месячная';
+                                else if (selected.dataset.plan === 'yearly') plan = 'годовая';
+                                else plan = 'Telegram Stars';
+                            }
+                            alert(`Оформление подписки "${plan}" временно недоступно. Функция в разработке.`);
+                            modal.classList.remove('show');
+                        };
+                    };
+                    document.getElementById('closePremiumModal').onclick = () => document.getElementById('premiumModal').classList.remove('show');
+
                     // ---------- Notifications and Settings ----------
                     document.getElementById('notificationIcon').addEventListener('click', () => showPage('notifications'));
                     document.getElementById('settingsIcon').addEventListener('click', () => showPage('settings'));
                     window.closeNotifications = () => showPage('tasks');
                     window.closeSettings = () => showPage('tasks');
 
-                    // ---------- Navigation ----------
+                    // ---------- Navigation (со сбросом скролла) ----------
                     const pages = {
                         tasks: document.getElementById('tasks-page'),
                         profile: document.getElementById('profile-page'),
@@ -3007,6 +3185,9 @@
                     function showPage(pageId) {
                         Object.values(pages).forEach(p => p.classList.remove('active-page'));
                         pages[pageId].classList.add('active-page');
+                        // Сброс прокрутки контейнера наверх
+                        const pagesContainer = document.getElementById('pagesContainer');
+                        if (pagesContainer) pagesContainer.scrollTop = 0;
                         if (['tasks','profile','analytics','referrals','withdraw'].includes(pageId)) {
                             document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
                                 if (item.dataset.page === pageId) item.classList.add('active');
@@ -3038,7 +3219,6 @@
                         const title = getTitle(level);
                         document.getElementById('profileLevelValue').innerText = level;
                         document.getElementById('profileTitle').innerText = title;
-                        // Рейтинг: место пользователя
                         const rank = await getUserRank();
                         document.getElementById('profileRatingPlace').innerText = rank > 0 ? rank : 'топ';
                         // Календарь
