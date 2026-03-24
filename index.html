@@ -85,7 +85,6 @@
         .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover {
             background: var(--accent-dark);
         }
-        /* Остальные стили (сохранены, но с использованием переменных) */
         .fixed-header .logo,
         .splash-logo,
         .page-header h2 {
@@ -108,7 +107,7 @@
         .glass-card, .task-card, .stat-item, .referral-link-block, .friends-list,
         .balance-block, .withdraw-field, .analytics-total, .recent-transfers,
         .total-balance, .streak-block, .employer-card, .profile-role-card,
-        .notification-item, .settings-item {
+        .profile-vip-card, .notification-item, .settings-item {
             background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)), var(--bg-card);
             border-radius: 24px;
             padding: 16px;
@@ -122,7 +121,8 @@
             .friends-list:hover, .balance-block:hover, .withdraw-field:hover,
             .analytics-total:hover, .recent-transfers:hover,
             .total-balance:hover, .streak-block:hover, .employer-card:hover,
-            .notification-item:hover, .settings-item:hover {
+            .notification-item:hover, .settings-item:hover,
+            .profile-role-card:hover, .profile-vip-card:hover {
                 transform: translateY(-3px);
                 box-shadow: 0 12px 35px rgba(0,0,0,0.6);
             }
@@ -150,9 +150,6 @@
             }
             .swipe-btn:hover {
                 transform: scale(1.1);
-            }
-            .profile-role-card:hover {
-                background: rgba(93,214,44,0.1);
             }
             .period-tab:hover {
                 background: rgba(255,255,255,0.1);
@@ -634,7 +631,7 @@
         .task-company {
             display: flex;
             align-items: center;
-            gap: 6px; /* Увеличил отступы для равномерного расстояния */
+            gap: 6px;
             margin-bottom: 4px;
             font-size: 20px;
             color: var(--text-muted);
@@ -658,7 +655,6 @@
             background: rgba(93,214,44,0.15);
             padding: 2px 8px;
             border-radius: 20px;
-            margin-left: 0; /* Убрал лишний отступ, gap обеспечивает расстояние */
         }
         .task-description {
             font-size: 16px;
@@ -1136,40 +1132,25 @@
             font-weight: 700;
             color: var(--accent);
         }
-        /* Стили для модалки подписки (Telegram Premium стиль) */
+        /* Модалка подписки (упрощённая) */
         .premium-modal-content {
             background: var(--bg-card);
-            border-radius: 32px;
-            max-width: 400px;
+            border-radius: 24px;
+            padding: 20px;
             width: 90%;
-            padding: 0;
-            overflow: hidden;
-        }
-        .premium-header {
-            background: linear-gradient(135deg, #1f2a3a, #0f1722);
-            padding: 24px 20px;
-            text-align: center;
-        }
-        .premium-header h3 {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            color: white;
-        }
-        .premium-header p {
-            color: rgba(255,255,255,0.7);
-            font-size: 14px;
+            max-width: 380px;
+            text-align: left;
         }
         .premium-plans {
-            padding: 20px;
+            margin: 16px 0;
         }
         .plan-option {
             background: rgba(93,214,44,0.1);
             border-radius: 20px;
-            padding: 16px;
+            padding: 12px 16px;
             margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
             border: 1px solid transparent;
         }
         .plan-option.selected {
@@ -1181,50 +1162,50 @@
             font-size: 18px;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 4px;
+            align-items: center;
         }
         .plan-price {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             color: var(--accent);
         }
         .plan-period {
             font-size: 14px;
             color: var(--text-muted);
+            margin-top: 4px;
         }
         .premium-features {
-            padding: 0 20px 20px;
+            margin-top: 20px;
             border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 16px;
         }
         .premium-features h4 {
-            margin: 16px 0 12px;
             font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 700;
         }
         .feature-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 10px;
             font-size: 14px;
+            margin-bottom: 10px;
         }
         .feature-item i {
             color: var(--accent);
-            width: 20px;
+            width: 18px;
         }
         .premium-subscribe-btn {
-            margin: 20px;
-            padding: 16px;
+            width: 100%;
+            margin-top: 20px;
             background: var(--accent);
             border: none;
             border-radius: 40px;
+            padding: 14px;
             color: white;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            transition: 0.2s;
-        }
-        .premium-subscribe-btn:active {
-            transform: scale(0.97);
         }
         .level-progress {
             display: flex;
@@ -1715,18 +1696,13 @@
         <div class="fixed-header" id="fixedHeader">
             <div class="logo">ХАЙП</div>
             <div class="header-right">
-                <div class="notification-icon" id="notificationIcon">
-                    <i class="fas fa-bell"></i>
-                </div>
-                <div class="settings-icon" id="settingsIcon">
-                    <i class="fas fa-cog"></i>
-                </div>
+                <div class="notification-icon" id="notificationIcon"><i class="fas fa-bell"></i></div>
+                <div class="settings-icon" id="settingsIcon"><i class="fas fa-cog"></i></div>
             </div>
         </div>
 
-        <!-- Контейнер страниц -->
         <div class="pages-container" id="pagesContainer">
-            <!-- Главная страница -->
+            <!-- Главная -->
             <div id="tasks-page" class="page active-page">
                 <div class="main-page">
                     <div class="total-balance animate-stagger">
@@ -1734,8 +1710,6 @@
                         <div class="balance-value" id="mainBalance">0 ₽</div>
                         <div class="balance-change" id="mainChange">+0 ₽ (0%)</div>
                     </div>
-
-                    <!-- Блок Streak -->
                     <div class="streak-block animate-stagger" id="streakBlock">
                         <div class="streak-header">
                             <span class="streak-icon" id="streakIcon"><i class="fas fa-fire"></i></span>
@@ -1744,23 +1718,17 @@
                         </div>
                         <div class="weekdays" id="weekdaysContainer"></div>
                     </div>
-
-                    <!-- Заголовок с кнопкой переключения -->
                     <div class="section-title animate-stagger">
                         <h3 id="mainSectionTitle">задания</h3>
                         <button id="viewToggleBtn" class="view-toggle-btn" onclick="toggleViewMode()">
                             <i class="fas fa-list" id="viewToggleIcon"></i>
                         </button>
                     </div>
-
-                    <!-- Фильтры: на хайпе, новые, избранные -->
                     <div class="filters-tabs animate-stagger" id="mainFilters">
                         <span class="tab active" data-filter="all" onclick="setFilter('all')">на хайпе</span>
                         <span class="tab" data-filter="new" onclick="setFilter('new')">новые</span>
                         <span class="tab" data-filter="favorites" onclick="setFilter('favorites')">избранные</span>
                     </div>
-
-                    <!-- Контент в зависимости от роли и режима -->
                     <div id="roleContent" class="role-content" style="display: block;"></div>
                     <div id="tasksContainer" class="tasks-grid" style="display: none;"></div>
                     <div id="swipeContainer" class="swipe-container" style="display: none;"></div>
@@ -1792,18 +1760,12 @@
                     <div class="profile-calendar animate-stagger" id="profileCalendar"></div>
                     <div class="profile-id-card animate-stagger" id="profileIdCard"></div>
                     <div class="profile-role-card animate-stagger" onclick="toggleRole()">
-                        <div class="role-card-left">
-                            <i class="fas fa-exchange-alt role-icon"></i>
-                            <span class="role-text">роль</span>
-                        </div>
+                        <div class="role-card-left"><i class="fas fa-exchange-alt role-icon"></i><span class="role-text">роль</span></div>
                         <span class="role-value" id="profileRoleValue">исполнитель</span>
                     </div>
-                    <!-- Новая кнопка VIP подписки -->
+                    <!-- VIP карточка -->
                     <div class="profile-vip-card animate-stagger" onclick="openPremiumModal()">
-                        <div class="vip-card-left">
-                            <i class="fas fa-crown vip-icon"></i>
-                            <span class="vip-text">вип подписка</span>
-                        </div>
+                        <div class="vip-card-left"><i class="fas fa-crown vip-icon"></i><span class="vip-text">вип подписка</span></div>
                         <span class="vip-value"><i class="fas fa-chevron-right"></i></span>
                     </div>
                     <div class="profile-message animate-stagger" id="profileMessage"></div>
@@ -1824,60 +1786,28 @@
 
             <!-- Рефералы -->
             <div id="referrals-page" class="page">
-                <div class="referral-page">
-                    <div id="referralsContent"></div>
-                </div>
+                <div class="referral-page"><div id="referralsContent"></div></div>
             </div>
 
-            <!-- Вывод средств -->
+            <!-- Вывод -->
             <div id="withdraw-page" class="page">
-                <div class="withdraw-page">
-                    <div id="withdrawContent"></div>
-                </div>
+                <div class="withdraw-page"><div id="withdrawContent"></div></div>
             </div>
 
-            <!-- Страница уведомлений -->
+            <!-- Уведомления -->
             <div id="notifications-page" class="page">
                 <div class="notification-page">
-                    <div class="page-header">
-                        <h2 class="white">уведомления</h2>
-                        <button class="close-btn" onclick="closeNotifications()">&times;</button>
-                    </div>
-                    <div class="notification-item">
-                        <div class="notification-icon-small"><i class="fas fa-info"></i></div>
-                        <div class="notification-content">
-                            <div class="notification-title">Добро пожаловать в ХАЙП!</div>
-                            <div class="notification-text">Здесь будут появляться уведомления о новых заданиях, выплатах и событиях.</div>
-                            <div class="notification-time">только что</div>
-                        </div>
-                    </div>
+                    <div class="page-header"><h2 class="white">уведомления</h2><button class="close-btn" onclick="closeNotifications()">&times;</button></div>
+                    <div class="notification-item"><div class="notification-icon-small"><i class="fas fa-info"></i></div><div class="notification-content"><div class="notification-title">Добро пожаловать в ХАЙП!</div><div class="notification-text">Здесь будут появляться уведомления.</div><div class="notification-time">только что</div></div></div>
                 </div>
             </div>
 
-            <!-- Страница настроек -->
+            <!-- Настройки -->
             <div id="settings-page" class="page">
                 <div class="settings-page">
-                    <div class="page-header">
-                        <h2 class="white">настройки</h2>
-                        <button class="close-btn" onclick="closeSettings()">&times;</button>
-                    </div>
-                    <div class="settings-item">
-                        <div class="settings-item-left">
-                            <div class="settings-icon-small"><i class="fas fa-moon"></i></div>
-                            <span class="settings-item-title">тёмная тема</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" checked id="themeToggle" onchange="toggleTheme()">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="settings-item" onclick="alert('ХАЙП — платформа для микрозадач. Версия 2.0')">
-                        <div class="settings-item-left">
-                            <div class="settings-icon-small"><i class="fas fa-info-circle"></i></div>
-                            <span class="settings-item-title">о приложении</span>
-                        </div>
-                        <span class="settings-item-value"><i class="fas fa-chevron-right"></i></span>
-                    </div>
+                    <div class="page-header"><h2 class="white">настройки</h2><button class="close-btn" onclick="closeSettings()">&times;</button></div>
+                    <div class="settings-item"><div class="settings-item-left"><div class="settings-icon-small"><i class="fas fa-moon"></i></div><span class="settings-item-title">тёмная тема</span></div><label class="switch"><input type="checkbox" checked id="themeToggle" onchange="toggleTheme()"><span class="slider"></span></label></div>
+                    <div class="settings-item" onclick="alert('ХАЙП — платформа для микрозадач. Версия 2.0')"><div class="settings-item-left"><div class="settings-icon-small"><i class="fas fa-info-circle"></i></div><span class="settings-item-title">о приложении</span></div><span class="settings-item-value"><i class="fas fa-chevron-right"></i></span></div>
                 </div>
             </div>
         </div>
@@ -1973,44 +1903,29 @@
             </div>
         </div>
 
-        <!-- Модалка Premium подписки -->
+        <!-- Модалка VIP подписки -->
         <div class="modal" id="premiumModal">
             <div class="premium-modal-content">
                 <div class="modal-header"><button class="modal-close" id="closePremiumModal">&times;</button></div>
-                <div class="premium-header">
-                    <h3>VIP подписка</h3>
-                    <p>больше возможностей, больше дохода</p>
-                </div>
+                <h3 style="font-size: 26px; font-weight: 800; margin-bottom: 8px;">вип подписка</h3>
+                <p style="color: var(--text-muted); margin-bottom: 16px;">больше возможностей, больше дохода</p>
                 <div class="premium-plans">
                     <div class="plan-option selected" data-plan="monthly">
-                        <div class="plan-title">
-                            <span>Ежемесячно</span>
-                            <span class="plan-price">179 ₽</span>
-                        </div>
+                        <div class="plan-title"><span>Ежемесячно</span><span class="plan-price">90 ₽</span></div>
                         <div class="plan-period">списание каждый месяц</div>
                     </div>
                     <div class="plan-option" data-plan="yearly">
-                        <div class="plan-title">
-                            <span>Годовая</span>
-                            <span class="plan-price">1290 ₽</span>
-                        </div>
-                        <div class="plan-period">-40% • 107 ₽/мес</div>
-                    </div>
-                    <div class="plan-option" data-plan="stars">
-                        <div class="plan-title">
-                            <span>Telegram Stars</span>
-                            <span class="plan-price">100 ⭐</span>
-                        </div>
-                        <div class="plan-period">оплата звёздами</div>
+                        <div class="plan-title"><span>Годовая</span><span class="plan-price">990 ₽</span></div>
+                        <div class="plan-period">-45% • 82.5 ₽/мес</div>
                     </div>
                 </div>
                 <div class="premium-features">
                     <h4>Преимущества VIP:</h4>
-                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Зелёная галочка «вип» в профиле и заданиях</span></div>
-                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Приоритетный показ заданий</span></div>
-                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Увеличенный лимит откликов</span></div>
-                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Бонус +10% к доходу</span></div>
-                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>Эксклюзивные задания от партнёров</span></div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>зелёная галочка «вип» в профиле и заданиях</span></div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>приоритетный показ заданий</span></div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>увеличенный лимит откликов</span></div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>бонус +10% к доходу</span></div>
+                    <div class="feature-item"><i class="fas fa-check-circle"></i> <span>эксклюзивные задания от партнёров</span></div>
                 </div>
                 <button class="premium-subscribe-btn" id="premiumSubscribeBtn">оформить подписку</button>
             </div>
@@ -2018,26 +1933,11 @@
 
         <!-- Нижняя навигация -->
         <div class="bottom-nav">
-            <a class="nav-item active" data-page="tasks">
-                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-                <span>главная</span>
-            </a>
-            <a class="nav-item" data-page="profile">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span>профиль</span>
-            </a>
-            <a class="nav-item" data-page="analytics">
-                <svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
-                <span>аналитика</span>
-            </a>
-            <a class="nav-item" data-page="referrals">
-                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-                <span>рефералы</span>
-            </a>
-            <a class="nav-item" data-page="withdraw">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-                <span>вывод</span>
-            </a>
+            <a class="nav-item active" data-page="tasks"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span>главная</span></a>
+            <a class="nav-item" data-page="profile"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>профиль</span></a>
+            <a class="nav-item" data-page="analytics"><svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg><span>аналитика</span></a>
+            <a class="nav-item" data-page="referrals"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-1 .05 1.16.84 2 1.87 2 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span>рефералы</span></a>
+            <a class="nav-item" data-page="withdraw"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg><span>вывод</span></a>
         </div>
     </div>
 
@@ -2051,7 +1951,6 @@
                     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
                     console.log('Supabase client created');
 
-                    // Telegram data
                     let tg = window.Telegram?.WebApp;
                     if (tg) tg.expand();
                     const userId = tg?.initDataUnsafe?.user?.id?.toString() || 'test_' + Math.random();
@@ -2929,7 +2828,7 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- Аналитика (исправлен месяц, сброс скролла, дефолт день) ----------
+                    // ---------- Аналитика (исправлен месяц, плавное переключение) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -2952,6 +2851,7 @@
                             endDate = new Date(now);
                             endDate.setHours(23,59,59,999);
                         } else {
+                            // Месяц: с 1 числа по сегодня включительно
                             startDate = new Date(now.getFullYear(), now.getMonth(), 1);
                             startDate.setHours(0,0,0,0);
                             endDate = new Date(now);
@@ -3051,6 +2951,7 @@
                         }
                         html += `</div></div>`;
 
+                        // Плавная замена контента
                         container.style.transition = 'opacity 0.2s';
                         container.style.opacity = '0';
                         setTimeout(() => {
