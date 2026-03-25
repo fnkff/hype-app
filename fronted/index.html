@@ -26,7 +26,6 @@
             --icon-color: rgba(255,255,255,0.7);
             --logo-color: white;
         }
-        /* Светлая тема */
         body.light-theme {
             --bg-main: #F5F5F7;
             --bg-card: #FFFFFF;
@@ -69,9 +68,6 @@
             animation: none;
         }
         .notification-icon, .settings-icon {
-            color: var(--icon-color);
-        }
-        .notification-icon i, .settings-icon i {
             color: var(--icon-color);
         }
         button, .card, .nav-item {
@@ -1145,6 +1141,12 @@
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
+            position: relative;
+        }
+        .employer-profile-modal-content .modal-header {
+            position: absolute;
+            top: 15px;
+            right: 15px;
         }
         .employer-profile-header {
             text-align: center;
@@ -1262,6 +1264,12 @@
             width: 90%;
             max-width: 380px;
             text-align: left;
+            position: relative;
+        }
+        .premium-modal-content .modal-header {
+            position: absolute;
+            top: 15px;
+            right: 15px;
         }
         .premium-plans {
             margin: 16px 0;
@@ -2589,7 +2597,7 @@
                             const { data: profile, error: profileError } = await supabaseClient.from('profiles').select('*').eq('id', employerId).single();
                             if (profileError) throw profileError;
 
-                            const { data: reviews, error: reviewsError } = await supabaseClient.from('reviews').select('*, from_user_id').eq('to_user_id', employerId).order('created_at', { ascending: false });
+                            const { data: reviews, error: reviewsError } = await supabaseClient.from('reviews').select('*').eq('to_user_id', employerId).order('created_at', { ascending: false });
                             if (reviewsError) throw reviewsError;
 
                             const { data: completedTasks, error: tasksError } = await supabaseClient.from('responses').select('task_id').eq('employer_id', employerId).eq('status', 'completed');
