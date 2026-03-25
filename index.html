@@ -2159,6 +2159,16 @@
                                 if (insertError) throw insertError;
                                 user = inserted;
                                 console.log('New user created', referrerId ? `referrer: ${referrerId}` : 'no referrer');
+
+                                // Создаём запись в profiles
+                                const { error: profileError } = await supabaseClient.from('profiles').insert([{
+                                    id: userId,
+                                    username: firstName,
+                                    full_name: firstName,
+                                    rating: 0,
+                                    completed_tasks: 0
+                                }]);
+                                if (profileError) console.error('Profile creation error:', profileError);
                             } else {
                                 if (user.name !== firstName) await supabaseClient.from('users').update({ name: firstName }).eq('id', userId);
                             }
@@ -2594,8 +2604,28 @@
                         modal.classList.add('show');
 
                         try {
-                            const { data: profile, error: profileError } = await supabaseClient.from('profiles').select('*').eq('id', employerId).single();
-                            if (profileError) throw profileError;
+                            let profile = null;
+                            let profileError = null;
+                            try {
+                                const { data, error } = await supabaseClient.from('profiles').select('*').eq('id', employerId).single();
+                                if (error) profileError = error;
+                                else profile = data;
+                            } catch(e) { profileError = e; }
+
+                            // Если профиля нет, создаём базовый
+                            if (!profile) {
+                                const { data: userData } = await supabaseClient.from('users').select('name').eq('id', employerId).single();
+                                const newProfile = {
+                                    id: employerId,
+                                    username: userData?.name || employerName,
+                                    full_name: userData?.name || employerName,
+                                    rating: 0,
+                                    completed_tasks: 0
+                                };
+                                const { error: insertError } = await supabaseClient.from('profiles').insert([newProfile]);
+                                if (!insertError) profile = newProfile;
+                                else profile = { full_name: employerName, rating: 0 };
+                            }
 
                             const { data: reviews, error: reviewsError } = await supabaseClient.from('reviews').select('*').eq('to_user_id', employerId).order('created_at', { ascending: false });
                             if (reviewsError) throw reviewsError;
