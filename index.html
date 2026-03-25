@@ -11,7 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ========== ПЕРЕМЕННЫЕ (тёмная тема по умолчанию) ========== */
+        /* ========== БАЗОВЫЕ ПЕРЕМЕННЫЕ (тёмная тема по умолчанию) ========== */
         :root {
             --bg-main: #0F0F0F;
             --bg-card: #202020;
@@ -77,13 +77,29 @@
         button, .card, .nav-item {
             transition: all 0.3s ease;
         }
-        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .employer-create-btn {
+        /* Убираем свечение у кнопок по умолчанию */
+        .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .employer-create-btn,
+        .premium-subscribe-btn, .task-take-btn-full, .swipe-btn, .submit-review-btn {
             background: var(--accent);
             color: white;
-            box-shadow: 0 4px 15px rgba(93,214,44,0.3);
+            border: none;
+            box-shadow: none;
         }
-        .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover {
-            background: var(--accent-dark);
+        /* Свечение только при наведении (на ПК) */
+        @media (hover: hover) {
+            .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover,
+            .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover, .premium-subscribe-btn:hover,
+            .task-take-btn-full:hover, .swipe-btn:hover, .submit-review-btn:hover {
+                background: var(--accent-dark);
+                transform: translateY(-2px);
+                box-shadow: 0 0 25px rgba(93,214,44,0.5);
+            }
+        }
+        /* Активное состояние (при нажатии) */
+        .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active,
+        .modal button:active, .copy-ref-btn:active, .employer-create-btn:active, .premium-subscribe-btn:active,
+        .task-take-btn-full:active, .swipe-btn:active, .submit-review-btn:active {
+            transform: scale(0.96);
         }
         .fixed-header .logo,
         .splash-logo,
@@ -130,10 +146,6 @@
                 transform: rotate(10deg);
                 filter: drop-shadow(0 0 8px var(--accent));
             }
-            .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover, .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 0 25px rgba(93,214,44,0.5);
-            }
             .task-favorite:hover {
                 color: var(--accent);
             }
@@ -147,9 +159,6 @@
             .task-card-new:hover {
                 transform: translateY(-3px);
                 box-shadow: var(--card-shadow);
-            }
-            .swipe-btn:hover {
-                transform: scale(1.1);
             }
             .period-tab:hover {
                 background: rgba(255,255,255,0.1);
@@ -647,6 +656,10 @@
             font-weight: 600;
             color: var(--text-main);
             text-transform: none;
+            cursor: pointer;
+        }
+        .company-name:hover {
+            text-decoration: underline;
         }
         .vip-badge {
             color: var(--accent);
@@ -695,10 +708,6 @@
             transition: all 0.3s ease;
             margin-top: 8px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(93,214,44,0.3);
-        }
-        .task-take-btn-full:active {
-            transform: scale(0.96);
         }
         .swipe-container {
             position: relative;
@@ -779,15 +788,10 @@
         .swipe-btn.like {
             background: var(--accent);
             color: white;
-            box-shadow: 0 0 20px var(--accent);
         }
         .swipe-btn.dislike {
             background: #ff4d4d;
             color: white;
-            box-shadow: 0 0 20px #ff4d4d;
-        }
-        .swipe-btn:active {
-            transform: scale(0.9);
         }
         .task-modal {
             background: var(--bg-card);
@@ -1132,7 +1136,125 @@
             font-weight: 700;
             color: var(--accent);
         }
-        /* Модалка подписки (упрощённая) */
+        /* Модалка профиля заказчика */
+        .employer-profile-modal-content {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 20px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .employer-profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .employer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin: 0 auto 12px;
+        }
+        .employer-name {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .employer-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .employer-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .reviews-section h4 {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .review-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .review-rating {
+            color: #FFC107;
+        }
+        .review-comment {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .review-date {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        .write-review {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 16px;
+        }
+        .rating-stars {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .rating-stars i {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+        .rating-stars i.active {
+            color: #FFC107;
+        }
+        .review-textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(93,214,44,0.3);
+            border-radius: 20px;
+            color: var(--text-main);
+            font-size: 14px;
+            margin-bottom: 12px;
+            resize: vertical;
+        }
+        .submit-review-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        /* Модалка подписки */
         .premium-modal-content {
             background: var(--bg-card);
             border-radius: 24px;
@@ -1763,7 +1885,6 @@
                         <div class="role-card-left"><i class="fas fa-exchange-alt role-icon"></i><span class="role-text">роль</span></div>
                         <span class="role-value" id="profileRoleValue">исполнитель</span>
                     </div>
-                    <!-- VIP карточка -->
                     <div class="profile-vip-card animate-stagger" onclick="openPremiumModal()">
                         <div class="vip-card-left"><i class="fas fa-crown vip-icon"></i><span class="vip-text">вип подписка</span></div>
                         <span class="vip-value"><i class="fas fa-chevron-right"></i></span>
@@ -1789,7 +1910,7 @@
                 <div class="referral-page"><div id="referralsContent"></div></div>
             </div>
 
-            <!-- Вывод -->
+            <!-- Вывод средств -->
             <div id="withdraw-page" class="page">
                 <div class="withdraw-page"><div id="withdrawContent"></div></div>
             </div>
@@ -1931,6 +2052,14 @@
             </div>
         </div>
 
+        <!-- Модалка профиля заказчика -->
+        <div class="modal" id="employerProfileModal">
+            <div class="employer-profile-modal-content">
+                <div class="modal-header"><button class="modal-close" id="closeEmployerModal">&times;</button></div>
+                <div id="employerProfileContent"></div>
+            </div>
+        </div>
+
         <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span>главная</span></a>
@@ -1957,9 +2086,7 @@
                     const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
                     const displayName = firstName;
                     const startParam = tg?.initDataUnsafe?.start_param || '';
-                    
                     const isTestMode = !tg || userId.startsWith('test_');
-                    if (isTestMode) console.warn('Test mode: using random user ID', userId);
 
                     let balance = parseInt(localStorage.getItem('balance')) || 0;
                     let counts = JSON.parse(localStorage.getItem('counts')) || {};
@@ -1971,23 +2098,13 @@
                     // ---------- Тема ----------
                     function applyTheme() {
                         const isDark = localStorage.getItem('theme') !== 'light';
-                        if (!isDark) {
-                            document.body.classList.add('light-theme');
-                            document.getElementById('themeToggle').checked = false;
-                        } else {
-                            document.body.classList.remove('light-theme');
-                            document.getElementById('themeToggle').checked = true;
-                        }
+                        if (!isDark) { document.body.classList.add('light-theme'); document.getElementById('themeToggle').checked = false; }
+                        else { document.body.classList.remove('light-theme'); document.getElementById('themeToggle').checked = true; }
                     }
                     window.toggleTheme = function() {
                         const isDark = document.body.classList.contains('light-theme');
-                        if (isDark) {
-                            document.body.classList.remove('light-theme');
-                            localStorage.setItem('theme', 'dark');
-                        } else {
-                            document.body.classList.add('light-theme');
-                            localStorage.setItem('theme', 'light');
-                        }
+                        if (isDark) { document.body.classList.remove('light-theme'); localStorage.setItem('theme', 'dark'); }
+                        else { document.body.classList.add('light-theme'); localStorage.setItem('theme', 'light'); }
                     };
                     applyTheme();
 
@@ -1996,17 +2113,10 @@
                         const realUserId = tg?.initDataUnsafe?.user?.id;
                         if (!realUserId) return;
                         try {
-                            await supabaseClient
-                                .from('events')
-                                .insert([{
-                                    user_id: String(realUserId),
-                                    event_type: eventType,
-                                    amount: amount,
-                                    xp: xp,
-                                    metadata: metadata,
-                                    created_at: new Date().toISOString()
-                                }]);
-                        } catch (e) { console.error(e); }
+                            await supabaseClient.from('events').insert([{
+                                user_id: String(realUserId), event_type: eventType, amount, xp, metadata, created_at: new Date().toISOString()
+                            }]);
+                        } catch(e) { console.error(e); }
                     }
 
                     // ---------- Load last 24h income ----------
@@ -2014,120 +2124,71 @@
                         const realUserId = tg?.initDataUnsafe?.user?.id;
                         if (!realUserId) return;
                         const now = new Date();
-                        const yesterday = new Date(now);
-                        yesterday.setDate(now.getDate() - 1);
+                        const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
                         try {
-                            const { data: events, error } = await supabaseClient
-                                .from('events')
-                                .select('amount')
-                                .eq('user_id', String(realUserId))
-                                .gte('created_at', yesterday.toISOString());
+                            const { data: events, error } = await supabaseClient.from('events').select('amount').eq('user_id', String(realUserId)).gte('created_at', yesterday.toISOString());
                             if (error) throw error;
-                            const total24h = events.reduce((sum, e) => sum + (e.amount || 0), 0);
-                            const percent = balance > 0 ? ((total24h / balance) * 100).toFixed(1) : 0;
+                            const total24h = events.reduce((s,e) => s + (e.amount||0), 0);
+                            const percent = balance > 0 ? ((total24h/balance)*100).toFixed(1) : 0;
                             document.getElementById('mainChange').innerText = `+${total24h} ₽ (${percent}%)`;
-                        } catch (e) { console.error(e); }
+                        } catch(e) { console.error(e); }
                     }
 
-                    // ---------- Supabase user functions ----------
+                    // ---------- User functions ----------
                     async function initUser() {
                         try {
-                            let { data: user, error } = await supabaseClient
-                                .from('users')
-                                .select('*')
-                                .eq('id', userId)
-                                .maybeSingle();
+                            let { data: user, error } = await supabaseClient.from('users').select('*').eq('id', userId).maybeSingle();
                             if (error) throw error;
                             if (!user) {
                                 let referrerId = null;
                                 if (startParam && startParam.startsWith('ref_')) {
                                     referrerId = startParam.substring(4);
-                                    const { data: referrerExists } = await supabaseClient
-                                        .from('users')
-                                        .select('id')
-                                        .eq('id', referrerId)
-                                        .maybeSingle();
+                                    const { data: referrerExists } = await supabaseClient.from('users').select('id').eq('id', referrerId).maybeSingle();
                                     if (!referrerExists) referrerId = null;
                                 }
-                                const newUser = {
-                                    id: userId,
-                                    name: firstName,
-                                    balance: 0,
-                                    xp: 0,
-                                    referrals: 0,
-                                    streak: 0,
-                                    last_streak_date: null,
-                                    tasks_completed: {},
-                                    referrer_id: referrerId
-                                };
-                                const { data: inserted, error: insertError } = await supabaseClient
-                                    .from('users')
-                                    .insert([newUser])
-                                    .select()
-                                    .single();
+                                const newUser = { id: userId, name: firstName, balance: 0, xp: 0, referrals: 0, streak: 0, last_streak_date: null, tasks_completed: {}, referrer_id: referrerId };
+                                const { data: inserted, error: insertError } = await supabaseClient.from('users').insert([newUser]).select().single();
                                 if (insertError) throw insertError;
                                 user = inserted;
                                 console.log('New user created', referrerId ? `referrer: ${referrerId}` : 'no referrer');
                             } else {
-                                if (user.name !== firstName) {
-                                    await supabaseClient.from('users').update({ name: firstName }).eq('id', userId);
-                                }
+                                if (user.name !== firstName) await supabaseClient.from('users').update({ name: firstName }).eq('id', userId);
                             }
                             if (user) {
                                 const oldStreak = parseInt(localStorage.getItem('streak')) || 0;
-                                localStorage.setItem('balance', user.balance);
-                                localStorage.setItem('xp', user.xp);
-                                localStorage.setItem('referralsCount', user.referrals);
-                                localStorage.setItem('streak', user.streak || 0);
-                                localStorage.setItem('lastStreakDate', user.last_streak_date || '');
+                                localStorage.setItem('balance', user.balance); localStorage.setItem('xp', user.xp); localStorage.setItem('referralsCount', user.referrals);
+                                localStorage.setItem('streak', user.streak || 0); localStorage.setItem('lastStreakDate', user.last_streak_date || '');
                                 balance = user.balance;
                                 updateBalanceDisplay();
                                 updateStreak();
-                                if (user.streak > oldStreak) {
-                                    setTimeout(() => showStreakAnimation(oldStreak, user.streak), 1000);
-                                }
+                                if (user.streak > oldStreak) setTimeout(() => showStreakAnimation(oldStreak, user.streak), 1000);
                                 updateProfilePage();
                                 loadDailyChange();
                             }
-                        } catch (e) { console.error('initUser error:', e); loadFromLocalStorage(); }
+                        } catch(e) { console.error('initUser error:', e); loadFromLocalStorage(); }
                     }
 
                     async function syncUserData() {
                         try {
-                            const xp = getXP();
-                            const streak = getStreak();
-                            const lastStreakDate = getLastStreakDate();
-                            const referrals = getReferralsCount();
-                            await supabaseClient.from('users').update({
-                                balance, xp, streak, last_streak_date: lastStreakDate, referrals
-                            }).eq('id', userId);
-                        } catch (e) { console.error(e); }
+                            await supabaseClient.from('users').update({ balance, xp: getXP(), streak: getStreak(), last_streak_date: getLastStreakDate(), referrals: getReferralsCount() }).eq('id', userId);
+                        } catch(e) { console.error(e); }
                     }
 
-                    // ---------- Рейтинг (позиция пользователя) ----------
                     async function getUserRank() {
                         if (isTestMode) return 0;
                         try {
-                            const { data: users, error } = await supabaseClient
-                                .from('users')
-                                .select('id, xp')
-                                .order('xp', { ascending: false });
+                            const { data: users, error } = await supabaseClient.from('users').select('id, xp').order('xp', { ascending: false });
                             if (error) throw error;
-                            const index = users.findIndex(u => u.id === userId);
-                            return index + 1;
-                        } catch (e) { console.error(e); return 0; }
+                            return users.findIndex(u => u.id === userId) + 1;
+                        } catch(e) { return 0; }
                     }
 
                     async function getTopUsers() {
                         try {
-                            const { data, error } = await supabaseClient
-                                .from('users')
-                                .select('id, name, xp, balance')
-                                .order('xp', { ascending: false })
-                                .limit(10);
+                            const { data, error } = await supabaseClient.from('users').select('id, name, xp, balance').order('xp', { ascending: false }).limit(10);
                             if (error) throw error;
                             return data || [];
-                        } catch (e) { return []; }
+                        } catch(e) { return []; }
                     }
 
                     window.openRatingModal = async function() {
@@ -2140,12 +2201,7 @@
                             let html = '<ol style="list-style: none; padding: 0; margin: 0;">';
                             topUsers.forEach((user, index) => {
                                 const displayName = user.name || `@${user.id.slice(0, 6)}`;
-                                html += `
-                                    <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                        <span style="font-weight: 600;">${index+1}. ${displayName}</span>
-                                        <span style="color: var(--accent); font-weight: 700;">${user.xp} XP</span>
-                                    </li>
-                                `;
+                                html += `<li style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-weight: 600;">${index+1}. ${displayName}</span><span style="color: var(--accent); font-weight: 700;">${user.xp} XP</span></li>`;
                             });
                             html += '</ol>';
                             content.innerHTML = html;
@@ -2158,29 +2214,9 @@
                     const titles = ["пуська","нубяра","комфортик","красавчик","легенда","миллионер","хайпожор","босс","император","бог хайпа","киберпанк","флексер","краш","рофлан","чилл","вайб","форсер","топчик","король","легендарный","эпик","мифический","ачивка","скилловый","профи","мастер","гуру","сенсей","мэтр","ас","джедай","повелитель","властелин","титан","олимп","бессмертный","непобедимый","ультра","мега","гига","тера","пета","экза","зетта","йотта","ронни","коул","дрейк","йе","хайп"];
                     function getTitle(level) { return level <= titles.length ? titles[level-1] : "бог хайпа"; }
                     const BASE_XP = 10;
-                    function getTotalXPForLevel(level) {
-                        if (level<=1) return 0;
-                        let total=0;
-                        for(let i=1; i<level; i++) total += Math.round(BASE_XP * Math.pow(1.5, i-1));
-                        return total;
-                    }
-                    function getLevelByXP(xp) {
-                        let level=1;
-                        while(true) {
-                            let xpForNext = getTotalXPForLevel(level+1);
-                            if(xp >= xpForNext) level++;
-                            else break;
-                        }
-                        return level;
-                    }
-                    function getProgressToNextLevel(xp) {
-                        const level = getLevelByXP(xp);
-                        const xpCurrent = getTotalXPForLevel(level);
-                        const xpNext = getTotalXPForLevel(level+1);
-                        const needed = xpNext - xpCurrent;
-                        const have = xp - xpCurrent;
-                        return needed>0 ? Math.min(100, Math.round((have/needed)*100)) : 0;
-                    }
+                    function getTotalXPForLevel(level) { if (level<=1) return 0; let total=0; for(let i=1; i<level; i++) total += Math.round(BASE_XP * Math.pow(1.5, i-1)); return total; }
+                    function getLevelByXP(xp) { let level=1; while(true) { let xpForNext = getTotalXPForLevel(level+1); if(xp >= xpForNext) level++; else break; } return level; }
+                    function getProgressToNextLevel(xp) { const level = getLevelByXP(xp); const xpCurrent = getTotalXPForLevel(level); const xpNext = getTotalXPForLevel(level+1); const needed = xpNext - xpCurrent; const have = xp - xpCurrent; return needed>0 ? Math.min(100, Math.round((have/needed)*100)) : 0; }
                     function getXP() { return parseInt(localStorage.getItem('xp')) || 0; }
                     function addXP(amount) { let xp = getXP()+amount; localStorage.setItem('xp', xp); return xp; }
                     function showLevelUpAnimation(oldLevel, newLevel) {
@@ -2240,13 +2276,7 @@
                     async function isRealTaskFavorite(taskId) {
                         if (isTestMode) return false;
                         try {
-                            const { data, error } = await supabaseClient
-                                .from('likes')
-                                .select('id')
-                                .eq('from_user_id', userId)
-                                .eq('task_id', Number(taskId))
-                                .eq('type', 'task')
-                                .maybeSingle();
+                            const { data, error } = await supabaseClient.from('likes').select('id').eq('from_user_id', userId).eq('task_id', Number(taskId)).eq('type', 'task').maybeSingle();
                             if (error) throw error;
                             return !!data;
                         } catch(e) { console.error(e); return false; }
@@ -2255,21 +2285,11 @@
                     async function toggleRealTaskFavorite(taskId) {
                         if (isTestMode) { alert('В тестовом режиме избранное недоступно'); return; }
                         try {
-                            const { data: existing } = await supabaseClient
-                                .from('likes')
-                                .select('id')
-                                .eq('from_user_id', userId)
-                                .eq('task_id', Number(taskId))
-                                .eq('type', 'task')
-                                .maybeSingle();
+                            const { data: existing } = await supabaseClient.from('likes').select('id').eq('from_user_id', userId).eq('task_id', Number(taskId)).eq('type', 'task').maybeSingle();
                             if (existing) {
                                 await supabaseClient.from('likes').delete().eq('id', existing.id);
                             } else {
-                                await supabaseClient.from('likes').insert([{
-                                    from_user_id: userId,
-                                    task_id: Number(taskId),
-                                    type: 'task'
-                                }]);
+                                await supabaseClient.from('likes').insert([{ from_user_id: userId, task_id: Number(taskId), type: 'task' }]);
                             }
                             loadTasks(true);
                         } catch(e) { console.error(e); alert('Не удалось добавить в избранное: ' + (e.message || 'ошибка')); }
@@ -2282,11 +2302,8 @@
                             else favoriteIds.splice(index,1);
                             saveFavorites();
                             document.querySelectorAll(`.task-favorite[data-task-id="${taskId}"]`).forEach(el => {
-                                if (favoriteIds.includes(taskId)) {
-                                    el.classList.remove('far'); el.classList.add('fas');
-                                } else {
-                                    el.classList.remove('fas'); el.classList.add('far');
-                                }
+                                if (favoriteIds.includes(taskId)) { el.classList.remove('far'); el.classList.add('fas'); }
+                                else { el.classList.remove('fas'); el.classList.add('far'); }
                             });
                         } else {
                             toggleRealTaskFavorite(taskId);
@@ -2294,7 +2311,7 @@
                     };
                     function isFavoriteLocal(taskId) { return favoriteIds.includes(taskId); }
 
-                    // ---------- Tasks data (моковые) ----------
+                    // ---------- Tasks data ----------
                     const allTasks = [
                         { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу и получи бонус', price: 30, xp: 5, company: 'ХАЙП', tags: ['без опыта','моментально'] },
                         { id: 2, name: 'подпишись на канал', desc: 'подпишись на @hype_job1', price: 20, xp: 5, company: 'ХАЙП', tags: ['без опыта'] },
@@ -2307,30 +2324,17 @@
                     let currentSwipeTaskIndex = 0;
 
                     function getWorkerSwipeHTML() {
-                        if (swipeTasks.length === 0) {
-                            return '<div style="text-align: center; color: var(--text-muted); padding: 20px;">нет заданий</div>';
-                        }
+                        if (swipeTasks.length === 0) return '<div style="text-align: center; color: var(--text-muted); padding: 20px;">нет заданий</div>';
                         const t = swipeTasks[currentSwipeTaskIndex % swipeTasks.length];
                         const favClass = isFavoriteLocal(t.id) ? 'fas' : 'far';
                         return `
                             <div class="swipe-card" id="swipeCard">
-                                <div class="task-header">
-                                    <h4 class="task-title">${t.name}</h4>
-                                    <i class="${favClass} fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id}, true)"></i>
-                                </div>
-                                <div class="task-company">
-                                    <span class="company-name">${t.company}</span>
-                                    <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> 5.0</span>
-                                </div>
+                                <div class="task-header"><h4 class="task-title">${t.name}</h4><i class="${favClass} fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id}, true)"></i></div>
+                                <div class="task-company"><span class="company-name">${t.company}</span><span class="company-rating"><i class="fas fa-star"></i> 5.0</span></div>
                                 <div class="task-description">${t.desc}</div>
                                 <div class="task-price-large">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
-                                <div class="task-tags">
-                                    ${t.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}
-                                </div>
-                                <div class="swipe-actions">
-                                    <button class="swipe-btn dislike" onclick="swipeLeft()"><i class="fas fa-times"></i></button>
-                                    <button class="swipe-btn like" onclick="swipeRight()"><i class="fas fa-heart"></i></button>
-                                </div>
+                                <div class="task-tags">${t.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}</div>
+                                <div class="swipe-actions"><button class="swipe-btn dislike" onclick="swipeLeft()"><i class="fas fa-times"></i></button><button class="swipe-btn like" onclick="swipeRight()"><i class="fas fa-heart"></i></button></div>
                             </div>
                         `;
                     }
@@ -2350,26 +2354,18 @@
                     function onSwipeStart(e) {
                         e.preventDefault();
                         const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
-                        startX = clientX;
-                        currentX = startX;
+                        startX = clientX; currentX = startX;
                         const card = document.getElementById('swipeCard');
                         if (!card) return;
                         const transform = window.getComputedStyle(card).transform;
                         if (transform && transform !== 'none') {
                             const matrix = transform.match(/matrix.*\((.+)\)/);
-                            if (matrix) {
-                                const values = matrix[1].split(', ');
-                                initialTransform = parseFloat(values[4]) || 0;
-                            } else {
-                                initialTransform = 0;
-                            }
-                        } else {
-                            initialTransform = 0;
-                        }
+                            if (matrix) { const values = matrix[1].split(', '); initialTransform = parseFloat(values[4]) || 0; }
+                            else initialTransform = 0;
+                        } else initialTransform = 0;
                         card.style.transition = 'none';
                         isSwiping = true;
                     }
-
                     function onSwipeMove(e) {
                         if (!isSwiping) return;
                         e.preventDefault();
@@ -2377,11 +2373,8 @@
                         currentX = clientX;
                         const deltaX = currentX - startX;
                         const card = document.getElementById('swipeCard');
-                        if (card) {
-                            card.style.transform = `translateX(${initialTransform + deltaX}px) rotate(${deltaX * 0.1}deg)`;
-                        }
+                        if (card) card.style.transform = `translateX(${initialTransform + deltaX}px) rotate(${deltaX * 0.1}deg)`;
                     }
-
                     function onSwipeEnd(e) {
                         if (!isSwiping) return;
                         e.preventDefault();
@@ -2390,97 +2383,46 @@
                         const deltaX = currentX - startX;
                         card.style.transition = 'transform 0.3s ease';
                         if (Math.abs(deltaX) > 100) {
-                            if (deltaX > 0) {
-                                const likeBtn = card.querySelector('.swipe-btn.like');
-                                if (likeBtn) likeBtn.click();
-                            } else {
-                                const dislikeBtn = card.querySelector('.swipe-btn.dislike');
-                                if (dislikeBtn) dislikeBtn.click();
-                            }
-                        } else {
-                            card.style.transform = '';
-                        }
+                            if (deltaX > 0) { const likeBtn = card.querySelector('.swipe-btn.like'); if (likeBtn) likeBtn.click(); }
+                            else { const dislikeBtn = card.querySelector('.swipe-btn.dislike'); if (dislikeBtn) dislikeBtn.click(); }
+                        } else card.style.transform = '';
                         isSwiping = false;
                     }
+                    window.swipeLeft = function() { nextSwipeCard(); };
+                    window.swipeRight = function() { const t = swipeTasks[currentSwipeTaskIndex % swipeTasks.length]; if (!isFavoriteLocal(t.id)) toggleFavorite(t.id, true); nextSwipeCard(); };
+                    function nextSwipeCard() { currentSwipeTaskIndex++; const container = document.getElementById('swipeContainer'); if (container) { container.innerHTML = getWorkerSwipeHTML(); initSwipe(); } }
 
-                    window.swipeLeft = function() {
-                        nextSwipeCard();
-                    };
-
-                    window.swipeRight = function() {
-                        const t = swipeTasks[currentSwipeTaskIndex % swipeTasks.length];
-                        if (!isFavoriteLocal(t.id)) toggleFavorite(t.id, true);
-                        nextSwipeCard();
-                    };
-
-                    function nextSwipeCard() {
-                        currentSwipeTaskIndex++;
-                        const container = document.getElementById('swipeContainer');
-                        if (container) {
-                            container.innerHTML = getWorkerSwipeHTML();
-                            initSwipe();
-                        }
-                    }
-
-                    // ---------- Функции для свайпа заказчика ----------
+                    // ---------- Employer swipe ----------
                     async function loadEmployerSwipeCandidates() {
-                        const { data: likedUsers } = await supabaseClient
-                            .from('likes')
-                            .select('to_user_id')
-                            .eq('from_user_id', userId)
-                            .eq('type', 'user');
+                        const { data: likedUsers } = await supabaseClient.from('likes').select('to_user_id').eq('from_user_id', userId).eq('type', 'user');
                         const likedIds = likedUsers?.map(l => l.to_user_id) || [];
                         let query = supabaseClient.from('profiles').select('*').not('id', 'eq', userId);
-                        if (likedIds.length > 0) {
-                            query = query.not('id', 'in', `(${likedIds.map(id => `'${id}'`).join(',')})`);
-                        }
+                        if (likedIds.length > 0) query = query.not('id', 'in', `(${likedIds.map(id => `'${id}'`).join(',')})`);
                         const { data: candidates, error } = await query;
                         if (error) { console.error('Error loading candidates:', error); return []; }
                         return candidates || [];
                     }
-
                     function displayEmployerSwipeCandidate() {
                         const container = document.getElementById('swipeContainer');
-                        if (!swipeCandidates || swipeCandidates.length === 0) {
-                            container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">Нет новых кандидатов</p>';
-                            return;
-                        }
+                        if (!swipeCandidates || swipeCandidates.length === 0) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">Нет новых кандидатов</p>'; return; }
                         const candidate = swipeCandidates[currentSwipeIndex];
                         const rating = candidate.rating ? candidate.rating.toFixed(1) : '0.0';
                         const completed = candidate.completed_tasks || 0;
                         container.innerHTML = `
                             <div class="swipe-card" id="swipeCard" data-user-id="${candidate.id}">
-                                <div class="task-header">
-                                    <h4 class="task-title">${candidate.full_name || candidate.username || 'Исполнитель'}</h4>
-                                    <i class="far fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavoriteUser('${candidate.id}')"></i>
-                                </div>
-                                <div class="task-company">
-                                    <span class="company-rating"><i class="fas fa-star" style="color: #FFC107;"></i> ${rating}</span>
-                                    <span>✅ ${completed} заданий</span>
-                                </div>
-                                <div class="task-description">
-                                    ${candidate.bio || 'Пока нет информации'}
-                                </div>
-                                <div class="swipe-actions">
-                                    <button class="swipe-btn dislike" onclick="swipeLeftCandidate()"><i class="fas fa-times"></i></button>
-                                    <button class="swipe-btn like" onclick="swipeRightCandidate('${candidate.id}')"><i class="fas fa-heart"></i></button>
-                                </div>
+                                <div class="task-header"><h4 class="task-title">${candidate.full_name || candidate.username || 'Исполнитель'}</h4><i class="far fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavoriteUser('${candidate.id}')"></i></div>
+                                <div class="task-company"><span class="company-rating"><i class="fas fa-star"></i> ${rating}</span><span>✅ ${completed} заданий</span></div>
+                                <div class="task-description">${candidate.bio || 'Пока нет информации'}</div>
+                                <div class="swipe-actions"><button class="swipe-btn dislike" onclick="swipeLeftCandidate()"><i class="fas fa-times"></i></button><button class="swipe-btn like" onclick="swipeRightCandidate('${candidate.id}')"><i class="fas fa-heart"></i></button></div>
                             </div>
                         `;
                         initSwipe();
                     }
-
-                    window.swipeRightCandidate = async function(candidateId) {
-                        await supabaseClient.from('likes').insert([{ from_user_id: userId, to_user_id: candidateId, type: 'user' }]);
-                        nextSwipeCandidate();
-                    };
+                    window.swipeRightCandidate = async function(candidateId) { await supabaseClient.from('likes').insert([{ from_user_id: userId, to_user_id: candidateId, type: 'user' }]); nextSwipeCandidate(); };
                     window.swipeLeftCandidate = function() { nextSwipeCandidate(); };
                     async function nextSwipeCandidate() {
                         currentSwipeIndex++;
-                        if (currentSwipeIndex >= swipeCandidates.length) {
-                            swipeCandidates = await loadEmployerSwipeCandidates();
-                            currentSwipeIndex = 0;
-                        }
+                        if (currentSwipeIndex >= swipeCandidates.length) { swipeCandidates = await loadEmployerSwipeCandidates(); currentSwipeIndex = 0; }
                         displayEmployerSwipeCandidate();
                     }
 
@@ -2502,16 +2444,13 @@
                             </div>
                         `;
                     }
-
                     window.createNewTask = async function() {
                         const title = document.getElementById('newTaskTitle')?.value.trim();
                         const description = document.getElementById('newTaskDesc')?.value.trim() || '';
                         const price = parseInt(document.getElementById('newTaskPrice')?.value);
                         const category = document.getElementById('newTaskCategory')?.value.trim() || null;
                         if (!title || !price) { alert('Заполните название и цену'); return; }
-                        const { error } = await supabaseClient.from('tasks').insert([{
-                            employer_id: userId, title, description, price, category, status: 'open'
-                        }]);
+                        const { error } = await supabaseClient.from('tasks').insert([{ employer_id: userId, title, description, price, category, status: 'open' }]);
                         if (error) alert('Ошибка: ' + error.message);
                         else {
                             alert('Задание опубликовано!');
@@ -2522,29 +2461,18 @@
                             if (currentRole === 'employer') loadEmployerActiveTasks();
                         }
                     };
-
                     async function loadEmployerActiveTasks() {
-                        const { data: tasks, error } = await supabaseClient
-                            .from('tasks')
-                            .select('*')
-                            .eq('employer_id', userId)
-                            .eq('status', 'open')
-                            .order('created_at', { ascending: false });
+                        const { data: tasks, error } = await supabaseClient.from('tasks').select('*').eq('employer_id', userId).eq('status', 'open').order('created_at', { ascending: false });
                         if (error) return;
                         const container = document.getElementById('employerActiveTasks');
                         if (!container) return;
-                        if (!tasks || tasks.length === 0) {
-                            container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">нет активных заданий</p>';
-                            return;
-                        }
+                        if (!tasks || tasks.length === 0) { container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">нет активных заданий</p>'; return; }
                         let html = '';
-                        tasks.forEach(task => {
-                            html += `<div class="employer-order-item"><span>${task.title}</span><span class="employer-order-status">${task.price} ₽ • создано ${new Date(task.created_at).toLocaleDateString()}</span></div>`;
-                        });
+                        tasks.forEach(task => { html += `<div class="employer-order-item"><span>${task.title}</span><span class="employer-order-status">${task.price} ₽ • создано ${new Date(task.created_at).toLocaleDateString()}</span></div>`; });
                         container.innerHTML = html;
                     }
 
-                    // ---------- Загрузка заданий (без анимации карточек) ----------
+                    // ---------- Загрузка заданий ----------
                     async function loadTasks(quick = false) {
                         document.getElementById('swipeContainer').style.display = 'none';
                         document.getElementById('tasksContainer').style.display = 'block';
@@ -2552,11 +2480,7 @@
 
                         let realTasks = [];
                         try {
-                            const { data, error } = await supabaseClient
-                                .from('tasks')
-                                .select('*')
-                                .eq('status', 'open')
-                                .order('created_at', { ascending: false });
+                            const { data, error } = await supabaseClient.from('tasks').select('*').eq('status', 'open').order('created_at', { ascending: false });
                             if (error) throw error;
                             realTasks = data || [];
                         } catch(e) { console.error(e); }
@@ -2564,24 +2488,17 @@
                         let likedRealTaskIds = [];
                         if (!isTestMode && currentFilter === 'favorites') {
                             try {
-                                const { data: likes, error } = await supabaseClient
-                                    .from('likes')
-                                    .select('task_id')
-                                    .eq('from_user_id', userId)
-                                    .eq('type', 'task');
+                                const { data: likes, error } = await supabaseClient.from('likes').select('task_id').eq('from_user_id', userId).eq('type', 'task');
                                 if (!error && likes) likedRealTaskIds = likes.map(l => l.task_id);
                             } catch(e) { console.error(e); }
                         }
 
                         let mockTasks = [...allTasks];
                         if (currentFilter === 'favorites') mockTasks = mockTasks.filter(t => favoriteIds.includes(t.id));
-
                         const now = new Date().toISOString();
                         const mockWithDate = mockTasks.map(t => ({ ...t, created_at: now, isMock: true }));
-
                         let filteredReal = [...realTasks];
                         if (currentFilter === 'favorites') filteredReal = filteredReal.filter(task => likedRealTaskIds.includes(task.id));
-
                         let all = [...filteredReal, ...mockWithDate];
                         all.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
 
@@ -2614,11 +2531,7 @@
                                 description = task.desc;
                                 isFavoriteFlag = isFavoriteLocal(task.id);
                             } else {
-                                const { data: profile } = await supabaseClient
-                                    .from('profiles')
-                                    .select('username, full_name, rating')
-                                    .eq('id', task.employer_id)
-                                    .single();
+                                const { data: profile } = await supabaseClient.from('profiles').select('username, full_name, rating').eq('id', task.employer_id).single();
                                 employerName = profile?.full_name || profile?.username || 'Заказчик';
                                 employerRating = profile?.rating ? profile.rating.toFixed(1) : '0.0';
                                 tags = task.category ? [task.category] : ['без опыта'];
@@ -2631,12 +2544,7 @@
                             let alreadyResponded = false;
                             if (!isMock && showTakeButton && !isTestMode) {
                                 try {
-                                    const { data: resp } = await supabaseClient
-                                        .from('responses')
-                                        .select('id')
-                                        .eq('task_id', task.id)
-                                        .eq('worker_id', userId)
-                                        .maybeSingle();
+                                    const { data: resp } = await supabaseClient.from('responses').select('id').eq('task_id', task.id).eq('worker_id', userId).maybeSingle();
                                     alreadyResponded = !!resp;
                                 } catch(e) {}
                             }
@@ -2648,7 +2556,7 @@
                                         <i class="${isFavoriteFlag ? 'fas' : 'far'} fa-heart task-favorite" data-task-id="${task.id}" data-ismock="${isMock}" onclick="event.stopPropagation(); toggleFavorite(${task.id}, ${isMock})"></i>
                                     </div>
                                     <div class="task-company">
-                                        <span class="company-name">${employerName}</span>
+                                        <span class="company-name" style="cursor:pointer;" onclick="event.stopPropagation(); showEmployerProfile('${!isMock ? task.employer_id : ''}', '${employerName}')">${employerName}</span>
                                         <span class="company-rating"><i class="fas fa-star"></i> ${employerRating}</span>
                                         <span class="vip-badge">вип</span>
                                     </div>
@@ -2669,6 +2577,127 @@
                         }, 200);
                     }
 
+                    // ---------- Модалка профиля заказчика ----------
+                    window.showEmployerProfile = async function(employerId, employerName) {
+                        if (!employerId || isTestMode) { alert('Профиль недоступен в тестовом режиме'); return; }
+                        const modal = document.getElementById('employerProfileModal');
+                        const content = document.getElementById('employerProfileContent');
+                        content.innerHTML = '<p style="text-align:center;">загрузка...</p>';
+                        modal.classList.add('show');
+
+                        try {
+                            const { data: profile, error: profileError } = await supabaseClient.from('profiles').select('*').eq('id', employerId).single();
+                            if (profileError) throw profileError;
+
+                            const { data: reviews, error: reviewsError } = await supabaseClient.from('reviews').select('*, from_user_id').eq('to_user_id', employerId).order('created_at', { ascending: false });
+                            if (reviewsError) throw reviewsError;
+
+                            const { data: completedTasks, error: tasksError } = await supabaseClient.from('responses').select('task_id').eq('employer_id', employerId).eq('status', 'completed');
+                            const totalCompleted = completedTasks?.length || 0;
+
+                            let canReview = false;
+                            if (!isTestMode) {
+                                const { data: myResponses } = await supabaseClient.from('responses').select('task_id').eq('worker_id', userId).eq('employer_id', employerId).eq('status', 'completed');
+                                const hasCompleted = (myResponses && myResponses.length > 0);
+                                if (hasCompleted) {
+                                    const { data: myReview } = await supabaseClient.from('reviews').select('id').eq('from_user_id', userId).eq('to_user_id', employerId).maybeSingle();
+                                    if (!myReview) canReview = true;
+                                }
+                            }
+
+                            const avatarLetter = (profile?.full_name || employerName).charAt(0).toUpperCase();
+                            const rating = profile?.rating ? profile.rating.toFixed(1) : '0.0';
+                            let reviewsHtml = '<div class="reviews-section"><h4>отзывы</h4>';
+                            if (!reviews || reviews.length === 0) reviewsHtml += '<p style="color:var(--text-muted);">пока нет отзывов</p>';
+                            else {
+                                reviews.forEach(rev => {
+                                    const date = new Date(rev.created_at).toLocaleDateString('ru-RU');
+                                    const stars = '★'.repeat(rev.rating) + '☆'.repeat(5 - rev.rating);
+                                    reviewsHtml += `
+                                        <div class="review-item">
+                                            <div class="review-header"><span>${rev.from_user_id.slice(0, 6)}</span><span class="review-rating">${stars}</span></div>
+                                            <div class="review-comment">${rev.comment || 'без комментария'}</div>
+                                            <div class="review-date">${date}</div>
+                                        </div>
+                                    `;
+                                });
+                            }
+                            reviewsHtml += '</div>';
+
+                            let reviewFormHtml = '';
+                            if (canReview) {
+                                reviewFormHtml = `
+                                    <div class="write-review">
+                                        <h4>написать отзыв</h4>
+                                        <div class="rating-stars" id="reviewStars">
+                                            <i class="far fa-star" data-rating="1"></i>
+                                            <i class="far fa-star" data-rating="2"></i>
+                                            <i class="far fa-star" data-rating="3"></i>
+                                            <i class="far fa-star" data-rating="4"></i>
+                                            <i class="far fa-star" data-rating="5"></i>
+                                        </div>
+                                        <textarea class="review-textarea" id="reviewComment" placeholder="ваш комментарий (необязательно)" rows="3"></textarea>
+                                        <button class="submit-review-btn" id="submitEmployerReview">отправить отзыв</button>
+                                    </div>
+                                `;
+                            }
+
+                            content.innerHTML = `
+                                <div class="employer-profile-header">
+                                    <div class="employer-avatar">${avatarLetter}</div>
+                                    <div class="employer-name">${profile?.full_name || employerName}</div>
+                                    <div class="employer-rating"><i class="fas fa-star" style="color:#FFC107;"></i> ${rating}</div>
+                                </div>
+                                <div class="employer-stats">
+                                    <div class="stat-item"><div class="stat-number">${totalCompleted}</div><div>заданий</div></div>
+                                    <div class="stat-item"><div class="stat-number">${reviews?.length || 0}</div><div>отзывов</div></div>
+                                </div>
+                                ${reviewsHtml}
+                                ${reviewFormHtml}
+                            `;
+
+                            if (canReview) {
+                                let selectedRating = 0;
+                                const stars = document.querySelectorAll('#reviewStars i');
+                                stars.forEach(star => {
+                                    star.addEventListener('click', function() {
+                                        selectedRating = parseInt(this.dataset.rating);
+                                        stars.forEach(s => {
+                                            if (parseInt(s.dataset.rating) <= selectedRating) { s.classList.remove('far'); s.classList.add('fas'); }
+                                            else { s.classList.remove('fas'); s.classList.add('far'); }
+                                        });
+                                    });
+                                });
+                                document.getElementById('submitEmployerReview').onclick = async () => {
+                                    if (selectedRating === 0) { alert('поставьте оценку от 1 до 5'); return; }
+                                    const comment = document.getElementById('reviewComment').value.trim();
+                                    const { error } = await supabaseClient.from('reviews').insert([{
+                                        task_id: null,
+                                        from_user_id: userId,
+                                        to_user_id: employerId,
+                                        rating: selectedRating,
+                                        comment: comment || null,
+                                        created_at: new Date().toISOString()
+                                    }]);
+                                    if (error) { alert('Ошибка при отправке отзыва'); console.error(error); }
+                                    else {
+                                        alert('Отзыв отправлен!');
+                                        modal.classList.remove('show');
+                                        const { data: allReviews } = await supabaseClient.from('reviews').select('rating').eq('to_user_id', employerId);
+                                        if (allReviews && allReviews.length > 0) {
+                                            const avg = allReviews.reduce((s,r) => s + r.rating, 0) / allReviews.length;
+                                            await supabaseClient.from('profiles').update({ rating: avg }).eq('id', employerId);
+                                        }
+                                    }
+                                };
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            content.innerHTML = '<p style="color:red;">ошибка загрузки профиля</p>';
+                        }
+                    };
+                    document.getElementById('closeEmployerModal').onclick = () => document.getElementById('employerProfileModal').classList.remove('show');
+
                     // ---------- Модалка задания ----------
                     let currentTaskEmployerId = null;
                     window.showTaskModal = function(taskId, employerId, title, description, price, tagsJson, employerName, employerRating) {
@@ -2685,11 +2714,7 @@
                     document.getElementById('closeTaskModal').onclick = () => closeModal('taskDetailModal');
                     document.getElementById('taskModalContactBtn').onclick = async function() {
                         if (!currentTaskEmployerId) return;
-                        const { data: empProfile } = await supabaseClient
-                            .from('profiles')
-                            .select('username')
-                            .eq('id', currentTaskEmployerId)
-                            .single();
+                        const { data: empProfile } = await supabaseClient.from('profiles').select('username').eq('id', currentTaskEmployerId).single();
                         if (empProfile?.username) tg?.openTelegramLink(`https://t.me/${empProfile.username}`);
                         else alert('У заказчика не указан username');
                         closeModal('taskDetailModal');
@@ -2739,12 +2764,7 @@
                     }
                     function animateNewElements(container) {
                         const newElements = container.querySelectorAll('.task-card-new, .employer-card');
-                        newElements.forEach(el => {
-                            el.classList.add('animate-stagger');
-                            el.style.animation = 'none';
-                            el.offsetHeight;
-                            el.style.animation = '';
-                        });
+                        newElements.forEach(el => { el.classList.add('animate-stagger'); el.style.animation = 'none'; el.offsetHeight; el.style.animation = ''; });
                     }
 
                     // ---------- Game ----------
@@ -2766,15 +2786,10 @@
                         currentWin = 0;
                     }
                     window.handleTaskClick = function(id) {
-                        if (id === 1) {
-                            document.getElementById('refLink').value = 'https://t.me/your_bot?start=ref_' + userId;
-                            document.getElementById('refModal').classList.add('show');
-                        } else if (id === 2) document.getElementById('subModal').classList.add('show');
-                        else if (id === 3) {
-                            if (!canPlayGame()) { alert('Сегодня ты уже играл!'); return; }
-                            resetGameModal();
-                            gameModal.classList.add('show');
-                        } else if (id === 4) document.getElementById('testTaskModal').classList.add('show');
+                        if (id === 1) { document.getElementById('refLink').value = 'https://t.me/your_bot?start=ref_' + userId; document.getElementById('refModal').classList.add('show'); }
+                        else if (id === 2) document.getElementById('subModal').classList.add('show');
+                        else if (id === 3) { if (!canPlayGame()) { alert('Сегодня ты уже играл!'); return; } resetGameModal(); gameModal.classList.add('show'); }
+                        else if (id === 4) document.getElementById('testTaskModal').classList.add('show');
                     };
                     closeGame.onclick = () => gameModal.classList.remove('show');
                     gameBoxes.forEach(box => {
@@ -2828,7 +2843,7 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- Аналитика (исправлен месяц, плавное переключение) ----------
+                    // ---------- Аналитика ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -2838,47 +2853,28 @@
                         const now = new Date();
                         let startDate, endDate;
                         if (period === 'day') {
-                            startDate = new Date(now);
-                            startDate.setHours(0,0,0,0);
-                            endDate = new Date(now);
-                            endDate.setHours(23,59,59,999);
+                            startDate = new Date(now); startDate.setHours(0,0,0,0);
+                            endDate = new Date(now); endDate.setHours(23,59,59,999);
                         } else if (period === 'week') {
                             const dayOfWeek = now.getDay();
                             const daysToMonday = (dayOfWeek === 0 ? 6 : dayOfWeek - 1);
-                            startDate = new Date(now);
-                            startDate.setDate(now.getDate() - daysToMonday);
-                            startDate.setHours(0,0,0,0);
-                            endDate = new Date(now);
-                            endDate.setHours(23,59,59,999);
+                            startDate = new Date(now); startDate.setDate(now.getDate() - daysToMonday); startDate.setHours(0,0,0,0);
+                            endDate = new Date(now); endDate.setHours(23,59,59,999);
                         } else {
-                            // Месяц: с 1 числа по сегодня включительно
-                            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                            startDate.setHours(0,0,0,0);
-                            endDate = new Date(now);
-                            endDate.setHours(23,59,59,999);
+                            startDate = new Date(now.getFullYear(), now.getMonth(), 1); startDate.setHours(0,0,0,0);
+                            endDate = new Date(now); endDate.setHours(23,59,59,999);
                         }
 
                         let periodEvents = [];
                         try {
-                            const { data, error } = await supabaseClient
-                                .from('events')
-                                .select('*')
-                                .eq('user_id', String(userIdNum))
-                                .gte('created_at', startDate.toISOString())
-                                .lte('created_at', endDate.toISOString())
-                                .order('created_at', { ascending: true });
+                            const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', String(userIdNum)).gte('created_at', startDate.toISOString()).lte('created_at', endDate.toISOString()).order('created_at', { ascending: true });
                             if (error) throw error;
                             periodEvents = data || [];
                         } catch(e) { console.error(e); }
 
                         let allEvents = [];
                         try {
-                            const { data, error } = await supabaseClient
-                                .from('events')
-                                .select('*')
-                                .eq('user_id', String(userIdNum))
-                                .order('created_at', { ascending: false })
-                                .limit(10);
+                            const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', String(userIdNum)).order('created_at', { ascending: false }).limit(10);
                             if (error) throw error;
                             allEvents = data || [];
                         } catch(e) { console.error(e); }
@@ -2886,10 +2882,7 @@
                         let chartData = [];
                         if (period === 'day') {
                             for (let h = 0; h < 24; h++) chartData.push({ label: `${h.toString().padStart(2,'0')}:00`, amount: 0 });
-                            periodEvents.forEach(e => {
-                                const date = new Date(e.created_at);
-                                chartData[date.getHours()].amount += e.amount || 0;
-                            });
+                            periodEvents.forEach(e => { const date = new Date(e.created_at); chartData[date.getHours()].amount += e.amount || 0; });
                         } else if (period === 'week') {
                             const dayNames = ['пн','вт','ср','чт','пт','сб','вс'];
                             for (let i = 0; i < 7; i++) chartData.push({ label: dayNames[i], amount: 0 });
@@ -2904,11 +2897,7 @@
                             const month = now.getMonth();
                             const lastDay = new Date(year, month+1, 0).getDate();
                             for (let day = 1; day <= lastDay; day++) {
-                                chartData.push({
-                                    label: day.toString(),
-                                    amount: 0,
-                                    timestamp: new Date(year, month, day).setHours(0,0,0,0)
-                                });
+                                chartData.push({ label: day.toString(), amount: 0, timestamp: new Date(year, month, day).setHours(0,0,0,0) });
                             }
                             periodEvents.forEach(e => {
                                 const eventDate = new Date(e.created_at).setHours(0,0,0,0);
@@ -2951,7 +2940,6 @@
                         }
                         html += `</div></div>`;
 
-                        // Плавная замена контента
                         container.style.transition = 'opacity 0.2s';
                         container.style.opacity = '0';
                         setTimeout(() => {
@@ -2960,14 +2948,12 @@
                             setTimeout(() => { container.style.transition = ''; }, 200);
                         }, 200);
                     }
-
                     window.setAnalyticsPeriod = function(period) {
                         document.querySelectorAll('#analyticsTabs .period-tab').forEach(t => t.classList.remove('active'));
                         document.querySelector(`#analyticsTabs .period-tab[data-period="${period}"]`).classList.add('active');
                         loadAnalytics(period);
                     };
                     function updateAnalyticsPage() {
-                        // Сбрасываем активную вкладку на "день"
                         document.querySelectorAll('#analyticsTabs .period-tab').forEach(t => t.classList.remove('active'));
                         document.querySelector('#analyticsTabs .period-tab[data-period="day"]').classList.add('active');
                         loadAnalytics('day');
@@ -2975,30 +2961,16 @@
 
                     // ---------- Subscription check ----------
                     document.getElementById('checkBtn').onclick = async function() {
-                        if (!canDo(2)) {
-                            document.getElementById('checkResult').style.color = 'red';
-                            document.getElementById('checkResult').innerText = 'задание уже выполнено';
-                            return;
-                        }
+                        if (!canDo(2)) { document.getElementById('checkResult').style.color = 'red'; document.getElementById('checkResult').innerText = 'задание уже выполнено'; return; }
                         const checkBtn = this;
                         checkBtn.disabled = true;
                         checkBtn.innerText = 'проверка...';
                         document.getElementById('checkResult').innerText = '';
                         const userIdNum = tg?.initDataUnsafe?.user?.id;
-                        if (!userIdNum) {
-                            document.getElementById('checkResult').style.color = 'red';
-                            document.getElementById('checkResult').innerText = 'Ошибка: не удалось определить пользователя';
-                            checkBtn.disabled = false;
-                            checkBtn.innerText = 'проверить подписку';
-                            return;
-                        }
+                        if (!userIdNum) { document.getElementById('checkResult').style.color = 'red'; document.getElementById('checkResult').innerText = 'Ошибка: не удалось определить пользователя'; checkBtn.disabled = false; checkBtn.innerText = 'проверить подписку'; return; }
                         try {
                             const functionUrl = 'https://xnguoxwcrncdinqipzdz.supabase.co/functions/v1/check-subscription';
-                            const response = await fetch(functionUrl, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ user_id: userIdNum }),
-                            });
+                            const response = await fetch(functionUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: userIdNum }) });
                             const result = await response.json();
                             if (result.subscribed) {
                                 const oldLevel = getLevelByXP(getXP());
@@ -3031,36 +3003,21 @@
                         }
                     };
                     document.getElementById('closeRef').onclick = () => document.getElementById('refModal').classList.remove('show');
-                    document.getElementById('copyBtn').onclick = () => {
-                        let inp = document.getElementById('refLink');
-                        inp.select();
-                        navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!'));
-                    };
-                    document.getElementById('channelBtn').onclick = () => {
-                        if (tg) tg.openTelegramLink('https://t.me/HYPE_JOB1');
-                        else window.open('https://t.me/HYPE_JOB1', '_blank');
-                    };
+                    document.getElementById('copyBtn').onclick = () => { let inp = document.getElementById('refLink'); inp.select(); navigator.clipboard.writeText(inp.value).then(() => alert('Ссылка скопирована!')); };
+                    document.getElementById('channelBtn').onclick = () => { if (tg) tg.openTelegramLink('https://t.me/HYPE_JOB1'); else window.open('https://t.me/HYPE_JOB1', '_blank'); };
                     document.getElementById('closeSub').onclick = () => document.getElementById('subModal').classList.remove('show');
 
                     // ---------- Premium модалка ----------
                     window.openPremiumModal = function() {
                         const modal = document.getElementById('premiumModal');
                         modal.classList.add('show');
-                        // Подсветка выбранного плана
                         document.querySelectorAll('.plan-option').forEach(opt => {
-                            opt.addEventListener('click', function() {
-                                document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
-                                this.classList.add('selected');
-                            });
+                            opt.addEventListener('click', function() { document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected')); this.classList.add('selected'); });
                         });
                         document.getElementById('premiumSubscribeBtn').onclick = () => {
                             const selected = document.querySelector('.plan-option.selected');
                             let plan = '';
-                            if (selected) {
-                                if (selected.dataset.plan === 'monthly') plan = 'месячная';
-                                else if (selected.dataset.plan === 'yearly') plan = 'годовая';
-                                else plan = 'Telegram Stars';
-                            }
+                            if (selected) { if (selected.dataset.plan === 'monthly') plan = 'месячная'; else if (selected.dataset.plan === 'yearly') plan = 'годовая'; else plan = 'Telegram Stars'; }
                             alert(`Оформление подписки "${plan}" временно недоступно. Функция в разработке.`);
                             modal.classList.remove('show');
                         };
@@ -3073,7 +3030,7 @@
                     window.closeNotifications = () => showPage('tasks');
                     window.closeSettings = () => showPage('tasks');
 
-                    // ---------- Navigation (со сбросом скролла) ----------
+                    // ---------- Navigation ----------
                     const pages = {
                         tasks: document.getElementById('tasks-page'),
                         profile: document.getElementById('profile-page'),
@@ -3086,7 +3043,6 @@
                     function showPage(pageId) {
                         Object.values(pages).forEach(p => p.classList.remove('active-page'));
                         pages[pageId].classList.add('active-page');
-                        // Сброс прокрутки контейнера наверх
                         const pagesContainer = document.getElementById('pagesContainer');
                         if (pagesContainer) pagesContainer.scrollTop = 0;
                         if (['tasks','profile','analytics','referrals','withdraw'].includes(pageId)) {
@@ -3103,9 +3059,7 @@
                         else if (pageId === 'analytics') updateAnalyticsPage();
                         else if (pageId === 'tasks') {
                             animatePage(pages[pageId]);
-                            setTimeout(() => {
-                                if (currentRole === 'worker' && viewMode === 'list') loadTasks(true);
-                            }, 100);
+                            setTimeout(() => { if (currentRole === 'worker' && viewMode === 'list') loadTasks(true); }, 100);
                         }
                     }
                     document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
@@ -3122,7 +3076,6 @@
                         document.getElementById('profileTitle').innerText = title;
                         const rank = await getUserRank();
                         document.getElementById('profileRatingPlace').innerText = rank > 0 ? rank : 'топ';
-                        // Календарь
                         const calendarEl = document.getElementById('profileCalendar');
                         const daysOfWeek = ['пн','вт','ср','чт','пт','сб','вс'];
                         const today = new Date();
@@ -3140,7 +3093,6 @@
                         }
                         datesHtml += '</div>';
                         calendarEl.innerHTML = datesHtml;
-
                         document.getElementById('profileIdCard').innerHTML = `<span class="id-label">id</span><span class="id-value">${userId}</span>`;
                         const messageEl = document.getElementById('profileMessage');
                         messageEl.innerHTML = `<div class="profile-message-title">keep it up!</div><div class="profile-message-text">${streak} дней подряд ты с нами!</div>`;
@@ -3181,11 +3133,8 @@
                         let streak = getStreak();
                         if (lastDate === today) return streak;
                         const yesterday = new Date(Date.now() - 86400000).toDateString();
-                        if (lastDate === yesterday) {
-                            const oldStreak = streak;
-                            streak++;
-                            showStreakAnimation(oldStreak, streak);
-                        } else streak = 1;
+                        if (lastDate === yesterday) { const old = streak; streak++; showStreakAnimation(old, streak); }
+                        else streak = 1;
                         localStorage.setItem('streak', streak);
                         localStorage.setItem('lastStreakDate', today);
                         return streak;
@@ -3196,11 +3145,7 @@
                         renderWeekdays(streak);
                         if (animate && oldValue !== null && oldValue < streak) showStreakAnimation(oldValue, streak);
                     }
-                    function animateStreakIcon() {
-                        const icon = document.getElementById('streakIcon');
-                        icon.classList.add('pulse');
-                        setTimeout(() => icon.classList.remove('pulse'), 500);
-                    }
+                    function animateStreakIcon() { const icon = document.getElementById('streakIcon'); icon.classList.add('pulse'); setTimeout(() => icon.classList.remove('pulse'), 500); }
                     function renderWeekdays(streak) {
                         const container = document.getElementById('weekdaysContainer');
                         if (!container) return;
@@ -3217,37 +3162,15 @@
                     }
                     function getReferralsCount() { return parseInt(localStorage.getItem('referralsCount')) || 0; }
                     function saveBalance() { localStorage.setItem('balance', balance); updateBalanceDisplay(); }
-                    function addCount(id) {
-                        let key = id + '_' + new Date().toDateString();
-                        counts[key] = (counts[key] || 0) + 1;
-                        localStorage.setItem('counts', JSON.stringify(counts));
-                    }
-                    function canDo(id) {
-                        if (id === 2) return !localStorage.getItem('subscription_done');
-                        else if (id === 3) return true;
-                        else {
-                            let key = id + '_' + new Date().toDateString();
-                            return !counts[key] || counts[key] < 3;
-                        }
-                    }
-                    function animatePage(pageElement) {
-                        pageElement.querySelectorAll('.animate-stagger').forEach(el => {
-                            el.style.animation = 'none';
-                            el.offsetHeight;
-                            el.style.animation = '';
-                        });
-                    }
+                    function addCount(id) { let key = id + '_' + new Date().toDateString(); counts[key] = (counts[key] || 0) + 1; localStorage.setItem('counts', JSON.stringify(counts)); }
+                    function canDo(id) { if (id === 2) return !localStorage.getItem('subscription_done'); else if (id === 3) return true; else { let key = id + '_' + new Date().toDateString(); return !counts[key] || counts[key] < 3; } }
+                    function animatePage(pageElement) { pageElement.querySelectorAll('.animate-stagger').forEach(el => { el.style.animation = 'none'; el.offsetHeight; el.style.animation = ''; }); }
                     function updateBalanceDisplay() { document.getElementById('mainBalance').innerText = balance + ' ₽'; }
 
                     // ---------- Splash & header ----------
                     const splash = document.getElementById('splash');
                     const appContent = document.getElementById('appContent');
-                    splash.addEventListener('animationend', function(e) {
-                        if (e.animationName === 'fadeOut') {
-                            splash.remove();
-                            appContent.style.opacity = '1';
-                        }
-                    });
+                    splash.addEventListener('animationend', function(e) { if (e.animationName === 'fadeOut') { splash.remove(); appContent.style.opacity = '1'; } });
                     document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
                     document.getElementById('profileName').innerText = firstName;
 
@@ -3271,11 +3194,7 @@
                         const nextTitle = getTitle(level+1);
                         const modal = document.getElementById('levelModal');
                         const content = document.getElementById('levelModalContent');
-                        content.innerHTML = `
-                            <div class="level-progress"><div class="level-box"><div class="level-number">${level}</div><div class="level-title">${currentTitle}</div></div>
-                            <div class="progress-container"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div><div class="progress-percent">${progress}%</div></div>
-                            <div class="level-box"><div class="level-number">${level+1}</div><div class="level-title">${nextTitle}</div></div></div>
-                        `;
+                        content.innerHTML = `<div class="level-progress"><div class="level-box"><div class="level-number">${level}</div><div class="level-title">${currentTitle}</div></div><div class="progress-container"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%;"></div></div><div class="progress-percent">${progress}%</div></div><div class="level-box"><div class="level-number">${level+1}</div><div class="level-title">${nextTitle}</div></div></div>`;
                         modal.classList.add('show');
                     };
                     document.getElementById('closeLevelModal').onclick = () => document.getElementById('levelModal').classList.remove('show');
