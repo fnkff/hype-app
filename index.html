@@ -2161,13 +2161,13 @@
                                 console.log('New user created', referrerId ? `referrer: ${referrerId}` : 'no referrer');
 
                                 // Создаём запись в profiles
-                                const { error: profileError } = await supabaseClient.from('profiles').insert([{
+                                const { error: profileError } = await supabaseClient.from('profiles').upsert([{
                                     id: userId,
                                     username: firstName,
                                     full_name: firstName,
                                     rating: 0,
                                     completed_tasks: 0
-                                }]);
+                                }], { onConflict: 'id' });
                                 if (profileError) console.error('Profile creation error:', profileError);
                             } else {
                                 if (user.name !== firstName) await supabaseClient.from('users').update({ name: firstName }).eq('id', userId);
@@ -2604,16 +2604,11 @@
                         modal.classList.add('show');
 
                         try {
-                            let profile = null;
-                            let profileError = null;
-                            try {
-                                const { data, error } = await supabaseClient.from('profiles').select('*').eq('id', employerId).single();
-                                if (error) profileError = error;
-                                else profile = data;
-                            } catch(e) { profileError = e; }
-
-                            // Если профиля нет, создаём базовый
-                            if (!profile) {
+                            // Получаем профиль, если нет – создаём
+                            let profile;
+                            const { data: existingProfile, error: profileError } = await supabaseClient.from('profiles').select('*').eq('id', employerId).maybeSingle();
+                            if (profileError || !existingProfile) {
+                                // Создаём профиль
                                 const { data: userData } = await supabaseClient.from('users').select('name').eq('id', employerId).single();
                                 const newProfile = {
                                     id: employerId,
@@ -2622,9 +2617,11 @@
                                     rating: 0,
                                     completed_tasks: 0
                                 };
-                                const { error: insertError } = await supabaseClient.from('profiles').insert([newProfile]);
-                                if (!insertError) profile = newProfile;
-                                else profile = { full_name: employerName, rating: 0 };
+                                const { error: insertError } = await supabaseClient.from('profiles').upsert([newProfile], { onConflict: 'id' });
+                                if (insertError) throw insertError;
+                                profile = newProfile;
+                            } else {
+                                profile = existingProfile;
                             }
 
                             const { data: reviews, error: reviewsError } = await supabaseClient.from('reviews').select('*').eq('to_user_id', employerId).order('created_at', { ascending: false });
@@ -2881,7 +2878,7 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- Аналитика ----------
+                    // ---------- Аналитика (исправлена для месяца) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -2899,8 +2896,11 @@
                             startDate = new Date(now); startDate.setDate(now.getDate() - daysToMonday); startDate.setHours(0,0,0,0);
                             endDate = new Date(now); endDate.setHours(23,59,59,999);
                         } else {
-                            startDate = new Date(now.getFullYear(), now.getMonth(), 1); startDate.setHours(0,0,0,0);
-                            endDate = new Date(now); endDate.setHours(23,59,59,999);
+                            // Месяц: с 1 числа текущего месяца по сегодняшний день включительно
+                            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                            startDate.setHours(0,0,0,0);
+                            endDate = new Date(now);
+                            endDate.setHours(23,59,59,999);
                         }
 
                         let periodEvents = [];
@@ -2935,7 +2935,11 @@
                             const month = now.getMonth();
                             const lastDay = new Date(year, month+1, 0).getDate();
                             for (let day = 1; day <= lastDay; day++) {
-                                chartData.push({ label: day.toString(), amount: 0, timestamp: new Date(year, month, day).setHours(0,0,0,0) });
+                                chartData.push({
+                                    label: day.toString(),
+                                    amount: 0,
+                                    timestamp: new Date(year, month, day).setHours(0,0,0,0)
+                                });
                             }
                             periodEvents.forEach(e => {
                                 const eventDate = new Date(e.created_at).setHours(0,0,0,0);
