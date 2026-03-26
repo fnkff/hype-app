@@ -11,7 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ========== БАЗОВЫЕ ПЕРЕМЕННЫЕ (тёмная тема по умолчанию) ========== */
+        /* ========== ПЕРЕМЕННЫЕ (тёмная тема по умолчанию) ========== */
         :root {
             --bg-main: #0F0F0F;
             --bg-card: #202020;
@@ -2878,7 +2878,7 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- Аналитика (исправлена для месяца) ----------
+                    // ---------- Аналитика (исправлена для месяца, сброс вверх при открытии) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -2996,6 +2996,7 @@
                         loadAnalytics(period);
                     };
                     function updateAnalyticsPage() {
+                        // Сбрасываем активную вкладку на "день"
                         document.querySelectorAll('#analyticsTabs .period-tab').forEach(t => t.classList.remove('active'));
                         document.querySelector('#analyticsTabs .period-tab[data-period="day"]').classList.add('active');
                         loadAnalytics('day');
@@ -3059,7 +3060,7 @@
                         document.getElementById('premiumSubscribeBtn').onclick = () => {
                             const selected = document.querySelector('.plan-option.selected');
                             let plan = '';
-                            if (selected) { if (selected.dataset.plan === 'monthly') plan = 'месячная'; else if (selected.dataset.plan === 'yearly') plan = 'годовая'; else plan = 'Telegram Stars'; }
+                            if (selected) { if (selected.dataset.plan === 'monthly') plan = 'месячная'; else if (selected.dataset.plan === 'yearly') plan = 'годовая'; }
                             alert(`Оформление подписки "${plan}" временно недоступно. Функция в разработке.`);
                             modal.classList.remove('show');
                         };
@@ -3072,7 +3073,7 @@
                     window.closeNotifications = () => showPage('tasks');
                     window.closeSettings = () => showPage('tasks');
 
-                    // ---------- Navigation ----------
+                    // ---------- Navigation (со сбросом скролла) ----------
                     const pages = {
                         tasks: document.getElementById('tasks-page'),
                         profile: document.getElementById('profile-page'),
