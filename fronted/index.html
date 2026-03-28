@@ -11,7 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* (все стили остаются без изменений, они были в предыдущем коде, я их копирую из исходного файла) */
+        /* Все стили остаются без изменений (как в предыдущем коде) */
         /* ========== ПЕРЕМЕННЫЕ (тёмная тема по умолчанию) ========== */
         :root {
             --bg-main: #0F0F0F;
@@ -74,7 +74,6 @@
         button, .card, .nav-item {
             transition: all 0.3s ease;
         }
-        /* Убираем свечение у кнопок по умолчанию */
         .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .employer-create-btn,
         .premium-subscribe-btn, .task-take-btn-full, .swipe-btn, .submit-review-btn {
             background: var(--accent);
@@ -82,7 +81,6 @@
             border: none;
             box-shadow: none;
         }
-        /* Свечение только при наведении (на ПК) */
         @media (hover: hover) {
             .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover,
             .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover, .premium-subscribe-btn:hover,
@@ -92,7 +90,6 @@
                 box-shadow: 0 0 25px rgba(93,214,44,0.5);
             }
         }
-        /* Активное состояние (при нажатии) */
         .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active,
         .modal button:active, .copy-ref-btn:active, .employer-create-btn:active, .premium-subscribe-btn:active,
         .task-take-btn-full:active, .swipe-btn:active, .submit-review-btn:active {
