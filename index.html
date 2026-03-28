@@ -11,6 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* (все стили остаются без изменений, они были в предыдущем коде, я их копирую из исходного файла) */
         /* ========== ПЕРЕМЕННЫЕ (тёмная тема по умолчанию) ========== */
         :root {
             --bg-main: #0F0F0F;
@@ -2303,14 +2304,22 @@
                     async function toggleRealTaskFavorite(taskId) {
                         if (isTestMode) { alert('В тестовом режиме избранное недоступно'); return; }
                         try {
-                            const { data: existing } = await supabaseClient.from('likes').select('id').eq('from_user_id', userId).eq('task_id', Number(taskId)).eq('type', 'task').maybeSingle();
+                            const taskIdNum = Number(taskId);
+                            if (isNaN(taskIdNum)) { console.error('Invalid taskId:', taskId); return; }
+                            const { data: existing, error: findError } = await supabaseClient.from('likes').select('id').eq('from_user_id', userId).eq('task_id', taskIdNum).eq('type', 'task').maybeSingle();
+                            if (findError) throw findError;
                             if (existing) {
-                                await supabaseClient.from('likes').delete().eq('id', existing.id);
+                                const { error: delError } = await supabaseClient.from('likes').delete().eq('id', existing.id);
+                                if (delError) throw delError;
+                                console.log('Like removed');
                             } else {
-                                await supabaseClient.from('likes').insert([{ from_user_id: userId, task_id: Number(taskId), type: 'task' }]);
+                                const { error: insError } = await supabaseClient.from('likes').insert([{ from_user_id: userId, task_id: taskIdNum, type: 'task' }]);
+                                if (insError) throw insError;
+                                console.log('Like added');
                             }
-                            loadTasks(true); // обновляем список заданий
-                        } catch(e) { console.error(e); alert('Не удалось добавить в избранное: ' + (e.message || 'ошибка')); }
+                            // Обновляем список заданий, чтобы иконка изменилась
+                            loadTasks(true);
+                        } catch(e) { console.error('toggleRealTaskFavorite error:', e); alert('Не удалось добавить в избранное: ' + (e.message || 'ошибка')); }
                     }
 
                     window.toggleFavorite = function(taskId, isMock = true) {
@@ -2618,35 +2627,36 @@
                         modal.classList.add('show');
 
                         try {
-                            // Гарантируем наличие профиля
-                            let profile;
-                            const { data: existingProfile, error: profileError } = await supabaseClient.from('profiles').select('*').eq('id', employerId).maybeSingle();
-                            if (profileError || !existingProfile) {
-                                // Создаём профиль, а также убедимся, что есть запись в users
-                                const { data: userData, error: userError } = await supabaseClient.from('users').select('name').eq('id', employerId).maybeSingle();
-                                if (userError || !userData) {
-                                    // Если нет в users, создаём запись в users
-                                    const newUser = { id: employerId, name: employerName, balance: 0, xp: 0, referrals: 0, streak: 0, last_streak_date: null, tasks_completed: {} };
-                                    await supabaseClient.from('users').insert([newUser]);
-                                }
-                                const finalName = userData?.name || employerName;
-                                const newProfile = {
+                            // Гарантируем наличие записи в users и profiles
+                            let userExists = await supabaseClient.from('users').select('id').eq('id', employerId).maybeSingle();
+                            if (userExists.error || !userExists.data) {
+                                await supabaseClient.from('users').insert([{
                                     id: employerId,
-                                    username: finalName,
-                                    full_name: finalName,
-                                    rating: 0,
-                                    completed_tasks: 0
-                                };
-                                const { error: insertError } = await supabaseClient.from('profiles').upsert([newProfile], { onConflict: 'id' });
-                                if (insertError) throw insertError;
-                                profile = newProfile;
-                            } else {
-                                profile = existingProfile;
+                                    name: employerName,
+                                    balance: 0,
+                                    xp: 0,
+                                    referrals: 0,
+                                    streak: 0,
+                                    last_streak_date: null,
+                                    tasks_completed: {}
+                                }]);
                             }
+                            // Обновляем или создаём профиль
+                            const { data: profile, error: profileError } = await supabaseClient.from('profiles').upsert({
+                                id: employerId,
+                                username: employerName,
+                                full_name: employerName,
+                                rating: 0,
+                                completed_tasks: 0
+                            }, { onConflict: 'id' }).select().single();
 
+                            if (profileError) throw profileError;
+
+                            // Загружаем отзывы
                             const { data: reviews, error: reviewsError } = await supabaseClient.from('reviews').select('*').eq('to_user_id', employerId).order('created_at', { ascending: false });
                             if (reviewsError) throw reviewsError;
 
+                            // Загружаем количество завершённых заданий (как заказчик)
                             const { data: completedTasks, error: tasksError } = await supabaseClient.from('responses').select('task_id').eq('employer_id', employerId).eq('status', 'completed');
                             const totalCompleted = completedTasks?.length || 0;
 
@@ -2916,14 +2926,17 @@
                             startDate = new Date(now); startDate.setDate(now.getDate() - daysToMonday); startDate.setHours(0,0,0,0);
                             endDate = new Date(now); endDate.setHours(23,59,59,999);
                         } else {
-                            // Месяц: от начала месяца до конца дня сегодняшнего (включительно)
-                            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                            startDate.setHours(0,0,0,0);
-                            endDate = new Date(now);
-                            endDate.setHours(23,59,59,999);
+                            // Месяц: от начала месяца до конца дня сегодняшнего (включительно) в UTC
+                            const year = now.getUTCFullYear();
+                            const month = now.getUTCMonth();
+                            startDate = new Date(Date.UTC(year, month, 1, 0, 0, 0));
+                            endDate = new Date(Date.UTC(year, month + 1, 0, 23, 59, 59, 999));
+                            // Если сегодняшний день ещё не наступил по UTC, скорректируем endDate
+                            const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
+                            if (endDate > todayUTC) endDate = todayUTC;
                         }
 
-                        // Запрос в Supabase: события за период (используем ISO-строки, но фильтрация по локальному времени)
+                        // Запрос в Supabase: используем UTC диапазон
                         let periodEvents = [];
                         try {
                             const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', String(userIdNum)).gte('created_at', startDate.toISOString()).lte('created_at', endDate.toISOString()).order('created_at', { ascending: true });
@@ -2952,23 +2965,22 @@
                                 if (idx>=0 && idx<7) chartData[idx].amount += e.amount || 0;
                             });
                         } else {
-                            // Месяц: строим дни от 1 до последнего числа месяца в локальной временной зоне
-                            const year = now.getFullYear();
-                            const month = now.getMonth();
-                            const lastDay = new Date(year, month+1, 0).getDate();
+                            // Месяц: строим дни по UTC
+                            const year = startDate.getUTCFullYear();
+                            const month = startDate.getUTCMonth();
+                            const lastDay = new Date(Date.UTC(year, month+1, 0)).getUTCDate();
                             for (let day = 1; day <= lastDay; day++) {
                                 chartData.push({
                                     label: day.toString(),
                                     amount: 0,
-                                    timestamp: new Date(year, month, day).setHours(0,0,0,0) // локальное начало дня
+                                    timestamp: Date.UTC(year, month, day)
                                 });
                             }
-                            // Группируем события по локальной дате (с учётом часового пояса)
+                            // Группируем события по UTC дате
                             periodEvents.forEach(e => {
                                 const eventDate = new Date(e.created_at);
-                                const localDate = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
-                                const timestamp = localDate.setHours(0,0,0,0);
-                                const index = chartData.findIndex(item => item.timestamp === timestamp);
+                                const utcDate = Date.UTC(eventDate.getUTCFullYear(), eventDate.getUTCMonth(), eventDate.getUTCDate());
+                                const index = chartData.findIndex(item => item.timestamp === utcDate);
                                 if (index !== -1) chartData[index].amount += e.amount || 0;
                             });
                         }
