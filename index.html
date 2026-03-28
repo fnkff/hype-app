@@ -2309,7 +2309,7 @@
                             } else {
                                 await supabaseClient.from('likes').insert([{ from_user_id: userId, task_id: Number(taskId), type: 'task' }]);
                             }
-                            loadTasks(true);
+                            loadTasks(true); // обновляем список заданий
                         } catch(e) { console.error(e); alert('Не удалось добавить в избранное: ' + (e.message || 'ошибка')); }
                     }
 
@@ -2931,6 +2931,7 @@
                                 if (idx>=0 && idx<7) chartData[idx].amount += e.amount || 0;
                             });
                         } else {
+                            // Месяц: используем локальные даты для меток и группировки
                             const year = now.getFullYear();
                             const month = now.getMonth();
                             const lastDay = new Date(year, month+1, 0).getDate();
@@ -2938,12 +2939,15 @@
                                 chartData.push({
                                     label: day.toString(),
                                     amount: 0,
-                                    timestamp: new Date(year, month, day).setHours(0,0,0,0)
+                                    timestamp: new Date(year, month, day).setHours(0,0,0,0) // локальное начало дня
                                 });
                             }
+                            // Группируем события по локальной дате
                             periodEvents.forEach(e => {
-                                const eventDate = new Date(e.created_at).setHours(0,0,0,0);
-                                const index = chartData.findIndex(item => item.timestamp === eventDate);
+                                const eventDate = new Date(e.created_at);
+                                const localDate = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+                                const timestamp = localDate.setHours(0,0,0,0);
+                                const index = chartData.findIndex(item => item.timestamp === timestamp);
                                 if (index !== -1) chartData[index].amount += e.amount || 0;
                             });
                         }
