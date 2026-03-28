@@ -2549,9 +2549,23 @@
                                 description = task.desc;
                                 isFavoriteFlag = isFavoriteLocal(task.id);
                             } else {
-                                const { data: profile } = await supabaseClient.from('profiles').select('username, full_name, rating').eq('id', task.employer_id).single();
-                                employerName = profile?.full_name || profile?.username || 'Заказчик';
-                                employerRating = profile?.rating ? profile.rating.toFixed(1) : '0.0';
+                                // Загружаем профиль заказчика (гарантируем наличие)
+                                let profile = await supabaseClient.from('profiles').select('username, full_name, rating').eq('id', task.employer_id).maybeSingle();
+                                if (profile.error || !profile.data) {
+                                    // Если профиля нет, создаём
+                                    const { data: userData } = await supabaseClient.from('users').select('name').eq('id', task.employer_id).maybeSingle();
+                                    const newProfile = {
+                                        id: task.employer_id,
+                                        username: userData?.name || 'Заказчик',
+                                        full_name: userData?.name || 'Заказчик',
+                                        rating: 0,
+                                        completed_tasks: 0
+                                    };
+                                    await supabaseClient.from('profiles').upsert([newProfile], { onConflict: 'id' });
+                                    profile = { data: newProfile };
+                                }
+                                employerName = profile.data?.full_name || profile.data?.username || 'Заказчик';
+                                employerRating = profile.data?.rating ? profile.data.rating.toFixed(1) : '0.0';
                                 tags = task.category ? [task.category] : ['без опыта'];
                                 description = task.description || '';
                                 priceDisplay = task.price;
@@ -2604,16 +2618,22 @@
                         modal.classList.add('show');
 
                         try {
-                            // Получаем профиль, если нет – создаём
+                            // Гарантируем наличие профиля
                             let profile;
                             const { data: existingProfile, error: profileError } = await supabaseClient.from('profiles').select('*').eq('id', employerId).maybeSingle();
                             if (profileError || !existingProfile) {
-                                // Создаём профиль
-                                const { data: userData } = await supabaseClient.from('users').select('name').eq('id', employerId).single();
+                                // Создаём профиль, а также убедимся, что есть запись в users
+                                const { data: userData, error: userError } = await supabaseClient.from('users').select('name').eq('id', employerId).maybeSingle();
+                                if (userError || !userData) {
+                                    // Если нет в users, создаём запись в users
+                                    const newUser = { id: employerId, name: employerName, balance: 0, xp: 0, referrals: 0, streak: 0, last_streak_date: null, tasks_completed: {} };
+                                    await supabaseClient.from('users').insert([newUser]);
+                                }
+                                const finalName = userData?.name || employerName;
                                 const newProfile = {
                                     id: employerId,
-                                    username: userData?.name || employerName,
-                                    full_name: userData?.name || employerName,
+                                    username: finalName,
+                                    full_name: finalName,
                                     rating: 0,
                                     completed_tasks: 0
                                 };
@@ -2878,7 +2898,7 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- Аналитика (исправлена для месяца, сброс вверх при открытии) ----------
+                    // ---------- Аналитика (исправлена для месяца) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
@@ -2896,13 +2916,14 @@
                             startDate = new Date(now); startDate.setDate(now.getDate() - daysToMonday); startDate.setHours(0,0,0,0);
                             endDate = new Date(now); endDate.setHours(23,59,59,999);
                         } else {
-                            // Месяц: с 1 числа текущего месяца по сегодняшний день включительно
+                            // Месяц: от начала месяца до конца дня сегодняшнего (включительно)
                             startDate = new Date(now.getFullYear(), now.getMonth(), 1);
                             startDate.setHours(0,0,0,0);
                             endDate = new Date(now);
                             endDate.setHours(23,59,59,999);
                         }
 
+                        // Запрос в Supabase: события за период (используем ISO-строки, но фильтрация по локальному времени)
                         let periodEvents = [];
                         try {
                             const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', String(userIdNum)).gte('created_at', startDate.toISOString()).lte('created_at', endDate.toISOString()).order('created_at', { ascending: true });
@@ -2931,7 +2952,7 @@
                                 if (idx>=0 && idx<7) chartData[idx].amount += e.amount || 0;
                             });
                         } else {
-                            // Месяц: используем локальные даты для меток и группировки
+                            // Месяц: строим дни от 1 до последнего числа месяца в локальной временной зоне
                             const year = now.getFullYear();
                             const month = now.getMonth();
                             const lastDay = new Date(year, month+1, 0).getDate();
@@ -2942,7 +2963,7 @@
                                     timestamp: new Date(year, month, day).setHours(0,0,0,0) // локальное начало дня
                                 });
                             }
-                            // Группируем события по локальной дате
+                            // Группируем события по локальной дате (с учётом часового пояса)
                             periodEvents.forEach(e => {
                                 const eventDate = new Date(e.created_at);
                                 const localDate = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
