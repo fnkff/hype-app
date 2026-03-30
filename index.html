@@ -11,7 +11,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* Все стили остаются как в предыдущей версии, они корректны и не менялись */
         /* ========== ПЕРЕМЕННЫЕ (тёмная тема по умолчанию) ========== */
         :root {
             --bg-main: #0F0F0F;
@@ -75,7 +74,7 @@
             transition: all 0.3s ease;
         }
         .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .employer-create-btn,
-        .premium-subscribe-btn, .task-take-btn-full, .swipe-btn, .submit-review-btn {
+        .premium-subscribe-btn, .task-take-btn-full, .swipe-btn, .submit-review-btn, .login-btn, .register-btn, .logout-btn {
             background: var(--accent);
             color: white;
             border: none;
@@ -84,7 +83,7 @@
         @media (hover: hover) {
             .action-btn:hover, #withdrawSubmit:hover, .copy-btn:hover, .channel-btn:hover, .check-btn:hover, .claim-btn:hover,
             .modal button:hover, .copy-ref-btn:hover, .employer-create-btn:hover, .premium-subscribe-btn:hover,
-            .task-take-btn-full:hover, .swipe-btn:hover, .submit-review-btn:hover {
+            .task-take-btn-full:hover, .swipe-btn:hover, .submit-review-btn:hover, .login-btn:hover, .register-btn:hover, .logout-btn:hover {
                 background: var(--accent-dark);
                 transform: translateY(-2px);
                 box-shadow: 0 0 25px rgba(93,214,44,0.5);
@@ -92,7 +91,7 @@
         }
         .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active,
         .modal button:active, .copy-ref-btn:active, .employer-create-btn:active, .premium-subscribe-btn:active,
-        .task-take-btn-full:active, .swipe-btn:active, .submit-review-btn:active {
+        .task-take-btn-full:active, .swipe-btn:active, .submit-review-btn:active, .login-btn:active, .register-btn:active, .logout-btn:active {
             transform: scale(0.96);
         }
         .fixed-header .logo,
@@ -1791,6 +1790,61 @@
                 width: 35px;
             }
         }
+
+        /* Дополнительные стили для модалки авторизации */
+        .auth-modal .modal-content {
+            max-width: 360px;
+            text-align: center;
+        }
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-align: center;
+            border-bottom: 2px solid transparent;
+        }
+        .auth-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .auth-field {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 40px;
+            color: var(--text-main);
+            font-size: 16px;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .auth-field:focus {
+            border-color: var(--accent);
+        }
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+        .auth-error {
+            color: #ff4d4d;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -1935,6 +1989,7 @@
                     <div class="page-header"><h2 class="white">настройки</h2><button class="close-btn" onclick="closeSettings()">&times;</button></div>
                     <div class="settings-item"><div class="settings-item-left"><div class="settings-icon-small"><i class="fas fa-moon"></i></div><span class="settings-item-title">тёмная тема</span></div><label class="switch"><input type="checkbox" checked id="themeToggle" onchange="toggleTheme()"><span class="slider"></span></label></div>
                     <div class="settings-item" onclick="alert('ХАЙП — платформа для микрозадач. Версия 2.0')"><div class="settings-item-left"><div class="settings-icon-small"><i class="fas fa-info-circle"></i></div><span class="settings-item-title">о приложении</span></div><span class="settings-item-value"><i class="fas fa-chevron-right"></i></span></div>
+                    <div class="settings-item" id="logoutBtn"><div class="settings-item-left"><div class="settings-icon-small"><i class="fas fa-sign-out-alt"></i></div><span class="settings-item-title">выйти</span></div><span class="settings-item-value"><i class="fas fa-chevron-right"></i></span></div>
                 </div>
             </div>
         </div>
@@ -2066,6 +2121,30 @@
             </div>
         </div>
 
+        <!-- Новая модалка авторизации -->
+        <div class="modal" id="authModal">
+            <div class="modal-content auth-modal">
+                <div class="modal-header"><button class="modal-close" id="closeAuthModal">&times;</button></div>
+                <div class="auth-tabs">
+                    <div class="auth-tab active" data-tab="login">войти</div>
+                    <div class="auth-tab" data-tab="register">регистрация</div>
+                </div>
+                <div id="authLoginForm">
+                    <input type="text" id="loginUsername" class="auth-field" placeholder="логин">
+                    <input type="password" id="loginPassword" class="auth-field" placeholder="пароль">
+                    <button class="auth-btn login-btn" id="doLogin">войти</button>
+                    <div id="loginError" class="auth-error"></div>
+                </div>
+                <div id="authRegisterForm" style="display: none;">
+                    <input type="text" id="regLogin" class="auth-field" placeholder="логин">
+                    <input type="password" id="regPassword" class="auth-field" placeholder="пароль">
+                    <input type="text" id="regName" class="auth-field" placeholder="имя (отображается)">
+                    <button class="auth-btn register-btn" id="doRegister">зарегистрироваться</button>
+                    <div id="regError" class="auth-error"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a class="nav-item active" data-page="tasks"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span>главная</span></a>
@@ -2078,20 +2157,127 @@
 
     <script>
         (function() {
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', async function() {
                 try {
                     const supabaseUrl = 'https://xnguoxwcrncdinqipzdz.supabase.co';
                     const supabaseKey = 'sb_publishable_oK5bT_Ed9K5ZBtT09h8A3A_tqXNYrYg';
                     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
                     console.log('Supabase client created');
 
+                    // --- АВТОРИЗАЦИЯ (регистрация/логин) ---
+                    // Функции для работы с localStorage
+                    let currentUserId = localStorage.getItem('currentUserId');
+                    let currentUserLogin = localStorage.getItem('currentUserLogin');
+                    let currentUserName = localStorage.getItem('currentUserName');
+
+                    // Функции для модалки
+                    function showAuthModal() { document.getElementById('authModal').classList.add('show'); }
+                    function hideAuthModal() { document.getElementById('authModal').classList.remove('show'); }
+
+                    // Переключение табов
+                    document.querySelectorAll('.auth-tab').forEach(tab => {
+                        tab.addEventListener('click', () => {
+                            const target = tab.dataset.tab;
+                            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                            tab.classList.add('active');
+                            if (target === 'login') {
+                                document.getElementById('authLoginForm').style.display = 'block';
+                                document.getElementById('authRegisterForm').style.display = 'none';
+                            } else {
+                                document.getElementById('authLoginForm').style.display = 'none';
+                                document.getElementById('authRegisterForm').style.display = 'block';
+                            }
+                        });
+                    });
+
+                    // Функция входа
+                    async function login(login, password) {
+                        try {
+                            const { data, error } = await supabaseClient.rpc('login_account', { p_login: login, p_password: password });
+                            if (error) throw error;
+                            if (data) {
+                                // Успешный вход
+                                localStorage.setItem('currentUserId', data);
+                                localStorage.setItem('currentUserLogin', login);
+                                // Получим имя из таблицы users
+                                const { data: userData } = await supabaseClient.from('users').select('name').eq('id', data).single();
+                                if (userData) localStorage.setItem('currentUserName', userData.name);
+                                else localStorage.setItem('currentUserName', login);
+                                hideAuthModal();
+                                location.reload(); // перезагружаем для инициализации приложения
+                            } else {
+                                document.getElementById('loginError').innerText = 'Неверный логин или пароль';
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            document.getElementById('loginError').innerText = 'Ошибка входа';
+                        }
+                    }
+
+                    // Функция регистрации
+                    async function register(login, password, name) {
+                        try {
+                            const { data, error } = await supabaseClient.rpc('register_account', { p_login: login, p_password: password, p_user_name: name || login });
+                            if (error) throw error;
+                            if (data) {
+                                localStorage.setItem('currentUserId', data);
+                                localStorage.setItem('currentUserLogin', login);
+                                localStorage.setItem('currentUserName', name || login);
+                                hideAuthModal();
+                                location.reload();
+                            } else {
+                                document.getElementById('regError').innerText = 'Ошибка регистрации (логин занят)';
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            document.getElementById('regError').innerText = 'Ошибка регистрации';
+                        }
+                    }
+
+                    // Обработчики кнопок в модалке
+                    document.getElementById('doLogin').onclick = () => {
+                        const loginVal = document.getElementById('loginUsername').value.trim();
+                        const pass = document.getElementById('loginPassword').value;
+                        if (!loginVal || !pass) {
+                            document.getElementById('loginError').innerText = 'Заполните все поля';
+                            return;
+                        }
+                        login(loginVal, pass);
+                    };
+                    document.getElementById('doRegister').onclick = () => {
+                        const loginVal = document.getElementById('regLogin').value.trim();
+                        const pass = document.getElementById('regPassword').value;
+                        const name = document.getElementById('regName').value.trim();
+                        if (!loginVal || !pass) {
+                            document.getElementById('regError').innerText = 'Заполните логин и пароль';
+                            return;
+                        }
+                        register(loginVal, pass, name);
+                    };
+                    document.getElementById('closeAuthModal').onclick = () => hideAuthModal();
+
+                    // Если нет пользователя — показываем модалку и блокируем интерфейс
+                    if (!currentUserId) {
+                        showAuthModal();
+                        document.getElementById('pagesContainer').style.pointerEvents = 'none';
+                        document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.style.pointerEvents = 'none');
+                        return; // дальнейший код не выполняется, пока не войдём
+                    } else {
+                        // Разблокируем интерфейс
+                        document.getElementById('pagesContainer').style.pointerEvents = 'auto';
+                        document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.style.pointerEvents = 'auto');
+                    }
+
+                    // --- ДАЛЕЕ ВЕСЬ ОРИГИНАЛЬНЫЙ КОД, НО С ЗАМЕНОЙ userId И firstName НА ДАННЫЕ ИЗ localStorage ---
+                    // Вместо Telegram-данных используем сохранённые
+                    const userId = currentUserId;
+                    const firstName = currentUserName || currentUserLogin;
+                    const displayName = firstName;
+                    const startParam = '';
+                    const isTestMode = false; // Полностью отключаем тестовый режим
+
                     let tg = window.Telegram?.WebApp;
                     if (tg) tg.expand();
-                    const userId = tg?.initDataUnsafe?.user?.id?.toString() || 'test_' + Math.random();
-                    const firstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
-                    const displayName = firstName;
-                    const startParam = tg?.initDataUnsafe?.start_param || '';
-                    const isTestMode = !tg || userId.startsWith('test_');
 
                     let balance = parseInt(localStorage.getItem('balance')) || 0;
                     let counts = JSON.parse(localStorage.getItem('counts')) || {};
@@ -2113,25 +2299,29 @@
                     };
                     applyTheme();
 
+                    // Кнопка выхода
+                    document.getElementById('logoutBtn').onclick = () => {
+                        localStorage.removeItem('currentUserId');
+                        localStorage.removeItem('currentUserLogin');
+                        localStorage.removeItem('currentUserName');
+                        location.reload();
+                    };
+
                     // ---------- Log Event ----------
                     async function logEvent(eventType, amount, xp, metadata = {}) {
-                        const realUserId = tg?.initDataUnsafe?.user?.id;
-                        if (!realUserId) return;
                         try {
                             await supabaseClient.from('events').insert([{
-                                user_id: String(realUserId), event_type: eventType, amount, xp, metadata, created_at: new Date().toISOString()
+                                user_id: userId, event_type: eventType, amount, xp, metadata, created_at: new Date().toISOString()
                             }]);
                         } catch(e) { console.error(e); }
                     }
 
                     // ---------- Load last 24h income ----------
                     async function loadDailyChange() {
-                        const realUserId = tg?.initDataUnsafe?.user?.id;
-                        if (!realUserId) return;
                         const now = new Date();
                         const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
                         try {
-                            const { data: events, error } = await supabaseClient.from('events').select('amount').eq('user_id', String(realUserId)).gte('created_at', yesterday.toISOString());
+                            const { data: events, error } = await supabaseClient.from('events').select('amount').eq('user_id', userId).gte('created_at', yesterday.toISOString());
                             if (error) throw error;
                             const total24h = events.reduce((s,e) => s + (e.amount||0), 0);
                             const percent = balance > 0 ? ((total24h/balance)*100).toFixed(1) : 0;
@@ -2145,26 +2335,12 @@
                             let { data: user, error } = await supabaseClient.from('users').select('*').eq('id', userId).maybeSingle();
                             if (error) throw error;
                             if (!user) {
-                                let referrerId = null;
-                                if (startParam && startParam.startsWith('ref_')) {
-                                    referrerId = startParam.substring(4);
-                                    const { data: referrerExists } = await supabaseClient.from('users').select('id').eq('id', referrerId).maybeSingle();
-                                    if (!referrerExists) referrerId = null;
-                                }
-                                const newUser = { id: userId, name: firstName, balance: 0, xp: 0, referrals: 0, streak: 0, last_streak_date: null, tasks_completed: {}, referrer_id: referrerId };
-                                const { data: inserted, error: insertError } = await supabaseClient.from('users').insert([newUser]).select().single();
+                                // Создаём нового пользователя, если вдруг его нет (например, при ручном добавлении)
+                                const newUser = { id: userId, name: firstName, balance: 0, xp: 0, referrals: 0, streak: 0, last_streak_date: null, tasks_completed: {}, referrer_id: null };
+                                const { error: insertError } = await supabaseClient.from('users').insert([newUser]);
                                 if (insertError) throw insertError;
-                                user = inserted;
-                                console.log('New user created', referrerId ? `referrer: ${referrerId}` : 'no referrer');
-
-                                const { error: profileError } = await supabaseClient.from('profiles').upsert([{
-                                    id: userId,
-                                    username: firstName,
-                                    full_name: firstName,
-                                    rating: 0,
-                                    completed_tasks: 0
-                                }], { onConflict: 'id' });
-                                if (profileError) console.error('Profile creation error:', profileError);
+                                await supabaseClient.from('profiles').upsert([{ id: userId, username: currentUserLogin, full_name: firstName, rating: 0, completed_tasks: 0 }], { onConflict: 'id' });
+                                user = newUser;
                             } else {
                                 if (user.name !== firstName) await supabaseClient.from('users').update({ name: firstName }).eq('id', userId);
                             }
@@ -2179,7 +2355,7 @@
                                 updateProfilePage();
                                 loadDailyChange();
                             }
-                        } catch(e) { console.error('initUser error:', e); loadFromLocalStorage(); }
+                        } catch(e) { console.error('initUser error:', e); }
                     }
 
                     async function syncUserData() {
@@ -2189,7 +2365,6 @@
                     }
 
                     async function getUserRank() {
-                        if (isTestMode) return 0;
                         try {
                             const { data: users, error } = await supabaseClient.from('users').select('id, xp').order('xp', { ascending: false });
                             if (error) throw error;
@@ -2288,7 +2463,6 @@
                     function saveFavorites() { localStorage.setItem('favoriteIds', JSON.stringify(favoriteIds)); }
 
                     async function isRealTaskFavorite(taskId) {
-                        if (isTestMode) return false;
                         try {
                             const { data, error } = await supabaseClient.from('likes').select('id').eq('from_user_id', userId).eq('task_id', Number(taskId)).eq('type', 'task').maybeSingle();
                             if (error) throw error;
@@ -2297,7 +2471,6 @@
                     }
 
                     async function toggleRealTaskFavorite(taskId) {
-                        if (isTestMode) { alert('В тестовом режиме избранное недоступно'); return; }
                         try {
                             const taskIdNum = Number(taskId);
                             if (isNaN(taskIdNum)) { console.error('Invalid taskId:', taskId); return; }
@@ -2312,7 +2485,7 @@
                                 if (insError) throw insError;
                                 console.log('Like added');
                             }
-                            // Обновляем только иконку, не перезагружая весь список
+                            // Обновляем иконки
                             document.querySelectorAll(`.task-favorite[data-task-id="${taskId}"]`).forEach(async el => {
                                 const isFav = await isRealTaskFavorite(taskId);
                                 if (isFav) { el.classList.remove('far'); el.classList.add('fas'); }
@@ -2512,7 +2685,7 @@
                         } catch(e) { console.error(e); }
 
                         let likedRealTaskIds = [];
-                        if (!isTestMode && currentFilter === 'favorites') {
+                        if (currentFilter === 'favorites') {
                             try {
                                 const { data: likes, error } = await supabaseClient.from('likes').select('task_id').eq('from_user_id', userId).eq('type', 'task');
                                 if (!error && likes) likedRealTaskIds = likes.map(l => l.task_id);
@@ -2575,12 +2748,12 @@
                                 tags = task.category ? [task.category] : ['без опыта'];
                                 description = task.description || '';
                                 priceDisplay = task.price;
-                                if (!isTestMode) isFavoriteFlag = await isRealTaskFavorite(task.id);
+                                isFavoriteFlag = await isRealTaskFavorite(task.id);
                             }
 
                             const showTakeButton = (currentRole === 'worker');
                             let alreadyResponded = false;
-                            if (!isMock && showTakeButton && !isTestMode) {
+                            if (!isMock && showTakeButton) {
                                 try {
                                     const { data: resp } = await supabaseClient.from('responses').select('id').eq('task_id', task.id).eq('worker_id', userId).maybeSingle();
                                     alreadyResponded = !!resp;
@@ -2617,7 +2790,7 @@
 
                     // ---------- Модалка профиля заказчика ----------
                     window.showEmployerProfile = async function(employerId, employerName) {
-                        if (!employerId || isTestMode) { alert('Профиль недоступен в тестовом режиме'); return; }
+                        if (!employerId) { alert('Профиль недоступен'); return; }
                         const modal = document.getElementById('employerProfileModal');
                         const content = document.getElementById('employerProfileContent');
                         content.innerHTML = '<p style="text-align:center;">загрузка...</p>';
@@ -2660,13 +2833,11 @@
                             const totalActive = activeTasks?.length || 0;
 
                             let canReview = false;
-                            if (!isTestMode) {
-                                const { data: myResponses } = await supabaseClient.from('responses').select('task_id').eq('worker_id', userId).eq('employer_id', employerId).eq('status', 'completed');
-                                const hasCompleted = (myResponses && myResponses.length > 0);
-                                if (hasCompleted) {
-                                    const { data: myReview } = await supabaseClient.from('reviews').select('id').eq('from_user_id', userId).eq('to_user_id', employerId).maybeSingle();
-                                    if (!myReview) canReview = true;
-                                }
+                            const { data: myResponses } = await supabaseClient.from('responses').select('task_id').eq('worker_id', userId).eq('employer_id', employerId).eq('status', 'completed');
+                            const hasCompleted = (myResponses && myResponses.length > 0);
+                            if (hasCompleted) {
+                                const { data: myReview } = await supabaseClient.from('reviews').select('id').eq('from_user_id', userId).eq('to_user_id', employerId).maybeSingle();
+                                if (!myReview) canReview = true;
                             }
 
                             const avatarLetter = (profile?.full_name || employerName).charAt(0).toUpperCase();
@@ -2912,8 +3083,6 @@
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
-                        const userIdNum = tg?.initDataUnsafe?.user?.id;
-                        if (!userIdNum) { container.innerHTML = '<p style="color: var(--text-muted);">Ошибка: не удалось определить пользователя</p>'; return; }
 
                         const now = new Date();
                         let startDate, endDate;
@@ -2937,14 +3106,14 @@
 
                         let periodEvents = [];
                         try {
-                            const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', String(userIdNum)).gte('created_at', startDate.toISOString()).lte('created_at', endDate.toISOString()).order('created_at', { ascending: true });
+                            const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', userId).gte('created_at', startDate.toISOString()).lte('created_at', endDate.toISOString()).order('created_at', { ascending: true });
                             if (error) throw error;
                             periodEvents = data || [];
                         } catch(e) { console.error(e); }
 
                         let allEvents = [];
                         try {
-                            const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', String(userIdNum)).order('created_at', { ascending: false }).limit(10);
+                            const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', userId).order('created_at', { ascending: false }).limit(10);
                             if (error) throw error;
                             allEvents = data || [];
                         } catch(e) { console.error(e); }
@@ -3041,11 +3210,9 @@
                         checkBtn.disabled = true;
                         checkBtn.innerText = 'проверка...';
                         document.getElementById('checkResult').innerText = '';
-                        const userIdNum = tg?.initDataUnsafe?.user?.id;
-                        if (!userIdNum) { document.getElementById('checkResult').style.color = 'red'; document.getElementById('checkResult').innerText = 'Ошибка: не удалось определить пользователя'; checkBtn.disabled = false; checkBtn.innerText = 'проверить подписку'; return; }
                         try {
                             const functionUrl = 'https://xnguoxwcrncdinqipzdz.supabase.co/functions/v1/check-subscription';
-                            const response = await fetch(functionUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: userIdNum }) });
+                            const response = await fetch(functionUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: userId }) });
                             const result = await response.json();
                             if (result.subscribed) {
                                 const oldLevel = getLevelByXP(getXP());
@@ -3274,8 +3441,8 @@
                     };
                     document.getElementById('closeLevelModal').onclick = () => document.getElementById('levelModal').classList.remove('show');
 
-                    // ---------- Init ----------
-                    initUser();
+                    // ---------- Инициализация ----------
+                    await initUser();
                     updateRoleUI();
                     updateProfilePage();
                     updateReferralsPage();
@@ -3284,7 +3451,6 @@
                     updateStreak();
                     updateStreakDisplay();
                     animatePage(document.getElementById('tasks-page'));
-                    function loadFromLocalStorage() { console.log('Using localStorage fallback'); }
                 } catch (e) {
                     console.error('Global error:', e);
                     document.body.innerHTML = '<div style="color: white; padding: 20px;">Произошла ошибка. Попробуйте обновить страницу.</div>';
