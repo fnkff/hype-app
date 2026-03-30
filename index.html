@@ -11,7 +11,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* Все стили остаются без изменений (как в предыдущем коде) */
+        /* Все стили остаются как в предыдущей версии, они корректны и не менялись */
         /* ========== ПЕРЕМЕННЫЕ (тёмная тема по умолчанию) ========== */
         :root {
             --bg-main: #0F0F0F;
@@ -2080,7 +2080,6 @@
         (function() {
             document.addEventListener('DOMContentLoaded', function() {
                 try {
-                    // Supabase init
                     const supabaseUrl = 'https://xnguoxwcrncdinqipzdz.supabase.co';
                     const supabaseKey = 'sb_publishable_oK5bT_Ed9K5ZBtT09h8A3A_tqXNYrYg';
                     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -2158,7 +2157,6 @@
                                 user = inserted;
                                 console.log('New user created', referrerId ? `referrer: ${referrerId}` : 'no referrer');
 
-                                // Создаём запись в profiles
                                 const { error: profileError } = await supabaseClient.from('profiles').upsert([{
                                     id: userId,
                                     username: firstName,
@@ -2314,8 +2312,12 @@
                                 if (insError) throw insError;
                                 console.log('Like added');
                             }
-                            // Обновляем список заданий, чтобы иконка изменилась
-                            loadTasks(true);
+                            // Обновляем только иконку, не перезагружая весь список
+                            document.querySelectorAll(`.task-favorite[data-task-id="${taskId}"]`).forEach(async el => {
+                                const isFav = await isRealTaskFavorite(taskId);
+                                if (isFav) { el.classList.remove('far'); el.classList.add('fas'); }
+                                else { el.classList.remove('fas'); el.classList.add('far'); }
+                            });
                         } catch(e) { console.error('toggleRealTaskFavorite error:', e); alert('Не удалось добавить в избранное: ' + (e.message || 'ошибка')); }
                     }
 
@@ -2555,10 +2557,8 @@
                                 description = task.desc;
                                 isFavoriteFlag = isFavoriteLocal(task.id);
                             } else {
-                                // Загружаем профиль заказчика (гарантируем наличие)
                                 let profile = await supabaseClient.from('profiles').select('username, full_name, rating').eq('id', task.employer_id).maybeSingle();
                                 if (profile.error || !profile.data) {
-                                    // Если профиля нет, создаём
                                     const { data: userData } = await supabaseClient.from('users').select('name').eq('id', task.employer_id).maybeSingle();
                                     const newProfile = {
                                         id: task.employer_id,
@@ -2638,7 +2638,6 @@
                                     tasks_completed: {}
                                 }]);
                             }
-                            // Обновляем или создаём профиль
                             const { data: profile, error: profileError } = await supabaseClient.from('profiles').upsert({
                                 id: employerId,
                                 username: employerName,
@@ -2646,16 +2645,19 @@
                                 rating: 0,
                                 completed_tasks: 0
                             }, { onConflict: 'id' }).select().single();
-
                             if (profileError) throw profileError;
 
                             // Загружаем отзывы
                             const { data: reviews, error: reviewsError } = await supabaseClient.from('reviews').select('*').eq('to_user_id', employerId).order('created_at', { ascending: false });
                             if (reviewsError) throw reviewsError;
 
-                            // Загружаем количество завершённых заданий (как заказчик)
+                            // Количество выполненных заданий (как заказчик)
                             const { data: completedTasks, error: tasksError } = await supabaseClient.from('responses').select('task_id').eq('employer_id', employerId).eq('status', 'completed');
                             const totalCompleted = completedTasks?.length || 0;
+
+                            // Количество активных заданий (как заказчик)
+                            const { data: activeTasks, error: activeError } = await supabaseClient.from('tasks').select('id').eq('employer_id', employerId).eq('status', 'open');
+                            const totalActive = activeTasks?.length || 0;
 
                             let canReview = false;
                             if (!isTestMode) {
@@ -2711,7 +2713,8 @@
                                     <div class="employer-rating"><i class="fas fa-star" style="color:#FFC107;"></i> ${rating}</div>
                                 </div>
                                 <div class="employer-stats">
-                                    <div class="stat-item"><div class="stat-number">${totalCompleted}</div><div>заданий</div></div>
+                                    <div class="stat-item"><div class="stat-number">${totalActive}</div><div>активных</div></div>
+                                    <div class="stat-item"><div class="stat-number">${totalCompleted}</div><div>выполнено</div></div>
                                     <div class="stat-item"><div class="stat-number">${reviews?.length || 0}</div><div>отзывов</div></div>
                                 </div>
                                 ${reviewsHtml}
@@ -2928,12 +2931,10 @@
                             const month = now.getUTCMonth();
                             startDate = new Date(Date.UTC(year, month, 1, 0, 0, 0));
                             endDate = new Date(Date.UTC(year, month + 1, 0, 23, 59, 59, 999));
-                            // Если сегодняшний день ещё не наступил по UTC, скорректируем endDate
                             const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
                             if (endDate > todayUTC) endDate = todayUTC;
                         }
 
-                        // Запрос в Supabase: используем UTC диапазон
                         let periodEvents = [];
                         try {
                             const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', String(userIdNum)).gte('created_at', startDate.toISOString()).lte('created_at', endDate.toISOString()).order('created_at', { ascending: true });
@@ -2962,7 +2963,6 @@
                                 if (idx>=0 && idx<7) chartData[idx].amount += e.amount || 0;
                             });
                         } else {
-                            // Месяц: строим дни по UTC
                             const year = startDate.getUTCFullYear();
                             const month = startDate.getUTCMonth();
                             const lastDay = new Date(Date.UTC(year, month+1, 0)).getUTCDate();
@@ -2973,7 +2973,6 @@
                                     timestamp: Date.UTC(year, month, day)
                                 });
                             }
-                            // Группируем события по UTC дате
                             periodEvents.forEach(e => {
                                 const eventDate = new Date(e.created_at);
                                 const utcDate = Date.UTC(eventDate.getUTCFullYear(), eventDate.getUTCMonth(), eventDate.getUTCDate());
@@ -3030,7 +3029,6 @@
                         loadAnalytics(period);
                     };
                     function updateAnalyticsPage() {
-                        // Сбрасываем активную вкладку на "день"
                         document.querySelectorAll('#analyticsTabs .period-tab').forEach(t => t.classList.remove('active'));
                         document.querySelector('#analyticsTabs .period-tab[data-period="day"]').classList.add('active');
                         loadAnalytics('day');
@@ -3107,7 +3105,7 @@
                     window.closeNotifications = () => showPage('tasks');
                     window.closeSettings = () => showPage('tasks');
 
-                    // ---------- Navigation (со сбросом скролла) ----------
+                    // ---------- Navigation ----------
                     const pages = {
                         tasks: document.getElementById('tasks-page'),
                         profile: document.getElementById('profile-page'),
