@@ -73,6 +73,7 @@
         button, .card, .nav-item {
             transition: all 0.3s ease;
         }
+        /* Убираем свечение у кнопок по умолчанию */
         .action-btn, #withdrawSubmit, .copy-btn, .channel-btn, .check-btn, .claim-btn, .modal button, .copy-ref-btn, .employer-create-btn,
         .premium-subscribe-btn, .task-take-btn-full, .swipe-btn, .submit-review-btn, .login-btn, .register-btn, .logout-btn {
             background: var(--accent);
@@ -89,6 +90,7 @@
                 box-shadow: 0 0 25px rgba(93,214,44,0.5);
             }
         }
+        /* Активное состояние (при нажатии) */
         .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active,
         .modal button:active, .copy-ref-btn:active, .employer-create-btn:active, .premium-subscribe-btn:active,
         .task-take-btn-full:active, .swipe-btn:active, .submit-review-btn:active, .login-btn:active, .register-btn:active, .logout-btn:active {
@@ -272,6 +274,7 @@
             border: 1px solid rgba(255,255,255,0.05);
             box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             z-index: 100;
+            position: relative;
         }
         .bottom-nav .nav-item {
             flex: 1;
@@ -286,6 +289,7 @@
             align-items: center;
             gap: 4px;
             transition: transform 0.1s ease;
+            z-index: 2;
         }
         .bottom-nav .nav-item:active {
             transform: scale(0.9);
@@ -293,17 +297,16 @@
         .bottom-nav .nav-item.active {
             color: var(--accent);
         }
-        .bottom-nav .nav-item.active::before {
-            content: "";
+        .nav-indicator {
             position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 28px;
+            bottom: 0;
             height: 4px;
+            width: 28px;
             background: var(--accent);
             border-radius: 10px;
             box-shadow: var(--glow);
+            transition: left 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 1;
         }
         .bottom-nav .nav-item svg {
             width: 24px;
@@ -2145,8 +2148,9 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
-        <div class="bottom-nav">
+        <!-- Нижняя навигация с плавающим индикатором -->
+        <div class="bottom-nav" id="bottomNav">
+            <div class="nav-indicator" id="navIndicator"></div>
             <a class="nav-item active" data-page="tasks"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span>главная</span></a>
             <a class="nav-item" data-page="profile"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>профиль</span></a>
             <a class="nav-item" data-page="analytics"><svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg><span>аналитика</span></a>
@@ -2165,12 +2169,10 @@
                     console.log('Supabase client created');
 
                     // --- АВТОРИЗАЦИЯ (регистрация/логин) ---
-                    // Функции для работы с localStorage
                     let currentUserId = localStorage.getItem('currentUserId');
                     let currentUserLogin = localStorage.getItem('currentUserLogin');
                     let currentUserName = localStorage.getItem('currentUserName');
 
-                    // Функции для модалки
                     function showAuthModal() { document.getElementById('authModal').classList.add('show'); }
                     function hideAuthModal() { document.getElementById('authModal').classList.remove('show'); }
 
@@ -2196,22 +2198,17 @@
                             const { data, error } = await supabaseClient.rpc('login_account', { p_login: login, p_password: password });
                             if (error) throw error;
                             if (data) {
-                                // Успешный вход
                                 localStorage.setItem('currentUserId', data);
                                 localStorage.setItem('currentUserLogin', login);
-                                // Получим имя из таблицы users
                                 const { data: userData } = await supabaseClient.from('users').select('name').eq('id', data).single();
                                 if (userData) localStorage.setItem('currentUserName', userData.name);
                                 else localStorage.setItem('currentUserName', login);
                                 hideAuthModal();
-                                location.reload(); // перезагружаем для инициализации приложения
+                                location.reload();
                             } else {
                                 document.getElementById('loginError').innerText = 'Неверный логин или пароль';
                             }
-                        } catch (err) {
-                            console.error(err);
-                            document.getElementById('loginError').innerText = 'Ошибка входа';
-                        }
+                        } catch (err) { console.error(err); document.getElementById('loginError').innerText = 'Ошибка входа'; }
                     }
 
                     // Функция регистрации
@@ -2228,30 +2225,20 @@
                             } else {
                                 document.getElementById('regError').innerText = 'Ошибка регистрации (логин занят)';
                             }
-                        } catch (err) {
-                            console.error(err);
-                            document.getElementById('regError').innerText = 'Ошибка регистрации';
-                        }
+                        } catch (err) { console.error(err); document.getElementById('regError').innerText = 'Ошибка регистрации'; }
                     }
 
-                    // Обработчики кнопок в модалке
                     document.getElementById('doLogin').onclick = () => {
                         const loginVal = document.getElementById('loginUsername').value.trim();
                         const pass = document.getElementById('loginPassword').value;
-                        if (!loginVal || !pass) {
-                            document.getElementById('loginError').innerText = 'Заполните все поля';
-                            return;
-                        }
+                        if (!loginVal || !pass) { document.getElementById('loginError').innerText = 'Заполните все поля'; return; }
                         login(loginVal, pass);
                     };
                     document.getElementById('doRegister').onclick = () => {
                         const loginVal = document.getElementById('regLogin').value.trim();
                         const pass = document.getElementById('regPassword').value;
                         const name = document.getElementById('regName').value.trim();
-                        if (!loginVal || !pass) {
-                            document.getElementById('regError').innerText = 'Заполните логин и пароль';
-                            return;
-                        }
+                        if (!loginVal || !pass) { document.getElementById('regError').innerText = 'Заполните логин и пароль'; return; }
                         register(loginVal, pass, name);
                     };
                     document.getElementById('closeAuthModal').onclick = () => hideAuthModal();
@@ -2263,19 +2250,15 @@
                         document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.style.pointerEvents = 'none');
                         return; // дальнейший код не выполняется, пока не войдём
                     } else {
-                        // Разблокируем интерфейс
                         document.getElementById('pagesContainer').style.pointerEvents = 'auto';
                         document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.style.pointerEvents = 'auto');
                     }
 
-                    // --- ДАЛЕЕ ВЕСЬ ОРИГИНАЛЬНЫЙ КОД, НО С ЗАМЕНОЙ userId И firstName НА ДАННЫЕ ИЗ localStorage ---
-                    // Вместо Telegram-данных используем сохранённые
+                    // --- ДАЛЕЕ ВЕСЬ ОСНОВНОЙ КОД ---
                     const userId = currentUserId;
                     const firstName = currentUserName || currentUserLogin;
                     const displayName = firstName;
-                    const startParam = '';
-                    const isTestMode = false; // Полностью отключаем тестовый режим
-
+                    const isTestMode = false;
                     let tg = window.Telegram?.WebApp;
                     if (tg) tg.expand();
 
@@ -2286,7 +2269,7 @@
                     let isSwiping = false;
                     let startX, currentX, initialTransform;
 
-                    // ---------- Тема ----------
+                    // Тема
                     function applyTheme() {
                         const isDark = localStorage.getItem('theme') !== 'light';
                         if (!isDark) { document.body.classList.add('light-theme'); document.getElementById('themeToggle').checked = false; }
@@ -2306,6 +2289,19 @@
                         localStorage.removeItem('currentUserName');
                         location.reload();
                     };
+
+                    // Плавающий индикатор
+                    function updateNavIndicator(activeItem) {
+                        const nav = document.getElementById('bottomNav');
+                        const indicator = document.getElementById('navIndicator');
+                        const items = document.querySelectorAll('.bottom-nav .nav-item');
+                        const index = Array.from(items).findIndex(item => item === activeItem);
+                        if (index !== -1) {
+                            const itemWidth = items[0].offsetWidth;
+                            const left = index * itemWidth + (itemWidth - indicator.offsetWidth) / 2;
+                            indicator.style.left = left + 'px';
+                        }
+                    }
 
                     // ---------- Log Event ----------
                     async function logEvent(eventType, amount, xp, metadata = {}) {
@@ -2335,7 +2331,6 @@
                             let { data: user, error } = await supabaseClient.from('users').select('*').eq('id', userId).maybeSingle();
                             if (error) throw error;
                             if (!user) {
-                                // Создаём нового пользователя, если вдруг его нет (например, при ручном добавлении)
                                 const newUser = { id: userId, name: firstName, balance: 0, xp: 0, referrals: 0, streak: 0, last_streak_date: null, tasks_completed: {}, referrer_id: null };
                                 const { error: insertError } = await supabaseClient.from('users').insert([newUser]);
                                 if (insertError) throw insertError;
@@ -3287,14 +3282,14 @@
                         pages[pageId].classList.add('active-page');
                         const pagesContainer = document.getElementById('pagesContainer');
                         if (pagesContainer) pagesContainer.scrollTop = 0;
-                        if (['tasks','profile','analytics','referrals','withdraw'].includes(pageId)) {
-                            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
-                                if (item.dataset.page === pageId) item.classList.add('active');
-                                else item.classList.remove('active');
-                            });
-                        } else {
-                            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
-                        }
+                        document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+                            if (item.dataset.page === pageId) {
+                                item.classList.add('active');
+                                updateNavIndicator(item);
+                            } else {
+                                item.classList.remove('active');
+                            }
+                        });
                         if (pageId === 'profile') updateProfilePage();
                         else if (pageId === 'referrals') updateReferralsPage();
                         else if (pageId === 'withdraw') updateWithdrawPage();
@@ -3307,6 +3302,12 @@
                     document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
                         item.addEventListener('click', (e) => { e.preventDefault(); showPage(item.dataset.page); });
                     });
+
+                    // Установка индикатора при загрузке
+                    setTimeout(() => {
+                        const activeNav = document.querySelector('.bottom-nav .nav-item.active');
+                        if (activeNav) updateNavIndicator(activeNav);
+                    }, 100);
 
                     // ---------- Profile, referrals, withdraw ----------
                     async function updateProfilePage() {
@@ -3356,12 +3357,16 @@
                         const container = document.getElementById('withdrawContent');
                         if (!container) return;
                         container.innerHTML = `
-                            <div class="card-glow animate-stagger"><div class="card-logo">ХАЙП</div><div class="card-number">2200 0000 0000 0000</div><div class="card-details"><span>01/29</span><span>${displayName}</span></div></div>
-                            <div class="balance-block animate-stagger"><span class="balance-label">твой баланс</span><span class="balance-number">${balance} ₽</span></div>
-                            <div class="withdraw-field animate-stagger"><input type="number" placeholder="сумма (мин. 50 ₽)" id="withdrawAmount"></div>
-                            <div class="withdraw-field animate-stagger"><input type="text" placeholder="номер карты или кошелька" id="withdrawCard"></div>
+                            <div class="card-glow">
+                                <div class="card-logo">ХАЙП</div>
+                                <div class="card-number">2200 0000 0000 0000</div>
+                                <div class="card-details"><span>01/29</span><span>${displayName}</span></div>
+                            </div>
+                            <div class="balance-block"><span class="balance-label">твой баланс</span><span class="balance-number">${balance} ₽</span></div>
+                            <div class="withdraw-field"><input type="number" placeholder="сумма (мин. 50 ₽)" id="withdrawAmount"></div>
+                            <div class="withdraw-field"><input type="text" placeholder="номер карты или кошелька" id="withdrawCard"></div>
                             <button id="withdrawSubmit" class="animate-stagger" onclick="alert('вывод временно недоступен')">вывести</button>
-                            <div style="margin-top:25px;"><h4 style="margin-bottom:15px;">недавние операции</h4><div class="recent-transfers animate-stagger"><div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появятся последние операции</div></div></div>
+                            <div style="margin-top:25px;"><h4 style="margin-bottom:15px;">недавние операции</h4><div class="recent-transfers"><div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появятся последние операции</div></div></div>
                         `;
                         document.getElementById('withdrawSubmit').addEventListener('click', () => alert('вывод временно недоступен'));
                     }
@@ -3441,7 +3446,7 @@
                     };
                     document.getElementById('closeLevelModal').onclick = () => document.getElementById('levelModal').classList.remove('show');
 
-                    // ---------- Инициализация ----------
+                    // ---------- Init ----------
                     await initUser();
                     updateRoleUI();
                     updateProfilePage();
