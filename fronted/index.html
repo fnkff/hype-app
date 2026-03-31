@@ -90,7 +90,6 @@
                 box-shadow: 0 0 25px rgba(93,214,44,0.5);
             }
         }
-        /* Активное состояние (при нажатии) */
         .action-btn:active, #withdrawSubmit:active, .copy-btn:active, .channel-btn:active, .check-btn:active, .claim-btn:active,
         .modal button:active, .copy-ref-btn:active, .employer-create-btn:active, .premium-subscribe-btn:active,
         .task-take-btn-full:active, .swipe-btn:active, .submit-review-btn:active, .login-btn:active, .register-btn:active, .logout-btn:active {
@@ -2175,8 +2174,8 @@
 
                     function showAuthModal() { document.getElementById('authModal').classList.add('show'); }
                     function hideAuthModal() { document.getElementById('authModal').classList.remove('show'); }
+                    window.closeModal = function(modalId) { document.getElementById(modalId).classList.remove('show'); };
 
-                    // Переключение табов
                     document.querySelectorAll('.auth-tab').forEach(tab => {
                         tab.addEventListener('click', () => {
                             const target = tab.dataset.tab;
@@ -2192,7 +2191,6 @@
                         });
                     });
 
-                    // Функция входа
                     async function login(login, password) {
                         try {
                             const { data, error } = await supabaseClient.rpc('login_account', { p_login: login, p_password: password });
@@ -2211,7 +2209,6 @@
                         } catch (err) { console.error(err); document.getElementById('loginError').innerText = 'Ошибка входа'; }
                     }
 
-                    // Функция регистрации
                     async function register(login, password, name) {
                         try {
                             const { data, error } = await supabaseClient.rpc('register_account', { p_login: login, p_password: password, p_user_name: name || login });
@@ -2243,18 +2240,17 @@
                     };
                     document.getElementById('closeAuthModal').onclick = () => hideAuthModal();
 
-                    // Если нет пользователя — показываем модалку и блокируем интерфейс
                     if (!currentUserId) {
                         showAuthModal();
                         document.getElementById('pagesContainer').style.pointerEvents = 'none';
                         document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.style.pointerEvents = 'none');
-                        return; // дальнейший код не выполняется, пока не войдём
+                        return;
                     } else {
                         document.getElementById('pagesContainer').style.pointerEvents = 'auto';
                         document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.style.pointerEvents = 'auto');
                     }
 
-                    // --- ДАЛЕЕ ВЕСЬ ОСНОВНОЙ КОД ---
+                    // --- ДАЛЕЕ ВЕСЬ ОСНОВНОЙ КОД ПРИЛОЖЕНИЯ (полная копия из предыдущей рабочей версии) ---
                     const userId = currentUserId;
                     const firstName = currentUserName || currentUserLogin;
                     const displayName = firstName;
@@ -2282,7 +2278,7 @@
                     };
                     applyTheme();
 
-                    // Кнопка выхода
+                    // Выход
                     document.getElementById('logoutBtn').onclick = () => {
                         localStorage.removeItem('currentUserId');
                         localStorage.removeItem('currentUserLogin');
@@ -2290,7 +2286,6 @@
                         location.reload();
                     };
 
-                    // Плавающий индикатор
                     function updateNavIndicator(activeItem) {
                         const nav = document.getElementById('bottomNav');
                         const indicator = document.getElementById('navIndicator');
@@ -2303,16 +2298,13 @@
                         }
                     }
 
-                    // ---------- Log Event ----------
+                    // Log Event
                     async function logEvent(eventType, amount, xp, metadata = {}) {
                         try {
-                            await supabaseClient.from('events').insert([{
-                                user_id: userId, event_type: eventType, amount, xp, metadata, created_at: new Date().toISOString()
-                            }]);
+                            await supabaseClient.from('events').insert([{ user_id: userId, event_type: eventType, amount, xp, metadata, created_at: new Date().toISOString() }]);
                         } catch(e) { console.error(e); }
                     }
 
-                    // ---------- Load last 24h income ----------
                     async function loadDailyChange() {
                         const now = new Date();
                         const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
@@ -2325,7 +2317,6 @@
                         } catch(e) { console.error(e); }
                     }
 
-                    // ---------- User functions ----------
                     async function initUser() {
                         try {
                             let { data: user, error } = await supabaseClient.from('users').select('*').eq('id', userId).maybeSingle();
@@ -2379,9 +2370,8 @@
                         const modal = document.getElementById('ratingModal');
                         const content = document.getElementById('ratingModalContent');
                         const topUsers = await getTopUsers();
-                        if (topUsers.length === 0) {
-                            content.innerHTML = '<p style="text-align:center; color:var(--text-muted);">пока нет данных</p>';
-                        } else {
+                        if (topUsers.length === 0) content.innerHTML = '<p style="text-align:center; color:var(--text-muted);">пока нет данных</p>';
+                        else {
                             let html = '<ol style="list-style: none; padding: 0; margin: 0;">';
                             topUsers.forEach((user, index) => {
                                 const displayName = user.name || `@${user.id.slice(0, 6)}`;
@@ -2394,7 +2384,6 @@
                     };
                     document.getElementById('closeRatingModal').onclick = () => document.getElementById('ratingModal').classList.remove('show');
 
-                    // ---------- Titles & XP ----------
                     const titles = ["пуська","нубяра","комфортик","красавчик","легенда","миллионер","хайпожор","босс","император","бог хайпа","киберпанк","флексер","краш","рофлан","чилл","вайб","форсер","топчик","король","легендарный","эпик","мифический","ачивка","скилловый","профи","мастер","гуру","сенсей","мэтр","ас","джедай","повелитель","властелин","титан","олимп","бессмертный","непобедимый","ультра","мега","гига","тера","пета","экза","зетта","йотта","ронни","коул","дрейк","йе","хайп"];
                     function getTitle(level) { return level <= titles.length ? titles[level-1] : "бог хайпа"; }
                     const BASE_XP = 10;
@@ -2419,7 +2408,6 @@
                         setTimeout(() => overlay.classList.remove('active'), 3500);
                     }
 
-                    // ---------- Role switching ----------
                     let currentRole = 'worker';
                     window.toggleRole = function() {
                         const roleContent = document.getElementById('roleContent');
@@ -2436,7 +2424,6 @@
                         }, 150);
                     };
 
-                    // ---------- View mode ----------
                     let viewMode = 'list';
                     window.toggleViewMode = function() {
                         viewMode = viewMode === 'list' ? 'swipe' : 'list';
@@ -2444,7 +2431,6 @@
                         updateRoleUI();
                     };
 
-                    // ---------- Filter state ----------
                     let currentFilter = 'all';
                     window.setFilter = function(filter) {
                         document.querySelectorAll('#mainFilters .tab').forEach(t => t.classList.remove('active'));
@@ -2453,7 +2439,6 @@
                         if (currentRole === 'worker' && viewMode === 'list') loadTasks(true);
                     };
 
-                    // ---------- Favorites ----------
                     let favoriteIds = JSON.parse(localStorage.getItem('favoriteIds')) || [];
                     function saveFavorites() { localStorage.setItem('favoriteIds', JSON.stringify(favoriteIds)); }
 
@@ -2468,25 +2453,15 @@
                     async function toggleRealTaskFavorite(taskId) {
                         try {
                             const taskIdNum = Number(taskId);
-                            if (isNaN(taskIdNum)) { console.error('Invalid taskId:', taskId); return; }
-                            const { data: existing, error: findError } = await supabaseClient.from('likes').select('id').eq('from_user_id', userId).eq('task_id', taskIdNum).eq('type', 'task').maybeSingle();
-                            if (findError) throw findError;
+                            if (isNaN(taskIdNum)) return;
+                            const { data: existing } = await supabaseClient.from('likes').select('id').eq('from_user_id', userId).eq('task_id', taskIdNum).eq('type', 'task').maybeSingle();
                             if (existing) {
-                                const { error: delError } = await supabaseClient.from('likes').delete().eq('id', existing.id);
-                                if (delError) throw delError;
-                                console.log('Like removed');
+                                await supabaseClient.from('likes').delete().eq('id', existing.id);
                             } else {
-                                const { error: insError } = await supabaseClient.from('likes').insert([{ from_user_id: userId, task_id: taskIdNum, type: 'task' }]);
-                                if (insError) throw insError;
-                                console.log('Like added');
+                                await supabaseClient.from('likes').insert([{ from_user_id: userId, task_id: taskIdNum, type: 'task' }]);
                             }
-                            // Обновляем иконки
-                            document.querySelectorAll(`.task-favorite[data-task-id="${taskId}"]`).forEach(async el => {
-                                const isFav = await isRealTaskFavorite(taskId);
-                                if (isFav) { el.classList.remove('far'); el.classList.add('fas'); }
-                                else { el.classList.remove('fas'); el.classList.add('far'); }
-                            });
-                        } catch(e) { console.error('toggleRealTaskFavorite error:', e); alert('Не удалось добавить в избранное: ' + (e.message || 'ошибка')); }
+                            loadTasks(true);
+                        } catch(e) { console.error(e); alert('Не удалось добавить в избранное: ' + (e.message || 'ошибка')); }
                     }
 
                     window.toggleFavorite = function(taskId, isMock = true) {
@@ -2505,7 +2480,6 @@
                     };
                     function isFavoriteLocal(taskId) { return favoriteIds.includes(taskId); }
 
-                    // ---------- Tasks data ----------
                     const allTasks = [
                         { id: 1, name: 'пригласи друга', desc: 'отправь ссылку другу и получи бонус', price: 30, xp: 5, company: 'ХАЙП', tags: ['без опыта','моментально'] },
                         { id: 2, name: 'подпишись на канал', desc: 'подпишись на @hype_job1', price: 20, xp: 5, company: 'ХАЙП', tags: ['без опыта'] },
@@ -2513,26 +2487,14 @@
                         { id: 4, name: 'тест', desc: 'тестовое задание 1₽', price: 1, xp: 1, company: 'ХАЙП', tags: ['тест'] }
                     ];
 
-                    // ---------- Swipe mode для исполнителя ----------
                     let swipeTasks = [...allTasks];
                     let currentSwipeTaskIndex = 0;
-
                     function getWorkerSwipeHTML() {
                         if (swipeTasks.length === 0) return '<div style="text-align: center; color: var(--text-muted); padding: 20px;">нет заданий</div>';
                         const t = swipeTasks[currentSwipeTaskIndex % swipeTasks.length];
                         const favClass = isFavoriteLocal(t.id) ? 'fas' : 'far';
-                        return `
-                            <div class="swipe-card" id="swipeCard">
-                                <div class="task-header"><h4 class="task-title">${t.name}</h4><i class="${favClass} fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id}, true)"></i></div>
-                                <div class="task-company"><span class="company-name">${t.company}</span><span class="company-rating"><i class="fas fa-star"></i> 5.0</span></div>
-                                <div class="task-description">${t.desc}</div>
-                                <div class="task-price-large">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div>
-                                <div class="task-tags">${t.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}</div>
-                                <div class="swipe-actions"><button class="swipe-btn dislike" onclick="swipeLeft()"><i class="fas fa-times"></i></button><button class="swipe-btn like" onclick="swipeRight()"><i class="fas fa-heart"></i></button></div>
-                            </div>
-                        `;
+                        return `<div class="swipe-card" id="swipeCard"><div class="task-header"><h4 class="task-title">${t.name}</h4><i class="${favClass} fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavorite(${t.id}, true)"></i></div><div class="task-company"><span class="company-name">${t.company}</span><span class="company-rating"><i class="fas fa-star"></i> 5.0</span></div><div class="task-description">${t.desc}</div><div class="task-price-large">${typeof t.price === 'number' ? t.price + ' ₽' : t.price + ' ₽'}</div><div class="task-tags">${t.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}</div><div class="swipe-actions"><button class="swipe-btn dislike" onclick="swipeLeft()"><i class="fas fa-times"></i></button><button class="swipe-btn like" onclick="swipeRight()"><i class="fas fa-heart"></i></button></div></div>`;
                     }
-
                     function initSwipe() {
                         const card = document.getElementById('swipeCard');
                         if (!card) return;
@@ -2544,7 +2506,6 @@
                         card.addEventListener('mouseup', onSwipeEnd);
                         card.addEventListener('mouseleave', onSwipeEnd);
                     }
-
                     function onSwipeStart(e) {
                         e.preventDefault();
                         const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
@@ -2586,14 +2547,13 @@
                     window.swipeRight = function() { const t = swipeTasks[currentSwipeTaskIndex % swipeTasks.length]; if (!isFavoriteLocal(t.id)) toggleFavorite(t.id, true); nextSwipeCard(); };
                     function nextSwipeCard() { currentSwipeTaskIndex++; const container = document.getElementById('swipeContainer'); if (container) { container.innerHTML = getWorkerSwipeHTML(); initSwipe(); } }
 
-                    // ---------- Employer swipe ----------
                     async function loadEmployerSwipeCandidates() {
                         const { data: likedUsers } = await supabaseClient.from('likes').select('to_user_id').eq('from_user_id', userId).eq('type', 'user');
                         const likedIds = likedUsers?.map(l => l.to_user_id) || [];
                         let query = supabaseClient.from('profiles').select('*').not('id', 'eq', userId);
                         if (likedIds.length > 0) query = query.not('id', 'in', `(${likedIds.map(id => `'${id}'`).join(',')})`);
                         const { data: candidates, error } = await query;
-                        if (error) { console.error('Error loading candidates:', error); return []; }
+                        if (error) { console.error(error); return []; }
                         return candidates || [];
                     }
                     function displayEmployerSwipeCandidate() {
@@ -2602,14 +2562,7 @@
                         const candidate = swipeCandidates[currentSwipeIndex];
                         const rating = candidate.rating ? candidate.rating.toFixed(1) : '0.0';
                         const completed = candidate.completed_tasks || 0;
-                        container.innerHTML = `
-                            <div class="swipe-card" id="swipeCard" data-user-id="${candidate.id}">
-                                <div class="task-header"><h4 class="task-title">${candidate.full_name || candidate.username || 'Исполнитель'}</h4><i class="far fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavoriteUser('${candidate.id}')"></i></div>
-                                <div class="task-company"><span class="company-rating"><i class="fas fa-star"></i> ${rating}</span><span>✅ ${completed} заданий</span></div>
-                                <div class="task-description">${candidate.bio || 'Пока нет информации'}</div>
-                                <div class="swipe-actions"><button class="swipe-btn dislike" onclick="swipeLeftCandidate()"><i class="fas fa-times"></i></button><button class="swipe-btn like" onclick="swipeRightCandidate('${candidate.id}')"><i class="fas fa-heart"></i></button></div>
-                            </div>
-                        `;
+                        container.innerHTML = `<div class="swipe-card" id="swipeCard" data-user-id="${candidate.id}"><div class="task-header"><h4 class="task-title">${candidate.full_name || candidate.username || 'Исполнитель'}</h4><i class="far fa-heart task-favorite" onclick="event.stopPropagation(); toggleFavoriteUser('${candidate.id}')"></i></div><div class="task-company"><span class="company-rating"><i class="fas fa-star"></i> ${rating}</span><span>✅ ${completed} заданий</span></div><div class="task-description">${candidate.bio || 'Пока нет информации'}</div><div class="swipe-actions"><button class="swipe-btn dislike" onclick="swipeLeftCandidate()"><i class="fas fa-times"></i></button><button class="swipe-btn like" onclick="swipeRightCandidate('${candidate.id}')"><i class="fas fa-heart"></i></button></div></div>`;
                         initSwipe();
                     }
                     window.swipeRightCandidate = async function(candidateId) { await supabaseClient.from('likes').insert([{ from_user_id: userId, to_user_id: candidateId, type: 'user' }]); nextSwipeCandidate(); };
@@ -2620,23 +2573,8 @@
                         displayEmployerSwipeCandidate();
                     }
 
-                    // ---------- Employer HTML ----------
                     function getEmployerHTML() {
-                        return `
-                            <div class="employer-card animate-stagger">
-                                <h4 style="margin-bottom:15px;">создать новое задание</h4>
-                                <input class="employer-create-field" type="text" id="newTaskTitle" placeholder="название задания">
-                                <input class="employer-create-field" type="text" id="newTaskDesc" placeholder="описание (необязательно)">
-                                <input class="employer-create-field" type="number" id="newTaskPrice" placeholder="цена (₽)">
-                                <input class="employer-create-field" type="text" id="newTaskCategory" placeholder="категория (необязательно)">
-                                <button class="employer-create-btn" onclick="createNewTask()">опубликовать</button>
-                            </div>
-                            <div class="employer-card animate-stagger">
-                                <h4 style="margin-bottom:15px;">мои активные задания</h4>
-                                <div id="employerActiveTasks"></div>
-                                <div style="text-align:center; margin-top:12px; color:var(--text-muted);">скоро здесь появится статистика</div>
-                            </div>
-                        `;
+                        return `<div class="employer-card animate-stagger"><h4 style="margin-bottom:15px;">создать новое задание</h4><input class="employer-create-field" type="text" id="newTaskTitle" placeholder="название задания"><input class="employer-create-field" type="text" id="newTaskDesc" placeholder="описание (необязательно)"><input class="employer-create-field" type="number" id="newTaskPrice" placeholder="цена (₽)"><input class="employer-create-field" type="text" id="newTaskCategory" placeholder="категория (необязательно)"><button class="employer-create-btn" onclick="createNewTask()">опубликовать</button></div><div class="employer-card animate-stagger"><h4 style="margin-bottom:15px;">мои активные задания</h4><div id="employerActiveTasks"></div><div style="text-align:center; margin-top:12px; color:var(--text-muted);">скоро здесь появится статистика</div></div>`;
                     }
                     window.createNewTask = async function() {
                         const title = document.getElementById('newTaskTitle')?.value.trim();
@@ -2666,19 +2604,16 @@
                         container.innerHTML = html;
                     }
 
-                    // ---------- Загрузка заданий ----------
                     async function loadTasks(quick = false) {
                         document.getElementById('swipeContainer').style.display = 'none';
                         document.getElementById('tasksContainer').style.display = 'block';
                         document.getElementById('roleContent').style.display = 'none';
-
                         let realTasks = [];
                         try {
                             const { data, error } = await supabaseClient.from('tasks').select('*').eq('status', 'open').order('created_at', { ascending: false });
                             if (error) throw error;
                             realTasks = data || [];
                         } catch(e) { console.error(e); }
-
                         let likedRealTaskIds = [];
                         if (currentFilter === 'favorites') {
                             try {
@@ -2686,7 +2621,6 @@
                                 if (!error && likes) likedRealTaskIds = likes.map(l => l.task_id);
                             } catch(e) { console.error(e); }
                         }
-
                         let mockTasks = [...allTasks];
                         if (currentFilter === 'favorites') mockTasks = mockTasks.filter(t => favoriteIds.includes(t.id));
                         const now = new Date().toISOString();
@@ -2695,19 +2629,8 @@
                         if (currentFilter === 'favorites') filteredReal = filteredReal.filter(task => likedRealTaskIds.includes(task.id));
                         let all = [...filteredReal, ...mockWithDate];
                         all.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-
                         const container = document.getElementById('tasksContainer');
-                        if (all.length === 0) {
-                            container.style.transition = 'opacity 0.2s';
-                            container.style.opacity = '0';
-                            setTimeout(() => {
-                                container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет заданий</p>';
-                                container.style.opacity = '1';
-                                setTimeout(() => { container.style.transition = ''; }, 200);
-                            }, 200);
-                            return;
-                        }
-
+                        if (all.length === 0) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);">нет заданий</p>'; return; }
                         let html = '';
                         for (let idx = 0; idx < all.length; idx++) {
                             const task = all[idx];
@@ -2718,7 +2641,6 @@
                             let priceDisplay = task.price;
                             let isMock = task.isMock || false;
                             let isFavoriteFlag = false;
-
                             if (isMock) {
                                 employerName = task.company;
                                 tags = task.tags;
@@ -2728,13 +2650,7 @@
                                 let profile = await supabaseClient.from('profiles').select('username, full_name, rating').eq('id', task.employer_id).maybeSingle();
                                 if (profile.error || !profile.data) {
                                     const { data: userData } = await supabaseClient.from('users').select('name').eq('id', task.employer_id).maybeSingle();
-                                    const newProfile = {
-                                        id: task.employer_id,
-                                        username: userData?.name || 'Заказчик',
-                                        full_name: userData?.name || 'Заказчик',
-                                        rating: 0,
-                                        completed_tasks: 0
-                                    };
+                                    const newProfile = { id: task.employer_id, username: userData?.name || 'Заказчик', full_name: userData?.name || 'Заказчик', rating: 0, completed_tasks: 0 };
                                     await supabaseClient.from('profiles').upsert([newProfile], { onConflict: 'id' });
                                     profile = { data: newProfile };
                                 }
@@ -2745,7 +2661,6 @@
                                 priceDisplay = task.price;
                                 isFavoriteFlag = await isRealTaskFavorite(task.id);
                             }
-
                             const showTakeButton = (currentRole === 'worker');
                             let alreadyResponded = false;
                             if (!isMock && showTakeButton) {
@@ -2754,79 +2669,29 @@
                                     alreadyResponded = !!resp;
                                 } catch(e) {}
                             }
-
-                            html += `
-                                <div class="task-card-new" data-task-id="${task.id}" data-ismock="${isMock}" data-employer-id="${!isMock ? task.employer_id : ''}" data-task-title="${task.name || task.title}" data-task-desc="${description}" data-task-price="${priceDisplay}" data-task-tags='${JSON.stringify(tags)}' data-employer-name="${employerName}" data-employer-rating="${employerRating}">
-                                    <div class="task-header">
-                                        <span class="task-title">${task.name || task.title}</span>
-                                        <i class="${isFavoriteFlag ? 'fas' : 'far'} fa-heart task-favorite" data-task-id="${task.id}" data-ismock="${isMock}" onclick="event.stopPropagation(); toggleFavorite(${task.id}, ${isMock})"></i>
-                                    </div>
-                                    <div class="task-company">
-                                        <span class="company-name" style="cursor:pointer;" onclick="event.stopPropagation(); showEmployerProfile('${!isMock ? task.employer_id : ''}', '${employerName}')">${employerName}</span>
-                                        <span class="company-rating"><i class="fas fa-star"></i> ${employerRating}</span>
-                                        <span class="vip-badge">вип</span>
-                                    </div>
-                                    <div class="task-description">${description}</div>
-                                    <div class="task-price-large">${typeof priceDisplay === 'number' ? priceDisplay + ' ₽' : priceDisplay + ' ₽'}</div>
-                                    <div class="task-tags">${tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}</div>
-                                    ${showTakeButton ? (isMock ? `<button class="task-take-btn-full" onclick="event.stopPropagation(); handleTaskClick(${task.id})">взять</button>` : (alreadyResponded ? '<button class="task-take-btn-full" disabled>уже откликнулись</button>' : `<button class="task-take-btn-full" onclick="event.stopPropagation(); showTaskModal('${task.id}', '${task.employer_id}', '${task.name || task.title}', \`${description}\`, ${priceDisplay}, '${JSON.stringify(tags)}', '${employerName}', '${employerRating}')">взять</button>`)) : ''}
-                                </div>
-                            `;
+                            html += `<div class="task-card-new" data-task-id="${task.id}" data-ismock="${isMock}" data-employer-id="${!isMock ? task.employer_id : ''}" data-task-title="${task.name || task.title}" data-task-desc="${description}" data-task-price="${priceDisplay}" data-task-tags='${JSON.stringify(tags)}' data-employer-name="${employerName}" data-employer-rating="${employerRating}"><div class="task-header"><span class="task-title">${task.name || task.title}</span><i class="${isFavoriteFlag ? 'fas' : 'far'} fa-heart task-favorite" data-task-id="${task.id}" data-ismock="${isMock}" onclick="event.stopPropagation(); toggleFavorite(${task.id}, ${isMock})"></i></div><div class="task-company"><span class="company-name" style="cursor:pointer;" onclick="event.stopPropagation(); showEmployerProfile('${!isMock ? task.employer_id : ''}', '${employerName}')">${employerName}</span><span class="company-rating"><i class="fas fa-star"></i> ${employerRating}</span><span class="vip-badge">вип</span></div><div class="task-description">${description}</div><div class="task-price-large">${typeof priceDisplay === 'number' ? priceDisplay + ' ₽' : priceDisplay + ' ₽'}</div><div class="task-tags">${tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}</div>${showTakeButton ? (isMock ? `<button class="task-take-btn-full" onclick="event.stopPropagation(); handleTaskClick(${task.id})">взять</button>` : (alreadyResponded ? '<button class="task-take-btn-full" disabled>уже откликнулись</button>' : `<button class="task-take-btn-full" onclick="event.stopPropagation(); showTaskModal('${task.id}', '${task.employer_id}', '${task.name || task.title}', \`${description}\`, ${priceDisplay}, '${JSON.stringify(tags)}', '${employerName}', '${employerRating}')">взять</button>`)) : ''}</div>`;
                         }
-
-                        container.style.transition = 'opacity 0.2s';
-                        container.style.opacity = '0';
-                        setTimeout(() => {
-                            container.innerHTML = html;
-                            container.style.opacity = '1';
-                            setTimeout(() => { container.style.transition = ''; }, 200);
-                        }, 200);
+                        container.innerHTML = html;
                     }
 
-                    // ---------- Модалка профиля заказчика ----------
                     window.showEmployerProfile = async function(employerId, employerName) {
                         if (!employerId) { alert('Профиль недоступен'); return; }
                         const modal = document.getElementById('employerProfileModal');
                         const content = document.getElementById('employerProfileContent');
                         content.innerHTML = '<p style="text-align:center;">загрузка...</p>';
                         modal.classList.add('show');
-
                         try {
-                            // Гарантируем наличие записи в users и profiles
                             let userExists = await supabaseClient.from('users').select('id').eq('id', employerId).maybeSingle();
                             if (userExists.error || !userExists.data) {
-                                await supabaseClient.from('users').insert([{
-                                    id: employerId,
-                                    name: employerName,
-                                    balance: 0,
-                                    xp: 0,
-                                    referrals: 0,
-                                    streak: 0,
-                                    last_streak_date: null,
-                                    tasks_completed: {}
-                                }]);
+                                await supabaseClient.from('users').insert([{ id: employerId, name: employerName, balance: 0, xp: 0, referrals: 0, streak: 0, last_streak_date: null, tasks_completed: {} }]);
                             }
-                            const { data: profile, error: profileError } = await supabaseClient.from('profiles').upsert({
-                                id: employerId,
-                                username: employerName,
-                                full_name: employerName,
-                                rating: 0,
-                                completed_tasks: 0
-                            }, { onConflict: 'id' }).select().single();
+                            const { data: profile, error: profileError } = await supabaseClient.from('profiles').upsert({ id: employerId, username: employerName, full_name: employerName, rating: 0, completed_tasks: 0 }, { onConflict: 'id' }).select().single();
                             if (profileError) throw profileError;
-
-                            // Загружаем отзывы
-                            const { data: reviews, error: reviewsError } = await supabaseClient.from('reviews').select('*').eq('to_user_id', employerId).order('created_at', { ascending: false });
-                            if (reviewsError) throw reviewsError;
-
-                            // Количество выполненных заданий (как заказчик)
-                            const { data: completedTasks, error: tasksError } = await supabaseClient.from('responses').select('task_id').eq('employer_id', employerId).eq('status', 'completed');
+                            const { data: reviews } = await supabaseClient.from('reviews').select('*').eq('to_user_id', employerId).order('created_at', { ascending: false });
+                            const { data: completedTasks } = await supabaseClient.from('responses').select('task_id').eq('employer_id', employerId).eq('status', 'completed');
                             const totalCompleted = completedTasks?.length || 0;
-
-                            // Количество активных заданий (как заказчик)
-                            const { data: activeTasks, error: activeError } = await supabaseClient.from('tasks').select('id').eq('employer_id', employerId).eq('status', 'open');
+                            const { data: activeTasks } = await supabaseClient.from('tasks').select('id').eq('employer_id', employerId).eq('status', 'open');
                             const totalActive = activeTasks?.length || 0;
-
                             let canReview = false;
                             const { data: myResponses } = await supabaseClient.from('responses').select('task_id').eq('worker_id', userId).eq('employer_id', employerId).eq('status', 'completed');
                             const hasCompleted = (myResponses && myResponses.length > 0);
@@ -2834,7 +2699,6 @@
                                 const { data: myReview } = await supabaseClient.from('reviews').select('id').eq('from_user_id', userId).eq('to_user_id', employerId).maybeSingle();
                                 if (!myReview) canReview = true;
                             }
-
                             const avatarLetter = (profile?.full_name || employerName).charAt(0).toUpperCase();
                             const rating = profile?.rating ? profile.rating.toFixed(1) : '0.0';
                             let reviewsHtml = '<div class="reviews-section"><h4>отзывы</h4>';
@@ -2843,50 +2707,15 @@
                                 reviews.forEach(rev => {
                                     const date = new Date(rev.created_at).toLocaleDateString('ru-RU');
                                     const stars = '★'.repeat(rev.rating) + '☆'.repeat(5 - rev.rating);
-                                    reviewsHtml += `
-                                        <div class="review-item">
-                                            <div class="review-header"><span>${rev.from_user_id.slice(0, 6)}</span><span class="review-rating">${stars}</span></div>
-                                            <div class="review-comment">${rev.comment || 'без комментария'}</div>
-                                            <div class="review-date">${date}</div>
-                                        </div>
-                                    `;
+                                    reviewsHtml += `<div class="review-item"><div class="review-header"><span>${rev.from_user_id.slice(0, 6)}</span><span class="review-rating">${stars}</span></div><div class="review-comment">${rev.comment || 'без комментария'}</div><div class="review-date">${date}</div></div>`;
                                 });
                             }
                             reviewsHtml += '</div>';
-
                             let reviewFormHtml = '';
                             if (canReview) {
-                                reviewFormHtml = `
-                                    <div class="write-review">
-                                        <h4>написать отзыв</h4>
-                                        <div class="rating-stars" id="reviewStars">
-                                            <i class="far fa-star" data-rating="1"></i>
-                                            <i class="far fa-star" data-rating="2"></i>
-                                            <i class="far fa-star" data-rating="3"></i>
-                                            <i class="far fa-star" data-rating="4"></i>
-                                            <i class="far fa-star" data-rating="5"></i>
-                                        </div>
-                                        <textarea class="review-textarea" id="reviewComment" placeholder="ваш комментарий (необязательно)" rows="3"></textarea>
-                                        <button class="submit-review-btn" id="submitEmployerReview">отправить отзыв</button>
-                                    </div>
-                                `;
+                                reviewFormHtml = `<div class="write-review"><h4>написать отзыв</h4><div class="rating-stars" id="reviewStars"><i class="far fa-star" data-rating="1"></i><i class="far fa-star" data-rating="2"></i><i class="far fa-star" data-rating="3"></i><i class="far fa-star" data-rating="4"></i><i class="far fa-star" data-rating="5"></i></div><textarea class="review-textarea" id="reviewComment" placeholder="ваш комментарий (необязательно)" rows="3"></textarea><button class="submit-review-btn" id="submitEmployerReview">отправить отзыв</button></div>`;
                             }
-
-                            content.innerHTML = `
-                                <div class="employer-profile-header">
-                                    <div class="employer-avatar">${avatarLetter}</div>
-                                    <div class="employer-name">${profile?.full_name || employerName}</div>
-                                    <div class="employer-rating"><i class="fas fa-star" style="color:#FFC107;"></i> ${rating}</div>
-                                </div>
-                                <div class="employer-stats">
-                                    <div class="stat-item"><div class="stat-number">${totalActive}</div><div>активных</div></div>
-                                    <div class="stat-item"><div class="stat-number">${totalCompleted}</div><div>выполнено</div></div>
-                                    <div class="stat-item"><div class="stat-number">${reviews?.length || 0}</div><div>отзывов</div></div>
-                                </div>
-                                ${reviewsHtml}
-                                ${reviewFormHtml}
-                            `;
-
+                            content.innerHTML = `<div class="employer-profile-header"><div class="employer-avatar">${avatarLetter}</div><div class="employer-name">${profile?.full_name || employerName}</div><div class="employer-rating"><i class="fas fa-star" style="color:#FFC107;"></i> ${rating}</div></div><div class="employer-stats"><div class="stat-item"><div class="stat-number">${totalActive}</div><div>активных</div></div><div class="stat-item"><div class="stat-number">${totalCompleted}</div><div>выполнено</div></div><div class="stat-item"><div class="stat-number">${reviews?.length || 0}</div><div>отзывов</div></div></div>${reviewsHtml}${reviewFormHtml}`;
                             if (canReview) {
                                 let selectedRating = 0;
                                 const stars = document.querySelectorAll('#reviewStars i');
@@ -2902,15 +2731,8 @@
                                 document.getElementById('submitEmployerReview').onclick = async () => {
                                     if (selectedRating === 0) { alert('поставьте оценку от 1 до 5'); return; }
                                     const comment = document.getElementById('reviewComment').value.trim();
-                                    const { error } = await supabaseClient.from('reviews').insert([{
-                                        task_id: null,
-                                        from_user_id: userId,
-                                        to_user_id: employerId,
-                                        rating: selectedRating,
-                                        comment: comment || null,
-                                        created_at: new Date().toISOString()
-                                    }]);
-                                    if (error) { alert('Ошибка при отправке отзыва'); console.error(error); }
+                                    const { error } = await supabaseClient.from('reviews').insert([{ task_id: null, from_user_id: userId, to_user_id: employerId, rating: selectedRating, comment: comment || null, created_at: new Date().toISOString() }]);
+                                    if (error) alert('Ошибка');
                                     else {
                                         alert('Отзыв отправлен!');
                                         modal.classList.remove('show');
@@ -2922,14 +2744,10 @@
                                     }
                                 };
                             }
-                        } catch (err) {
-                            console.error(err);
-                            content.innerHTML = '<p style="color:red;">ошибка загрузки профиля</p>';
-                        }
+                        } catch (err) { console.error(err); content.innerHTML = '<p style="color:red;">ошибка загрузки профиля</p>'; }
                     };
                     document.getElementById('closeEmployerModal').onclick = () => document.getElementById('employerProfileModal').classList.remove('show');
 
-                    // ---------- Модалка задания ----------
                     let currentTaskEmployerId = null;
                     window.showTaskModal = function(taskId, employerId, title, description, price, tagsJson, employerName, employerRating) {
                         currentTaskEmployerId = employerId;
@@ -2951,7 +2769,6 @@
                         closeModal('taskDetailModal');
                     };
 
-                    // ---------- Обновление UI ----------
                     function updateRoleUI() {
                         const roleContent = document.getElementById('roleContent');
                         const swipeContainer = document.getElementById('swipeContainer');
@@ -2998,7 +2815,6 @@
                         newElements.forEach(el => { el.classList.add('animate-stagger'); el.style.animation = 'none'; el.offsetHeight; el.style.animation = ''; });
                     }
 
-                    // ---------- Game ----------
                     const gameModal = document.getElementById('gameModal');
                     const closeGame = document.getElementById('closeGame');
                     const gameBoxes = document.querySelectorAll('.game-box');
@@ -3055,7 +2871,6 @@
                         resetGameModal();
                     };
 
-                    // ---------- Test task ----------
                     document.getElementById('closeTestTask').onclick = () => document.getElementById('testTaskModal').classList.remove('show');
                     document.getElementById('claimTestBtn').onclick = async () => {
                         const oldLevel = getLevelByXP(getXP());
@@ -3074,11 +2889,9 @@
                         document.getElementById('testTaskModal').classList.remove('show');
                     };
 
-                    // ---------- Аналитика (исправлена для месяца) ----------
                     async function loadAnalytics(period = 'day') {
                         const container = document.getElementById('analyticsContent');
                         if (!container) return;
-
                         const now = new Date();
                         let startDate, endDate;
                         if (period === 'day') {
@@ -3090,7 +2903,6 @@
                             startDate = new Date(now); startDate.setDate(now.getDate() - daysToMonday); startDate.setHours(0,0,0,0);
                             endDate = new Date(now); endDate.setHours(23,59,59,999);
                         } else {
-                            // Месяц: от начала месяца до конца дня сегодняшнего (включительно) в UTC
                             const year = now.getUTCFullYear();
                             const month = now.getUTCMonth();
                             startDate = new Date(Date.UTC(year, month, 1, 0, 0, 0));
@@ -3098,21 +2910,18 @@
                             const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
                             if (endDate > todayUTC) endDate = todayUTC;
                         }
-
                         let periodEvents = [];
                         try {
                             const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', userId).gte('created_at', startDate.toISOString()).lte('created_at', endDate.toISOString()).order('created_at', { ascending: true });
                             if (error) throw error;
                             periodEvents = data || [];
                         } catch(e) { console.error(e); }
-
                         let allEvents = [];
                         try {
                             const { data, error } = await supabaseClient.from('events').select('*').eq('user_id', userId).order('created_at', { ascending: false }).limit(10);
                             if (error) throw error;
                             allEvents = data || [];
                         } catch(e) { console.error(e); }
-
                         let chartData = [];
                         if (period === 'day') {
                             for (let h = 0; h < 24; h++) chartData.push({ label: `${h.toString().padStart(2,'0')}:00`, amount: 0 });
@@ -3131,11 +2940,7 @@
                             const month = startDate.getUTCMonth();
                             const lastDay = new Date(Date.UTC(year, month+1, 0)).getUTCDate();
                             for (let day = 1; day <= lastDay; day++) {
-                                chartData.push({
-                                    label: day.toString(),
-                                    amount: 0,
-                                    timestamp: Date.UTC(year, month, day)
-                                });
+                                chartData.push({ label: day.toString(), amount: 0, timestamp: Date.UTC(year, month, day) });
                             }
                             periodEvents.forEach(e => {
                                 const eventDate = new Date(e.created_at);
@@ -3144,22 +2949,10 @@
                                 if (index !== -1) chartData[index].amount += e.amount || 0;
                             });
                         }
-
                         const totalIncome = periodEvents.reduce((sum,e) => sum + (e.amount||0), 0);
                         const maxAmount = Math.max(...chartData.map(d => d.amount), 1);
                         const chartClass = period === 'day' ? '' : (period === 'week' ? 'week-view' : 'month-view');
-
-                        let html = `
-                            <div class="analytics-total animate-stagger" style="text-align: center;">
-                                <div class="balance-label" style="font-size: 18px;">доход</div>
-                                <div class="balance-value" style="font-size: 48px; margin: 5px 0;">${totalIncome} ₽</div>
-                                <div style="color: var(--text-muted); font-size: 16px;">за последние ${period === 'day' ? '24 часа' : period === 'week' ? '7 дней' : '30 дней'}</div>
-                            </div>
-                            <div class="analytics-total animate-stagger" style="padding: 20px;">
-                                <div style="margin-bottom: 20px;">
-                                    <h4 style="margin-bottom: 15px; text-align: center;">график дохода</h4>
-                                    <div class="chart-container ${chartClass}">
-                        `;
+                        let html = `<div class="analytics-total animate-stagger" style="text-align: center;"><div class="balance-label" style="font-size: 18px;">доход</div><div class="balance-value" style="font-size: 48px; margin: 5px 0;">${totalIncome} ₽</div><div style="color: var(--text-muted); font-size: 16px;">за последние ${period === 'day' ? '24 часа' : period === 'week' ? '7 дней' : '30 дней'}</div></div><div class="analytics-total animate-stagger" style="padding: 20px;"><div style="margin-bottom: 20px;"><h4 style="margin-bottom: 15px; text-align: center;">график дохода</h4><div class="chart-container ${chartClass}">`;
                         chartData.forEach(item => {
                             const height = (item.amount / maxAmount) * 180;
                             html += `<div class="chart-bar-wrapper"><div class="chart-amount">+${item.amount}</div><div class="chart-bar" style="height: ${height}px;"></div><div class="chart-label">${item.label}</div></div>`;
@@ -3178,14 +2971,7 @@
                             });
                         }
                         html += `</div></div>`;
-
-                        container.style.transition = 'opacity 0.2s';
-                        container.style.opacity = '0';
-                        setTimeout(() => {
-                            container.innerHTML = html;
-                            container.style.opacity = '1';
-                            setTimeout(() => { container.style.transition = ''; }, 200);
-                        }, 200);
+                        container.innerHTML = html;
                     }
                     window.setAnalyticsPeriod = function(period) {
                         document.querySelectorAll('#analyticsTabs .period-tab').forEach(t => t.classList.remove('active'));
@@ -3198,7 +2984,6 @@
                         loadAnalytics('day');
                     }
 
-                    // ---------- Subscription check ----------
                     document.getElementById('checkBtn').onclick = async function() {
                         if (!canDo(2)) { document.getElementById('checkResult').style.color = 'red'; document.getElementById('checkResult').innerText = 'задание уже выполнено'; return; }
                         const checkBtn = this;
@@ -3244,7 +3029,6 @@
                     document.getElementById('channelBtn').onclick = () => { if (tg) tg.openTelegramLink('https://t.me/HYPE_JOB1'); else window.open('https://t.me/HYPE_JOB1', '_blank'); };
                     document.getElementById('closeSub').onclick = () => document.getElementById('subModal').classList.remove('show');
 
-                    // ---------- Premium модалка ----------
                     window.openPremiumModal = function() {
                         const modal = document.getElementById('premiumModal');
                         modal.classList.add('show');
@@ -3261,13 +3045,11 @@
                     };
                     document.getElementById('closePremiumModal').onclick = () => document.getElementById('premiumModal').classList.remove('show');
 
-                    // ---------- Notifications and Settings ----------
                     document.getElementById('notificationIcon').addEventListener('click', () => showPage('notifications'));
                     document.getElementById('settingsIcon').addEventListener('click', () => showPage('settings'));
                     window.closeNotifications = () => showPage('tasks');
                     window.closeSettings = () => showPage('tasks');
 
-                    // ---------- Navigation ----------
                     const pages = {
                         tasks: document.getElementById('tasks-page'),
                         profile: document.getElementById('profile-page'),
@@ -3302,14 +3084,11 @@
                     document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
                         item.addEventListener('click', (e) => { e.preventDefault(); showPage(item.dataset.page); });
                     });
-
-                    // Установка индикатора при загрузке
                     setTimeout(() => {
                         const activeNav = document.querySelector('.bottom-nav .nav-item.active');
                         if (activeNav) updateNavIndicator(activeNav);
                     }, 100);
 
-                    // ---------- Profile, referrals, withdraw ----------
                     async function updateProfilePage() {
                         const xp = getXP();
                         const level = getLevelByXP(xp);
@@ -3346,32 +3125,16 @@
                         const container = document.getElementById('referralsContent');
                         if (!container) return;
                         const referralsCount = parseInt(localStorage.getItem('referralsCount')) || 0;
-                        container.innerHTML = `
-                            <div class="referral-link-block animate-stagger"><div class="referral-link-label">твоя реферальная ссылка</div><div class="ref-link-field"><input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField"><button class="copy-ref-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">копировать</button></div></div>
-                            <div class="referral-stats"><div class="referral-stat-card animate-stagger"><div class="stat-label">приглашено</div><div class="stat-number">${referralsCount}</div></div><div class="referral-stat-card animate-stagger"><div class="stat-label">заработано</div><div class="stat-number">0 ₽</div></div></div>
-                            <div class="friends-list animate-stagger"><h4 style="margin-bottom:15px;">недавно приглашённые</h4><div style="text-align:center; margin-top:12px; color:var(--text-muted);">приглашай друзей, чтобы список заполнился</div></div>
-                        `;
+                        container.innerHTML = `<div class="referral-link-block animate-stagger"><div class="referral-link-label">твоя реферальная ссылка</div><div class="ref-link-field"><input type="text" value="https://t.me/your_bot?start=ref_${userId}" readonly id="refLinkField"><button class="copy-ref-btn" onclick="this.previousElementSibling.select(); navigator.clipboard.writeText(this.previousElementSibling.value); alert('Ссылка скопирована!')">копировать</button></div></div><div class="referral-stats"><div class="referral-stat-card animate-stagger"><div class="stat-label">приглашено</div><div class="stat-number">${referralsCount}</div></div><div class="referral-stat-card animate-stagger"><div class="stat-label">заработано</div><div class="stat-number">0 ₽</div></div></div><div class="friends-list animate-stagger"><h4 style="margin-bottom:15px;">недавно приглашённые</h4><div style="text-align:center; margin-top:12px; color:var(--text-muted);">приглашай друзей, чтобы список заполнился</div></div>`;
                     }
 
                     function updateWithdrawPage() {
                         const container = document.getElementById('withdrawContent');
                         if (!container) return;
-                        container.innerHTML = `
-                            <div class="card-glow">
-                                <div class="card-logo">ХАЙП</div>
-                                <div class="card-number">2200 0000 0000 0000</div>
-                                <div class="card-details"><span>01/29</span><span>${displayName}</span></div>
-                            </div>
-                            <div class="balance-block"><span class="balance-label">твой баланс</span><span class="balance-number">${balance} ₽</span></div>
-                            <div class="withdraw-field"><input type="number" placeholder="сумма (мин. 50 ₽)" id="withdrawAmount"></div>
-                            <div class="withdraw-field"><input type="text" placeholder="номер карты или кошелька" id="withdrawCard"></div>
-                            <button id="withdrawSubmit" class="animate-stagger" onclick="alert('вывод временно недоступен')">вывести</button>
-                            <div style="margin-top:25px;"><h4 style="margin-bottom:15px;">недавние операции</h4><div class="recent-transfers"><div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появятся последние операции</div></div></div>
-                        `;
+                        container.innerHTML = `<div class="card-glow"><div class="card-logo">ХАЙП</div><div class="card-number">2200 0000 0000 0000</div><div class="card-details"><span>01/29</span><span>${displayName}</span></div></div><div class="balance-block"><span class="balance-label">твой баланс</span><span class="balance-number">${balance} ₽</span></div><div class="withdraw-field"><input type="number" placeholder="сумма (мин. 50 ₽)" id="withdrawAmount"></div><div class="withdraw-field"><input type="text" placeholder="номер карты или кошелька" id="withdrawCard"></div><button id="withdrawSubmit" class="animate-stagger" onclick="alert('вывод временно недоступен')">вывести</button><div style="margin-top:25px;"><h4 style="margin-bottom:15px;">недавние операции</h4><div class="recent-transfers"><div style="text-align:center; margin-top:12px; color:var(--text-muted);">здесь появятся последние операции</div></div></div>`;
                         document.getElementById('withdrawSubmit').addEventListener('click', () => alert('вывод временно недоступен'));
                     }
 
-                    // ---------- Streak, balance, counts ----------
                     function getStreak() { return parseInt(localStorage.getItem('streak')) || 0; }
                     function getLastStreakDate() { return localStorage.getItem('lastStreakDate'); }
                     function updateStreak() {
@@ -3414,14 +3177,12 @@
                     function animatePage(pageElement) { pageElement.querySelectorAll('.animate-stagger').forEach(el => { el.style.animation = 'none'; el.offsetHeight; el.style.animation = ''; }); }
                     function updateBalanceDisplay() { document.getElementById('mainBalance').innerText = balance + ' ₽'; }
 
-                    // ---------- Splash & header ----------
                     const splash = document.getElementById('splash');
                     const appContent = document.getElementById('appContent');
                     splash.addEventListener('animationend', function(e) { if (e.animationName === 'fadeOut') { splash.remove(); appContent.style.opacity = '1'; } });
                     document.getElementById('profileAvatar').innerText = firstName.charAt(0).toUpperCase();
                     document.getElementById('profileName').innerText = firstName;
 
-                    // ---------- Scroll header ----------
                     const fixedHeader = document.getElementById('fixedHeader');
                     const pagesContainer = document.getElementById('pagesContainer');
                     let lastScrollTop = 0;
@@ -3432,7 +3193,6 @@
                         lastScrollTop = scrollTop;
                     });
 
-                    // ---------- Level modal ----------
                     window.openLevelModal = function() {
                         const xp = getXP();
                         const level = getLevelByXP(xp);
@@ -3446,7 +3206,6 @@
                     };
                     document.getElementById('closeLevelModal').onclick = () => document.getElementById('levelModal').classList.remove('show');
 
-                    // ---------- Init ----------
                     await initUser();
                     updateRoleUI();
                     updateProfilePage();
