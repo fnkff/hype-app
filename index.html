@@ -1847,6 +1847,35 @@
             margin-top: 10px;
             text-align: center;
         }
+                .modal.show {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        .modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 10000 !important;
+    background: rgba(0,0,0,0.7) !important;
+    backdrop-filter: blur(5px) !important;
+}
+.modal.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.modal-content, .auth-modal {
+    background: var(--bg-card) !important;
+    border-radius: 24px !important;
+    padding: 20px !important;
+    max-width: 360px !important;
+    width: 90% !important;
+}
     </style>
 </head>
 <body>
@@ -2123,29 +2152,6 @@
             </div>
         </div>
 
-        <!-- Новая модалка авторизации -->
-        <div class="modal" id="authModal">
-            <div class="modal-content auth-modal">
-                <div class="modal-header"><button class="modal-close" id="closeAuthModal">&times;</button></div>
-                <div class="auth-tabs">
-                    <div class="auth-tab active" data-tab="login">войти</div>
-                    <div class="auth-tab" data-tab="register">регистрация</div>
-                </div>
-                <div id="authLoginForm">
-                    <input type="text" id="loginUsername" class="auth-field" placeholder="логин">
-                    <input type="password" id="loginPassword" class="auth-field" placeholder="пароль">
-                    <button class="auth-btn login-btn" id="doLogin">войти</button>
-                    <div id="loginError" class="auth-error"></div>
-                </div>
-                <div id="authRegisterForm" style="display: none;">
-                    <input type="text" id="regLogin" class="auth-field" placeholder="логин">
-                    <input type="password" id="regPassword" class="auth-field" placeholder="пароль">
-                    <input type="text" id="regName" class="auth-field" placeholder="имя (отображается)">
-                    <button class="auth-btn register-btn" id="doRegister">зарегистрироваться</button>
-                    <div id="regError" class="auth-error"></div>
-                </div>
-            </div>
-        </div>
 
         <!-- Нижняя навигация с плавающим индикатором -->
         <div class="bottom-nav" id="bottomNav">
@@ -3222,5 +3228,28 @@
             });
         })();
     </script>
+    <!-- Новая модалка авторизации -->
+        <div class="modal" id="authModal">
+            <div class="modal-content auth-modal">
+                <div class="modal-header"><button class="modal-close" id="closeAuthModal">&times;</button></div>
+                <div class="auth-tabs">
+                    <div class="auth-tab active" data-tab="login">войти</div>
+                    <div class="auth-tab" data-tab="register">регистрация</div>
+                </div>
+                <div id="authLoginForm">
+                    <input type="text" id="loginUsername" class="auth-field" placeholder="логин">
+                    <input type="password" id="loginPassword" class="auth-field" placeholder="пароль">
+                    <button class="auth-btn login-btn" id="doLogin">войти</button>
+                    <div id="loginError" class="auth-error"></div>
+                </div>
+                <div id="authRegisterForm" style="display: none;">
+                    <input type="text" id="regLogin" class="auth-field" placeholder="логин">
+                    <input type="password" id="regPassword" class="auth-field" placeholder="пароль">
+                    <input type="text" id="regName" class="auth-field" placeholder="имя (отображается)">
+                    <button class="auth-btn register-btn" id="doRegister">зарегистрироваться</button>
+                    <div id="regError" class="auth-error"></div>
+                </div>
+            </div>
+        </div>
 </body>
 </html>
